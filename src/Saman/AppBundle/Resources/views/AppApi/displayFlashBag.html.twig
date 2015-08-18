@@ -1,0 +1,5 @@
+{% for type, messages in messageGroups %}
+    {% for message in messages %}
+        {{ message|showAlert(type) }}
+    {% endfor %}
+{% endfor %}

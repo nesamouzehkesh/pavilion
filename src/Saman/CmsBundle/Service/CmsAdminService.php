@@ -3,7 +3,7 @@
 namespace Saman\CmsBundle\Service;
 
 use Symfony\Component\HttpFoundation\Request;
-use Saman\Library\Service\Helper;
+use Saman\Library\Service\BaseService;
 use Saman\Library\Map\EntityMap;
 use Saman\CmsBundle\Entity\Page;
 use Saman\Library\Map\ViewMap;
@@ -25,22 +25,22 @@ class CmsAdminService
     
     /**
      *
-     * @var Helper $helper
+     * @var BaseService $baseService
      */
-    protected $helper;
+    protected $baseService;
     
     /**
      * 
-     * @param \Saman\Library\Service\Helper $helper
+     * @param \Saman\Library\Service\Helper $baseService
      * @param type $parameters
      */
     public function __construct(
-        Helper $helper, 
+        BaseService $baseService, 
         $parameters
         ) 
     {
-        $this->helper = $helper;
-        $this->helper->setParametrs($parameters);
+        $this->baseService = $baseService;
+        $this->baseService->setParametrs($parameters);
     }
     
     /**
@@ -56,20 +56,38 @@ class CmsAdminService
     /**
      * Get Item based on its ID. If ID is null then create a new Item
      * 
-     * @param type $itemId
+     * @param int $pageId
      * @return type
      */
-    public function getItem($itemId = null)
+    public function getPage($pageId = null)
     {
-        $item = null;
-        if (null === $itemId) {
-            $item = $this->createNewItem();
-        } else {
-            $item = $this->helper->getRepository(self::ENTITY_ITEM)
-                ->getItem($itemId);
-        }        
+        if (null === $pageId) {
+            return $this->createNewItem();
+        }
         
-        return $item;
+        // Get Page form repository
+        $page = Page::getRepository($this->baseService->getEntityManager())
+            ->getPage($pageId);
+
+        // Check if page is found
+        if (!$page instanceof Page) {
+            throw $this->baseService
+                ->createVisibleHttpException('alert.error.noItemFound');
+        }
+
+        return $page;
+    }
+    
+    /**
+     * 
+     * @param type $param
+     * @param type $loadJustQuery
+     * @return type
+     */
+    public function getPages($param = null, $loadJustQuery = true)
+    {
+        return Page::getRepository($this->baseService->getEntityManager())
+            ->getPages($param, $loadJustQuery);
     }
     
     /**
@@ -80,7 +98,7 @@ class CmsAdminService
     public function updateItem($item)
     {
         $item->setModifiedTime();
-        $this->helper->saveEntity($item);
+        $this->baseService->saveEntity($item);
         
         return true;
     }
@@ -99,18 +117,18 @@ class CmsAdminService
 
             // Check if this $item exist
             if (null === $item) {
-                return $this->helper->getExceptionResponseNotFound($itemId);
+                return $this->baseService->getExceptionResponseNotFound($itemId);
             }
 
-            if ($this->helper->deleteEntity($item)) {
-                return $this->helper->getJsonResponse(
+            if ($this->baseService->deleteEntity($item)) {
+                return $this->baseService->getJsonResponse(
                     true,
                     array(
                         'alert.success.itemHasBeenRemoved', 
                         array('%id%' => $itemId))
                     );
             } else {
-                return $this->helper->getExceptionResponse(
+                return $this->baseService->getExceptionResponse(
                     'alert.success.itemHasNotBeenRemoved', 
                     array('%id%' => $itemId)
                     );
@@ -121,26 +139,19 @@ class CmsAdminService
     /**
      * Add or Edit Item
      * 
-     * @param \Symfony\Component\HttpFoundation\Request $request
-     * @param type $itemId
+     * @param Request $request
+     * @param Page $page
      * @return type
      */
-    public function addEditItem(Request $request, $itemId = null)
+    public function addEditItem(Request $request, Page $page)
     {
-        /** @var Page */
-        $page = $this->getItem($itemId);
-        // Check if this $item exist
-        if (null === $page) {
-            return $this->helper->getExceptionResponseNotFound($itemId);
-        }
-        
         /** @var PageForm */
         $pageFormType = new PageFormType(
-            $this->helper, 
+            $this->baseService, 
             $page,
-            $this->helper->getParameter('page')
+            $this->baseService->getParameter('page')
             );
-        $pageForm = $this->helper->createForm($request, $pageFormType, $page);
+        $pageForm = $this->baseService->createForm($request, $pageFormType, $page);
         // Handling Form Submissions and validation
         $pageForm->handleRequest($request);
         if ($pageForm->isSubmitted()) {
@@ -148,10 +159,10 @@ class CmsAdminService
                 
                 $this->updateItem($page);
                 
-                return $this->helper->getJsonResponse(true);
+                return $this->baseService->getJsonResponse(true);
             }
         }    
-        $itemFormView = $this->helper->renderView(
+        $itemFormView = $this->baseService->renderView(
             self::VIEW_ITEM_ADD_EDIT,
             array(
                 'form' => $pageForm->createView(),
@@ -159,69 +170,7 @@ class CmsAdminService
                 )
             );
         
-        return $this->helper->getJsonResponse(true, null, $itemFormView);        
-    }
-    
-    /**
-     * Get Items
-     * 
-     * @param \Symfony\Component\HttpFoundation\Request $request
-     * @param type $loadJustQuery
-     * @return type
-     */
-    public function getItems(Request $request, $loadJustQuery = true)
-    {
-        $param = $this->helper->getSearchParam($request);
-        $items = $this->helper->getRepository(self::ENTITY_ITEM)
-            ->getItems($param, $loadJustQuery);
-        
-        return $items;
-    }
-    
-    /**
-     * Load item
-     * 
-     * @param \Symfony\Component\HttpFoundation\Request $request
-     * @param int $itemId
-     * @return Page
-     */
-    public function loadItem(Request $request, $itemId)
-    {
-        $item = $this->helper->getRepository(self::ENTITY_ITEM)
-            ->loadItem($itemId);
-        
-        return $item;
-    }
-    
-    /**
-     * Display Items
-     * 
-     * @param \Saman\CmsBundle\Service\Request $request
-     * @return type
-     */
-    public function displayItems(Request $request)
-    {
-        $itemsQuery = $this->getItems($request);
-        $itemsPagination = $this->helper->paginate($request, $itemsQuery);
-        
-        $itemsView = $this->helper->renderView(
-            self::VIEW_ITEMS_VIEW,
-            array('itemsPagination' => $itemsPagination)
-            );
-        
-        if ($request->get('headless')) {
-            $response = $this->helper->getJsonResponse(true, null, $itemsView);
-        } else {
-            $response = $this->helper->render(
-                self::VIEW_ITEMS_HOME,
-                array(
-                    'itemsView' => $itemsView
-                    )
-                );
-        }        
-        //$this->helper->cacheResponse($response);
-        
-        return $response;
+        return $this->baseService->getJsonResponse(true, null, $itemFormView);        
     }
     
     /**
@@ -237,49 +186,16 @@ class CmsAdminService
 
         // Check if this $item exist
         if (null === $item) {
-            return $this->helper->getExceptionResponseNotFound($itemId);
+            return $this->baseService->getExceptionResponseNotFound($itemId);
         }
         
-        $itemView = $this->helper->renderView(
+        $itemView = $this->baseService->renderView(
             self::VIEW_ITEM_VIEW,
             array('item' => $item)
             );
-        $response = $this->helper->getJsonResponse(true, null, $itemView);
-        //$this->helper->cacheResponse($response);
+        $response = $this->baseService->getJsonResponse(true, null, $itemView);
+        //$this->baseService->cacheResponse($response);
         
         return $response;
     }
-    
-    /**
-     * 
-     * @param \Symfony\Component\HttpFoundation\Request $request
-     * @param type $itemId
-     * @return type
-     */
-    public function displayCacheItem(Request $request, $itemId)
-    {
-        $item = $this->loadItem($request, $itemId);
-
-        // Check if this $item exist
-        if (null === $item) {
-            return $this->helper->getExceptionResponseNotFound($itemId);
-        }
-        
-        // create a Response with an ETag and/or a Last-Modified header
-        $response = new Response();
-        //$response->setETag($article->computeETag());
-        $modifyDate = $this->helper->getTime($itemId->getLastModify());
-        $response->setLastModified($modifyDate);
-
-        // Set response as public. Otherwise it will be private by default.
-        $response->setPublic();
-
-        // Check that the Response is not modified for the given Request
-        if ($response->isNotModified($request)) {
-            // return the 304 Response immediately
-            return $response;
-        }
-    
-        return $this->displayItem($request, $itemId);
-    }    
 }

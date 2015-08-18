@@ -11,16 +11,19 @@ word:
     columnNumber: "Column %number%"
     on: On
     off: Off
-    uploadFileByDropping: "Drop files here or click to upload."
+    uploadFileByDropping: "Drop files here or click to upload"
     selectAnItem: Select an item
     
 alert:
     error:
-        noItemHasBeenFound: "No item has been found for ID: %id%."
-        itemHasNotBeenFound: "Item %id% has not been removed successfully"
-        hasChildrenAndCannotBeRemoved: "This item cannot be removed since it includes some subitems"
+        canNotDisplayItem: "Can not display this item"
+        canNotDisplayItems: "Can not display items"
+        canNotDeleteItem: "Can not delete this item"
+        canNotAddItem: "Can not add this item"
+        canEditAddItem: "Can not edit this item"
+        noItemFound: "No item has been found"
     success:
-        itemHasBeenRemoved: "Item %id% has been removed successfully"
+        itemRemoved: "Item has been removed successfully"
     info:
     warning:
         doYouWantToDeleteItem: "Do your really want to delete this item?"
@@ -45,10 +48,8 @@ action:
 
 
 icon:
+    page: glyphicon glyphicon-list
     add: glyphicon glyphicon-plus
-    addToPool: glyphicon glyphicon-download-alt
-    addWidget: glyphicon glyphicon-cog
-    addRow: glyphicon glyphicon-th-large
     colorSelect: glyphicon glyphicons-eyedropper
     calendar: glyphicon glyphicon-calendar    
     chevronRight: glyphicon glyphicon-chevron-right
@@ -84,10 +85,6 @@ icon:
     module:
         cms: glyphicon glyphicon-th
         product: glyphicon glyphicon-shopping_bag
-        config: glyphicon glyphicon-cog
-        appearance: glyphicon glyphicons-brush
-        theme: glyphicon glyphicon-th-large
-        navigation: glyphicon glyphicon-random
     alert:
         warning: glyphicon glyphicon-exclamation-sign
         info: glyphicon glyphicon-info-sign
@@ -96,21 +93,16 @@ icon:
         remove: glyphicon glyphicon-remove-sign
         minus: glyphicon glyphicon-minus-sign
         plus: glyphicon glyphicon-plus-sign
-    moduleItems:    
-        theme:
-            themeSettings: glyphicon glyphicon-cog
-            themeStructure: glyphicon glyphicon-th
-            themeWidgets: glyphicon glyphicon-picture
 
 form:
-    saman_shopping_product_form:
-        title: Product
-        icon: glyphicon glyphicon-shopping_bag
-        description: "You can add a new product or edit your existing product in this form"
     saman_cms_page_form:
         title: Page
         icon: glyphicon glyphicon-th-large
         description: "You can create new page or edit your existing page in this form"
+    saman_shopping_product_form:
+        title: Product
+        icon: glyphicon glyphicon-shopping_bag
+        description: "You can add a new product or edit your existing product in this form"
 
 
 module: 
@@ -118,69 +110,3 @@ module:
         title: Settings
     cms:
         title: CMS
-    product:
-        title: Product
-    navigation:
-        title: Navigation
-        alert: ~
-    appearance:
-        title: Appearance
-        alert:
-            error: ~
-            success:
-                themeIsPublished: "The theme has been published successfully"
-            info: ~
-            warning: ~
-        navigation:
-            pageLink: Link to Page
-            urlLink: Link to URL
-        theme:
-            title: Theme
-            themeSettings: Settings
-            themeStructure: Structure
-            themeRawStructure: Raw content
-            themeWidgets: Widgets
-        widget:
-            menu:
-                title: Menu widget
-            icon:
-                title: Icon widget
-            page:
-                title: Page widget
-            carousel:
-                title: Bootstrap Carousel
-
-configs:
-    security: 
-        title: Security Settings
-        description: "You can use all Bootstrap plugins purely through the markup API without writing a single line of JavaScript. This is Bootstrap's first-class API and should be your first consideration when using a plugin."
-        icon: glyphicon glyphicon-plus
-        options:
-            title:
-                title: Title
-                description: "You can use all Bootstrap plugins purely through the markup API without writing a single line of JavaScript. This is Bootstrap's first-class API and should be your first consideration when using a plugin."
-            email:
-                title: Email
-                description: Enter your email
-    general: 
-        title: General Settings
-        description: "You can use all Bootstrap plugins purely through the markup API without writing a single line of JavaScript. This is Bootstrap's first-class API and should be your first consideration when using a plugin."
-        icon: glyphicon glyphicon-plus
-        options:
-            title:
-                title: Title
-                description: "You can use all Bootstrap plugins purely through the markup API without writing a single line of JavaScript. This is Bootstrap's first-class API and should be your first consideration when using a plugin."
-            email:
-                title: Email
-                description: "You can use all Bootstrap plugins purely through the markup API without writing a single line of JavaScript. This is Bootstrap's first-class API and should be your first consideration when using a plugin."
-    view: 
-        title: View Settings
-        description: ""
-        icon: glyphicon glyphicon-plus
-        options:
-            title:
-                title: Title
-                description: "You can use all Bootstrap plugins purely through the markup API without writing a single line of JavaScript. This is Bootstrap's first-class API and should be your first consideration when using a plugin."
-            email:
-                title: Email
-                description: "You can use all Bootstrap plugins purely through the markup API without writing a single line of JavaScript. This is Bootstrap's first-class API and should be your first consideration when using a plugin."             

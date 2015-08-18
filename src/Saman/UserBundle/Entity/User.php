@@ -11,7 +11,7 @@ use Saman\Library\Base\BaseEntity;
  * Acme\UserBundle\Entity\User
  *
  * @ORM\Table(name="saman_users")
- * @ORM\Entity(repositoryClass="Saman\UserBundle\Repository\UserRepository")
+ * @ORM\Entity(repositoryClass="Saman\UserBundle\Entity\Repository\UserRepository")
  */
 class User extends BaseEntity implements AdvancedUserInterface, \Serializable
 {
@@ -63,6 +63,16 @@ class User extends BaseEntity implements AdvancedUserInterface, \Serializable
         $this->salt = md5(uniqid(null, true));
         $this->roles = new ArrayCollection();
     }
+    
+    /**
+     * 
+     * @param \Doctrine\ORM\EntityManagerInterface $em
+     * @return \Saman\UserBundle\Entity\Repository\UserRepository
+     */
+    public static function getRepository(\Doctrine\ORM\EntityManagerInterface $em)
+    {
+        return $em->getRepository(__CLASS__);
+    }    
     
     /**
      * 

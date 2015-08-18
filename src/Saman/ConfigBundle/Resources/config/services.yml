@@ -1,7 +1,0 @@
-parameters:
-    saman_config.config.class: Saman\ConfigBundle\Service\ConfigService
-        
-services:
-    saman_config.config:
-        class: %saman_config.config.class%
-        arguments: [@saman.helper, %saman_config.config%]

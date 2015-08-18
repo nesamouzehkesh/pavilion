@@ -41,6 +41,7 @@
                 $.post(deleteActionUrl, function(response) {
                     if (response.success == true) {
                         displayItems(currentUrl, cont_items, currentPage);
+                        getFlashBag();
                     } else{
                         bootbox.alert(response.message);
                     }
@@ -65,6 +66,21 @@
             }
         }, 'json');
     }
+    
+    function getFlashBag()
+    {
+        var flashBagContainer = $('#flashBag-container');
+        var url = flashBagContainer.attr('data-url');
+
+        $.get(url, function(response) {
+            if (response.content != undefined) {
+                
+                flashBagContainer.html(response.content);
+                flashBagContainer.show();
+                flashBagContainer.delay(4000).slideUp();
+            }            
+        }, 'json');
+    }    
     
     function simpleDeleteItem(url, param, callback)
     {

@@ -8,7 +8,7 @@ use Saman\Library\Base\BaseEntity;
 
 /**
  * @ORM\Table(name="saman_role")
- * @ORM\Entity(repositoryClass="Saman\UserBundle\Repository\RoleRepository")
+ * @ORM\Entity(repositoryClass="Saman\UserBundle\Entity\Repository\RoleRepository")
  */
 class Role extends BaseEntity implements RoleInterface
 {
@@ -38,6 +38,16 @@ class Role extends BaseEntity implements RoleInterface
     {
         $this->users = new ArrayCollection();
     }
+    
+    /**
+     * 
+     * @param \Doctrine\ORM\EntityManagerInterface $em
+     * @return \Saman\UserBundle\Entity\Repository\RoleRepository
+     */
+    public static function getRepository(\Doctrine\ORM\EntityManagerInterface $em)
+    {
+        return $em->getRepository(__CLASS__);
+    }     
 
     /**
      * @see RoleInterface

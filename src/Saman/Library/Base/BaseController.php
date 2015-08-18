@@ -3,104 +3,35 @@
 namespace Saman\Library\Base;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class BaseController extends Controller
 {
     /**
-     * Add Cache-Control Header to responce
-     * 
-     * @param \Symfony\Component\HttpFoundation\Response $response
-     * @param int|600 seconds   $maxAge      Max age for client caching
-     * @param int|600 seconds   $sharedAge   Max age for shared (proxy) caching
-     * @param type $directive
-     * @param type $isPublic
+     * Set flash bag
+     *
+     * @param $messageType
+     * @param $message
+     * @param null $ex
      */
-    public function cacheResponse(
-        $response, 
-        $maxAge = self::CACHE_PRIVATE_MAX_AGE,
-        $sharedAge = self::CACHE_SHARED_MAX_AGE,
-        $isPublic = false,
-        $directives = array() 
-        )
+    public function setFlashBag($messageType, $message)
     {
-        $this->getService('saman.helper')
-            ->cacheResponse(
-                $response,
-                $maxAge,
-                $sharedAge,
-                $isPublic,
-                $directives
-                );
+        $flashBag = $this->getService('session')->getFlashBag();
+        
+        $flashBag->clear();
+        $this->addFlashBag($messageType, $message);
     }
     
     /**
      * 
+     * @param type $messageType
      * @param type $message
-     * @return type
-     * @throws \Exception
      */
-    public function trans($message)
+    public function addFlashBag($messageType, $message)
     {
-        $messageParam = array();
-        $translator = $this->get('translator');
+        $flashBag = $this->getService('session')->getFlashBag();
+        $transedMessage = $this->transMessage($message);
         
-        if (is_array($message)) {
-            if (array_key_exists(1, $message)) {
-                $messageParam = $message[1];
-            }
-            
-            if (array_key_exists(0, $message)) {
-                $message = $message[0];
-            } else {
-                throw new \Exception('Message is used as an array and it is empty!');
-            }
-        } 
-        
-        return $translator->trans($message, $messageParam);
-    }    
-    
-    
-    /**
-     * 
-     * @return type
-     */
-    public function getDispatcher()
-    {
-        return $this->get('event_dispatcher');
-    }
-    
-    /**
-     * 
-     * @param type $service
-     * @return type
-     */
-    public function getService($service)
-    {
-        return $this->get($service);
-    }
-    
-    
-    /**
-     * 
-     * @param type $formServiceName
-     * @param type $entity
-     * @param type $options
-     * @return type
-     */
-    public function getForm($formServiceName, $entity, $options = null)
-    {
-        if (null === $options) {
-            $action = $this->getRequest()->getUri();
-            
-            $options = array(
-                'action' => $action,
-                'method' => 'post'
-                );
-        }
-        $form = $this->createForm($formServiceName, $entity, $options);
-        
-        return $form;
+        $flashBag->add($messageType, $transedMessage);
     }
     
     /**
@@ -114,25 +45,16 @@ class BaseController extends Controller
     }
     
     /**
-     * 404 HTTP response
      * 
      * @param type $message
-     * @throws NotFoundHttpException
+     * @param \Exception $previous
+     * @param type $code
+     * @throws VisibleHttpException
      */
-    public function createNotFoundHttpException($message = 'Page not found')
+    public function createVisibleHttpException($message = null, \Exception $previous = null, $code = 0)
     {
-        throw new NotFoundHttpException($message);
-    }
-    
-    /**
-     * 500 HTTP response code
-     * 
-     * @param type $message
-     * @throws \Exception
-     */
-    public function createException($message = 'Something went wrong')
-    {
-        throw new \Exception('Something went wrong!');
+        return $this->getBaseService()
+            ->createVisibleHttpException($message, $previous, $code);
     }
     
     /**
@@ -145,12 +67,58 @@ class BaseController extends Controller
      */
     public function getJsonResponse($success, $message = null, $content = null, $responseParam = null)
     {
-        return $this->getService('saman.helper')
-            ->getJsonResponse(
-                $success, 
-                $message, 
-                $content, 
-                $responseParam
-                );        
+        return $this->getBaseService()
+            ->getJsonResponse($success, $message, $content, $responseParam);
+    }
+    
+    /**
+     * 
+     * @param type $message
+     * @param type $ex
+     * @return type
+     */
+    public function getExceptionResponse($message, $ex = null, $responseParam = null)
+    {
+        return $this->getBaseService()
+            ->getExceptionResponse($message, $ex, $responseParam);
+    }    
+    
+    /**
+     * 
+     * @return \Saman\Library\Service\BaseService
+     */
+    public function getBaseService()
+    {
+        return $this->getService('saman.baseService');
+    }
+    
+    /**
+     * 
+     * @return type
+     */
+    public function getDispatcher()
+    {
+        return $this->getService('event_dispatcher');
+    }
+    
+    /**
+     * 
+     * @param type $service
+     * @return type
+     */
+    public function getService($service)
+    {
+        return $this->get($service);
+    } 
+    
+    /**
+     * 
+     * @param type $message
+     * @return type
+     */
+    public function transMessage($message)
+    {
+        return $this->getBaseService()
+            ->transMessage($message);
     }
 }

@@ -9,7 +9,7 @@ use Saman\Library\Base\BaseEntity;
  * Media
  *
  * @ORM\Table(name="saman_media")
- * @ORM\Entity(repositoryClass="Saman\MediaBundle\Repository\MediaRepository")
+ * @ORM\Entity(repositoryClass="Saman\MediaBundle\Entity\Repository\MediaRepository")
  */
 class Media extends BaseEntity
 {
@@ -108,6 +108,16 @@ class Media extends BaseEntity
             $this->setUser($this->user);
         }
     }
+    
+    /**
+     * 
+     * @param \Doctrine\ORM\EntityManagerInterface $em
+     * @return \Saman\MediaBundle\Entity\Repository\MediaRepository
+     */
+    public static function getRepository(\Doctrine\ORM\EntityManagerInterface $em)
+    {
+        return $em->getRepository(__CLASS__);
+    }    
     
     /**
      * 

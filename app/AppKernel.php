@@ -30,15 +30,10 @@ class AppKernel extends Kernel
             // Saman Bubdles
             new Saman\UserBundle\SamanUserBundle(),
             new Saman\SecurityBundle\SamanSecurityBundle(),
+            new Saman\MediaBundle\SamanMediaBundle(),
             new Saman\CmsBundle\SamanCmsBundle(),
             new Saman\LabelBundle\SamanLabelBundle(),
-            new Saman\DashboardBundle\SamanDashboardBundle(),
-            new Saman\MediaBundle\SamanMediaBundle(),
-            new Saman\ShoppingBundle\SamanShoppingBundle(),
-            new Saman\ConfigBundle\SamanConfigBundle(),
-            new Saman\AppearanceBundle\SamanAppearanceBundle(),
-            new Saman\CronBundle\SamanCronBundle(),
-            new Saman\PlayGroundBundle\SamanPlayGroundBundle(),
+            new Saman\AppBundle\SamanAppBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

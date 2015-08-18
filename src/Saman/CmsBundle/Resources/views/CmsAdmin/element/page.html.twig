@@ -1,18 +1,18 @@
 {% extends "::twig/modal.html.twig" %}
 
-{% set modalTitle = item.title %}
-{% set modalLogo = item.logo %}
+{% set modalTitle = page.title %}
+{% set modalLogo = page.logo %}
 
 {% block body %}
     <div class="row">
-        <div class="col-md-12">{{ item.getVisibilityLogo|icon }}</div>
+        <div class="col-md-12">{{ page.getVisibilityLogo|icon }}</div>
     </div>
 
     <div class="row">
-        <div class="col-md-12">{{ 'icon.url'|icon }} {{ 'word.url'|trans }}: {{ item.url }}</div>
+        <div class="col-md-12">{{ 'icon.url'|icon }} {{ 'word.url'|trans }}: {{ page.url }}</div>
     </div>
     
     <div class="row">
-        <div class="col-md-12">{{ item.content|raw }}</div>
+        <div class="col-md-12">{{ page.content|raw }}</div>
     </div>
 {% endblock %}

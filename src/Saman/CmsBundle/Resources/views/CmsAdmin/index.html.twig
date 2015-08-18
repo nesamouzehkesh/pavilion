@@ -1,29 +1,17 @@
 {% extends "SamanCmsBundle::layout.html.twig" %}
 
-{% set twig_url_item_add = path('saman_cms_admin_page_add') %}
-{% set twig_url_items = path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')|merge({'headless': true})) %}
-{% set twig_form_item_name = 'saman_cms_page_form' %}
-{% set twig_form_item_cont = 'items-form-container' %}
-{% set twig_cont_items = 'items-list-container' %}
-{% set twig_cont_item = 'item-view-container' %}
-
 {% block header %}
-    <button data-url="{{ twig_url_item_add }}" type="button" class="btn btn-primary btn-sm action-add-item" data-toggle="modal" data-target="#{{ twig_form_item_cont }}">{{ 'icon.add'|icon }} {{ 'action.addNewItem'|trans }}</button>
+    <button data-url="{{ path('saman_cms_admin_page_add') }}" type="button" class="btn btn-primary btn-sm action-add-item" data-toggle="modal" data-target="#page-form-container">{{ 'icon.add'|icon }} {{ 'action.addNewItem'|trans }}</button>
 {% endblock %}
 
 {% block body %}
-    <div class="modal fade" id="{{ twig_form_item_cont }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"></div>
-    <div class="modal fade" id="{{ twig_cont_item }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"></div>
+    <div class="modal fade" id="page-form-container" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"></div>
+    <div class="modal fade" id="page-view-container" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"></div>
     
-    <div id="{{ twig_cont_items }}">
-        {{ itemsView|raw }}
+    <div id="pages-list-container">
+        {{ pagesView|raw }}
     </div>
-    {#
-    <img src="{{ asset('/image/yazd.jpg'|imagine_filter('thumb_100_100')) }}" />
-    #}
 {% endblock %}
-
-{% block footer %}{% endblock %}
     
 {% block script %}
     {% include 'SamanCmsBundle:CmsAdmin:js/index.html.twig' %}

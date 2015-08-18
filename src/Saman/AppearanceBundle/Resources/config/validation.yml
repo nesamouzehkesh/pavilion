@@ -1,3 +1,0 @@
-Saman\AppearanceBundle\Entity\Link:
-    constraints:
-        - Saman\AppearanceBundle\Validator\Constraints\ValidLink: ~    

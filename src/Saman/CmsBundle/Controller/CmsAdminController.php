@@ -12,29 +12,66 @@ class CmsAdminController extends BaseController
      * @param \Symfony\Component\HttpFoundation\Request $request
      * @return type
      */
-    public function indexAction(Request $request)
-    {
-    }
-
-    /**
-     * 
-     * @param \Symfony\Component\HttpFoundation\Request $request
-     * @return type
-     */
     public function displayItemsAction(Request $request)
     {
-        return $this->getCmsAdminService()->displayItems($request);
+        // Get search parameters from HTTP request
+        $searchParam = $this->getBaseService()
+            ->getSearchParam($request);
+
+        // Get pages based on $searchParam
+        $pagesQuery = $this->getCmsAdminService()
+            ->getPages($searchParam);
+
+        // Get pagination
+        $pagesPagination = $this->getBaseService()
+            ->paginate($request, $pagesQuery);
+
+        // Get the view of pages list
+        $pagesView = $this->renderView(
+            'SamanCmsBundle:CmsAdmin:element/pages.html.twig',
+            array('pagesPagination' => $pagesPagination)
+            );
+
+        // If user use the pagination to view other pages then we just return the 
+        // $pagesView as a jason response array
+        if ($request->get('headless')) {
+            return $this->getBaseService()->getJsonResponse(true, null, $pagesView);
+        } 
+
+        return $this->render(
+            'SamanCmsBundle:CmsAdmin:index.html.twig',
+            array(
+                'pagesView' => $pagesView
+                )
+            );
     }
     
     /**
      * 
-     * @param \Symfony\Component\HttpFoundation\Request $request
      * @param type $itemId
      * @return type
+     * @throws type
      */
-    public function displayItemAction(Request $request, $itemId)
+    public function displayItemAction($itemId)
     {
-        return $this->getCmsAdminService()->displayItem($request, $itemId);
+        try {
+            // Get Page
+            $page = $this->getCmsAdminService()->getPage($itemId);
+            
+            // Generate the view for this page
+            $pageView = $this->renderView(
+                'SamanCmsBundle:CmsAdmin:element/page.html.twig',
+                array('page' => $page)
+                );
+            
+            // Generate final jason responce
+            return $this->getJsonResponse(true, null, $pageView);
+        } catch (\Exception $ex) {
+            return $this->getExceptionResponse(
+                'alert.error.canNotDisplayItem', 
+                $ex
+                );
+        }
     }    
     
     /**
@@ -44,7 +81,17 @@ class CmsAdminController extends BaseController
      */
     public function addItemAction(Request $request)
     {
-        return $this->getCmsAdminService()->addEditItem($request, null);
+        try {
+            // Get Page
+            $page = $this->getCmsAdminService()->getPage(null);
+            
+            return $this->getCmsAdminService()->addEditItem($request, $page);
+        } catch (\Exception $ex) {
+            return $this->getExceptionResponse(
+                'alert.error.canNotAddItem', 
+                $ex
+                );
+        }        
     }
 
     /**
@@ -55,7 +102,14 @@ class CmsAdminController extends BaseController
      */
     public function editItemAction(Request $request, $itemId)
     {
-        return $this->getCmsAdminService()->addEditItem($request, $itemId);
+        try {
+            return $this->getCmsAdminService()->addEditItem($request, $itemId);
+        } catch (\Exception $ex) {
+            return $this->getExceptionResponse(
+                'alert.error.canNotDeleteItem', 
+                $ex
+                );
+        }        
     }
     
     /**
@@ -66,12 +120,28 @@ class CmsAdminController extends BaseController
      */
     public function deleteItemAction(Request $request, $itemId)
     {
-        return $this->getCmsAdminService()->deleteItem($request, $itemId);
+        try {
+            // Get a Page based on its ID ($itemId)
+            $page = $this->getCmsAdminService()->getPage($itemId);
+            
+            // Delete this page
+            $this->getBaseService()->deleteEntity($page);
+            
+            // Add success message in the FlashBag
+            $this->addFlashBag('success', 'alert.success.itemRemoved');
+            
+            return $this->getBaseService()->getJsonResponse(true);
+        } catch (\Exception $ex) {
+            return $this->getExceptionResponse(
+                'alert.error.canNotDeleteItem', 
+                $ex
+                );
+        }   
     }
     
     /**
      * 
-     * @return type
+     * @return \Saman\CmsBundle\Service\CmsAdminService
      */
     private function getCmsAdminService()
     {

@@ -4,4 +4,4 @@ parameters:
 services:
     saman_label.label:
         class: %saman_label.label.class%
-        arguments: [@saman.helper, %saman_label.label%]
+        arguments: [@saman.baseService, %saman_label.label%]

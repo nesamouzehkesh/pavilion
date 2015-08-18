@@ -1,13 +1,19 @@
 services:
     saman_media.media:
         class: Saman\MediaBundle\Service\MediaService
-        arguments: [@saman.helper, @saman_local_filesystem, %saman_media.media%]
+        arguments: [@saman.baseService, @saman_local_filesystem, %saman_media.media%]
         
     saman_media.select2:
         class: Saman\MediaBundle\Service\Select2Service
-        arguments: [@saman.helper, %saman.saman_select2%]
+        arguments: [@saman.baseService, %saman.saman_select2%]
+
         
         
+    saman.form.type.ace:
+        class: Saman\MediaBundle\Form\Type\AceType
+        tags:
+            - { name: form.type, alias: saman_ace }    
+            
     saman.form.type.media:
         class: Saman\MediaBundle\Form\Type\MediaType
         tags:

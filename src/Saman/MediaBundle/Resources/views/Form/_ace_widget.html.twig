@@ -1,0 +1,22 @@
+{% block saman_ace_widget %}
+{% spaceless %}
+
+<textarea {{ block('widget_attributes') }} style="display:none;" value="{{ value }}" /></textarea>
+
+<textarea id="saman-ace-{{ id }}">{{ value }}</textarea>
+
+<script type="text/javascript">
+    ace.config.set("basePath", "/js/ace");    
+    var editor = ace.edit("saman-ace-{{ id }}");
+    editor.setTheme("ace/theme/idle_fingers");
+    editor.session.setMode("ace/mode/html");
+    editor.setAutoScrollEditorIntoView(true);
+    editor.setOption("maxLines", 'Infinity');
+    editor.setOption("fontSize", 15);
+    
+    editor.getSession().on('change', function(e) {
+        $('#{{ id }}').val(editor.getValue());
+    });     
+</script>
+{% endspaceless %}
+{% endblock %}

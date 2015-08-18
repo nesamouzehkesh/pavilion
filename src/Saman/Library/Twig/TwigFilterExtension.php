@@ -59,6 +59,11 @@ class TwigFilterExtension extends Twig_Extension
                 array('is_safe' => array('html'))
                 ),
             new \Twig_SimpleFilter(
+                'showAlert', 
+                array($this, 'showAlert'), 
+                array('is_safe' => array('html'))
+                ),            
+            new \Twig_SimpleFilter(
                 'warningAlert', 
                 array($this, 'warningAlert'), 
                 array('is_safe' => array('html'))
@@ -119,6 +124,18 @@ class TwigFilterExtension extends Twig_Extension
         $icon = $this->translator->trans($icon);
         
         return sprintf(self::ICON_TEMPLATE, $icon);
+    }
+    
+    /**
+     * Show an Alert
+     * 
+     * @param type $alert
+     * @param type $alertType
+     * @return type
+     */
+    public function showAlert($alert, $alertType)
+    {
+        return $this->getAlert($alertType, $alert);
     }
     
     /**

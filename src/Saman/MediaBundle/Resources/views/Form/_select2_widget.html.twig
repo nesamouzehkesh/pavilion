@@ -4,7 +4,6 @@
 http://select2.github.io/examples.html
 #}
 {% set select2Id = id|default('select2') %}
-
 {% if loading is defined and loading == true %}
     <input {{ block('widget_attributes') }} type="hidden" data-lookup-url="{{ data_lookup_url }}" data-url="{{ data_url }}" data-minimumInputLength="{{ minimumInputLength }}" data-allowClear="{{ allowClear }}" data-multiple="{{ multiple }}" value="{{ data }}" tabindex="-1">
 {% else %}

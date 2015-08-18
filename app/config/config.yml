@@ -3,11 +3,8 @@ imports:
     - { resource: security.yml }
     - { resource: validation.yml }
     - { resource: "@SamanCmsBundle/Resources/config/parameters.yml" }
-    - { resource: "@SamanMediaBundle/Resources/config/parameters.yml" }
     - { resource: "@SamanLabelBundle/Resources/config/parameters.yml" }
-    - { resource: "@SamanShoppingBundle/Resources/config/parameters.yml" }
-    - { resource: "@SamanConfigBundle/Resources/config/parameters.yml" }
-    - { resource: "@SamanAppearanceBundle/Resources/config/parameters.yml" }
+    - { resource: "@SamanMediaBundle/Resources/config/parameters.yml" }
 
 # Framework Configuration        
 framework:
@@ -61,8 +58,8 @@ parameters:
         
 # Services Configuration        
 services:
-    saman.helper:
-        class: Saman\Library\Service\Helper
+    saman.baseService:
+        class: Saman\Library\Service\BaseService
         public: false
         arguments: 
             - @translator.default 
@@ -74,11 +71,6 @@ services:
             - @knp_paginator
             - @validator
             - %saman.helper.param%
-
-    saman.request.helper:
-        class: Saman\Library\Service\RequestHelper
-        scope: request
-        arguments: [@request, @saman.helper]
 
     saman.twig.function.extension:
         class: %saman.twig.function.extension.class%

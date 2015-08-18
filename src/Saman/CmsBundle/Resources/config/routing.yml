@@ -1,30 +1,31 @@
 saman_cms_admin_page_home:
-    path:     /admin/cms/pages
+    path:     /admin/cms/page
     defaults: { _controller: SamanCmsBundle:CmsAdmin:displayItems}
     
 saman_cms_admin_page_add:
-    path:     /admin/cms/page-add
+    path:     /admin/cms/page/add
     defaults: { _controller: SamanCmsBundle:CmsAdmin:addItem }
 
 saman_cms_admin_page_edit:
-    path:     /admin/cms/page-edit/{itemId}
+    path:     /admin/cms/page/edit/{itemId}
     defaults: { _controller: SamanCmsBundle:CmsAdmin:editItem }
 
 saman_cms_admin_page_display:
-    path:     /admin/cms/page-display/{itemId}
+    path:     /admin/cms/page/{itemId}
     defaults: { _controller: SamanCmsBundle:CmsAdmin:displayItem }
     
 saman_cms_admin_page_delete:
-    path:     /admin/cms/page-delete/{itemId}
+    path:     /admin/cms/page/delete/{itemId}
     defaults: { _controller: SamanCmsBundle:CmsAdmin:deleteItem }
+    
+    
     
 saman_cms_page_index:
     path:     /
-    defaults: { _controller: SamanCmsBundle:Cms:index, pageUrl: ''}
+    defaults: { _controller: SamanCmsBundle:CmsView:index, url: ''}
 
 saman_cms_page:
-    path:     /{pageUrl}
-    defaults: { _controller: SamanCmsBundle:Cms:index, pageUrl: ''}
+    path:     /{url}
+    defaults: { _controller: SamanCmsBundle:CmsView:index, url: ''}
     requirements: 
-        pageUrl: (?!media|shopping|product)(.+)
-        #pageUrl: (?!media|file|...)(.+)
+        url: (?!media|shopping|product)(.+)

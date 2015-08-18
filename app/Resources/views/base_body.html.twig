@@ -20,7 +20,10 @@
                 
     {% block headerContainer %}
         <div class="block" id="headerContainer">
-            {% block header %}{% endblock %}
+            <div class="row">
+              <div class="col-md-8">{% block header %}{% endblock %}</div>
+              <div class="col-md-4">{% include "::_search.html.twig" %}</div>
+            </div>            
         </div>
     {% endblock %}
 

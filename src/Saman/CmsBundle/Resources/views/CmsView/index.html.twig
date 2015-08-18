@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html class="ng-scope" ng-app="myApp">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset={{ _charset }}"/>
+        <meta name="robots" content="noindex,nofollow" />
+        <title>{% block title %}{% endblock %}</title>
+        {% include "::_asset.html.twig" %}
+    </head>
+    <body>
+        <div class="container">
+            <div class="row margin-top-40">
+                <div class="col-sm-3">
+                    <div class="list-group">
+                        {% for page in pages %}
+                            <a href="{{ path('saman_cms_page', {'url': page['url']}) }}" 
+                               class="list-group-item {{ url == page['url']? 'active' : '' }}">
+                                {{ page['title'] }}
+                            </a>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="col-sm-9">
+                    <div class="pull-right"><a href='{{ path('saman_cms_admin_page_home') }}'>{{ 'icon.setting'|icon }} Admin</a></div>
+                    {# Panel #}
+                    <div class="panel panel-default margin-top-20">
+                        <div class="panel-body">
+                            {% if page['title'] is defined %}
+                                <div class="page-header">
+                                    <h3>{{ 'icon.page'|icon }} {{ page['title'] }}</h3>
+                                </div>
+
+                                <p>{{ page['content']|raw }}</p>
+                            {% else %}
+                                {{ 'Whoops! Page not found'|warningAlert }}
+                            {% endif %}
+                        </div>
+                    </div>
+                    {# End:Panel #}
+                </div> 
+            </div>
+        </div>
+    </body>
+</html>

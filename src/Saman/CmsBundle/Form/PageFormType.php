@@ -6,7 +6,7 @@ use Doctrine\ORM\EntityRepository;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Saman\Library\Service\Helper;
+use Saman\Library\Service\BaseService;
 use Saman\CmsBundle\Entity\Page;
 
 /**
@@ -16,9 +16,9 @@ class PageFormType extends AbstractType
 {
     /**
      *
-     * @var Helper $helper
+     * @var Helper $baseService
      */
-    private $helper;
+    private $baseService;
     
     /**
      *
@@ -37,11 +37,11 @@ class PageFormType extends AbstractType
      * @param type $parameters
      */
     public function __construct(
-        Helper $helper, 
+        BaseService $baseService, 
         Page $page,
         $parameters = array())
     {
-        $this->helper = $helper;
+        $this->baseService = $baseService;
         $this->parameters = $parameters;
         $this->page = $page;
     }
@@ -67,17 +67,6 @@ class PageFormType extends AbstractType
             'required' => false,
         ));
         
-        $builder->add('theme', 'entity', array(
-            'required' => false,
-            'attr' => array('class' => 'form-control form-control-select2'),
-            'empty_value' => 'Choose a theme',
-            'class' => 'SamanAppearanceBundle:Theme',
-            'query_builder' => function(EntityRepository $er) {
-                return $er->createQueryBuilder('t')
-                    ->where('t.deleted = 0');
-            }
-        ));
-        
         $builder->add('labels', 'entity', array(
             'required' => false,
             'attr' => array('class' => 'form-control form-control-select2'),
@@ -100,11 +89,12 @@ class PageFormType extends AbstractType
             'placeholder' => 'ss',
             'allowClear' => true,
             ));
-        
+        /*
         $builder->add('settings', 'saman_collection', array(
             'fields' => $this->parameters['settings'],
             'data' => $this->page->getSettings()
             ));
+        */
     }
 
     /**

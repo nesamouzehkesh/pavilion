@@ -239,10 +239,7 @@ class MediaService
         $medias = $this->createMedia($uploadedFiles, $isPermanent, $visibility);
         $files = Media::mediasToArray($medias);
         
-        return $this->helper->getJsonParamResponse(
-            true, 
-            array('files' => $files)
-            );
+        return $this->helper->getJsonResponse(true, null, null, array('files' => $files));        
     }
     
     /**

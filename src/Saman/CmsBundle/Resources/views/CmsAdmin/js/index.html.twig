@@ -1,21 +1,23 @@
+{% set twig_url_items = path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')|merge({'headless': true})) %}
+
 <script type="text/javascript">
 $(function(){
     var currentPage = '1';
-    var cont_items = $('#{{ twig_cont_items }}');
-    var cont_item = $('#{{ twig_cont_item }}');
+    var cont_items = $('#pages-list-container');
+    var cont_item = $('#page-view-container');
     
     $('.action-add-item').click(function(e){
-        displayItemAddEditForm($(this), '{{ twig_form_item_name }}', '{{ twig_form_item_cont }}', '{{ twig_url_items }}', cont_items, currentPage);       
+        displayItemAddEditForm($(this), 'saman_cms_page_form', 'page-form-container', '{{ twig_url_items }}', cont_items, currentPage);       
     });
     
-    $('#{{ twig_cont_items }}').on('click', '.action-pagination', function(e){      
+    $('#pages-list-container').on('click', '.action-pagination', function(e){      
         e.preventDefault();
         currentPage = $(this).attr('data-page');
         displayItems('{{ twig_url_items }}', cont_items, currentPage);
     });
     
-    $('#{{ twig_cont_items }}').on('click', '.action-edit-item', function(e){       
-        displayItemAddEditForm($(this), '{{ twig_form_item_name }}', '{{ twig_form_item_cont }}', '{{ twig_url_items }}', cont_items, currentPage, function(form) {
+    $('#pages-list-container').on('click', '.action-edit-item', function(e){       
+        displayItemAddEditForm($(this), 'saman_cms_page_form', 'page-form-container', '{{ twig_url_items }}', cont_items, currentPage, function(form) {
             form.find('#saman_cms_page_form_hasManualBreadcrumb').change(function() {
                 if ($(this).is(":checked")) {
                     
@@ -24,15 +26,15 @@ $(function(){
         });
     });
     
-    $('#{{ twig_cont_items }}').on('click', '.action-display-item', function(e){
+    $('#pages-list-container').on('click', '.action-display-item', function(e){
         displayItem($(this), cont_item);
     });
     
-    $('#{{ twig_cont_items }}').on('click', '.action-delete-item', function(e){   
+    $('#pages-list-container').on('click', '.action-delete-item', function(e){   
         deleteItem($(this), '{{ twig_url_items }}', cont_items, currentPage);
     });
     
-    $( "#input-search").keyup(function(e) {
+    $("#input-search").keyup(function(e) {
         searchItems($(this), '{{ twig_url_items }}', cont_items, currentPage);
     });
 });

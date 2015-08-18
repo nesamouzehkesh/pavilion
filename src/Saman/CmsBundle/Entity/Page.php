@@ -10,7 +10,7 @@ use Saman\Library\Base\BaseEntity;
  * Page
  *
  * @ORM\Table(name="saman_page")
- * @ORM\Entity(repositoryClass="Saman\CmsBundle\Repository\PageRepository")
+ * @ORM\Entity(repositoryClass="Saman\CmsBundle\Entity\Repository\PageRepository")
  */
 class Page extends BaseEntity
 {
@@ -54,32 +54,12 @@ class Page extends BaseEntity
     private $url;
     
     /**
-     * @ORM\ManyToOne(targetEntity="Saman\AppearanceBundle\Entity\Theme", inversedBy="pages")
-     * @ORM\JoinColumn(name="theme_id", referencedColumnName="id", nullable=true)
-     **/
-    private $theme;    
-    
-    /**
      * @ORM\ManyToMany(targetEntity="Saman\LabelBundle\Entity\Label")
      * @ORM\JoinTable(name="saman_page_label",
      * joinColumns={@ORM\JoinColumn(name="page_id", referencedColumnName="id")},
      * inverseJoinColumns={@ORM\JoinColumn(name="label_id", referencedColumnName="id")})
      */
     protected $labels;    
-    
-    /**
-     * @var array
-     *
-     * @ORM\Column(name="settings", type="array", nullable=true)
-     */
-    private $settings;
-    
-    /**
-     * @var array
-     *
-     * @ORM\Column(name="staticContent", type="array", nullable=true)
-     */
-    private $staticContent;    
     
     /**
      * 
@@ -93,10 +73,12 @@ class Page extends BaseEntity
     
     /**
      * 
-     * @return type
+     * @param \Doctrine\ORM\EntityManagerInterface $em
+     * @return \Saman\CmsBundle\Entity\Repository\PageRepository
      */
-    public function __toString() {
-        return $this->getTitle();
+    public static function getRepository(\Doctrine\ORM\EntityManagerInterface $em)
+    {
+        return $em->getRepository(__CLASS__);
     }
     
     /**
@@ -209,29 +191,6 @@ class Page extends BaseEntity
     {
         return $this->url;
     }
-
-    /**
-     * Set theme
-     *
-     * @param \Saman\AppearanceBundle\Entity\Theme $theme
-     * @return Page
-     */
-    public function setTheme(\Saman\AppearanceBundle\Entity\Theme $theme = null)
-    {
-        $this->theme = $theme;
-
-        return $this;
-    }
-
-    /**
-     * Get theme
-     *
-     * @return \Saman\AppearanceBundle\Entity\Theme 
-     */
-    public function getTheme()
-    {
-        return $this->theme;
-    }
     
     /**
      * Add label
@@ -265,95 +224,4 @@ class Page extends BaseEntity
     {
         return $this->labels;
     }
-    
-    /**
-     * Set settings
-     *
-     * @param Array $settings
-     * @return Config
-     */
-    public function setSettings($settings)
-    {
-        $this->settings = $settings;
-
-        return $this;
-    }    
-    
-    /**
-     * Get settings
-     *
-     * @return Array $settings
-     */
-    public function getSettings()
-    {
-        if (!is_array($this->settings)) {
-            $this->settings = array();
-        }
-        
-        return $this->settings;
-    }
-    
-    /**
-     * Get settings
-     *
-     * @return Array $settings
-     */
-    public function getSetting($setting)
-    {
-        if (is_array($this->settings) && array_key_exists($setting, $this->settings)) {
-            return $this->settings[$setting];
-        }
-        
-        return null;
-    }
-    
-    /**
-     * Get staticContent
-     *
-     * @return array 
-     */
-    public function getStaticContent($staticContentId = null)
-    {
-        if (null !== $staticContentId) {
-            if (!array_key_exists($staticContentId, $this->staticContent)) {
-                //throw new \Exception(sprintf('No static content exist with this ID: %d', $staticContentId));
-                return null;
-            }
-            
-            return $this->staticContent[$staticContentId];
-        }
-
-        return $this->staticContent;
-    }
-
-    /**
-     * Set structure
-     *
-     * @param array $staticContent
-     * @return Theme
-     */
-    public function setStaticContent($staticContent, $staticContentId = null)
-    {
-        if (null !== $staticContentId) {
-            $this->staticContent[$staticContentId] = $staticContent;
-        } else {
-            $this->staticContent = $staticContent;
-        }
-        
-        return $this;
-    }
-    
-    /**
-     * 
-     * @param type $staticContents
-     * @return \Saman\AppearanceBundle\Entity\Theme
-     */
-    public function addStaticContents($staticContents)
-    {
-        foreach ($staticContents as $staticContentId => $staticContent) {
-            $this->staticContent[$staticContentId] = $staticContent;
-        }
-        
-        return $this;
-    }    
 }

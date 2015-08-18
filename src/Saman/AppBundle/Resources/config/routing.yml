@@ -1,0 +1,3 @@
+display_flash_bag:
+    path:     /admin/app/api/flashbag
+    defaults: { _controller: SamanAppBundle:AppApi:displayFlashBag }

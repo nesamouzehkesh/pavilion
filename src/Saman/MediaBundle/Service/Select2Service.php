@@ -51,13 +51,12 @@ class Select2Service
         $total = $select2Repository->getCountSelect2Entities($value);
         $data = $select2Repository->getSelect2Entities($value, $page, $limit);
         
-        return $this->helper->getJsonParamResponse(
-            true, 
+        return $this->helper->getJsonResponse(true, null, null, 
             array(
                 'total' => $total,
                 'data' => $data,
                 )
-            );        
+            );
     }
     
     /**

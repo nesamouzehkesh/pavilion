@@ -1,7 +1,0 @@
-parameters:
-#    saman_dashboard.example.class: Saman\DashboardBundle\Example
-
-services:
-#    saman_dashboard.example:
-#        class: %saman_dashboard.example.class%
-#        arguments: [@service_id, "plain_value", %parameter%]

@@ -9,7 +9,7 @@ use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\FormInterface;
 use Doctrine\ORM\EntityManager;
 use Saman\MediaBundle\Service\Select2Service;
-use Saman\MediaBundle\Repository\Select2Repository;
+use Saman\MediaBundle\Entity\Repository\Select2Repository;
 
 class Select2Type extends AbstractType
 {
@@ -79,6 +79,7 @@ class Select2Type extends AbstractType
     {
         $type = 'simple';
         if (isset($options['data_url'])) {
+            $type = 'complicated';
             $cssClass = 'saman-select2';
             $view->vars['data_url'] = $options['data_url'];
             
@@ -86,6 +87,7 @@ class Select2Type extends AbstractType
                 $view->vars['data_lookup_url'] = $options['data_lookup_url'];
             }
         } elseif (isset($options['class'])) {
+            $type = 'complicated';
             $cssClass = 'saman-select-select2';
             if (!isset($options['class'])) {
                 throw new \Exception('You should provide either data_url or class');

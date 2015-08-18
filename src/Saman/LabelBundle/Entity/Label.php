@@ -9,7 +9,7 @@ use Saman\Library\Base\BaseEntity;
  * ContentLabel
  *
  * @ORM\Table(name="saman_label")
- * @ORM\Entity(repositoryClass="Saman\LabelBundle\Repository\LabelRepository")
+ * @ORM\Entity(repositoryClass="Saman\LabelBundle\Entity\Repository\LabelRepository")
  */
 class Label extends BaseEntity
 {
@@ -49,6 +49,16 @@ class Label extends BaseEntity
     public function __construct()
     {
         parent::__construct();
+    }
+    
+    /**
+     * 
+     * @param \Doctrine\ORM\EntityManagerInterface $em
+     * @return \Saman\LabelBundle\Entity\Repository\LabelRepository
+     */
+    public static function getRepository(\Doctrine\ORM\EntityManagerInterface $em)
+    {
+        return $em->getRepository(__CLASS__);
     }
     
     /**
