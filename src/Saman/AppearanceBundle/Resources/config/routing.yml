@@ -1,0 +1,100 @@
+saman_appearance_admin_theme_home:
+    path:     /admin/appearance/themes
+    defaults: { _controller: SamanAppearanceBundle:Theme:displayThemes}
+    
+saman_appearance_admin_theme_add:
+    path:     /admin/appearance/theme-add
+    defaults: { _controller: SamanAppearanceBundle:Theme:addTheme }
+
+saman_appearance_admin_theme_edit:
+    path:     /admin/appearance/theme-edit/{themeId}
+    defaults: { _controller: SamanAppearanceBundle:Theme:editTheme }
+
+saman_appearance_admin_theme_display:
+    path:     /admin/appearance/theme-display/{themeId}
+    defaults: { _controller: SamanAppearanceBundle:Theme:displayTheme }
+    
+saman_appearance_admin_theme_delete:
+    path:     /admin/appearance/theme-delete/{themeId}
+    defaults: { _controller: SamanAppearanceBundle:Theme:deleteTheme }
+    
+saman_appearance_admin_theme_structure_display:
+    path:     /admin/appearance/theme/structure-display
+    defaults: { _controller: SamanAppearanceBundle:Theme:displayThemeStructure }
+    
+saman_appearance_admin_theme_structure_add_row:
+    path:     /admin/appearance/theme/structure/add-row/{themeId}
+    defaults: { _controller: SamanAppearanceBundle:Theme:addThemeRow }
+    
+saman_appearance_admin_theme_structure_edit_row:
+    path:     /admin/appearance/theme/structure/edit-row/{themeId}/{rowId}
+    defaults: { _controller: SamanAppearanceBundle:Theme:editThemeRow }
+
+saman_appearance_admin_theme_structure_delete_row:
+    path:     /admin/appearance/theme/structure/delete-row/{themeId}/{rowId}
+    defaults: { _controller: SamanAppearanceBundle:Theme:deleteThemeRow }
+    
+saman_appearance_admin_theme_structure_sort_rows:
+    path:     /admin/appearance/theme/structure/sort-rows/{themeId}/{parentRowId}/{parentColumnId}
+    defaults: { _controller: SamanAppearanceBundle:Theme:sortRows }    
+
+saman_appearance_admin_theme_structure_set_type:
+    path:     /admin/appearance/theme/structure/set-type
+    defaults: { _controller: SamanAppearanceBundle:Theme:setStructureType }
+    
+saman_appearance_admin_theme_publish:    
+    path:     /admin/appearance/theme/publish/{themeId}
+    defaults: { _controller: SamanAppearanceBundle:Theme:publishTheme }
+    
+    
+
+saman_appearance_admin_navigation_home:
+    path:     /admin/appearance/navigations
+    defaults: { _controller: SamanAppearanceBundle:Navigation:displayNavigations}
+    
+saman_appearance_admin_navigation_add:
+    path:     /admin/appearance/add-navigation
+    defaults: { _controller: SamanAppearanceBundle:Navigation:addNavigation }
+
+saman_appearance_admin_navigation_edit:
+    path:     /admin/appearance/edit-navigation/{navigationId}
+    defaults: { _controller: SamanAppearanceBundle:Navigation:editNavigation }
+    
+saman_appearance_admin_navigation_delete:
+    path:     /admin/appearance/delete-navigation/{navigationId}
+    defaults: { _controller: SamanAppearanceBundle:Navigation:deleteNavigation }
+
+saman_appearance_admin_navigation_publish:
+    path:     /admin/appearance/publish-navigation/{navigationId}
+    defaults: { _controller: SamanAppearanceBundle:Navigation:publishNavigation }
+
+    
+    
+saman_appearance_admin_navigation_link_add:
+    path:     /admin/appearance/navigation/link-add/{navigationId}
+    defaults: { _controller: SamanAppearanceBundle:Link:addLink }
+
+saman_appearance_admin_navigation_link_edit:
+    path:     /admin/appearance/navigation/link-edit/{navigationId}/{linkId}
+    defaults: { _controller: SamanAppearanceBundle:Link:editLink }
+    
+saman_appearance_admin_navigation_link_delete:
+    path:     /admin/appearance/navigation/link-delete/{linkId}
+    defaults: { _controller: SamanAppearanceBundle:Link:deleteLink }
+
+saman_appearance_admin_navigation_link_sort:
+    path:     /admin/appearance/navigation/links-sort/{navigationId}
+    defaults: { _controller: SamanAppearanceBundle:Link:sortLink }
+    
+    
+saman_appearance_admin_theme_structure_add_widget:
+    path:     /admin/appearance/theme/widget/add-widget/{themeId}/{parentRowId}/{parentColumnId}
+    defaults: { _controller: SamanAppearanceBundle:Widget:addThemeWidget }
+    
+saman_appearance_admin_theme_structure_edit_widget:
+    path:     /admin/appearance/theme/widget/edit-widget/{themeId}
+    defaults: { _controller: SamanAppearanceBundle:Widget:editThemeWidget }
+    
+saman_appearance_admin_theme_structure_delete_widget:
+    path:     /admin/appearance/theme/widget/delete-widget/{themeId}/{widgetId}
+    defaults: { _controller: SamanAppearanceBundle:Widget:deleteThemeWidget }    

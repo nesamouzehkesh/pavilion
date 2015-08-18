@@ -1,0 +1,15 @@
+{% block saman_toggle_widget %}
+{% spaceless %}
+{# 
+Bootstrap toggle component
+http://www.bootstraptoggle.com 
+#}    
+<label for="{{ id }}">
+    {% set size = (attr['data-size'] is defined)? '' : 'data-size="mini"' %}
+    <input type="checkbox" {{ size |raw }} data-toggle="toggle" {{ block('widget_attributes') }}{% if value is defined %} value="{{ value }}"{% endif %}{% if checked %} checked="checked"{% endif %} />
+    {{ label|trans({}, translation_domain) }}
+</label>
+
+<script>$(function() { $('#{{ id }}').bootstrapToggle({width: {{ getWidth([attr['data-on']|default('word.on'|trans), attr['data-off']|default('word.off'|trans)]) }}}); })</script>
+{% endspaceless %}
+{% endblock %}

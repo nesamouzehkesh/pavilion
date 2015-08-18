@@ -1,0 +1,56 @@
+saman_play_ground:
+    resource: "@SamanPlayGroundBundle/Resources/config/routing.yml"
+    prefix:   /
+
+saman_cron:
+    resource: "@SamanCronBundle/Resources/config/routing.yml"
+    prefix:   /
+
+saman_appearance:
+    resource: "@SamanAppearanceBundle/Resources/config/routing.yml"
+    prefix:   /
+
+saman_login:
+    path:     /login
+    defaults: { _controller: SamanSecurityBundle:Security:login }
+    
+saman_login_check:
+    path: /login_check
+    
+saman_logout:
+    path: /logout
+    
+saman_config:
+    resource: "@SamanConfigBundle/Resources/config/routing.yml"
+    prefix:   /
+
+saman_shopping:
+    resource: "@SamanShoppingBundle/Resources/config/routing.yml"
+    prefix:   /
+
+saman_media:
+    resource: "@SamanMediaBundle/Resources/config/routing.yml"
+    prefix:   /
+
+saman_dashboard:
+    resource: "@SamanDashboardBundle/Resources/config/routing.yml"
+    prefix:   /
+
+saman_label:
+    resource: "@SamanLabelBundle/Resources/config/routing.yml"
+    prefix:   /
+
+saman_cms:
+    resource: "@SamanCmsBundle/Resources/config/routing.yml"
+    prefix:   /
+
+saman_security:
+    resource: "@SamanSecurityBundle/Resources/config/routing.yml"
+    prefix:   /
+
+saman_user:
+    resource: "@SamanUserBundle/Resources/config/routing.yml"
+    prefix:   /
+
+_liip_imagine:
+    resource: "@LiipImagineBundle/Resources/config/routing.xml"    

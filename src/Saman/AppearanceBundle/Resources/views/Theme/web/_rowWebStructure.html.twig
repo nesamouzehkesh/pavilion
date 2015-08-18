@@ -1,0 +1,29 @@
+{% if type == 'row' %}
+    <div class="row">
+{% elseif type == 'column' %} 
+    {% set columnCSSStyle = {
+        'background-image': column.settings.col_backgroundImage|default(null)|image('origin'),
+        'background-color': column.settings.col_backgroundColor|default(null),
+        'background-repeat': column.settings.col_backgroundRepeat|default('repeat'),
+        'height': row.settings.row_height|default(null)
+    } %}
+    
+    {% set columnContentCSSStyle = {
+        'padding': column.settings.col_padding_top|default('0') ~ 'px ' ~ column.settings.col_padding_right|default('0') ~ 'px ' ~ column.settings.col_padding_bottom|default('0') ~ 'px ' ~ column.settings.col_padding_left|default('0') ~ 'px'
+    } %}
+    
+    {% set contentAlignments = {
+        'left': 'pull-left',
+        'right': 'pull-right',
+        'center': 'center-content',
+    } %}
+    
+    <div {{ columnCSSStyle|style('!important') }} class="{{ 'col-md-' ~ column.settings.col_md }} {{ 'col-sm-' ~ column.settings.col_sm }} {{ 'col-xs-' ~ column.settings.col_xs }}">
+        <div {{ columnContentCSSStyle|style('!important') }} class="{{ contentAlignments[column.settings.col_contentAlignment|default('left')] }}">
+{% elseif type == 'widget' %} 
+    {% set widget = widgets[row.id]|default(null) %}
+    {% if widget is not null %}
+        {% set widgetStructure = widgetStructures[widget.type] %}
+        {{ widgetStructure.type == 'static'? ':widget_' ~ widget.id ~ ':' : widgetStructure.content }}
+    {% endif %}
+{% endif %}

@@ -1,0 +1,26 @@
+{% import _self as self %}
+
+{% if noLayout is not defined or noLayout == false %}
+{% spaceless %}
+    {% if saman_twig_param_displaySimpleView %}
+        <ul id="sidebar" class="nav nav-pills nav-stacked">
+            <li class="{{ self.isActive('saman_cms_admin_page_home') }}"><a href="{{ path('saman_cms_admin_page_home') }}">{{ 'icon.module.cms'|icon }} {{ 'module.cms.title'|trans }}</a></li>
+            <li class="{{ self.isActive('saman_shopping_admin_product_home') }}"><a href="{{ path('saman_shopping_admin_product_home') }}">{{ 'icon.module.product'|icon }} {{ 'module.product.title'|trans }}</a></li>
+            <li class="{{ self.isActive('saman_config_home') }}"><a href="{{ path('saman_config_home') }}">{{ 'icon.module.config'|icon }} {{ 'module.config.title'|trans }}</a></li>
+            <li class="{{ self.isActive('saman_appearance_admin_theme_home') }}"><a href="{{ path('saman_appearance_admin_theme_home') }}">{{ 'icon.module.appearance'|icon }} {{ 'module.appearance.title'|trans }}</a></li>
+            <li class="{{ self.isActive('saman_appearance_admin_navigation_home') }}"><a href="{{ path('saman_appearance_admin_navigation_home') }}">{{ 'icon.module.navigation'|icon }} {{ 'module.navigation.title'|trans }}</a></li>
+        </ul>
+    {% else %}
+            <a href="{{ path('saman_cms_admin_page_home') }}">{{ 'module.cms.title'|trans }}</a><br>
+            <a href="{{ path('saman_shopping_admin_product_home') }}">{{ 'module.product.title'|trans }}</a><br>
+            <a href="{{ path('saman_config_home') }}">{{ 'module.config.title'|trans }}</a><br>
+            <a href="{{ path('saman_appearance_admin_theme_home') }}">{{ 'module.appearance.title'|trans }}</a><br>
+            <a href="{{ path('saman_appearance_admin_navigation_home') }}">{{ 'module.navigation.title'|trans }}</a><br>
+    {% endif %}
+{% endspaceless %}            
+{% endif %}
+        
+{% macro isActive(rout) %}
+    {% set currentRout = app.request.attributes.get('_route') %}
+    {{ (currentRout == rout)? 'active' : '' }}
+{% endmacro %}

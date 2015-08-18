@@ -1,0 +1,8 @@
+saman_play_ground_homepage:
+    path:     /pg/{name}
+    defaults: { _controller: SamanPlayGroundBundle:Default:index, name: saman }
+    
+saman_play_ground_formevents:
+    path:     /formEvents/{name}
+    defaults: { _controller: SamanPlayGroundBundle:Default:formEvents }
+    

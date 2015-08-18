@@ -1,0 +1,25 @@
+{#
+{% extends "::twig/form.html.twig" %}
+
+{% block body %}
+#}
+{% form_theme form '::twig/formRow.html.twig' %}
+
+{{ form_start(form) }}
+{{ form_errors(form) }}
+    {{ form_row(form.select) }}
+    {{ form_row(form.icon) }}
+    {{ form_row(form.labels) }}
+    
+{#
+    {{ form_row(form.multiple) }}
+#}
+{{ form_end(form) }}
+{#
+{% endblock %}
+#}
+<script type="text/javascript">
+    $(document).ready(function(){
+        $('.form-control-select2').select2();
+    });
+</script>

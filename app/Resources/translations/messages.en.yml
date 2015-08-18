@@ -1,0 +1,186 @@
+word:
+    title: Ttile
+    content: Content
+    records: Records
+    url: Url
+    pageNumber: "Page %pageNumber%"
+    previousPage: "Previous page"
+    nextPage: "Next page"
+    firstPage: "First page"
+    lastPage: "Last page"  
+    columnNumber: "Column %number%"
+    on: On
+    off: Off
+    uploadFileByDropping: "Drop files here or click to upload."
+    selectAnItem: Select an item
+    
+alert:
+    error:
+        noItemHasBeenFound: "No item has been found for ID: %id%."
+        itemHasNotBeenFound: "Item %id% has not been removed successfully"
+        hasChildrenAndCannotBeRemoved: "This item cannot be removed since it includes some subitems"
+    success:
+        itemHasBeenRemoved: "Item %id% has been removed successfully"
+    info:
+    warning:
+        doYouWantToDeleteItem: "Do your really want to delete this item?"
+   
+    
+action:
+    logout: Sign out
+    addFiles: Add files...
+    addNewItem: Add New Item
+    send: Send
+    save: Save
+    copy: Copy
+    close: Close
+    add: Add
+    edit: Edit
+    cancel: Cancel
+    delete: Delete
+    display: Display
+    submit: Submit
+    search: Search
+    browse: Browse
+
+
+icon:
+    add: glyphicon glyphicon-plus
+    addToPool: glyphicon glyphicon-download-alt
+    addWidget: glyphicon glyphicon-cog
+    addRow: glyphicon glyphicon-th-large
+    colorSelect: glyphicon glyphicons-eyedropper
+    calendar: glyphicon glyphicon-calendar    
+    chevronRight: glyphicon glyphicon-chevron-right
+    chevronUp: glyphicon glyphicon-collapse-up
+    delete: glyphicon glyphicon-trash
+    date: glyphicon glyphicon-calendar
+    edit: glyphicon glyphicon-pencil
+    home: glyphicon glyphicon-home
+    move: glyphicon glyphicon-move
+    ok: glyphicon glyphicon-ok
+    plus: glyphicon glyphicon-plus
+    play: glyphicon glyphicon-play_button
+    publish: glyphicon glyphicon-send
+    square: glyphicon glyphicon-stop
+    startDate: glyphicon glyphicon-calendar
+    setting: glyphicon glyphicon-cog
+    automatic: glyphicon glyphicon-cog
+    search: glyphicon glyphicon-search
+    remove: glyphicon glyphicon-trash
+    display: glyphicon glyphicon-eye-open
+    time: glyphicon glyphicon-time
+    url: glyphicon glyphicon-link
+    page: glyphicon glyphicon-th-large
+    paperclip: glyphicon glyphicon-paperclip
+    logout: glyphicon glyphicon-off
+    visibility:
+        public: glyphicon glyphicon-unlock
+        private: glyphicon glyphicon-lock
+        hidden: glyphicon glyphicon-eye-close
+    pagination:
+        nextIcon: glyphicon glyphicon-chevron-right
+        previousIcon: glyphicon glyphicon-chevron-left    
+    module:
+        cms: glyphicon glyphicon-th
+        product: glyphicon glyphicon-shopping_bag
+        config: glyphicon glyphicon-cog
+        appearance: glyphicon glyphicons-brush
+        theme: glyphicon glyphicon-th-large
+        navigation: glyphicon glyphicon-random
+    alert:
+        warning: glyphicon glyphicon-exclamation-sign
+        info: glyphicon glyphicon-info-sign
+        question: glyphicon glyphicon-question-sign
+        ok: glyphicon glyphicon-ok-sign
+        remove: glyphicon glyphicon-remove-sign
+        minus: glyphicon glyphicon-minus-sign
+        plus: glyphicon glyphicon-plus-sign
+    moduleItems:    
+        theme:
+            themeSettings: glyphicon glyphicon-cog
+            themeStructure: glyphicon glyphicon-th
+            themeWidgets: glyphicon glyphicon-picture
+
+form:
+    saman_shopping_product_form:
+        title: Product
+        icon: glyphicon glyphicon-shopping_bag
+        description: "You can add a new product or edit your existing product in this form"
+    saman_cms_page_form:
+        title: Page
+        icon: glyphicon glyphicon-th-large
+        description: "You can create new page or edit your existing page in this form"
+
+
+module: 
+    config:
+        title: Settings
+    cms:
+        title: CMS
+    product:
+        title: Product
+    navigation:
+        title: Navigation
+        alert: ~
+    appearance:
+        title: Appearance
+        alert:
+            error: ~
+            success:
+                themeIsPublished: "The theme has been published successfully"
+            info: ~
+            warning: ~
+        navigation:
+            pageLink: Link to Page
+            urlLink: Link to URL
+        theme:
+            title: Theme
+            themeSettings: Settings
+            themeStructure: Structure
+            themeRawStructure: Raw content
+            themeWidgets: Widgets
+        widget:
+            menu:
+                title: Menu widget
+            icon:
+                title: Icon widget
+            page:
+                title: Page widget
+            carousel:
+                title: Bootstrap Carousel
+
+configs:
+    security: 
+        title: Security Settings
+        description: "You can use all Bootstrap plugins purely through the markup API without writing a single line of JavaScript. This is Bootstrap's first-class API and should be your first consideration when using a plugin."
+        icon: glyphicon glyphicon-plus
+        options:
+            title:
+                title: Title
+                description: "You can use all Bootstrap plugins purely through the markup API without writing a single line of JavaScript. This is Bootstrap's first-class API and should be your first consideration when using a plugin."
+            email:
+                title: Email
+                description: Enter your email
+    general: 
+        title: General Settings
+        description: "You can use all Bootstrap plugins purely through the markup API without writing a single line of JavaScript. This is Bootstrap's first-class API and should be your first consideration when using a plugin."
+        icon: glyphicon glyphicon-plus
+        options:
+            title:
+                title: Title
+                description: "You can use all Bootstrap plugins purely through the markup API without writing a single line of JavaScript. This is Bootstrap's first-class API and should be your first consideration when using a plugin."
+            email:
+                title: Email
+                description: "You can use all Bootstrap plugins purely through the markup API without writing a single line of JavaScript. This is Bootstrap's first-class API and should be your first consideration when using a plugin."
+    view: 
+        title: View Settings
+        description: ""
+        icon: glyphicon glyphicon-plus
+        options:
+            title:
+                title: Title
+                description: "You can use all Bootstrap plugins purely through the markup API without writing a single line of JavaScript. This is Bootstrap's first-class API and should be your first consideration when using a plugin."
+            email:
+                title: Email
+                description: "You can use all Bootstrap plugins purely through the markup API without writing a single line of JavaScript. This is Bootstrap's first-class API and should be your first consideration when using a plugin."             

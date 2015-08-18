@@ -1,0 +1,3 @@
+saman_label_homepage:
+    path:     /admin/label
+    defaults: { _controller: SamanLabelBundle:Label:index }

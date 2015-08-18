@@ -1,0 +1,3 @@
+saman_dashboard_homepage:
+    path:     /hello/{name}
+    defaults: { _controller: SamanDashboardBundle:Default:index }

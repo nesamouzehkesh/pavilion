@@ -1,0 +1,398 @@
+parameters:
+    saman_appearance.theme:
+        rows:
+            settings:
+                row_height:
+                    type: text
+                    label: Height
+                    default: null
+                    required: false
+        columns:
+            settings: 
+                col_md:
+                    type: text
+                    label: Col md
+                    default: null
+                    required: true
+                col_sm:
+                    type: text
+                    label: Col sm
+                    default: null
+                    required: true
+                col_xs:
+                    type: text
+                    label: Col xs
+                    default: null
+                    required: true
+                col_contentAlignment:
+                    type: choice
+                    choices:
+                        left: Left
+                        right: Right
+                        center: Center
+                    label: Content Alignment
+                    default: "Repeat"                    
+                col_css:
+                    type: text
+                    label: CSS
+                    default: null
+                    required: false
+                col_backgroundImage:
+                    type: saman_media
+                    attr:
+                        isMultiple: false
+                        dragover: false
+                    label: Background Image
+                    description: ~
+                    default: null
+                    required: false
+                col_backgroundColor:
+                    type: saman_colorpicker
+                    label: Background Color
+                    default: null
+                    required: false
+                col_backgroundRepeat:
+                    type: choice
+                    choices:
+                        repeat: Repeat
+                        no-repeat: No repeat
+                    label: Background Repeat
+                    default: "Repeat"
+                col_padding_top:
+                    type: text
+                    label: Padding Top
+                    default: 0
+                    required: false
+                col_padding_right:
+                    type: text
+                    label: Padding Right
+                    default: 0
+                    required: false
+                col_padding_bottom:
+                    type: text
+                    label: Padding Bottom
+                    default: 0
+                    required: false
+                col_padding_left:
+                    type: text
+                    label: Padding Left
+                    default: 0
+                    required: false
+        
+        widgets:
+            menu:
+                key: ":widgetMenu-%d:"
+                title: module.appearance.widget.menu.title
+                type: static
+                content: ":menu:"
+                settings: 
+                    menu:
+                        type: entity
+                        class: 'SamanAppearanceBundle:Navigation' 
+                        label: configs.general.options.title.title
+                        description: configs.general.options.title.description
+                        default: ""
+                        required: true
+                    menuType:
+                        type: choice
+                        choices:
+                            bootstrap: Bootstrap navbar
+                            simple: Simple navbar
+                        label: configs.general.options.title.brandTitle
+                        default: "bootstrap"
+                        required: true
+                    navbarType:
+                        type: choice
+                        choices:
+                            normal: Normal navbar
+                            inverse: Inverted navbar
+                        label: configs.general.options.title.brandTitle
+                        default: "Normal navbar"
+                        required: true
+                    brandTitle:
+                        type: text
+                        label: configs.general.options.title.brandTitle
+                        default: ""
+                        required: false
+                    brandUrl:
+                        type: text
+                        label: configs.general.options.title.brandTitle
+                        default: ""
+                        required: false
+                    brandIcon:
+                        type: saman_icon
+                        label: configs.general.options.title.brandTitle
+                        default: ""
+                        required: false
+                    textColor:
+                        type: saman_colorpicker
+                        label: Text Color
+                        default: '#000000'
+                        required: false                        
+                    textHoverColor:
+                        type: saman_colorpicker
+                        label: Text Color (Hover)
+                        default: '#000000'
+                        required: false                        
+                        
+                
+            icon:
+                key: ":widgetIcon-%d:"
+                title: module.appearance.widget.icon.title
+                type: static
+                content: ":icon: :title: :description:"
+                settings:
+                    logoIcon:
+                        type: saman_icon
+                        label: configs.general.options.title.title
+                        description: configs.general.options.title.description
+                        default: ""                    
+                    size:
+                        type: choice
+                        choices:
+                            xxs: xxs
+                            xs: xs
+                            s: s
+                            m: m
+                            l: l
+                            xl: xl
+                            xxl: xxl
+                        label: Size
+                        default: ""
+                        required: false                        
+                    borderColor:    
+                        type: saman_colorpicker
+                        label: Border Color
+                        default: '#000000'
+                        required: false                        
+                    color:    
+                        type: saman_colorpicker
+                        label: Text Color
+                        default: '#ffffff'
+                        required: false                        
+                    background:    
+                        type: saman_colorpicker
+                        label: Background Color
+                        default: '#000000'
+                        required: false                        
+                    hoverBorderColor:    
+                        type: saman_colorpicker
+                        label: Border Color (Hover)
+                        default: '#000000'
+                        required: false                        
+                    hoverColor:    
+                        type: saman_colorpicker
+                        label: Text Color (Hover)
+                        default: '#000000'
+                        required: false                        
+                    hoverBackground:    
+                        type: saman_colorpicker
+                        label: Background Color (Hover)
+                        default: '#000000'
+                        required: false                          
+                    title:
+                        type: text
+                        label: configs.general.options.title.title
+                        description: configs.general.options.title.description
+                        default: null                    
+                        required: false
+                    description:
+                        type: ckeditor
+                        label: configs.general.options.title.title
+                        description: configs.general.options.title.description
+                        default: null                   
+                        required: false
+
+            text:
+                key: ":widgetText-%d:"
+                title: Text
+                type: static
+                content: ":content:"
+                settings:
+                    content:
+                        type: ckeditor
+                        label: configs.general.options.title.title
+                        description: configs.general.options.title.description
+                        default: ""                    
+                        required: false
+                
+            page:
+                key: ":widgetPage:"
+                title: module.appearance.widget.page.title
+                type: fixed
+                content: "::widgetPage::"
+                
+            carousel:
+                key: ":widgetCarousel:"
+                title: module.appearance.widget.carousel.title
+                type: static
+                content: '<div id=":id:" class="carousel slide" data-ride="carousel">:indicators::wrapper::controls:</div>'
+                settings:
+                    title:
+                        type: text
+                        label: configs.general.options.title.title
+                        description: configs.general.options.title.description
+                        default: ""                    
+                        required: false                    
+                    carousels:
+                        type: saman_multiple
+                        allow_add: true
+                        label: configs.general.options.title.title
+                        description: configs.general.options.title.description
+                        fields:
+                            image:
+                                type: saman_media
+                                attr:
+                                    isMultiple: false
+                                label: configs.general.options.title.title
+                                description: ~
+                                default: ""                    
+                            title:
+                                type: text
+                                label: configs.general.options.title.title
+                                description: ~
+                                default: "saman"                    
+                                required: false
+                            description:
+                                type: textarea
+                                label: configs.general.options.title.title
+                                description: ~
+                                default: ""                    
+                                required: false
+                
+        templates:
+            default:
+                title: Default
+                description: ''
+                logo: ''
+                content: '<!DOCTYPE html><html><head>:pageTitle: :pageIcon: :pageMetaData: ::pageMainMetaData:: ::pageMainScript:: ::pageMainStyle:: ::pageMainCss::</head><body :pageBodyStle:><div class="container">::pageMainContent::</div></body></html>'
+                data:
+                    style:
+                        - '<link href="%s/css/glyphicons.css" rel="stylesheet" type="text/css" media="all" />'
+                        - '<link href="%s/css/jquery-ui.css" rel="stylesheet" type="text/css" media="all" />'
+                        - '<link href="%s/css/bootstrap.min.css" rel="stylesheet" type="text/css" media="all" />'
+                        - '<link href="%s/css/saman.css" rel="stylesheet" type="text/css" media="all" />'
+                        - '<link href="%s/css/extra-glyphicons.css" rel="stylesheet" type="text/css" media="all" />'
+                        - '<link href="%s/js/select2/select2.css" rel="stylesheet" type="text/css" media="all" />'
+                        - '<link href="%s/js/select2/select2-bootstrap.css" rel="stylesheet" type="text/css" media="all" />'
+
+                    script: 
+                        - '<script type="text/javascript" src="%s/js/saman-main_jquery-1.11.0.min_1.js"></script>'
+                        - '<script type="text/javascript" src="%s/js/saman-main_jquery-ui_2.js"></script>'
+                        - '<script type="text/javascript" src="%s/js/saman-main_jquery.numeric_3.js"></script>'
+                        - '<script type="text/javascript" src="%s/js/saman-main_jquery.form_4.js"></script>'
+                        - '<script type="text/javascript" src="%s/js/saman-main_transition_5.js"></script>'
+                        - '<script type="text/javascript" src="%s/js/saman-main_collapse_6.js"></script>'
+                        - '<script type="text/javascript" src="%s/js/saman-main_bootstrap.min_7.js"></script>'
+                        - '<script type="text/javascript" src="%s/js/saman-main_bootbox.min_8.js"></script>'
+                        - '<script type="text/javascript" src="%s/js/saman-main_select2_9.js"></script>'
+                        - '<script type="text/javascript" src="%s/js/saman-main_jquery.liveFilter_10.js"></script>'
+                        - '<script type="text/javascript" src="%s/js/saman-main_bootstrap-editable.min_11.js"></script>'
+                        - '<script type="text/javascript" src="%s/js/saman-main_bootstrap-datetimepicker_12.js"></script>'
+                        - '<script type="text/javascript" src="%s/js/saman-main_jquery.vegas_13.js"></script>'
+                        - '<script type="text/javascript" src="%s/js/saman-main_spin.min_14.js"></script>'
+                        - '<script type="text/javascript" src="%s/js/saman-main_ladda.min_15.js"></script>'                        
+                    metaData:
+                        - '<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>'
+                        - '<meta name="robots" content="noindex,nofollow" />'                        
+                settings:
+                    pageTitle:
+                        type: text
+                        label: Page title
+                        description: 'gf fg fg hfg hfg hfg hfg h'
+                        default: ''
+                        container: '<title>%s</title>'
+                        required: false
+                        possibleValues: ':page:<br>Your site name - :page:<br>Your site name'
+                        grid: col-md-4
+                    backgroundImage:
+                        type: saman_media
+                        attr:
+                            isMultiple: false
+                            dragover: true
+                        label: Background Image
+                        description: ~
+                        default: null
+                        required: false
+                    backgroundColor:
+                        type: saman_colorpicker
+                        label: Background Color
+                        default: null
+                        required: false
+                    backgroundRepeat:
+                        type: choice
+                        choices:
+                            repeat: Repeat
+                            no-repeat: No repeat
+                        label: Background Repeat
+                        default: "Repeat"
+                        required: false
+                    backgroundAttachment:
+                        type: choice
+                        choices:
+                            scroll: scroll
+                            fixed: fixed
+                        label: Background Attachment
+                        default: "scroll"
+                        required: false
+                    backgroundPosition:
+                        type: choice
+                        choices:
+                            center: Center
+                            bottom: Bottom
+                            top: Top
+                            left: Left
+                            right: Right
+                            top-center: Top Center
+                            top-left: Top Left
+                            top-right: Top Right
+                            bottom-center: Bottom Center
+                            bottom-left: Bottom Left
+                            bottom-right: Bottom Right
+                        label: Background Position
+                        default: "center"
+                        required: false
+                    pageIcon:
+                        type: text
+                        label: Page icon url
+                        icon: glyphicon glyphicon-picture
+                        description: ''
+                        default: ''
+                        container: '<link rel="shortcut icon" href="%s">'
+                        required: false
+                        grid: col-md-4
+                    pageMetaData:
+                        type: textarea
+                        label: Page meta data
+                        description: ''
+                        default: ''
+                        container: '%s'
+                        required: false
+                        grid: col-md-10
+                    pageBodyStle:
+                        type: text
+                        label: Page body style
+                        description: ''
+                        default: ''
+                        container: '%s'
+                        required: false
+                        grid: col-md-10
+                    pageStyle:
+                        type: textarea
+                        label: Page style
+                        description: ''
+                        default: ''
+                        options: ~
+                        container: '<style type="text/css">%s</style>'
+                        required: false
+                        grid: col-md-10
+                    pagePrintStyle:
+                        type: textarea
+                        label: Page print style
+                        description: ''
+                        default: ''
+                        options: ~
+                        container: '<style type="text/css" media="print">%s</style>'
+                        required: false
+                        grid: col-md-10
+                        

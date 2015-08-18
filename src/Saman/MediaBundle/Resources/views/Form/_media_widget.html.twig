@@ -1,0 +1,289 @@
+{% block saman_media_widget %}
+{% spaceless %}
+{#
+https://github.com/blueimp/jQuery-File-Upload/wiki/Options
+#}
+<!-- Force latest IE rendering engine or ChromeFrame if installed -->
+<!--[if IE]>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<![endif]-->
+{% set mediaId = id|default('file') %}
+<span id="attachment-message"></span>
+{% set isMultiple = attr['isMultiple'] is defined? attr['isMultiple'] : true %}
+{% set isDragover = attr['dragover'] is defined? attr['dragover'] : true %}
+{% set filesContainer = '<table role="presentation" style="width: 100%"><tbody id="files-container-' ~ mediaId ~ '" class="files">' ~ value|toMediaList ~ '</tbody></table>' %}    
+
+<div id="fileupload-{{ mediaId }}">    
+    {% if isMultiple %}
+        {% set uploadButton = '<span class="btn btn-default btn-file">' ~ ('icon.plus'|icon) ~ '<span class="d-left-5">' ~ ('action.addFiles'|trans) ~ '</span><input name="files[]" type="file" multiple /></span>' %}
+        <input {{ block('widget_attributes') }} type="hidden" value="{{ value|toMediaId }}" />
+        {% if isDragover %}
+            <div class="row fileupload-buttonbar">
+                <div class="col-md-12">
+                    <div id="files-dropzone-container-{{ mediaId }}" class="d-saman-media-form-dropzone">
+                        <center>
+                            <h4 class="d-text-muted">{{ 'word.uploadFileByDropping'|trans }}</h4>
+                            {{ uploadButton|raw }}
+                        </center>
+                        <div class="d-left-10 d-right-10 d-margin-bottom-10">
+                        {# The table listing the files available for upload/download #}
+                        {{ filesContainer|raw }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% else %}    
+            <div class="row fileupload-buttonbar">
+                <div class="col-md-12">
+                    {{ uploadButton|raw }}
+                </div>
+            </div>
+            {# The table listing the files available for upload/download #}
+            {{ filesContainer|raw }}
+        {% endif %}        
+    {% else %}
+        {% set uploadButton = '<span class="btn btn-default btn-file">' ~ ('icon.plus'|icon) ~ '<span class="d-left-5">' ~ ('action.addFiles'|trans) ~ '</span><input name="files" type="file" /></span>' %}    
+        <input {{ block('widget_attributes') }} type="hidden" value="{{ value|toMediaId }}" />
+        {% if isDragover %}
+            <div class="row fileupload-buttonbar">
+                <div class="col-md-12">
+                    <div id="files-dropzone-container-{{ mediaId }}" class="d-saman-media-form-dropzone">
+                        <center>
+                            <h4 class="d-text-muted">{{ 'word.uploadFileByDropping'|trans }}</h4>
+                            {{ uploadButton|raw }}
+                        </center>
+                        <div class="d-left-10 d-right-10 d-margin-bottom-10">
+                        {# The table listing the files available for upload/download #}
+                        {{ filesContainer|raw }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% else %}    
+            <div class="row fileupload-buttonbar">
+                <div class="col-md-12">
+                    <div style="float: left;">
+                        {{ uploadButton|raw }}
+                    </div>
+                    <div style="float: left; margin-left: 10px">
+                        {# The table listing the files available for upload/download #}
+                        {{ filesContainer|raw }}
+                    </div>
+                </div>
+            </div>
+        {% endif %}        
+    {% endif %}
+</div>
+
+
+<script type="text/javascript">
+    $(function () {
+        var fileInput = $('#{{ mediaId }}');
+
+        $(document).bind('drop dragover', function (e) {
+            e.preventDefault();
+        });
+
+        {% if attr['dragover']|default(false) %}
+            $('#files-dropzone-container-{{ mediaId }}').bind('dragover', function (e) {
+                if (!$(this).hasClass("d-saman-media-form-dropzone-hover")) {
+                    $(this).removeClass('d-saman-media-form-dropzone').addClass('d-saman-media-form-dropzone-hover');
+                }
+            });
+            $('#files-dropzone-container-{{ mediaId }}').bind('drop dragleave', function (e) {
+                if (!$(this).hasClass("d-saman-media-form-dropzone")) {
+                    $(this).removeClass('d-saman-media-form-dropzone-hover').addClass('d-saman-media-form-dropzone');
+                }
+            });
+        {% endif %}        
+
+        $('#files-container-{{ mediaId }}').on('click', '.action-delete-file', function(e){
+            var id = $(this).attr('data-id');
+            deleteFile(id);
+        });
+
+        function deleteFile(id)
+        {
+            var url = '{{ path('saman_media_delete_media') }}';
+            $.get(url, {id: id}, function(response) {
+                var fileInput = $('#{{ mediaId }}');
+                if (response.success == true) {
+                    {# Update the content of input files #}
+                    if (fileInput.val() != '') {
+                        var fileIds = [];
+                        fileIds = jQuery.parseJSON(fileInput.val());
+                        for (var i = fileIds.length; i--;) {
+                            if (fileIds[i] == id || fileIds[i] == null) {
+                                fileIds.splice(i, 1);
+                            }
+                        }
+
+                        if (fileIds.length == 0) {
+                            fileInput.val('');
+                        } else {
+                            fileInput.val(JSON.stringify(fileIds));
+                        }
+                    }
+                } else {
+                    bootbox.alert(response.message);
+                }
+            }, 'json');
+        }
+
+        {#
+        https://github.com/blueimp/jQuery-File-Upload/wiki/Options
+        Initialize the jQuery File Upload widget:
+        #}
+        $('#fileupload-{{ mediaId }}').fileupload({
+            multipart: true,
+            autoUpload: true,
+            url: '{{ path('saman_media_upload_temp_media') }}',
+            dataType: 'json',
+            maxFileSize: 5000000, //5mb
+            accept: 'application/json',
+            downloadTemplateId: null,
+            uploadTemplateId: null,
+            dropZone: $('#files-dropzone-container-{{ mediaId }}'),
+            {% if isMultiple %}
+            {% else %}
+                maxNumberOfFiles: 1,
+            {% endif %}
+            {#
+            //Uncomment the following to send cross-domain cookies:
+            xhrFields: {withCredentials: true},
+            singleFileUploads: false,
+            #}
+            {#        
+            add: function (e, data) {
+               data.submit();
+               console.log('send data');
+            },
+            fileuploadprogress: function (e, data) {
+                // Log the current bitrate for this upload:
+                console.log(data.bitrate);
+            },
+            #}
+            /*
+            done: function (e, data) {
+                if (data.result.success == true) {
+                    $.each(data.result.files, function (index, file) {
+                        $('#{{ mediaId }}').val(file.id);
+                    });
+                } else {
+                    bootbox.alert(data.result.message);
+                }
+            },
+            */
+            sent: function (e, data) {
+                {% if isMultiple != true %}
+                    $('#file-row-null').remove();
+                    var currentFileId = fileInput.val();
+                    if (currentFileId != '') {
+                        currentFileId = currentFileId.substring(1, currentFileId.length - 1);
+                        $('#file-row-' + currentFileId).remove();
+                        deleteFile(currentFileId);                        
+                    }
+                {% endif %}
+            },   
+            uploadTemplate: function (o) {
+                var rows = $();
+                $.each(o.files, function (index, file) {
+                    var row = $(
+                        '<tr class="template-upload fade" style="height: 26px;">' +
+                            '<td>' +
+                                '<span style="font-size: 12px"><span class="glyphicon glyphicon-paperclip" aria-hidden="true"></span></span> ' +
+                                '<span style="margin-left: 2px;" class="name"></span>' + 
+                                '<small><span style="margin-left: 10px;" class="text-muted">(<span class="size">Processing...</span>)</span></small>' +
+                                '<div class="text-danger error"></div>' +
+                            '</td>' +
+                            '<td style="width: 100px;"><div class="progress progress-striped active" style="height: 18px; margin-bottom: 0px;" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="progress-bar progress-bar-success" style="width:0%;"></div></div></td>' +
+                            (!index && !o.options.autoUpload ?
+                                '<td style="width: 12px">' +
+                                        '<button type="button" class="btn btn-link start" style="padding: 0px 0px 0px 5px;"><span class="glyphicon glyphicon-open" disabled></span></button>' +
+                                '</td>' : '') +
+                            (!index ? 
+                                '<td style="width: 12px">' +
+                                        '<button type="button" class="btn btn-link cancel" style="padding: 0px 5px 0px 5px;"><span class="glyphicon glyphicon-remove" disabled></span></button>' +
+                                '</td>' : '') +
+                        '</tr>');
+                    row.find('.name').text(file.name);
+                    row.find('.size').text(o.formatFileSize(file.size));
+                    if (file.error) {
+                        row.find('.error').text(file.error);
+                    }
+                    rows = rows.add(row);
+                });
+                return rows;
+            },
+            downloadTemplate: function (o) {
+                var rows = $();
+
+                $.each(o.files, function (index, file) {
+                    {# Update the content of input files #}
+                    if (file['id'] != undefined) {
+                        var currentFileId = fileInput.val();
+                        var fileIds = [];                            
+                        {% if isMultiple %}
+                            if (currentFileId != '') {
+                                fileIds = jQuery.parseJSON(currentFileId);
+                            }
+                        {% else %}
+                            if (currentFileId != '') {
+                               //currentFileId = currentFileId.substring(1, currentFileId.length - 1);
+                               //$('#file-row-' + currentFileId).remove();
+                               //deleteFile(currentFileId);
+                            }
+                        {% endif %}
+                        fileIds.push(file['id']);
+                        fileInput.val(JSON.stringify(fileIds));                                
+                    }
+
+                    var row = $(
+                        '<tr id="file-row-' + file.id + '" class="template-download fade" style="height: 26px;">' +
+                            '<td colspan="2">' +
+                                (file.name ?
+                                '<span class="glyphicon glyphicon-paperclip" aria-hidden="true"></span> ' +
+                                '<span style="margin-left: 2px;" class="name"></span>' + 
+                                '<small><span style="margin-left: 10px;" class="text-muted">(<span class="size">Processing...</span>)</span></small>' : '') +
+                                (file.error ? '<span class="text-danger"><span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span> <span class="error" style="margin-left: 5px;"></span></span>' : '') +
+                            '</td>' +
+                            '<td style="width: 12px">' + 
+                                '<button type="button" data-id="' + file.id + '" class="btn btn-link delete action-delete-file" style="padding: 0px 5px 0px 5px;"><span class="glyphicon glyphicon-remove" disabled></span></button>' +
+                            '</td>' +    
+                        '</tr>');
+                    row.find('.size').text(o.formatFileSize(file.size));
+                    if (file.error) {
+                        row.find('.name').text(file.name);
+                        row.find('.error').text(file.error);
+                    } else {
+                        row.find('.name').append($('<a></a>').text(file.name));
+                        if (file.thumbnailUrl) {
+                            row.find('.preview').append(
+                                $('<a></a>').append(
+                                    $('<img>').prop('src', file.thumbnailUrl)
+                                )
+                            );
+                        }
+                        row.find('a')
+                            .attr('data-gallery', '')
+                            .prop('href', file.url);
+                        row.find('button.delete')
+                            .attr('data-type', file.delete_type)
+                            .attr('data-url', file.delete_url);
+                    }
+                    rows = rows.add(row);
+                });
+                return rows;
+            },
+            {#
+            change: function (e, data) {
+                $.each(data.files, function (index, file) {
+                    console.log('Selected file: ' + file.name);
+                });
+            },
+            #}
+        });
+    });
+</script>
+{% endspaceless %}
+{% endblock %}

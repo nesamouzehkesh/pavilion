@@ -1,0 +1,8 @@
+services:
+    saman_cms.cms.admin:
+        class: Saman\CmsBundle\Service\CmsAdminService
+        arguments: [@saman.helper, %saman_cms.cms.admin%]
+        
+    saman_cms.cms:
+        class: Saman\CmsBundle\Service\CmsService
+        arguments: [@saman.helper, %saman_cms.cms%]    

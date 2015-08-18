@@ -1,0 +1,43 @@
+{% form_theme form '::twig/formRow.html.twig' %}
+{% set configs = defaultConfig['configs'] %}
+
+{{ form_start(form) }}
+    {{ form_errors(form) }}
+    <div role="tabpanel">
+        <!-- Nav tabs -->
+        <ul class="nav nav-tabs" role="tablist">
+            {% set isActive = 'active' %}
+            {% for configKey, config in configs %}
+                <li role="presentation" class="{{ isActive }}">
+                    <a href="#{{ configKey }}" aria-controls="{{ configKey }}" role="tab" data-toggle="tab">
+                        {{ config.icon|icon }} {{ config.title|trans }}
+                    </a>
+                </li>
+            {% set isActive = '' %}
+            {% endfor %}
+        </ul>
+
+        <!-- Tab panes -->
+        <div class="tab-content">
+            {% set isActive = 'active' %}
+            {% for configKey, config in configs %}
+              <div role="tabpanel" class="tab-pane {{ isActive }}" id="{{ configKey }}">
+                    <div class="d-margin-top-20">
+                        {{ config.description|trans }}
+                    </div>
+                    <div class="d-margin-top-20">
+                        {% for optionKey, option in config.options %}
+                            {% set form_field_description = option.description|trans %}
+                            {{ form_row(form[configKey ~ '_' ~ optionKey]) }}
+                        {% endfor %}
+                    </div>
+              </div>
+              {% set isActive = '' %}
+            {% endfor %}    
+        </div>
+    </div>
+
+    <div class="d-margin-top-20">
+        <button type="submit" class="btn btn-primary">{{ 'action.save'|trans }}</button>
+    </div>
+{{ form_end(form) }}

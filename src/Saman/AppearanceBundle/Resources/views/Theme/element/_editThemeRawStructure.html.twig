@@ -1,0 +1,41 @@
+{% set form = themeRawStructureForm %}
+{% form_theme form '::twig/formRow.html.twig' %}
+
+{{ form_start(form) }}
+    {{ form_errors(form) }}
+    
+    <div class="row">
+        <div class="col-md-6 col-sm-6 col-xs-12">
+            <div id="cont-theme-structure-header" class="{{ theme.isRawStructure? 'd-hidden' : '' }}">
+            {{ button(
+                'Add row', 
+                {
+                    icon: 'icon.addRow', 
+                    size: '1',  
+                    toggleModal: 'cont-theme-row-add',
+                    attr: {'data-parentRowId': 0, 'data-parentColumnId': 0},
+                    action: 'theme-structure-set-parent'
+                }) }}
+            {{ button(
+                'Add Widget', 
+                {
+                    url: path('saman_appearance_admin_theme_structure_add_widget', {'themeId': theme.id, 'parentRowId': '0', 'parentColumnId': '0'}),
+                    icon: 'icon.addWidget', 
+                    size: '1',  
+                    class: 'd-margin-bottom-5 d-margin-top-5',
+                    action: 'theme-structure-add-widget'
+                }) }} 
+            </div>    
+        </div>
+        <div class="col-md-6 col-sm-6 col-xs-12">
+            <div class="pull-right">
+                {{ form_row(form.isRawStructure) }}
+            </div>
+        </div>
+    </div>
+    
+    <div id="cont-theme-raw-structure" class="{{ theme.isRawStructure? '' : 'd-hidden' }}">
+        {{ form_row(form.rawStructure) }}
+        <button type="submit" class="btn btn-primary">{{ 'action.save'|trans }}</button>
+    </div>
+{{ form_end(form) }}

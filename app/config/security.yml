@@ -1,0 +1,29 @@
+security:
+    encoders:
+        Saman\UserBundle\Entity\User:
+            id: saman.md5encoder
+    
+    role_hierarchy:
+        ROLE_ADMIN:       ROLE_USER
+        ROLE_SUPER_ADMIN: [ROLE_USER, ROLE_ADMIN, ROLE_ALLOWED_TO_SWITCH]
+    
+    providers:
+        administrators:
+            entity: { class: SamanUserBundle:User }
+
+    firewalls:
+        secured_area:
+            pattern:   ^/
+            anonymous: ~
+            form_login:
+                login_path: saman_login
+                check_path: saman_login_check
+            logout:
+                path:   saman_logout
+                target: saman_login
+                
+    access_control:
+        #- { path: ^/admin/, roles: ROLE_ADMIN, requires_channel: https } 
+        - { path: ^/admin/, roles: ROLE_ADMIN } 
+        # Include the following line to also secure the /admin path itself
+        - { path: ^/admin$, roles: ROLE_ADMIN }

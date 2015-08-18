@@ -1,0 +1,68 @@
+{% set twig_form_link_cont = 'links-form-container' %}
+
+<script type="text/javascript">
+$(function(){
+    var currentPage = '1';
+    var cont_page = $('#{{ twig_cont_page }}');
+    var cont_navigations = $('#{{ twig_cont_navigations }}');
+    var cont_navigation = $('#{{ twig_cont_navigation }}');
+    var parentRowId = 0;
+            
+    $('.action-add-navigation').click(function(e){
+        displayItemAddEditForm($(this), '{{ twig_form_navigation_name }}', '{{ twig_form_navigation_cont }}', '{{ twig_url_navigations }}', cont_navigations, currentPage);       
+    });
+    
+    $('#{{ twig_cont_navigations }}').on('click', '.action-pagination', function(e){      
+        e.preventDefault();
+        currentPage = $(this).attr('data-page');
+        displayItems('{{ twig_url_navigations }}', cont_navigations, currentPage);
+    });
+    
+    $('#{{ twig_cont_navigations }}').on('click', '.action-edit-navigation', function(e){       
+        var displayPageUrl = $(this).attr('data-url');
+        var navigationId = $(this).attr('data-navigationId');
+        displayEditNavigationPage(displayPageUrl);
+    });
+
+    $('#{{ twig_cont_navigations }}').on('click', '.action-delete-navigation', function(e){   
+        deleteItem($(this), '{{ twig_url_navigations }}', cont_navigations, currentPage);
+    });
+    
+    $( "#input-search").keyup(function(e) {
+        searchItems($(this), '{{ twig_url_navigations }}', cont_navigations, currentPage);
+    });
+    
+    function displayEditNavigationPage(displayPageUrl)
+    {
+        displayPage(displayPageUrl, '{{ twig_url_navigations }}', cont_navigations, currentPage, function(response) {
+            response.find('.action-add-edit-link').click(function(e) {
+                var url = $(this).attr('data-url');
+                displaySimpleModalForm(url, {}, '{{ twig_form_link_cont }}', '{{ twig_form_link_name }}', function(response) {
+                    if (response.success == true) {
+                        displayEditNavigationPage(displayPageUrl);
+                    }
+                }, 'json');
+            });
+            
+            response.find('.action-publish-navigation').click(function(e) {
+                var url = $(this).attr('data-url');
+                simpleGet(url, {}, function(response) {
+                    if (response.success == true) {
+                        bootbox.alert(response.message);
+                    }
+                });    
+            });
+            
+            response.find('.action-delete-link').click(function(e) {
+                var url = $(this).attr('data-url');
+                simpleDeleteItem(url, {}, function(response) {
+                    if (response.success == true) {
+                        displayEditNavigationPage(displayPageUrl);
+                    }
+                });                 
+            });
+        });
+    }
+    
+});
+</script>

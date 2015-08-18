@@ -1,0 +1,7 @@
+{% block saman_collection_widget %}
+{% spaceless %}
+{% for key, field in fields %}
+    {{ form_row(form[key]) }}
+{% endfor %}
+{% endspaceless %}
+{% endblock %}

@@ -1,0 +1,15 @@
+{% block saman_colorpicker_widget %}
+{% spaceless %}
+{# 
+Bootstrap Colorpicker 2.0 for Twitter Bootstrap
+Note: Bootstrap Colorpicker 3.0 is due to relase. 
+http://mjolnic.com/bootstrap-colorpicker/
+#}    
+<div class="input-group" style="width: 130px" id="colorpicker-{{ id }}">
+    <input type="text" {{ block('widget_attributes') }} {% if value is defined %} value="{{ value }}"{% endif %} />
+    <span class="input-group-addon"><i></i></span>
+</div>
+
+<script>$(function() { $('#colorpicker-{{ id }}').colorpicker(); })</script>
+{% endspaceless %}
+{% endblock %}

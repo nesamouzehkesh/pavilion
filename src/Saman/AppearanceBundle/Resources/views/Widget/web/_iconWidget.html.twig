@@ -1,0 +1,9 @@
+{% spaceless %}
+    {% set settings = widget.settings %}
+    <center>
+        <a href="#" class="css-widget-{{ widget.id }}">{% if settings.logoIcon is defined and settings.logoIcon != null %}<span class="{{ settings.logoIcon }}"></span>{% else %}{{ settings.logoText|default('text')}}{% endif %}</a>
+        {% if settings.title is defined and settings.title != null and settings.title != '' %}<h3>{{ settings.title }}</h3>{% endif %}
+    </center>            
+        {% if settings.description is defined and settings.description != null and settings.description != '' %}{{ settings.description|raw }}{% endif %}
+    
+{% endspaceless %}

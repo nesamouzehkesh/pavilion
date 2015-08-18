@@ -1,0 +1,4 @@
+services:
+#    saman_play_ground.example:
+#        class: Saman\PlayGroundBundle\Example
+#        arguments: [@service_id, "plain_value", %parameter%]

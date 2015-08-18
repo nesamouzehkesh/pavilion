@@ -1,0 +1,114 @@
+{% block saman_select2_widget %}
+{% spaceless %}
+{#
+http://select2.github.io/examples.html
+#}
+{% set select2Id = id|default('select2') %}
+
+{% if loading is defined and loading == true %}
+    <input {{ block('widget_attributes') }} type="hidden" data-lookup-url="{{ data_lookup_url }}" data-url="{{ data_url }}" data-minimumInputLength="{{ minimumInputLength }}" data-allowClear="{{ allowClear }}" data-multiple="{{ multiple }}" value="{{ data }}" tabindex="-1">
+{% else %}
+    
+    {% if options is defined %}        
+        <select {{ block('widget_attributes') }} placeholder="" data-allowClear="{{ allowClear }}" {% if multiple == 'true' %}multiple="multiple"{% endif %} value="{{ data }}">
+            {% if allowClear == 'true' %}<option></option>{% endif %}
+            {% if options|length > 0 %}
+                {% for key, option in options %}
+                    {% if option['id'] is defined %}
+                        <option value="{{ option['id'] }}">{{ option['text'] }}</option>
+                    {% else %}
+                        <option value="{{ key }}">{{ option }}</option>
+                    {% endif %}
+                {% endfor %}    
+            {% endif %}
+        </select>
+    {% endif %}
+{% endif %}
+
+<script type="text/javascript">
+    $(function () {
+        {% if type == 'simple' %}
+            $('.saman-simple-select2').each(function() {
+                var $field = $(this);
+
+                $field.select2({
+                    width: '100%',
+                    placeholder: "{{ placeholder|trans }}",
+                    allowClear: ($field.attr('data-allowClear') === 'true')? true : false,
+                });
+            });          
+        {% else %}
+            $('.saman-select-select2').each(function() {
+                var $field = $(this);
+
+                $field.select2({
+                    width: '100%',
+                    placeholder: "{{ placeholder|trans }}",
+                    allowClear: ($field.attr('data-allowClear') === 'true')? true : false,
+                    minimumInputLength: parseInt($field.attr('data-minimumInputLength'))
+                });
+            });          
+
+            $('.saman-select2').each(function() {
+                var $field = $(this);
+
+                $field.select2({
+                    placeholder: "{{ placeholder|trans }}",
+                    allowClear: ($field.attr('data-allowClear') === 'true')? true : false,
+                    width: '100%',
+                    minimumInputLength: parseInt($field.attr('data-minimumInputLength')),
+                    multiple: ($field.attr('data-multiple') === 'true')? true : false,
+                    ajax: {
+                        url: $field.attr('data-url'),
+                        type: 'POST',
+                        dateType: 'json',
+                        data: function(term, page) {
+                            // Standard data
+                            return {
+                                value: term,
+                                page: page
+                            };
+                        },
+                        results: function(data, page) {
+                            var more = (page * 50) < data.total;
+                            return {results: data.data, more:more};
+                        }
+                    },
+                    initSelection: function(element, callback) {
+                        var $element = $(element);
+                        var selection = $element.val();
+
+                        // CSV to array
+                        var selection = selection.split(',');
+
+                        // Fetch from lookup
+                        $.ajax({
+                            url: $field.attr('data-lookup-url'),
+                            type: 'POST',
+                            data: {
+                                //field_id: $field.attr('data-id'),
+                                selection: selection
+                            },
+                            dataType: "json",
+                            success: function(data) {
+
+                                // clear placeholder
+                                $element.removeAttr('data-selected');
+
+                                // Use first element only if not multiple
+                                if ($field.attr('data-multiple') === 'false' && data.length > 0) {
+                                    data = data[0];
+                                }
+
+                                // Push to callback
+                                callback(data);
+                            }
+                        });
+                    }
+                });
+            });
+        {% endif %}
+    });
+</script>
+{% endspaceless %}
+{% endblock %}

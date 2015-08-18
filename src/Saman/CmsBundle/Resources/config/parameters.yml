@@ -1,0 +1,17 @@
+parameters:
+    saman_cms.cms.admin:
+        numberOfItemsPerPage: 10
+        page:
+            settings:
+                autoBreadcrumb:
+                    type: saman_toggle
+                    label: configs.general.options.title.title
+                    description: configs.general.options.title.description
+                    default: true                    
+                breadcrumb:
+                    type: hidden
+                    default: ""
+        
+        
+    saman_cms.cms:
+        numberOfItemsPerPage: 10

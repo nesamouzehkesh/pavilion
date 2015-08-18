@@ -1,0 +1,40 @@
+{{ button(
+    'Add link', 
+    {
+        url: path('saman_appearance_admin_navigation_link_add', {'navigationId': navigation.id}),
+        icon: 'icon.add',
+        type: 'primary',
+        size: '3',
+        class: 'd-margin-bottom-5 d-margin-top-5',
+        action: 'action-add-edit-link'
+    }) }}  
+ 
+<ul class="d-sortable" data-url="{{ path('saman_appearance_admin_navigation_link_sort', {'navigationId': navigation.id}) }}">
+{% for link in links %}
+    <li id="{{ link.id }}" class="d-sortable-items d-navigation-link">
+        {{ (link.icon is not null? '<span class="' ~ link.icon ~ '"></span>' : '')|raw }}
+        {{ link.title }}
+        {{ button(
+              'action.edit', 
+              {
+                  url: path('saman_appearance_admin_navigation_link_edit', {'navigationId': navigation.id ,'linkId': link.id}),
+                  icon: 'icon.edit', 
+                  action: 'action-add-edit-link'
+              }) }}
+        {{ button(
+              'action.delete', 
+              {
+                  url: path('saman_appearance_admin_navigation_link_delete', {'linkId': link.id }),
+                  icon: 'icon.delete', 
+                  action: 'action-delete-link',
+              }) }}
+        <span class="pull-right">{{ 'icon.move'|icon }}</span>
+    </li>
+{% endfor %}
+</ul>
+
+<script>
+    $(function() {
+        sortAble($('.d-sortable'));
+   });
+</script>

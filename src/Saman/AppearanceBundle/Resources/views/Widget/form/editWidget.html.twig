@@ -1,0 +1,8 @@
+{% extends "::twig/form.html.twig" %}
+
+{% block body %}
+    {{ form_errors(form) }}
+    {% for key, setting in widgetStructure.settings %}
+        {{ form_row(form[key]) }}
+    {% endfor %}
+{% endblock %}

@@ -1,0 +1,87 @@
+{% if type == 'row' %}
+    {#<div class="row"> {# style="height: {{ rowHeight }}px">#}
+    <li id="{{ row.id }}" class="d-sortable-items d-theme-structure-row">
+        {{ button(
+            '', 
+            {
+                url: path('saman_appearance_admin_theme_structure_edit_row', {'themeId': theme.id, 'rowId': row.id}),
+                icon: 'icon.edit', 
+                size: '1',  
+                class: 'd-margin-bottom-5 d-margin-top-5',
+                action: 'theme-structure-edit-row'
+            }) }}
+        {{ button(
+            '', 
+            {
+                url: path('saman_appearance_admin_theme_structure_delete_row', {'themeId': theme.id, 'rowId': row.id}),
+                icon: 'icon.remove', 
+                size: '1',  
+                class: 'd-margin-bottom-5 d-margin-top-5',
+                action: 'theme-structure-delete-row'
+            }) }}
+        <div class="row" style="padding-left: 15px; padding-right: 15px;">
+
+{% elseif type == 'column' %} 
+    
+    <div class="{{ 'col-md-' ~ column.settings.col_md }} {{ 'col-sm-' ~ column.settings.col_sm }} {{ 'col-xs-' ~ column.settings.col_xs }} d-theme-structure-column">
+        {{ button(
+            'Add row', 
+            {
+                icon: 'icon.addRow', 
+                size: '1',  
+                toggleModal: 'cont-theme-row-add',
+                attr: {'data-parentRowId': row.id, 'data-parentColumnId': column.id},
+                action: 'theme-structure-set-parent'
+            }) }}                    
+        {{ button(
+            'Add widget', 
+            {
+                url: path('saman_appearance_admin_theme_structure_add_widget', {'themeId': theme.id, 'parentRowId': row.id, 'parentColumnId': column.id}),
+                icon: 'icon.addWidget', 
+                size: '1',  
+                class: 'd-margin-bottom-5 d-margin-top-5',
+                action: 'theme-structure-add-widget'
+            }) }}
+        <ul class="d-sortable d-sortable-connected" data-url="{{ path('saman_appearance_admin_theme_structure_sort_rows', {'themeId': theme.id, 'parentRowId': row.id, 'parentColumnId': column.id}) }}">
+            <li class="d-sortable-items d-sortable-item-empty"></li>
+{% elseif type == 'widget' %} 
+    
+    {% set widget = widgets[row.id]|default(null) %}
+    {% if widget is not null %}
+        {% set widgetStructure = widgetStructures[widget.type] %}
+        <li id="{{ row.id }}" class="d-sortable-items d-theme-structure-widget">
+            <span class="d-left-5">{{ widgetStructure.title|trans }}</span>
+
+            {% if widgetStructure.settings is defined and widgetStructure.settings|length > 0 %}
+                {{ button(
+                    '', 
+                    {
+                        url: path('saman_appearance_admin_theme_structure_edit_widget', {'themeId': theme.id}),
+                        icon: 'icon.edit', 
+                        size: '1',  
+                        attr: {'data-widgetId': row.id},
+                        action: 'theme-structure-edit-widget'
+                    }) }}                            
+            {% endif %}
+            {{ button(
+                '', 
+                {
+                    url: path('saman_appearance_admin_theme_structure_delete_widget', {'themeId': theme.id, 'widgetId': row.id}),
+                    icon: 'icon.remove', 
+                    size: '1',  
+                    action: 'theme-structure-delete-widget'
+                }) }}
+        </li>
+    {% endif %}        
+        
+{% elseif type == 'body' %}
+    <ul class="d-sortable" data-url="{{ path('saman_appearance_admin_theme_structure_sort_rows', {'themeId': theme.id, 'parentRowId': '0', 'parentColumnId': '0'}) }}">
+        {{ rowStructures|raw }}
+    </ul>
+        
+    <script>
+        $(function() {
+            sortAble($('.d-sortable'));
+       });
+    </script>            
+{% endif %}

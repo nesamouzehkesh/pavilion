@@ -1,0 +1,32 @@
+<div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">
+                <span aria-hidden="true">&times;</span>
+                <span class="sr-only">{{ 'action.close'|trans }}</span>
+            </button>
+            {% if modalTitle is defined %}
+                <h4 class="modal-title" id="myModalLabel">
+                    {% if modalLogo is defined %}
+                        {{ modalLogo|icon }}
+                    {% endif %}
+                    {{ modalTitle|trans }}
+                </h4>
+            {% endif %}
+            {% block header %}{% endblock %}
+        </div>
+        <div class="modal-body">
+            {% if modalDescription is defined %}
+                {{ modalDescription|trans }}<br><br>
+            {% endif %}
+
+            {% block body %}{% endblock %}
+        </div>
+        <div class="modal-footer">
+            {% block footer %}{% endblock %}
+            <button type="button" class="btn btn-primary" data-dismiss="modal">{{ 'action.close'|trans }}</button>
+        </div>
+    </div>
+</div>
+
+{% block formScript %}{% endblock %}

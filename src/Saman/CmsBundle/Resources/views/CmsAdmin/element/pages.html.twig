@@ -1,0 +1,53 @@
+{% set twig_rout_item_edit = 'saman_cms_admin_page_edit' %}
+{% set twig_rout_item_delete = 'saman_cms_admin_page_delete' %}
+{% set twig_rout_item_display = 'saman_cms_admin_page_display' %}
+
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>URL</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for item in itemsPagination %}
+        <tr>
+          <td>{{ item.title }}</td>
+          <td>{{ item.url }}</td>
+          <td>
+              <div class="pull-right">
+                  {{ button(
+                        'action.display', 
+                        {
+                            url: path(twig_rout_item_display, {'itemId': item.id}),
+                            icon: 'icon.display', 
+                            toggleModal: 'item-view-container', 
+                            action: 'action-display-item'
+                        }) }}
+                  {{ button(
+                        'action.edit', 
+                        {
+                            url: path(twig_rout_item_edit, {'itemId': item.id}),
+                            icon: 'icon.edit', 
+                            toggleModal: 'items-form-container', 
+                            action: 'action-edit-item'
+                        }) }}
+                  {{ button(
+                        'action.delete', 
+                        {
+                            url: path(twig_rout_item_delete, {'itemId': item.id }),
+                            icon: 'icon.delete', 
+                            action: 'action-delete-item',
+                            attr: {'data-entity-id': item.id}
+                        }) }}
+              </div>  
+          </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+<div class="navigation">
+    {{ knp_pagination_render(itemsPagination) }}
+</div>

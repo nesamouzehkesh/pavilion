@@ -1,0 +1,7 @@
+{% extends "::twig/form.html.twig" %}
+
+{% block body %}
+    {{ form_errors(form) }}
+    {{ form_row(form.type) }}
+    {{ form_row(form.title) }}
+{% endblock %}

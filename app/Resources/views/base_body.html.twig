@@ -1,0 +1,43 @@
+    {% block pageOpenContainer %}
+        {% if twig_cont_page is defined %}
+            <div id="{{ twig_cont_page }}">
+        {% endif %}    
+    {% endblock %}
+
+    {% block flashMessageContainer %}
+        {% for flashMessage in app.session.flashbag.get('notice') %}
+            <div class="flash-message">
+                <em>Notice</em>: {{ flashMessage }}
+            </div>
+        {% endfor %}
+    {% endblock %}
+
+    {% block breadcrumbContainer %}
+        <div class="block">
+            {% block breadcrumb %}{% endblock %}
+        </div>
+    {% endblock %}
+                
+    {% block headerContainer %}
+        <div class="block" id="headerContainer">
+            {% block header %}{% endblock %}
+        </div>
+    {% endblock %}
+
+    {% block bodyContainer %}
+        <div class="block">
+            {% block body %}{% endblock %}
+        </div>
+    {% endblock %}
+
+    {% block footerContainer %}
+        <div class="block">
+            {% block footer %}{% endblock %}
+        </div>
+    {% endblock %}
+                
+    {% block pageCloseContainer %}
+        {% if twig_cont_page is defined %}
+            </div>
+        {% endif %}
+    {% endblock %}

@@ -1,0 +1,58 @@
+{% extends "::base_body.html.twig" %}
+
+{% block breadcrumb %}
+    {{ breadcrumb([
+            {
+              action: 'action-back',
+              icon: 'icon.module.appearance', 
+              text: 'module.appearance.title', 
+            },
+            {
+              icon: 'icon.module.theme', 
+              text: theme.title, 
+            }
+          ]) }}
+{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-md-9 col-xs-6 col-sm-7 d-title">{{ theme.title }}</div>
+        <div class="col-md-3 col-xs-6 col-sm-5">
+            <div class="pull-right">
+            {{ button(
+                'Publish theme', 
+                {
+                    url: path('saman_appearance_admin_theme_publish', {'themeId': theme.id}),
+                    type: 'primary',
+                    icon: 'icon.publish', 
+                    size: '3',  
+                    class: 'd-margin-bottom-5 d-margin-top-5',
+                    action: 'theme-structure-publish'
+                }) }}
+            </div>    
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12 d-description">{{ theme.description }}</div>
+    </div>
+
+    <div role="tabpanel" class="d-margin-top-20">
+        <!-- Nav tabs -->
+        <ul class="nav nav-tabs" role="tablist">
+            <li role="presentation" class="active"><a href="#themeStructure" aria-controls="themeStructure" role="tab" data-toggle="tab">{{ 'icon.moduleItems.theme.themeStructure'|icon }} {{ 'module.appearance.theme.themeStructure'|trans }}</a></li>
+            <li role="presentation"><a href="#themeSettings" aria-controls="themeSettings" role="tab" data-toggle="tab">{{ 'icon.moduleItems.theme.themeSettings'|icon }} {{ 'module.appearance.theme.themeSettings'|trans }}</a></li>
+        </ul>
+
+        <!-- Tab panes -->
+        <div class="tab-content">
+            <div role="tabpanel" class="tab-pane fade d-padding-top-20 in active" id="themeStructure">
+                {% include 'SamanAppearanceBundle:Theme:element/_editThemeStructure.html.twig' %}
+            </div>
+            <div role="tabpanel" class="tab-pane fade d-padding-top-20" id="themeSettings">
+                {% include 'SamanAppearanceBundle:Theme:element/_editThemeSettings.html.twig' %}
+            </div>
+        </div>
+    </div>    
+{% endblock %}
+
+{% block footer %}{% endblock %}

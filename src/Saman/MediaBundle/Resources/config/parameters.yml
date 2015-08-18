@@ -1,0 +1,10 @@
+parameters:
+    saman_media.media:
+        rootDirectory: %saman.filesystems.local.directory%
+        environment: %kernel.environment%
+        allowedMimeTypes:
+            - 'image/jpeg'
+            - 'image/png'
+            - 'image/gif'
+            - 'application/octet-stream'
+            - 'application/pdf'

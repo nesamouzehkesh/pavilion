@@ -1,0 +1,3 @@
+saman_config_home:
+    path:     /admin/config
+    defaults: { _controller: SamanConfigBundle:Config:index }

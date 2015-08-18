@@ -1,0 +1,47 @@
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for theme in themesPagination %}
+        <tr>
+            <td>{{ theme.title }}</td>
+            <td>
+                <div class="pull-right">
+                    {{ button(
+                        'action.display', 
+                        {
+                            url: path('saman_appearance_admin_theme_display', {'themeId': theme.id}),
+                            icon: 'icon.display', 
+                            toggleModal: 'theme-view-container', 
+                            action: 'action-display-theme'
+                        }) }}
+                    {{ button(
+                        'action.edit', 
+                        {
+                            url: path('saman_appearance_admin_theme_edit', {'themeId': theme.id}),
+                            icon: 'icon.edit', 
+                            attr: {'data-themeId': theme.id},
+                            action: 'action-edit-theme'
+                        }) }}
+                    {{ button(
+                        'action.delete', 
+                        {
+                            url: path('saman_appearance_admin_theme_delete', {'themeId': theme.id }),
+                            icon: 'icon.delete', 
+                            action: 'action-delete-theme',
+                            attr: {'data-entity-id': theme.id}
+                        }) }}
+                </div>  
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+<div class="navigation">
+    {{ knp_pagination_render(themesPagination) }}
+</div>

@@ -1,0 +1,168 @@
+<script type="text/javascript">
+$(function(){
+    var currentPage = '1';
+    var cont_page = $('#{{ twig_cont_page }}');
+    var cont_themes = $('#{{ twig_cont_themes }}');
+    var cont_theme = $('#{{ twig_cont_theme }}');
+    var parentRowId = 0;
+    var parentColumnId = 0;
+            
+    $('.action-add-theme').click(function(e){
+        displayItemAddEditForm($(this), '{{ twig_form_theme_name }}', '{{ twig_form_theme_cont }}', '{{ twig_url_themes }}', cont_themes, currentPage);       
+    });
+    
+    $('#{{ twig_cont_themes }}').on('click', '.action-pagination', function(e){      
+        e.preventDefault();
+        currentPage = $(this).attr('data-page');
+        displayItems('{{ twig_url_themes }}', cont_themes, currentPage);
+    });
+    
+    $('#{{ twig_cont_themes }}').on('click', '.action-edit-theme', function(e){       
+        var displayPageUrl = $(this).attr('data-url');
+        var themeId = $(this).attr('data-themeId');
+        
+        displayPage(displayPageUrl, '{{ twig_url_themes }}', cont_themes, currentPage, function(response) {
+            var contThemeStructure = $('#cont-theme-structure');
+            fetchThemeStructure(themeId, contThemeStructure);
+            
+            postSimpleInlineForm(response, 'saman_appearance_theme_setting_form', function(response) {});
+            postSimpleInlineForm(response, 'saman_appearance_theme_raw_structure_form', function(response) {});
+            
+            response.find('#saman_appearance_theme_raw_structure_form_isRawStructure').change(function() {
+                var isRawStructure = $(this).is(":checked");
+                simpleGet('{{ path('saman_appearance_admin_theme_structure_set_type') }}', {themeId: themeId, isRawStructure: isRawStructure}, function(response) {
+                    if (response.success == true) {
+                        if (isRawStructure == true) {
+                            $('#cont-theme-structure').fadeOut();
+                            $('#cont-theme-structure-header').hide();
+                            $('#cont-theme-raw-structure').fadeIn();
+                        } else {
+                            $('#cont-theme-raw-structure').fadeOut();
+                            $('#cont-theme-structure-header').show();
+                            $('#cont-theme-structure').fadeIn();
+                        }
+                    }
+                });
+            });
+            
+            response.find('.theme-structure-add-widget').click(function(e) {
+                addWidget(themeId, contThemeStructure, $(this));
+            });
+            
+            response.find('.theme-structure-add-row').click(function(e) {
+                addRow(themeId, contThemeStructure, $(this));
+            });
+
+            response.find('.theme-structure-set-parent').click(function(e) {
+                parentRowId = $(this).attr('data-parentRowId');
+                parentColumnId = $(this).attr('data-parentColumnId');
+            });
+
+            response.find('.theme-structure-publish').click(function(e) {
+                var url = $(this).attr('data-url');
+                simpleGet(url, {}, function(response) {
+                    if (response.success == true) {
+                        bootbox.alert(response.message);
+                    }
+                });    
+            });            
+        });
+    });
+    
+    $('#{{ twig_cont_themes }}').on('click', '.action-display-theme', function(e){
+        displayItem($(this), cont_theme);
+    });
+    
+    $('#{{ twig_cont_themes }}').on('click', '.action-delete-theme', function(e){   
+        deleteItem($(this), '{{ twig_url_themes }}', cont_themes, currentPage);
+    });
+    
+    $( "#input-search").keyup(function(e) {
+        searchItems($(this), '{{ twig_url_themes }}', cont_themes, currentPage);
+    });
+    
+    function fetchThemeStructure(themeId, contThemeStructure)
+    {
+        var url = '{{ path('saman_appearance_admin_theme_structure_display') }}';
+        
+        $.get(url, {themeId: themeId}, function(response) {
+            if (response.success == true) {
+                contThemeStructure.html(response.content);
+                
+                contThemeStructure.find('.theme-structure-add-widget').click(function(e) {
+                    addWidget(themeId, contThemeStructure, $(this));
+                });
+            
+                contThemeStructure.find('.theme-structure-add-row').click(function(e) {
+                    addRow(themeId, contThemeStructure, $(this));
+                });
+            
+                contThemeStructure.find('.theme-structure-edit-widget').click(function(e) {
+                    var url = $(this).attr('data-url');
+                    var widgetId = $(this).attr('data-widgetId');
+                    displaySimpleModalForm(url, {widgetId: widgetId}, 'cont-theme-widget-edit', 'saman_appearance_theme_widget_setting_form');
+                });
+                
+                contThemeStructure.find('.theme-structure-edit-row').click(function(e) {
+                    var url = $(this).attr('data-url');
+                    displaySimpleModalForm(url, {}, 'cont-theme-row-edit', 'saman_appearance_theme_row_setting_form', function(response) {
+                        if (response.success == true) {
+                            fetchThemeStructure(themeId, contThemeStructure);
+                        }
+                    });
+                });
+                
+                contThemeStructure.find('.theme-structure-delete-row').click(function(e) {
+                    var url = $(this).attr('data-url');
+                    
+                    simpleDeleteItem(url, {}, function(response) {
+                        if (response.success == true) {
+                            fetchThemeStructure(themeId, contThemeStructure);
+                        }
+                    });    
+                });
+                
+                contThemeStructure.find('.theme-structure-delete-widget').click(function(e) {
+                    var url = $(this).attr('data-url');
+                    
+                    simpleDeleteItem(url, {}, function(response) {
+                        if (response.success == true) {
+                            fetchThemeStructure(themeId, contThemeStructure);
+                        }
+                    });    
+                });
+                
+                contThemeStructure.find('.theme-structure-set-parent').click(function(e) {
+                    parentRowId = $(this).attr('data-parentRowId');
+                    parentColumnId = $(this).attr('data-parentColumnId');
+                });
+            } else {
+                bootbox.alert(response.message);
+            }            
+        });
+    }
+    
+    function addWidget(themeId, contThemeStructure, button)
+    {
+        var url = button.attr('data-url');
+        //var widgetType = $('#theme-widgetType').val();
+        //var widgetTitle = $('#theme-widgetTitle').val();
+        displaySimpleModalForm(url, {},'cont-theme-row-edit', 'saman_appearance_theme_widget_form', function(response) {
+            if (response.success == true) {
+                fetchThemeStructure(themeId, contThemeStructure);
+            }
+        });
+    }
+    
+    function addRow(themeId, contThemeStructure, button)
+    {
+        var url = button.attr('data-url');
+        var columns = $('#theme-structure-row-columns').val();
+        simpleGet(url, {parentRowId: parentRowId, parentColumnId: parentColumnId, columns: columns}, function(response) {
+            if (response.success == true) {
+                fetchThemeStructure(themeId, contThemeStructure);
+            }
+        }, 'json');
+    }
+});
+</script>

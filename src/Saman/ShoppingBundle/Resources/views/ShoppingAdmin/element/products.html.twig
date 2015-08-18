@@ -1,0 +1,49 @@
+{% set twig_form_item_cont = 'items-form-container' %}
+{% set twig_cont_item = 'item-view-container' %}
+
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for item in itemsPagination %}
+        <tr>
+          <td>{{ item.title }}</td>
+          <td>
+              <div class="pull-right">
+                    {{ button(
+                        'action.display', 
+                        {
+                            url: path('saman_shopping_admin_product_display', {'itemId': item.id}),
+                            icon: 'icon.display', 
+                            toggleModal: twig_cont_item, 
+                            action: 'action-display-item'
+                        }) }}
+                    {{ button(
+                        'action.edit', 
+                        {
+                            url: path('saman_shopping_admin_product_edit', {'itemId': item.id}),
+                            icon: 'icon.edit', 
+                            toggleModal: twig_form_item_cont, 
+                            action: 'action-edit-item'
+                        }) }}
+                    {{ button(
+                        'action.delete', 
+                        {
+                            url: path('saman_shopping_admin_product_delete', {'itemId': item.id }),
+                            icon: 'icon.delete', 
+                            action: 'action-delete-item',
+                        }) }}
+              </div>  
+          </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+<div class="navigation">
+    {{ knp_pagination_render(itemsPagination) }}
+</div>

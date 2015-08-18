@@ -1,0 +1,229 @@
+imports:
+    - { resource: parameters.yml }
+    - { resource: security.yml }
+    - { resource: validation.yml }
+    - { resource: "@SamanCmsBundle/Resources/config/parameters.yml" }
+    - { resource: "@SamanMediaBundle/Resources/config/parameters.yml" }
+    - { resource: "@SamanLabelBundle/Resources/config/parameters.yml" }
+    - { resource: "@SamanShoppingBundle/Resources/config/parameters.yml" }
+    - { resource: "@SamanConfigBundle/Resources/config/parameters.yml" }
+    - { resource: "@SamanAppearanceBundle/Resources/config/parameters.yml" }
+
+# Framework Configuration        
+framework:
+    #esi:             ~
+    translator:      { fallback: "%locale%" }
+    secret:          "%secret%"
+    router:
+        resource: "%kernel.root_dir%/config/routing.yml"
+        strict_requirements: ~
+    form:            ~
+    csrf_protection: ~
+    validation:      {enabled: true, enable_annotations: false }
+    templating:
+        engines: ['twig']
+        #assets_version: SomeVersionScheme
+    default_locale:  "%locale%"
+    trusted_hosts:   ~
+    trusted_proxies: ~
+    session:
+        # handler_id set to null will use default session handler from php.ini
+        handler_id: ~
+        #handler_id: session.handler.native_file
+        #save_path: %saman.session.directory%
+        
+    fragments:       ~
+    http_method_override: true
+
+# System Parameters        
+parameters:
+    # General parameters
+    generalParam1: 12483920
+    saman.saltmain: 26eyhtri    
+    saman.md5encoder.class: Saman\Library\Service\Md5Encoder
+    saman.numberOfItemsPerPage: 10
+    # Session directory
+    saman.session.directory: "%kernel.root_dir%/sessions"
+    # Filesystems parameters
+    saman.filesystems.local.directory: %kernel.root_dir%/media
+    # Twig parameters
+    saman.twig.function.extension.class: Saman\Library\Twig\TwigFunctionExtension
+    saman.twig.filter.extension.class: Saman\Library\Twig\TwigFilterExtension
+    saman.twig.param.displaySimpleView: true
+    # Helper service parameters
+    saman.helper.param:
+        numberOfItemsPerPage: %saman.numberOfItemsPerPage%
+        
+    saman.saman_select2:
+        resources: ~
+            #SamanCmsBundle.Page: ''
+                
+        
+# Services Configuration        
+services:
+    saman.helper:
+        class: Saman\Library\Service\Helper
+        public: false
+        arguments: 
+            - @translator.default 
+            - @security.context
+            - @form.factory
+            - @router
+            - @templating
+            - @doctrine.orm.default_entity_manager
+            - @knp_paginator
+            - @validator
+            - %saman.helper.param%
+
+    saman.request.helper:
+        class: Saman\Library\Service\RequestHelper
+        scope: request
+        arguments: [@request, @saman.helper]
+
+    saman.twig.function.extension:
+        class: %saman.twig.function.extension.class%
+        arguments: [@translator.default]
+        tags:
+             - { name: twig.extension }    
+             
+    saman.twig.filter.extension:
+        class: %saman.twig.filter.extension.class%
+        arguments: [@translator.default]
+        tags:
+             - { name: twig.extension }  
+             
+    saman.md5encoder:
+        class: %saman.md5encoder.class%
+        arguments: ["%saman.saltmain%"]
+    
+# Twig Configuration
+twig:
+    debug:            "%kernel.debug%"
+    strict_variables: "%kernel.debug%"
+    globals:
+        saman_twig_param_displaySimpleView: "%saman.twig.param.displaySimpleView%"
+    form:
+        resources:
+            - 'SamanMediaBundle:Form:_collection_widget.html.twig'
+            - 'SamanMediaBundle:Form:_icon_widget.html.twig'
+            - 'SamanMediaBundle:Form:_media_widget.html.twig'
+            - 'SamanMediaBundle:Form:_multiple_widget.html.twig'
+            - 'SamanMediaBundle:Form:_select2_widget.html.twig'
+            - 'SamanMediaBundle:Form:_toggle_widget.html.twig'
+            - 'SamanMediaBundle:Form:_colorpicker_widget.html.twig'
+            
+
+# Assetic Configuration
+assetic:
+    debug:          "%kernel.debug%"
+    use_controller: false
+    bundles:        [SamanMediaBundle]
+    #java: /usr/bin/java
+    filters:
+        cssrewrite: ~
+        #closure:
+        #    jar: "%kernel.root_dir%/Resources/java/compiler.jar"
+        #yui_css:
+        #    jar: "%kernel.root_dir%/Resources/java/yuicompressor-2.4.7.jar"
+
+# Doctrine Configuration
+doctrine:
+    dbal:
+        driver:   "%database_driver%"
+        host:     "%database_host%"
+        port:     "%database_port%"
+        dbname:   "%database_name%"
+        user:     "%database_user%"
+        password: "%database_password%"
+        charset:  UTF8
+        # if using pdo_sqlite as your database driver, add the path in parameters.yml
+        # e.g. database_path: "%kernel.root_dir%/data/data.db3"
+        # path:     "%database_path%"
+
+    orm:
+        auto_generate_proxy_classes: "%kernel.debug%"
+        auto_mapping: true
+
+# Swiftmailer Configuration
+swiftmailer:
+    transport: "%mailer_transport%"
+    host:      "%mailer_host%"
+    username:  "%mailer_user%"
+    password:  "%mailer_password%"
+    spool:     { type: memory }
+
+# KNP Paginator Configuration
+knp_paginator:
+    page_range: 5                      # default page range used in pagination control
+    default_options:
+        page_name: page                # page query parameter name
+        sort_field_name: sort          # sort field query parameter name
+        sort_direction_name: direction # sort direction query parameter name
+        distinct: true                 # ensure distinct results, useful when ORM queries are using GROUP BY statements
+    template:
+        pagination: ::twig/pagination.html.twig     # sliding pagination controls template
+        sortable: KnpPaginatorBundle:Pagination:sortable_link.html.twig # sort link template
+        
+# CK Editor Configuration
+ivory_ck_editor:
+    default_config: default
+    configs:
+        default:
+            toolbar: "default_toolbar"
+        simple:
+            toolbar: "simple_toolbar"
+    toolbars:
+        configs:
+            default_toolbar: [[ 'Source' ],  [ 'Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord', '-', 'Undo', 'Redo'], [ 'Font','FontSize','TextColor'], [ 'Bold', 'Italic', 'Underline','-','NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock'], [ 'Link', 'Unlink', '-','Image', 'Table', 'HorizontalRule']]
+            simple_toolbar: [[ 'Bold', 'Italic', 'Underline', 'Strike', 'NumberedList', 'BulletedList'], [ 'Cut', 'Copy', 'Paste','PasteFromWord', '-', 'Undo', 'Redo'] ]
+         
+# Liip Imagine Configuration
+liip_imagine:
+    resolvers:
+        default:
+            web_path:
+                web_root: %kernel.root_dir%/../web
+                cache_prefix:       mediacache/%kernel.environment%
+    loaders:
+        default:
+            filesystem:
+                data_root: %saman.filesystems.local.directory%
+
+    driver:           gd
+    cache:             default
+    data_loader:       default
+    filter_sets:
+      origin:
+         quality: 100
+      t_400_400:
+         quality: 100
+         filters:
+            thumbnail: { size: [400, 400], mode: outbound }
+      t_200_200:
+         quality: 100
+         filters:
+            thumbnail: { size: [200, 200], mode: outbound }
+      t_100_100:
+         quality: 90
+         filters:
+            thumbnail: { size: [100, 100], mode: outbound }
+      t_50_50:
+         quality: 80
+         filters:
+            thumbnail: { size: [50, 50], mode: outbound }
+
+# Gaufrette Configuration
+# Gaufrette is a PHP 5.3+ library providing a filesystem abstraction layer
+knp_gaufrette:
+    adapters:
+        saman_local:
+            local:
+                directory: %saman.filesystems.local.directory%
+                create:     true
+    filesystems:
+        saman_local:
+            adapter:    saman_local
+            alias:      saman_local_filesystem
+            
+            
+           

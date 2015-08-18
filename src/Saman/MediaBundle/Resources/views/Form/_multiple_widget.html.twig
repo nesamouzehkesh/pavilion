@@ -1,0 +1,97 @@
+{% block saman_multiple_widget %}
+{% spaceless %}
+    
+{% set parentFullName = full_name %}
+{% set i = 0 %}
+{# 
+Form Variables Reference
+http://symfony.com/doc/current/reference/forms/twig_reference.html#reference-form-twig-variables 
+#}
+<ul class="saman_multiple_type d-saman-multiple-form" data-prototype="{{ form_widget(form.saman_collection.vars.prototype)|e }}"> {#|filterMultiplePrototype#}
+    {% for collection in form.saman_collection %}
+        <li class="d-margin-top-20">
+            {{ form_row(collection) }}
+        </li>
+    {% endfor %}
+</ul>
+
+<script>
+$(function() { 
+    var $collectionHolder;
+
+    // setup an "add new item" link
+    var $addTagLink = $('<a href="#" class="btn btn-primary btn-sm add_tag_link">{{ 'icon.add'|icon }}Add new item</a>');
+    var $newLinkLi = $('<li></li>').append($addTagLink);
+
+    jQuery(document).ready(function() {
+        // Get the ul that holds the collection of saman_multiple_type items
+        $collectionHolder = $('ul.saman_multiple_type');
+
+        // add a delete link to all of the existing saman_multiple_type items form li elements
+        $collectionHolder.find('li').each(function() {
+            addTagFormDeleteLink($(this));
+        });
+
+        // add the "add new item" anchor and li to the saman_multiple_type ul
+        $collectionHolder.append($newLinkLi);
+
+        $('.delete_saman_multiple_typ').click(function(e) {
+            // prevent the link from creating a "#" on the URL
+            e.preventDefault();
+            var $tagFormLi = $(this).closest('li');
+            // remove the li for the saman_multiple_type form
+            $tagFormLi.remove();
+        });
+
+        // count the current form inputs we have (e.g. 2), use that as the new
+        // index when inserting a new item (e.g. 2)
+        $collectionHolder.data('index', $collectionHolder.find('li').length);
+
+        $addTagLink.on('click', function(e) {
+            // prevent the link from creating a "#" on the URL
+            e.preventDefault();
+
+            // add a new saman_multiple_type form (see next code block)
+            addTagForm($collectionHolder, $newLinkLi);
+        });
+    });
+
+    function addTagForm($collectionHolder, $newLinkLi) {
+        // Get the data-prototype explained earlier
+        var prototype = $collectionHolder.data('prototype');
+
+        // get the new index
+        var index = $collectionHolder.data('index');
+
+        // Replace '__name__' in the prototype's HTML to
+        // instead be a number based on how many items we have
+        var newForm = prototype.replace(/__name__/g, index);
+
+        // increase the index with one for the next item
+        $collectionHolder.data('index', index + 1);
+
+        // Display the form in the page in an li, before the "Add a tag" link li
+        var $newFormLi = $('<li class="d-margin-top-10"></li>').append(newForm);
+        $newLinkLi.before($newFormLi);
+
+        // add a delete link to the new form
+        addTagFormDeleteLink($newFormLi);        
+    }  
+
+    function addTagFormDeleteLink($tagFormLi) {
+        var $removeFormA = $('<div class="pull-right"><a href="#" style="position: relative; top: -10px">{{ 'icon.delete'|icon }} Remove</a></div>');
+        $tagFormLi.append($removeFormA);
+        //$tagFormLi.prepend($removeFormA);
+
+        $removeFormA.on('click', function(e) {
+            // prevent the link from creating a "#" on the URL
+            e.preventDefault();
+
+            // remove the li for the saman_multiple_type form
+            $tagFormLi.remove();
+        });
+    }    
+})
+</script>
+{% endspaceless %}
+{% endblock %}

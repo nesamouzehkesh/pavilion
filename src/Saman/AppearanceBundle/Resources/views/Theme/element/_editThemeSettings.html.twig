@@ -1,0 +1,18 @@
+<div class="d-title-m">{{ template.title }}</div>
+<div class="d-description d-margin-bottom-20">{{ template.description }}</div>
+
+{% set form = themeSettingForm %}
+{% form_theme form '::twig/formRow.html.twig' %}
+{% set settings = template.settings %}
+
+{{ form_start(form) }}
+    {{ form_errors(form) }}
+
+    {% for key, setting in settings %}
+        {{ form_row(form[key]) }}
+    {% endfor %}
+
+    <div class="d-margin-top-20">
+        <button type="submit" class="btn btn-primary">{{ 'action.save'|trans }}</button>
+    </div>
+{{ form_end(form) }}

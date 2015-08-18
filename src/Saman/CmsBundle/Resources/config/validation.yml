@@ -1,0 +1,14 @@
+Saman\CmsBundle\Entity\Page:
+    # Validation the entire Page, The error message in form will display as
+    constraints:
+        - Saman\CmsBundle\Validator\Constraints\ValidPage: ~    
+    properties:
+        title:
+#            - Email:
+#                message: The email "{{ value }}" is not a valid email.
+#                checkMX: true
+            - Length:
+                min: 5
+                max: 50
+                minMessage: "Your first name must be at least {{ limit }} characters long"
+                maxMessage: "Your first name cannot be longer than {{ limit }} characters long"                
