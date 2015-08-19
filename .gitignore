@@ -15,7 +15,6 @@ log/
 /web/theme/*
 /web/mediacache/*
 /web/img/users
-/web/.htaccess
 /components
 /app/config/subdomains/*
 /web/imagecache/*
