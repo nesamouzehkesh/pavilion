@@ -1,0 +1,10 @@
+{% extends "::base_dashboard.html.twig" %}
+
+{% block body %}
+    <h3>Welcome to the System Dashboard page</h3>
+    {% for module, url in saman_app_modules %}
+        <a href="{{ path(url) }}" class="d-dashboard-module" title="{{ ('module.' ~ module ~ '.description')|trans }}">
+            {{ ('module.' ~ module ~ '.icon')|icon }}<br>{{ ('module.' ~ module ~ '.title')|trans }}
+        </a>
+    {% endfor %}
+{% endblock %}

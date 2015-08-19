@@ -25,7 +25,7 @@
     function searchItems(searchInput, url_items, cont_items, currentPage)
     {
         var newSearchText = searchInput.val();
-        if (searchText != newSearchText) {
+        if (searchText !== newSearchText) {
             displayItems(url_items, cont_items, currentPage);
         }
         searchText = newSearchText;
@@ -39,7 +39,7 @@
         bootbox.confirm(messageDeleteItem, function(result) {
             if (result) {
                 $.post(deleteActionUrl, function(response) {
-                    if (response.success == true) {
+                    if (response.success === true) {
                         displayItems(currentUrl, cont_items, currentPage);
                         getFlashBag();
                     } else{
@@ -52,28 +52,13 @@
         });
     }
     
-    function simpleGet(url, param, callback) 
-    {
-        $.get(url, param, function(response) {
-            if (response.success != true) {
-                bootbox.alert(response.message);
-            }
-            
-            if (callback != undefined) {
-                setTimeout(function() {        
-                    callback(response);
-                }, 300);                
-            }
-        }, 'json');
-    }
-    
     function getFlashBag()
     {
         var flashBagContainer = $('#flashBag-container');
         var url = flashBagContainer.attr('data-url');
 
         $.get(url, function(response) {
-            if (response.content != undefined) {
+            if (response.content !== undefined) {
                 
                 flashBagContainer.html(response.content);
                 flashBagContainer.show();
@@ -81,245 +66,13 @@
             }            
         }, 'json');
     }    
-    
-    function simpleDeleteItem(url, param, callback)
-    {
-        var messageDeleteItem = '{{ twig_message_delete_item }}';
-        bootbox.confirm(messageDeleteItem, function(result) {
-            if (result) {
-                $.post(url, function(response) {
-                    if (response.success != true) {
-                        bootbox.alert(response.message);
-                    }
-                    
-                    if (callback != undefined) {
-                        setTimeout(function() {        
-                            callback(response);
-                        }, 300);                        
-                    }
-                }, 'json');
-            } else {
-                return true;
-            }
-        });
-    }
-    
-    function displayPage(displayPageUrl, currentUrl, cont_items, currentPage, callback)
-    {
-        var headerContainer = $('#headerContainer');
-        $.get(displayPageUrl, function(response) {
-            if (response.success == true) {
-                cont_items.html(response.content);
-                headerContainer.hide();
-                cont_items.find('.action-back').click(function(e) {
-                    e.preventDefault();
-                    $.get(currentUrl, {page: currentPage}, function(response) {
-                        if (response.success == true) {
-                            cont_items.html(response.content);
-                            headerContainer.show();
-                        } else {
-                            bootbox.alert(response.message);
-                            headerContainer.show();
-                        }
-                    }, 'json');                     
-                });
-            } else {
-                bootbox.alert(response.message);
-            }
 
-            if (callback != undefined) {
-                setTimeout(function() {        
-                    callback(cont_items);
-                }, 300);                    
-            }
-        }, 'json');
-    }
-
-    function postSimpleInlineForm(cont_items, form_item_name, callback)
-    {
-        var forms = ['[name="' + form_item_name + '"]'];
-        $(forms.join(',')).submit(function(e){
-            e.preventDefault();
-            postForm($(this), function(response) {
-                // If content has been defined then we display this form again, probably there is a form validation error
-                if (response.content != undefined) {
-                    cont_items.html(response.content);
-                } else {
-                    if (response.success == true) {
-                        bootbox.alert('response.message');
-                    } else {
-                        bootbox.alert(response.message);
-                    }
-                    
-                    if (callback != undefined) {
-                        setTimeout(function() {        
-                            callback(cont_items);
-                        }, 300);                    
-                    }
-                }
-            }, 'json');
-            return false;
-        });    
-    }
-
-    function postSimpleModalForm(response, form, form_item_cont, form_item_name, callback)
-    {
-        form.html(response.content);
-
-        var forms = ['[name="' + form_item_name + '"]'];
-        $(forms.join(',')).submit(function(e){
-            e.preventDefault();
-            postForm($(this), function(response) {
-                // If content has been defined then we display this form again, probably there is a form validation error
-                if (response.content != undefined) {
-                    postSimpleModalForm(response, form, form_item_cont, form_item_name, callback);
-                } else {
-                    if (response.success == true) {
-                        form.modal('toggle');
-                    } else {
-                        bootbox.alert(response.message);
-                    }
-                    
-                    if (callback != undefined) {
-                        setTimeout(function() {        
-                            callback(response);
-                        }, 300);
-                    }
-                }
-            }, 'json');
-            return false;
-        });        
-    }
-    
-    {#
-    Display add/edit module form and returns the form as callback parameter if 
-    form display correctly, prepare and handle the post action.
-    #}
-    function displayItemAddEditForm(button, form_item_name, form_item_cont, currentUrl, cont_items, currentPage, callback)
-    {
-        var url = button.attr('data-url');
-        var form = $('#' + form_item_cont);
-        $.get(url, function(response) {
-            if (response.success == true) {
-                postItemAddEditForm(response, form, form_item_name, form_item_cont, currentUrl, cont_items, currentPage);
-                if (callback != undefined) {
-                    setTimeout(function() {      
-                        callback(form);
-                    }, 300);
-                }                 
-            } else {
-                bootbox.alert(response.message);
-            }
-        }, 'json');
-    }
-        
-    function displaySimpleModalForm(url, param, form_item_cont, form_item_name, callback)
-    {
-        var form = $('#' + form_item_cont);
-        $.get(url, param, function(response) {
-            if (response.success == true) {
-                form.modal('toggle');
-                
-                postSimpleModalForm(response, form, form_item_cont, form_item_name, callback);
-            } else {
-                bootbox.alert(response.message);
-            }
-        }, 'json');
-    } 
-        
-    function postSimpleModalForm(response, form, form_item_cont, form_item_name, callback)
-    {
-        form.html(response.content);
-
-        var forms = ['[name="' + form_item_name + '"]'];
-        $(forms.join(',')).submit(function(e){
-            e.preventDefault();
-            postForm($(this), function(response) {
-                // If content has been defined then we display this form again, probably there is a form validation error
-                if (response.content != undefined) {
-                    postSimpleModalForm(response, form, form_item_cont, form_item_name, callback);
-                } else {
-                    if (response.success == true) {
-                        form.modal('toggle');
-                    } else {
-                        bootbox.alert(response.message);
-                    }
-                    
-                    if (callback != undefined) {
-                        setTimeout(function() {        
-                            callback(response);
-                        }, 300);
-                    }
-                }
-            }, 'json');
-            return false;
-        });        
-    }
-        
-    function postItemAddEditForm(response, form, form_item_name, form_item_cont, currentUrl, cont_items, currentPage)
-    {
-        form.html(response.content); 
-        form.show();
-
-        var forms = ['[name="' + form_item_name + '"]'];
-        $(forms.join(',')).submit(function(e){
-            e.preventDefault();
-            postForm($(this), function(response) {
-                // If content has been defined then we display this form again, probably there is a form validation error
-                if (response.content != undefined) {
-                    postItemAddEditForm(response, form, form_item_name, form_item_cont, currentUrl, cont_items, currentPage);
-                } else {
-                    if (response.success == true) {
-                        $('#' + form_item_cont).modal('toggle');
-                        displayItems(currentUrl, cont_items, currentPage);
-                    } else {
-                        bootbox.alert(response.message);
-                    }
-                }
-            }, 'json');
-            return false;
-        });
-    }
-    
-    function actionLink(button)
-    {
-        var url = button.attr('data-url');
-        location.href = url;
-    }
-    
-    function postItemAddEditStaticForm(form_item_name, url)
-    {
-        var forms = ['[name="' + form_item_name + '"]'];
-        $(forms.join(',')).submit(function(e){
-            e.preventDefault();
-            postForm($(this), function(response) {
-                // If content has been defined then we display this form again, probably there is a form validation error
-                if (response.content != undefined) {
-                    postItemAddEditForm(form_item_name);
-                } else {
-                    if (response.success == true) {
-                        if (response.url != undefined) {
-                            location.href = response.url;
-                        } else {
-                            if (response.message != undefined) {
-                                bootbox.alert(response.message);
-                            }
-                        }                        
-                    } else {
-                        bootbox.alert(response.message);
-                    }
-                }
-            }, 'json');
-            return false;
-        });
-    }    
-       
     function displayItem(button, cont_item)
     {
         var url = button.attr('data-url');
         
         $.get(url, function(response) {
-            if (response.success == true) {
+            if (response.success === true) {
                 cont_item.html(response.content);
                 cont_item.show();
             } else {
@@ -333,7 +86,7 @@
     {
         var searchText = $("#input-search").val();
         var param;
-        if ('' != searchText) {
+        if ('' !== searchText) {
             param = {searchText: searchText, page: page};
         } else {
             param = {page: page};
@@ -342,7 +95,7 @@
         loadingMessage(true, cont_items);
         $.get(url, param, function(response) {
             loadingMessage(false, cont_items);
-            if (response.success == true) {
+            if (response.success === true) {
                 cont_items.html(response.content);
             } else {
                 bootbox.alert(response.message);
@@ -362,24 +115,92 @@
                 simpleGet(url, {sortIds: sortIds}, callback);
             }
         });
-    }    
+    }
+    
+    {#
+    Display add/edit module form and returns the form as callback parameter if 
+    form display correctly, prepare and handle the post action.
+    #}
+    function displayItemForm(button, form_item_name, form_item_cont, currentUrl, cont_items, currentPage, callback)
+    {
+        var url = button.attr('data-url');
+        var form = $('#' + form_item_cont);
+        $.get(url, function(response) {
+            if (response.success === true) {
+                postItemForm(response, form, form_item_name, form_item_cont, currentUrl, cont_items, currentPage);
+                if (callback !== undefined) {
+                    setTimeout(function() {      
+                        callback(form);
+                    }, 300);
+                }                 
+            } else {
+                bootbox.alert(response.message);
+            }
+        }, 'json');
+    }
+    
+    function simpleGet(url, param, callback) 
+    {
+        $.get(url, param, function(response) {
+            if (response.success !== true) {
+                bootbox.alert(response.message);
+            }
+            
+            if (callback !== undefined) {
+                setTimeout(function() {        
+                    callback(response);
+                }, 300);                
+            }
+        }, 'json');
+    }
+       
+    function actionLink(button)
+    {
+        var url = button.attr('data-url');
+        location.href = url;
+    }
     
     function loadingMessage(status, cont_items)
     {
-        if (true == status) {
+        if (true === status) {
             cont_items.addClass("d-loading-background");
         } else {
             cont_items.removeClass("d-loading-background");
         }
     }
+       
+    function postItemForm(response, form, form_item_name, form_item_cont, currentUrl, cont_items, currentPage)
+    {
+        form.html(response.content); 
+        form.show();
+
+        var forms = ['[name="' + form_item_name + '"]'];
+        $(forms.join(',')).submit(function(e){
+            e.preventDefault();
+            postFormContent($(this), function(response) {
+                // If content has been defined then we display this form again, probably there is a form validation error
+                if (response.content !== undefined) {
+                    postItemForm(response, form, form_item_name, form_item_cont, currentUrl, cont_items, currentPage);
+                } else {
+                    if (response.success === true) {
+                        $('#' + form_item_cont).modal('toggle');
+                        displayItems(currentUrl, cont_items, currentPage);
+                    } else {
+                        bootbox.alert(response.message);
+                    }
+                }
+            }, 'json');
+            return false;
+        });
+    }    
     
-    function postForm($form, callback)
+    function postFormContent($form, callback)
     {
       var values = {};
       var fields = {};
       
       // If CKEDITOR is defined in this form, then we update it content
-      if (typeof CKEDITOR != 'undefined') {
+      if (typeof CKEDITOR !== 'undefined') {
           for (var instanceName in CKEDITOR.instances){
               CKEDITOR.instances[instanceName].updateElement();
           }
@@ -389,9 +210,9 @@
           var fieldName = field.name;
           var fieldLength = fieldName.length;
           
-          if ('[]' == fieldName.substr(fieldLength - 2, fieldLength)) {
+          if ('[]' === fieldName.substr(fieldLength - 2, fieldLength)) {
               var fieldNewName = fieldName.substr(0, fieldLength - 2);
-              if (fields[fieldNewName] == undefined) {
+              if (fields[fieldNewName] === undefined) {
                   fields[fieldNewName] = 0;
               } else {
                   fields[fieldNewName] = fields[fieldNewName] + 1;

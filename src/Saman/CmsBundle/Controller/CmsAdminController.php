@@ -12,10 +12,10 @@ class CmsAdminController extends BaseController
      * @param \Symfony\Component\HttpFoundation\Request $request
      * @return type
      */
-    public function displayItemsAction(Request $request)
+    public function displayPagesAction(Request $request)
     {
         // Get search parameters from HTTP request
-        $searchParam = $this->getBaseService()
+        $searchParam = $this->getAppService()
             ->getSearchParam($request);
 
         // Get pages based on $searchParam
@@ -23,7 +23,7 @@ class CmsAdminController extends BaseController
             ->getPages($searchParam);
 
         // Get pagination
-        $pagesPagination = $this->getBaseService()
+        $pagesPagination = $this->getAppService()
             ->paginate($request, $pagesQuery);
 
         // Get the view of pages list
@@ -35,7 +35,7 @@ class CmsAdminController extends BaseController
         // If user use the pagination to view other pages then we just return the 
         // $pagesView as a jason response array
         if ($request->get('headless')) {
-            return $this->getBaseService()->getJsonResponse(true, null, $pagesView);
+            return $this->getAppService()->getJsonResponse(true, null, $pagesView);
         } 
 
         return $this->render(
@@ -52,7 +52,7 @@ class CmsAdminController extends BaseController
      * @return type
      * @throws type
      */
-    public function displayItemAction($itemId)
+    public function displayPageAction($itemId)
     {
         try {
             // Get Page
@@ -79,10 +79,10 @@ class CmsAdminController extends BaseController
      * @param \Symfony\Component\HttpFoundation\Request $request
      * @return type
      */
-    public function addItemAction(Request $request)
+    public function addPageAction(Request $request)
     {
         try {
-            // Get Page
+            // Create new Page
             $page = $this->getCmsAdminService()->getPage(null);
             
             return $this->getCmsAdminService()->addEditItem($request, $page);
@@ -100,10 +100,13 @@ class CmsAdminController extends BaseController
      * @param type $itemId
      * @return type
      */
-    public function editItemAction(Request $request, $itemId)
+    public function editPageAction(Request $request, $itemId)
     {
         try {
-            return $this->getCmsAdminService()->addEditItem($request, $itemId);
+            // Get Page
+            $page = $this->getCmsAdminService()->getPage($itemId);
+            
+            return $this->getCmsAdminService()->addEditItem($request, $page);
         } catch (\Exception $ex) {
             return $this->getExceptionResponse(
                 'alert.error.canNotDeleteItem', 
@@ -118,19 +121,19 @@ class CmsAdminController extends BaseController
      * @param type $itemId
      * @return type
      */
-    public function deleteItemAction(Request $request, $itemId)
+    public function deletePageAction(Request $request, $itemId)
     {
         try {
             // Get a Page based on its ID ($itemId)
             $page = $this->getCmsAdminService()->getPage($itemId);
             
             // Delete this page
-            $this->getBaseService()->deleteEntity($page);
+            $this->getAppService()->deleteEntity($page);
             
             // Add success message in the FlashBag
             $this->addFlashBag('success', 'alert.success.itemRemoved');
             
-            return $this->getBaseService()->getJsonResponse(true);
+            return $this->getAppService()->getJsonResponse(true);
         } catch (\Exception $ex) {
             return $this->getExceptionResponse(
                 'alert.error.canNotDeleteItem', 

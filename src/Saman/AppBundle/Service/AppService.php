@@ -1,6 +1,6 @@
 <?php
 
-namespace Saman\Library\Service;
+namespace Saman\AppBundle\Service;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Routing\Router;
@@ -14,13 +14,12 @@ use Symfony\Component\Validator\ValidatorInterface;
 use Doctrine\ORM\EntityManager;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Knp\Component\Pager\Paginator;
-use Saman\Library\Base\BaseServiceResponse;
 use Saman\MediaBundle\Service\MediaService;
 use Saman\ConfigBundle\Service\ConfigService;
 use Saman\MediaBundle\Form\Type\MultipleType;
 use Saman\Library\Exception\VisibleHttpException;
 
-class BaseService 
+class AppService 
 {
     const PARAM_SEARCH_TEXT = 'searchText';
     const PARAM_PAGE = 'page';
@@ -91,12 +90,6 @@ class BaseService
     
     /**
      *
-     * @var BaseServiceResponse 
-     */
-    protected $serviceResponse;
-    
-    /**
-     *
      * @var Paginator $paginator
      */
     protected $paginator;
@@ -145,7 +138,6 @@ class BaseService
         $this->em = $em;
         $this->paginator = $paginator;
         $this->validator = $validator;
-        $this->serviceResponse = new BaseServiceResponse();
         $this->helperParameters = $helperParameters;
     }    
     

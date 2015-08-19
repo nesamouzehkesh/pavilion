@@ -51,9 +51,13 @@ class BaseController extends Controller
      * @param type $code
      * @throws VisibleHttpException
      */
-    public function createVisibleHttpException($message = null, \Exception $previous = null, $code = 0)
+    public function createVisibleHttpException(
+        $message = null, 
+        \Exception $previous = null, 
+        $code = 0
+        )
     {
-        return $this->getBaseService()
+        return $this->getAppService()
             ->createVisibleHttpException($message, $previous, $code);
     }
     
@@ -65,9 +69,14 @@ class BaseController extends Controller
      * @param type $responseParam
      * @return type
      */
-    public function getJsonResponse($success, $message = null, $content = null, $responseParam = null)
+    public function getJsonResponse(
+        $success, 
+        $message = null, 
+        $content = null, 
+        $responseParam = null
+        )
     {
-        return $this->getBaseService()
+        return $this->getAppService()
             ->getJsonResponse($success, $message, $content, $responseParam);
     }
     
@@ -79,17 +88,17 @@ class BaseController extends Controller
      */
     public function getExceptionResponse($message, $ex = null, $responseParam = null)
     {
-        return $this->getBaseService()
+        return $this->getAppService()
             ->getExceptionResponse($message, $ex, $responseParam);
     }    
     
     /**
      * 
-     * @return \Saman\Library\Service\BaseService
+     * @return \Saman\AppBundle\Service\AppService
      */
-    public function getBaseService()
+    public function getAppService()
     {
-        return $this->getService('saman.baseService');
+        return $this->getService('saman.appService');
     }
     
     /**
@@ -118,7 +127,6 @@ class BaseController extends Controller
      */
     public function transMessage($message)
     {
-        return $this->getBaseService()
-            ->transMessage($message);
+        return $this->getAppService()->transMessage($message);
     }
 }

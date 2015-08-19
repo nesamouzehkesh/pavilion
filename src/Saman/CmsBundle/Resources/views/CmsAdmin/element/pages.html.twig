@@ -9,7 +9,7 @@
     <tbody>
     {% for page in pagesPagination %}
         <tr>
-          <td>{{ page.title }}</td>
+            <td><a href="{{ path('saman_cms_page', {'url': page.url}) }}" target="_blank">{{ page.title }}</a></td>
           <td>{{ page.url }}</td>
           <td>
               <div class="pull-right">

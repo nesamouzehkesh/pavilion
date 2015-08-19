@@ -6,7 +6,6 @@ use Doctrine\ORM\EntityRepository;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Saman\Library\Service\BaseService;
 use Saman\CmsBundle\Entity\Page;
 
 /**
@@ -14,12 +13,6 @@ use Saman\CmsBundle\Entity\Page;
  */
 class PageFormType extends AbstractType
 {
-    /**
-     *
-     * @var Helper $baseService
-     */
-    private $baseService;
-    
     /**
      *
      * @var type 
@@ -37,11 +30,10 @@ class PageFormType extends AbstractType
      * @param type $parameters
      */
     public function __construct(
-        BaseService $baseService, 
         Page $page,
-        $parameters = array())
+        $parameters = array()
+        )
     {
-        $this->baseService = $baseService;
         $this->parameters = $parameters;
         $this->page = $page;
     }
@@ -62,7 +54,7 @@ class PageFormType extends AbstractType
     {
         $builder->add('title', 'text');
         $builder->add('url', 'text');
-        $builder->add('content', 'ckeditor');//ckeditor
+        $builder->add('content', 'ckeditor');
         $builder->add('icon', 'saman_icon', array(
             'required' => false,
         ));
@@ -78,23 +70,6 @@ class PageFormType extends AbstractType
                     ->where('l.deleted = 0');
             }
         ));
-    
-        $builder->add('pages', 'saman_select2', array(
-            'required' => false,
-            'mapped' => false,
-            'class' => 'SamanCmsBundle:Page',
-            'data' => array(1, 2),
-            'minimumInputLength' => 0,
-            'multiple' => false,
-            'placeholder' => 'ss',
-            'allowClear' => true,
-            ));
-        /*
-        $builder->add('settings', 'saman_collection', array(
-            'fields' => $this->parameters['settings'],
-            'data' => $this->page->getSettings()
-            ));
-        */
     }
 
     /**

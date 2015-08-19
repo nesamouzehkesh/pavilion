@@ -5,7 +5,6 @@ namespace Saman\MediaBundle\Service;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Saman\Library\Service\Helper;
-use Saman\Library\Map\EntityMap;
 use Saman\MediaBundle\Repository\Select2Repository;
 
 class Select2Service
@@ -82,23 +81,23 @@ class Select2Service
     /**
      * Decode class name
      * 
-     * @param type $classId
+     * @param type $class
      * @return type
      */
     public static function decodeClass($class)
     {
-        return $class = (base64_decode($class));
+        return base64_decode($class);
     }
     
     /**
      * Encode class name
      * 
-     * @param type $classId
+     * @param type $class
      * @return type
      */
     public static function encodeClass($class)
     {
-        return $class = (base64_encode($class));
+        return base64_encode($class);
     }
     
     /**
@@ -108,6 +107,6 @@ class Select2Service
      */
     private function getMediaRepository()
     {
-        return $this->helper->getRepository(EntityMap::MEDIA_MEDIA);
+        return $this->helper->getRepository('SamanMediaBundle:Media');
     }
 }

@@ -8,6 +8,7 @@ use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Doctrine\ORM\NoResultException;
 use Saman\Library\Doctrine\BaseEntityRepository;
+use Saman\UserBundle\Entity\Role;
 
 /**
  * UserRepository
@@ -17,6 +18,25 @@ use Saman\Library\Doctrine\BaseEntityRepository;
  */
 class UserRepository extends BaseEntityRepository implements UserProviderInterface
 {
+    /**
+     * Get all users
+     * 
+     * @param type $order
+     * @param type $readOnly
+     * @return type
+     */
+    public function findAllUsers()
+    {
+        $qb = $this->getQueryBuilder()
+            ->select('u')
+            ->from('SamanUserBundle:User', 'u')
+            ->leftJoin('u.roles', 'r')
+            ->where('u.deleted = 0 AND r.role = :role')
+            ->setParameter('role', Role::ROLE_USER);
+            
+        return $qb->getQuery();
+    }
+    
     /**
      * 
      * @param type $username

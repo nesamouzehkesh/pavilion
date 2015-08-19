@@ -1,7 +1,0 @@
-parameters:
-    saman_label.label.class: Saman\LabelBundle\Service\Label
-
-services:
-    saman_label.label:
-        class: %saman_label.label.class%
-        arguments: [@saman.baseService, %saman_label.label%]

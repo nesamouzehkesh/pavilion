@@ -12,6 +12,9 @@ use Saman\Library\Base\BaseEntity;
  */
 class Role extends BaseEntity implements RoleInterface
 {
+    const ROLE_ADMIN = 'ROLE_ADMIN';
+    const ROLE_USER = 'ROLE_USER';
+    
     /**
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id()
@@ -36,6 +39,8 @@ class Role extends BaseEntity implements RoleInterface
 
     public function __construct()
     {
+        parent::__construct();
+        
         $this->users = new ArrayCollection();
     }
     

@@ -20,9 +20,8 @@ class PageRepository extends BaseEntityRepository
      */
     public function getPageForView($url)
     {
-        $qb = $this->getEntityManager()->createQueryBuilder();
-        
-        $qb->select('page.title, page.content')
+        $qb = $this->getQueryBuilder()
+            ->select('page.title, page.content')
             ->from('SamanCmsBundle:Page', 'page')
             ->where('page.url IN (:urls) AND page.deleted = 0')
             ->setParameter('urls', array($url, sprintf('/%s', $url)));
@@ -39,15 +38,11 @@ class PageRepository extends BaseEntityRepository
      */
     public function getPagesListForView()
     {
-        $qb = $this->getEntityManager()->createQueryBuilder();
-        
-        $qb->select('page.url, page.title')
+        $qb = $this->getQueryBuilder()
+            ->select('page.url, page.title')
             ->from('SamanCmsBundle:Page', 'page')
             ->where('page.deleted = 0')
             ->orderBy('page.title');
-        
-        //$ids = array_map('current', $result);
-        //$ids = array_column($result, "id");
         
         return $qb->getQuery()->getScalarResult();
     }
@@ -61,17 +56,13 @@ class PageRepository extends BaseEntityRepository
      */
     public function getPage($value, $key = 'id')
     {
-        $qb = $this->getEntityManager()->createQueryBuilder();
-        
-        $qb->select('page')
+        $qb = $this->getQueryBuilder()
+            ->select('page')
             ->from('SamanCmsBundle:Page', 'page')
             ->where(sprintf('page.%s = :%s AND page.deleted = 0', $key, $key))
             ->setParameter($key, $value);
 
-        $query = $qb->getQuery();
-        $result = $query->getOneOrNullResult();
-        
-        return $result;
+        return $qb->getQuery()->getOneOrNullResult();
     }    
     
     /**
@@ -81,23 +72,21 @@ class PageRepository extends BaseEntityRepository
      * @param type $readOnly
      * @return type
      */
-    public function getPages($param = array(), $justQuery = true, $order = 'page.url', $readOnly = true)
+    public function getPages($param = array(), $justQuery = true, $order = 'page.id', $readOnly = true)
     {
         $hydrationMode = $readOnly? Query::HYDRATE_ARRAY : null;
-        $qb = $this->getQueryBuilder();
-        
-        $qb->select('page')
+        $qb = $this->getQueryBuilder()
+            ->select('page')
             ->from('SamanCmsBundle:Page', 'page')
             ->where('page.deleted = 0')
             ->search('page.title', $param)
             ->orderBy($order);
         
         $query = $qb->getQuery();
-        if ($justQuery) {
-            return $query;
-        } else {
-            $result = $query->getResult($hydrationMode);
-            return $result;
+        if (!$justQuery) {
+            return $query->getResult($hydrationMode);        
         }
+        
+        return $query;
     }
 }

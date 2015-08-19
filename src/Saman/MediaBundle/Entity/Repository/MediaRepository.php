@@ -3,7 +3,6 @@
 namespace Saman\MediaBundle\Entity\Repository;
 
 use Saman\Library\Doctrine\BaseEntityRepository;
-use Saman\Library\Map\EntityMap;
 use Doctrine\ORM\Query;
 
 /**
@@ -37,7 +36,7 @@ class MediaRepository extends BaseEntityRepository
         $qb = $this->getEntityManager()->createQueryBuilder();
         
         $qb->select('media')
-            ->from(EntityMap::MEDIA_MEDIA, 'media')
+            ->from('SamanMediaBundle:Media', 'media')
             ->where(sprintf('media.%s = :%s AND media.deleted = 0', $key, $key))
             ->setParameter($key, $value);
 
@@ -60,7 +59,7 @@ class MediaRepository extends BaseEntityRepository
         $qb = $this->getQueryBuilder();
         
         $qb->select('media')
-            ->from(EntityMap::MEDIA_MEDIA, 'media')
+            ->from('SamanMediaBundle:Media', 'media')
             ->where('media.deleted = 0')
             ->search('media.title', $param)
             ->orderBy($order);
@@ -88,7 +87,7 @@ class MediaRepository extends BaseEntityRepository
         $qb = $this->getQueryBuilder();
         
         $qb->select('media')
-            ->from(EntityMap::MEDIA_MEDIA, 'media')
+            ->from('SamanMediaBundle:Media', 'media')
             ->where('media.id IN (:ids)')
             ->setParameter('ids', $ids);
         

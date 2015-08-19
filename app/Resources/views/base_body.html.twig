@@ -1,46 +1,56 @@
-    {% block pageOpenContainer %}
-        {% if twig_cont_page is defined %}
-            <div id="{{ twig_cont_page }}">
-        {% endif %}    
-    {% endblock %}
+{% block pageOpenContainer %}
+    {% if twig_cont_page is defined %}
+        <div id="{{ twig_cont_page }}">
+    {% endif %}    
+{% endblock %}
 
-    {% block flashMessageContainer %}
-        {% for flashMessage in app.session.flashbag.get('notice') %}
-            <div class="flash-message">
-                <em>Notice</em>: {{ flashMessage }}
-            </div>
-        {% endfor %}
-    {% endblock %}
-
-    {% block breadcrumbContainer %}
-        <div class="block">
-            {% block breadcrumb %}{% endblock %}
+{#
+{% block flashMessageContainer %}
+    {% for flashMessage in app.session.flashbag.get('notice') %}
+        <div class="flash-message">
+            <em>Notice</em>: {{ flashMessage }}
         </div>
-    {% endblock %}
-                
-    {% block headerContainer %}
-        <div class="block" id="headerContainer">
-            <div class="row">
-              <div class="col-md-8">{% block header %}{% endblock %}</div>
-              <div class="col-md-4">{% include "::_search.html.twig" %}</div>
-            </div>            
-        </div>
-    {% endblock %}
+    {% endfor %}
+{% endblock %}
+#}
 
-    {% block bodyContainer %}
-        <div class="block">
+{% block breadcrumbContainer %}
+    <div class="block">
+        {% block breadcrumb %}{% endblock %}
+    </div>
+{% endblock %}
+
+{% block headerContainer %}
+    <div class="block" id="headerContainer">
+        <div class="row">
+          <div class="col-md-8">{% block header %}{% endblock %}</div>
+          <div class="col-md-4">
+              {% if twig_show_search is not defined or twig_show_search == true %}
+                  {% include "::_search.html.twig" %}
+              {% endif %}  
+          </div>
+        </div>            
+    </div>
+{% endblock %}
+
+{% block bodyContainer %}
+    <div class="block margin-top-10">
+        <div class="panel panel-default">
+          <div class="panel-body">
             {% block body %}{% endblock %}
-        </div>
-    {% endblock %}
+          </div>
+        </div>        
+    </div>
+{% endblock %}
 
-    {% block footerContainer %}
-        <div class="block">
-            {% block footer %}{% endblock %}
+{% block footerContainer %}
+    <div class="block">
+        {% block footer %}{% endblock %}
+    </div>
+{% endblock %}
+
+{% block pageCloseContainer %}
+    {% if twig_cont_page is defined %}
         </div>
-    {% endblock %}
-                
-    {% block pageCloseContainer %}
-        {% if twig_cont_page is defined %}
-            </div>
-        {% endif %}
-    {% endblock %}
+    {% endif %}
+{% endblock %}

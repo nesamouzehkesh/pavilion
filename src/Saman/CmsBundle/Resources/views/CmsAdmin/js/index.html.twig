@@ -6,24 +6,18 @@ $(function(){
     var cont_items = $('#pages-list-container');
     var cont_item = $('#page-view-container');
     
-    $('.action-add-item').click(function(e){
-        displayItemAddEditForm($(this), 'saman_cms_page_form', 'page-form-container', '{{ twig_url_items }}', cont_items, currentPage);       
-    });
-    
     $('#pages-list-container').on('click', '.action-pagination', function(e){      
         e.preventDefault();
         currentPage = $(this).attr('data-page');
         displayItems('{{ twig_url_items }}', cont_items, currentPage);
     });
     
+    $('.action-add-item').click(function(e){
+        displayItemForm($(this), 'saman_cms_page_form', 'page-form-container', '{{ twig_url_items }}', cont_items, currentPage);       
+    });
+    
     $('#pages-list-container').on('click', '.action-edit-item', function(e){       
-        displayItemAddEditForm($(this), 'saman_cms_page_form', 'page-form-container', '{{ twig_url_items }}', cont_items, currentPage, function(form) {
-            form.find('#saman_cms_page_form_hasManualBreadcrumb').change(function() {
-                if ($(this).is(":checked")) {
-                    
-                }              
-            });
-        });
+        displayItemForm($(this), 'saman_cms_page_form', 'page-form-container', '{{ twig_url_items }}', cont_items, currentPage);
     });
     
     $('#pages-list-container').on('click', '.action-display-item', function(e){

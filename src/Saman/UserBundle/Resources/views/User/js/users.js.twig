@@ -1,0 +1,57 @@
+<script type="text/javascript">
+$(function(){
+    
+    $('.action-add-item .action-edit-item').click(function(e){
+        var url = $(this).attr('data-url');
+        var formContainer = $('#user-form-container');
+        $.get(url, function(response) {
+            if (response.success === true) {
+                postItemForm(response, formContainer);
+            } else {
+                bootbox.alert(response.message);
+            }
+        }, 'json');        
+    });
+
+    $('.action-delete-item').click(function(e){
+        var url = $(this).attr('data-url');
+        bootbox.confirm('Are you sure to delete this item', function(result) {
+            if (result) {
+                $.post(url, function(response) {
+                    if (response.success === true) {
+                        location.reload();
+                    } else{
+                        bootbox.alert(response.message);
+                    }
+                }, 'json');
+            } else {
+                return true;
+            }
+        });        
+    });
+        
+    function postItemForm(response, formContainer)
+    {
+        formContainer.html(response.content); 
+        formContainer.show();
+
+        var forms = ['[name="saman_user_form"]'];
+        $(forms.join(',')).submit(function(e){
+            e.preventDefault();
+            postFormContent($(this), function(response) {
+                if (response.content !== undefined) {
+                    postItemForm(response, formContainer);
+                } else {
+                    if (response.success === true) {
+                        location.reload();
+                    } else {
+                        bootbox.alert(response.message);
+                    }
+                }
+            }, 'json');
+            return false;
+        });
+    }     
+    
+});
+</script>

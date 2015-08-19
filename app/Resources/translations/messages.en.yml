@@ -82,9 +82,6 @@ icon:
     pagination:
         nextIcon: glyphicon glyphicon-chevron-right
         previousIcon: glyphicon glyphicon-chevron-left    
-    module:
-        cms: glyphicon glyphicon-th
-        product: glyphicon glyphicon-shopping_bag
     alert:
         warning: glyphicon glyphicon-exclamation-sign
         info: glyphicon glyphicon-info-sign
@@ -106,7 +103,20 @@ form:
 
 
 module: 
-    config:
-        title: Settings
+    label:
+        title: Label
+        description: ""
+        icon: glyphicon glyphicon-tags
     cms:
         title: CMS
+        description: ""
+        icon: glyphicon glyphicon-th
+    user:
+        title: Users
+        description: ""
+        icon: glyphicon glyphicon-user
+    product:
+        title: Product
+        description: ""
+        icon: glyphicon glyphicon-shopping_bag
+        

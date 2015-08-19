@@ -1,11 +1,11 @@
 services:
     saman_media.media:
         class: Saman\MediaBundle\Service\MediaService
-        arguments: [@saman.baseService, @saman_local_filesystem, %saman_media.media%]
+        arguments: [@saman.appService, @saman_local_filesystem, %saman_media.media%]
         
     saman_media.select2:
         class: Saman\MediaBundle\Service\Select2Service
-        arguments: [@saman.baseService, %saman.saman_select2%]
+        arguments: [@saman.appService, %saman.saman_select2%]
 
         
         

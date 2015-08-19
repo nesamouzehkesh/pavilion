@@ -1,6 +1,3 @@
-parameters:
-#    saman_security.example.class: Saman\SecurityBundle\Example
-
 services:
 #    saman_security.example:
 #        class: %saman_security.example.class%

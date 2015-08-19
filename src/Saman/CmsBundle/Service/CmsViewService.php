@@ -2,29 +2,29 @@
 
 namespace Saman\CmsBundle\Service;
 
-use Saman\Library\Service\BaseService;
+use Saman\AppBundle\Service\AppService;
 use Saman\CmsBundle\Entity\Page;
 
 class CmsViewService
 {
     /**
      *
-     * @var BaseService $baseService
+     * @var AppService $appService
      */
-    protected $baseService;
+    protected $appService;
     
     /**
      * 
-     * @param \Saman\Library\Service\Helper $baseService
+     * @param AppService $appService
      * @param type $parameters
      */
     public function __construct(
-        BaseService $baseService, 
+        AppService $appService, 
         $parameters
         ) 
     {
-        $this->baseService = $baseService;
-        $this->baseService->setParametrs($parameters);
+        $this->appService = $appService;
+        $this->appService->setParametrs($parameters);
     }
    
     /**
@@ -35,7 +35,7 @@ class CmsViewService
      */
     public function getPage($url)
     {
-        return Page::getRepository($this->baseService->getEntityManager())
+        return Page::getRepository($this->appService->getEntityManager())
             ->getPageForView($url);
     }
     
@@ -46,7 +46,7 @@ class CmsViewService
      */
     public function getPages()
     {
-        return Page::getRepository($this->baseService->getEntityManager())
+        return Page::getRepository($this->appService->getEntityManager())
             ->getPagesListForView();
     }
 }

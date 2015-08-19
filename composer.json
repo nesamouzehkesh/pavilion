@@ -20,11 +20,13 @@
         "sensio/generator-bundle": "~2.3",
         "incenteev/composer-parameter-handler": "~2.0",
         
+        "doctrine/doctrine-fixtures-bundle": "~2.2",
         "willdurand/geocoder-bundle": "@stable",
         "knplabs/knp-paginator-bundle": "dev-master",
         "egeloen/ckeditor-bundle": "2.2.*",
         "liip/imagine-bundle": "1.1.0",
-        "knplabs/knp-gaufrette-bundle": "*@dev"
+        "knplabs/knp-gaufrette-bundle": "*@dev",
+        "doctrine/doctrine-fixtures-bundle": "~2.2"
     },
     "require-dev": {
         "sensio/generator-bundle": "~2.3",

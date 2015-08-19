@@ -59,6 +59,8 @@ class User extends BaseEntity implements AdvancedUserInterface, \Serializable
      */
     public function __construct()
     {
+        parent::__construct();
+        
         $this->isActive = true;
         $this->salt = md5(uniqid(null, true));
         $this->roles = new ArrayCollection();
@@ -90,7 +92,19 @@ class User extends BaseEntity implements AdvancedUserInterface, \Serializable
     {
         return $this->username;
     }
-
+    
+    /**
+     * 
+     * @param type $username
+     * @return \Saman\UserBundle\Entity\User
+     */
+    public function setUsername($username)
+    {
+        $this->username = $username;
+        
+        return $this;
+    }
+    
     /**
      * @inheritDoc
      */
@@ -106,6 +120,38 @@ class User extends BaseEntity implements AdvancedUserInterface, \Serializable
     {
         return $this->password;
     }
+    
+    /**
+     * 
+     * @param type $password
+     * @return \Saman\UserBundle\Entity\User
+     */
+    public function setPassword($password)
+    {
+        $this->password = $password;
+        
+        return $this;
+    } 
+
+    /**
+     * @inheritDoc
+     */
+    public function getEmail()
+    {
+        return $this->email;
+    }
+    
+    /**
+     * 
+     * @param type $email
+     * @return \Saman\UserBundle\Entity\User
+     */
+    public function setEmail($email)
+    {
+        $this->email = $email;
+        
+        return $this;
+    }     
 
     /**
      * @inheritDoc
@@ -115,6 +161,18 @@ class User extends BaseEntity implements AdvancedUserInterface, \Serializable
         //return array('ROLE_ADMIN');
         return $this->roles->toArray();
     }
+    
+    /**
+     * 
+     * @param \Saman\UserBundle\Entity\Role $role
+     * @return \Saman\UserBundle\Entity\User
+     */
+    public function addRole(Role $role)
+    {
+        $this->roles[] = $role;
+        
+        return $this;
+    }    
 
     /**
      * @inheritDoc

@@ -1,6 +1,3 @@
-parameters:
-#    saman_user.example.class: Saman\UserBundle\Example
-
 services:
 #    saman_user.example:
 #        class: %saman_user.example.class%

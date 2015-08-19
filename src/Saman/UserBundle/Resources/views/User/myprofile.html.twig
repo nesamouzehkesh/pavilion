@@ -1,0 +1,64 @@
+{% extends "SamanCmsBundle::layout.html.twig" %}
+
+{% block header %}
+    <button data-url="{{ path('saman_cms_admin_page_add') }}" type="button" class="btn btn-primary btn-sm action-add-item" data-toggle="modal" data-target="#page-form-container">{{ 'icon.add'|icon }} {{ 'action.addNewItem'|trans }}</button>
+{% endblock %}
+
+{% block body %}
+    <div class="modal fade" id="page-form-container" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"></div>
+    <div class="modal fade" id="page-view-container" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"></div>
+    
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>URL</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for page in pagesPagination %}
+            <tr>
+                <td><a href="{{ path('saman_cms_page', {'url': page.url}) }}" target="_blank">{{ page.title }}</a></td>
+              <td>{{ page.url }}</td>
+              <td>
+                  <div class="pull-right">
+                      {{ button(
+                            'action.display', 
+                            {
+                                url: path('saman_cms_admin_page_display', {'itemId': page.id}),
+                                icon: 'icon.display', 
+                                toggleModal: 'page-view-container', 
+                                action: 'action-display-item'
+                            }) }}
+                      {{ button(
+                            'action.edit', 
+                            {
+                                url: path('saman_cms_admin_page_edit', {'itemId': page.id}),
+                                icon: 'icon.edit', 
+                                toggleModal: 'page-form-container', 
+                                action: 'action-edit-item'
+                            }) }}
+                      {{ button(
+                            'action.delete', 
+                            {
+                                url: path('saman_cms_admin_page_delete', {'itemId': page.id }),
+                                icon: 'icon.delete', 
+                                action: 'action-delete-item',
+                                attr: {'data-entity-id': page.id}
+                            }) }}
+                  </div>  
+              </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <div class="navigation">
+        {{ knp_pagination_render(pagesPagination) }}
+    </div>
+{% endblock %}
+    
+{% block script %}
+    {% include 'SamanCmsBundle:CmsAdmin:js/index.html.twig' %}
+{% endblock %}

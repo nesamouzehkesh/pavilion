@@ -1,11 +1,11 @@
 /nbproject/
+/nbproject/*
 /web/bundles/
 /app/bootstrap.php.cache
 /app/cache/*
 /app/sessions/*
 /app/media/*
 /app/config/parameters.yml
-/app/config/config_dev.yml
 /app/logs/*
 /build/
 /vendor/
@@ -24,7 +24,6 @@ log/
 /.project
 /.settings
 /APACHE_LOG/
-/nbproject/*
 *~
 /app/logs/dev.log
 

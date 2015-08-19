@@ -12,23 +12,12 @@
         {% include '::_navbar.html.twig'%}
         <div class="container">
             <div class="row">
-                <div class="col-sm-3">
-                    {% include '::_sidebar.html.twig'%}
-                </div>  
                 <div class="col-sm-9">
                     <div id="flashBag-container" data-url="{{ path('saman_app_display_flash_bag') }}"></div>
                                                 
-                    {% block pageOpenContainer %}{{ parent() }}{% endblock %}
-                                
-                    {% block breadcrumbContainer %}{{ parent() }}{% endblock %}
-
-                    {% block headerContainer %}{{ parent() }}{% endblock %}
-
                     {% block bodyContainer %}{{ parent() }}{% endblock %}
 
                     {% block footerContainer %}{{ parent() }}{% endblock %}
-
-                    {% block pageCloseContainer %}{{ parent() }}{% endblock %}
                 </div> 
             </div>
         </div>

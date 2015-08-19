@@ -3,7 +3,9 @@
 {% if noLayout is not defined or noLayout == false %}
 {% spaceless %}
     <ul id="sidebar" class="nav nav-pills nav-stacked">
-        <li class="{{ self.isActive('saman_cms_admin_page_home') }}"><a href="{{ path('saman_cms_admin_page_home') }}">{{ 'icon.module.cms'|icon }} {{ 'module.cms.title'|trans }}</a></li>
+        {% for module, url in saman_app_modules %}
+            <li class="{{ self.isActive(url) }}"><a href="{{ path(url) }}">{{ ('module.' ~ module ~ '.icon')|icon }} {{ ('module.' ~ module ~ '.title')|trans }}</a></li>
+        {% endfor %}
     </ul>
 {% endspaceless %}            
 {% endif %}

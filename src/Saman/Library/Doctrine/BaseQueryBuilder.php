@@ -3,7 +3,7 @@
 namespace Saman\Library\Doctrine;
 
 use Doctrine\ORM\QueryBuilder;
-use Saman\Library\Service\BaseService;
+use Saman\AppBundle\Service\AppService;
 
 class BaseQueryBuilder extends QueryBuilder
 {
@@ -42,8 +42,8 @@ class BaseQueryBuilder extends QueryBuilder
      */
     public function search($itemParam, $param)
     {
-        if (is_array($param) and array_key_exists(BaseService::PARAM_SEARCH_TEXT, $param)) {
-            $searchText = $param[BaseService::PARAM_SEARCH_TEXT];
+        if (is_array($param) and array_key_exists(AppService::PARAM_SEARCH_TEXT, $param)) {
+            $searchText = $param[AppService::PARAM_SEARCH_TEXT];
             if (null !== $searchText and '' !== $searchText) {
                 $this->andWhere($itemParam . ' LIKE :searchText')
                     ->setParameter('searchText', '%'.$searchText.'%');

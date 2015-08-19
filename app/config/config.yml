@@ -3,7 +3,6 @@ imports:
     - { resource: security.yml }
     - { resource: validation.yml }
     - { resource: "@SamanCmsBundle/Resources/config/parameters.yml" }
-    - { resource: "@SamanLabelBundle/Resources/config/parameters.yml" }
     - { resource: "@SamanMediaBundle/Resources/config/parameters.yml" }
 
 # Framework Configuration        
@@ -44,8 +43,6 @@ parameters:
     # Filesystems parameters
     saman.filesystems.local.directory: %kernel.root_dir%/media
     # Twig parameters
-    saman.twig.function.extension.class: Saman\Library\Twig\TwigFunctionExtension
-    saman.twig.filter.extension.class: Saman\Library\Twig\TwigFilterExtension
     saman.twig.param.displaySimpleView: true
     # Helper service parameters
     saman.helper.param:
@@ -58,8 +55,8 @@ parameters:
         
 # Services Configuration        
 services:
-    saman.baseService:
-        class: Saman\Library\Service\BaseService
+    saman.appService:
+        class: Saman\AppBundle\Service\AppService
         public: false
         arguments: 
             - @translator.default 
@@ -73,13 +70,13 @@ services:
             - %saman.helper.param%
 
     saman.twig.function.extension:
-        class: %saman.twig.function.extension.class%
+        class: Saman\AppBundle\Library\Twig\TwigFunctionExtension
         arguments: [@translator.default]
         tags:
              - { name: twig.extension }    
              
     saman.twig.filter.extension:
-        class: %saman.twig.filter.extension.class%
+        class: Saman\AppBundle\Library\Twig\TwigFilterExtension
         arguments: [@translator.default]
         tags:
              - { name: twig.extension }  
@@ -94,6 +91,11 @@ twig:
     strict_variables: "%kernel.debug%"
     globals:
         saman_twig_param_displaySimpleView: "%saman.twig.param.displaySimpleView%"
+        saman_app_modules:
+            label: saman_label_home
+            cms: saman_cms_admin_page_home
+            user: saman_admin_user_home
+       
     form:
         resources:
             - 'SamanMediaBundle:Form:_collection_widget.html.twig'
@@ -103,7 +105,6 @@ twig:
             - 'SamanMediaBundle:Form:_select2_widget.html.twig'
             - 'SamanMediaBundle:Form:_toggle_widget.html.twig'
             - 'SamanMediaBundle:Form:_colorpicker_widget.html.twig'
-            
 
 # Assetic Configuration
 assetic:

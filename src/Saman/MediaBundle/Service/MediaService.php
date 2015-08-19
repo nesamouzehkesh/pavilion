@@ -12,7 +12,6 @@ use Gaufrette\Adapter\Local;
 use Saman\Library\Service\Helper;
 use Saman\UserBundle\Entity\User;
 use Saman\MediaBundle\Entity\Media;
-use Saman\Library\Map\EntityMap;
 
 class MediaService
 {
@@ -424,6 +423,6 @@ class MediaService
      */
     private function getMediaRepository()
     {
-        return $this->helper->getRepository(EntityMap::MEDIA_MEDIA);
+        return $this->helper->getRepository('SamanMediaBundle:Media');
     }
 }
