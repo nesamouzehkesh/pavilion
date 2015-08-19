@@ -7,54 +7,59 @@
 {% block body %}
     <ul role="tablist" class="nav nav-tabs" id="myTabs">
         <li class="active" role="presentation"><a aria-expanded="true" aria-controls="users" data-toggle="tab" role="tab" id="users-tab" href="#users">Users</a></li>
-        <li role="presentation"><a aria-controls="myprofile" data-toggle="tab" id="myprofile-tab" role="tab" href="#myprofile">My Profile</a></li>
+        <li role="presentation"><a href="#myprofile">My Profile</a></li>
     </ul>
 
     <div class="modal fade" id="user-form-container" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"></div>
     
-    <div id="pages-list-container">
-        <table class="table table-hover">
-            <thead>
-                <tr>
-                    <th>User Info</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-            {% for user in usersPagination %}
-                <tr>
-                    <td>
-                        <address>
-                            <strong>{{ user.username }}</strong><br>
-                            <a href="mailto:#">{{ user.email }}</a>
-                        </address>                        
-                    </td>
-                    <td>
-                        <div class="pull-right">
-                            {{ button(
-                                  'saman_admin_user_edit', 
-                                  {
-                                      url: path('saman_admin_user_edit', {'userId': user.id}),
-                                      icon: 'icon.edit', 
-                                      toggleModal: 'user-form-container', 
-                                      action: 'action-edit-item'
-                                  }) }}
-                            {{ button(
-                                  'saman_admin_user_delete', 
-                                  {
-                                      url: path('saman_admin_user_delete', {'userId': user.id }),
-                                      icon: 'icon.delete', 
-                                      action: 'action-delete-item',
-                                  }) }}
-                        </div>  
-                    </td>
-                </tr>
-            {% endfor %}
-            </tbody>
-        </table>
 
-        <div class="navigation">
-            {{ knp_pagination_render(usersPagination) }}
+    <div class="tab-content" id="myTabContent">
+        <div aria-labelledby="users-tab" id="users" class="tab-pane fade in active" role="tabpanel">
+            <div id="pages-list-container">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>User Info</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for user in usersPagination %}
+                        <tr>
+                            <td>
+                                <address>
+                                    <strong>{{ user.firstName }} {{ user.lastName }}</strong><br>
+                                    <a href="mailto:#">{{ user.email }}</a>
+                                </address>                        
+                            </td>
+                            <td>
+                                <div class="pull-right">
+                                    {{ button(
+                                          'action.edit', 
+                                          {
+                                              url: path('saman_admin_user_edit', {'userId': user.id}),
+                                              icon: 'icon.edit', 
+                                              toggleModal: 'user-form-container', 
+                                              action: 'action-edit-item'
+                                          }) }}
+                                    {{ button(
+                                          'action.delete', 
+                                          {
+                                              url: path('saman_admin_user_delete', {'userId': user.id }),
+                                              icon: 'icon.delete', 
+                                              action: 'action-delete-item',
+                                          }) }}
+                                </div>  
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+
+                <div class="navigation">
+                    {{ knp_pagination_render(usersPagination) }}
+                </div>
+            </div>
         </div>
     </div>
 {% endblock %}

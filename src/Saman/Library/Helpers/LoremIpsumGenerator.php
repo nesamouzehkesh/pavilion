@@ -114,6 +114,15 @@ class LoremIpsumGenerator
         
         return $userName . '@' . $domain . '.' . $type;
     }    
+
+    /**
+     * 
+     * @return type
+     */
+    public function getName()
+    {
+        return $this->getContent(1, 'plain');
+    }    
     
     /**
      * 

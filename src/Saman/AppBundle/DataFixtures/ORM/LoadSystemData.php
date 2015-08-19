@@ -89,12 +89,34 @@ class LoadSystemData implements FixtureInterface
      */
     private function loadUsers($manager)
     {
-        foreach ($this->data['users'] as $userData) {
+        $generator = new LoremIpsumGenerator();
+        $usersData = $this->data['users'];
+        for ($i = 0; $i < 20; $i++) {
+            $email = $generator->getEmail();
+            
+            $usersData[] = array(
+                'username' => $email,
+                'password' => 'abcd',
+                'email' => $email,
+                'role' => Role::ROLE_USER,
+                'firstName' => $generator->getName(),
+                'lastName' => $generator->getName(),
+            );
+        }
+        
+        foreach ($usersData as $userData) {
             $user = new User();
             $user->setUsername($userData['username']);
             $user->setPassword(md5($userData['password']));
             $user->setEmail($userData['email']);
             $user->addRole($this->roles[$userData['role']]);
+            
+            if (isset($userData['firstName'])) {
+                $user->setFirstName($userData['firstName']);
+            }
+            if (isset($userData['lastName'])) {
+                $user->setLastName($userData['lastName']);
+            }
             
             $manager->persist($user);
         }

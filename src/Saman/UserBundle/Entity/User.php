@@ -28,6 +28,16 @@ class User extends BaseEntity implements AdvancedUserInterface, \Serializable
     private $username;
 
     /**
+     * @ORM\Column(name="first_name", type="string", length=255, nullable=true)
+     */
+    private $firstName;
+    
+    /**
+     * @ORM\Column(name="last_name", type="string", length=255, nullable=true)
+     */
+    private $lastName;
+    
+    /**
      * @ORM\Column(type="string", length=64)
      */
     private $password;
@@ -172,7 +182,17 @@ class User extends BaseEntity implements AdvancedUserInterface, \Serializable
         $this->roles[] = $role;
         
         return $this;
-    }    
+    }
+    
+    /**
+     * Remove roles
+     *
+     * @param \Saman\UserBundle\Entity\Role $roles
+     */
+    public function removeRole(Role $roles)
+    {
+        $this->roles->removeElement($roles);
+    }
 
     /**
      * @inheritDoc
@@ -243,5 +263,51 @@ class User extends BaseEntity implements AdvancedUserInterface, \Serializable
             $this->isActive,
             $this->salt
         ) = unserialize($serialized);
+    }
+
+    /**
+     * Set firstName
+     *
+     * @param string $firstName
+     * @return User
+     */
+    public function setFirstName($firstName)
+    {
+        $this->firstName = $firstName;
+
+        return $this;
+    }
+
+    /**
+     * Get firstName
+     *
+     * @return string 
+     */
+    public function getFirstName()
+    {
+        return $this->firstName;
+    }
+
+    /**
+     * Set lastName
+     *
+     * @param string $lastName
+     * @return User
+     */
+    public function setLastName($lastName)
+    {
+        $this->lastName = $lastName;
+
+        return $this;
+    }
+
+    /**
+     * Get lastName
+     *
+     * @return string 
+     */
+    public function getLastName()
+    {
+        return $this->lastName;
     }
 }
