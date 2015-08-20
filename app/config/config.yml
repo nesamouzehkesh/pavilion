@@ -218,5 +218,27 @@ knp_gaufrette:
             adapter:    saman_local
             alias:      saman_local_filesystem
             
-            
-           
+sensio_framework_extra:
+    view: { annotations: false }
+
+fos_rest:
+    param_fetcher_listener: true
+    body_listener: true
+    format_listener: true
+    view:
+        default_engine: twig
+        view_response_listener: 'force'
+        formats:
+            xml: true
+            json : true
+        templating_formats:
+            html: true
+        force_redirects:
+            html: true
+        failed_validation: HTTP_BAD_REQUEST
+        
+    routing_loader:
+        default_format: json
+        
+        
+nelmio_api_doc: ~

@@ -8,6 +8,31 @@ php_flag session.auto_start 0
 <IfModule mod_rewrite.c>
     RewriteEngine On
 
+
+    #RewriteRule ^https://site.pl/link/ramka/(.*)$ http://site.pl/link/ramka/$1 [R=301,L]
+    #http://iswwwup.com/t/799cb7beaed4/.htaccess-htaccess-redirect-for-all-https-to-http-except-one-page-in-symfony.html
+    # Turn SSL off for /link/ramka/...
+    #RewriteCond %{HTTPS} on
+    #RewriteCond %{REQUEST_URI} ^\/link\/ramka\/(.*)$ [NC]
+    #RewriteRule ^(.*)$ http://site.pl/$1 [R=301,L]
+
+    # Turn SSL on for everything but /link/ramka/...
+    #RewriteCond %{HTTPS} off
+    #RewriteCond %{REQUEST_URI} !^\/link\/ramka\/(.*)$ [NC]
+    #RewriteRule ^(.*)$ https://site.pl/$1 [R=301,L]
+
+    # forwarding from www to non-www
+    #RewriteBase /
+    #RewriteCond %{HTTP_HOST} ^www\.(.*)$ [NC]
+    #RewriteRule ^(.*)$ http://%1/$1 [R=301,L]
+
+    RewriteCond %{REQUEST_URI} ^\/front\/$ [NC]
+    RewriteRule .? %{ENV:BASE}/front/index.html [L]
+
+    RewriteCond %{REQUEST_URI} ^\/front\/(.*)$ [NC]
+    RewriteRule .? - [L]
+
+
     # Determine the RewriteBase automatically and set it as environment variable.
     # If you are using Apache aliases to do mass virtual hosting or installed the
     # project in a subdirectory, the base path will be prepended to allow proper

@@ -1,0 +1,175 @@
+<!doctype html>
+<html ng-app="myAngularApp">
+    <head>
+        <link rel="stylesheet" href="./css/bootstrap.min.css">
+        <link rel="stylesheet" href="./css/todo.css">
+        <link rel="stylesheet" href="../css/saman.css">
+        <title>Salam</title>
+    </head>
+    <body>
+        <div class="container">
+            <div class="row margin-top-40">
+                <div class="col-sm-3">
+                    <div class="list-group">
+                        <a href="./index.html" class="list-group-item">Home</a>
+                        <a href="./store.html" class="list-group-item">Store</a>
+                        <a href="./todo.html" class="list-group-item">Todo</a>
+                        <a href="./angular.html" class="list-group-item">Angular</a>
+                        <a href="./userList.html" class="list-group-item">User List</a>
+                        <a href="./example.html" class="list-group-item">Example</a>
+                    </div>
+                </div>
+                <div class="col-sm-9">
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                        <!--**********************************************************************-->
+                            <div ng-controller="CalculatorController">
+                                Enter a number:
+                                <input ng-model="number" type="number">
+                                <button ng-click="doSquare()">X<sup>2</sup></button>
+                                <button ng-click="doCube()">X<sup>3</sup></button>
+
+                                <div>Answer: {{ answer }}</div>
+                            </div>                        
+
+                            Locale Controller
+                            <p ng-controller="LocaleController">
+                                Your locale is <strong ng-bind="locale"></strong>
+                            </p>
+
+                            nesting repeat
+                            <div ng-controller="ItemsController">
+                              <ul>
+                                <li ng-repeat="item in items" ng-init="outerCount = $index" ng-class="{'label-success': $middle}">
+                                  {{ outerCount + 1 }}.{{ item.name }} (first:{{ $first }}, middle:{{ $middle }}, last:{{ $last }}, even:{{ $even }}, odd:{{ $odd }})
+                                  <ul>
+                                    <li ng-repeat="item in item.items">
+                                      {{ outerCount + 1 }}.{{ $index + 1}}.{{ item.name }}
+                                    </li>
+                                  </ul>
+                                </li>
+                              </ul>
+                            </div>                              
+
+
+                            How can we code this custom event handling?
+                            <div ng-controller="EscapeController">
+                              <input type="text" ng-model="message">
+                              is bound to
+                              "<strong ng-bind="message"></strong>".
+                              Press <code>esc</code> to clear it!
+                            </div>                        
+
+
+
+                            <p ng-controller="SumController">
+                              <select ng-model="newValue" ng-options="n for n in [1,2,3]"></select>
+                              <input type="button" class="btn btn-success" value="Add" ng-click="add()">
+                              The sum of {{ values }} is {{ sum }}.
+                            </p>                        
+
+                            Scope and Inheritance:
+                            <div ng-controller="NameController">
+                              <p>
+                                name: {{ name }}
+                                <br>
+                                <input type='text' ng-model='name'>
+                              </p>
+                              <p ng-controller="ChildController">
+                                name: {{ name }} {{ parent }}
+                                <br>
+                                <input type='text' ng-model='name'>
+                                <input type='text' ng-model='parent'>
+                              </p>
+                              {{ parent }}
+                            </div>                        
+
+
+
+                            <p ng-controller="AdditionController1">
+                              <select ng-model="operand1" ng-options="x for x in options"></select>
+                              + 
+                              <select ng-model="operand2" ng-options="x for x in options"></select>
+                              = 
+                              {{ add() }}
+                            </p>                        
+
+                            <p ng-controller="AdditionController2">
+                              <select ng-model="operand1" ng-options="x for x in options"></select>
+                              + 
+                              <select ng-model="operand2" ng-options="x for x in options"></select>
+                              = 
+                              {{ add(operand1, operand2) }}
+                            </p>                               
+
+                            <p ng-controller="AdditionController3">
+                              <input ng-model="operand1">
+                              <select ng-model="operation" ng-options="x for x in operations"></select>
+                              <input ng-model="operand2">
+                              <input type="button" class="btn btn-success" value="=" ng-click="call()">
+                              {{ result }}
+                            </p>    
+
+                            <p ng-controller="AdditionController4">
+                                {{ operand1 }} {{ operation }} {{ operand2 }} = {{ result }}
+                            </p>
+
+                            <div ng-controller="AuthController">
+                                <p>
+                                    The secret code is
+                                    <span ng-show="authorized">0123</span>
+                                    <span ng-hide="authorized">not for you to see</span>
+                                </p>
+                                <input class="btn btn-success" type="button" value="toggle" ng-click="toggle()">
+                            </div>                        
+
+                            <p></p>
+
+                            <div ng-controller="DeathrayMenuController">
+                                <input class="btn btn-success" type="button" value="Toggle Menu" ng-click="toggleMenu()">
+                                <ul ng-show="menuState.show">
+                                    <li>Stun</li>
+                                    <li>Disintegrate</li>
+                                    <li>Erase from history</li>
+                                </ul>
+                            </div>
+
+
+                            <form ng-submit="requestFunding()" ng-controller="StartUpController">
+                                Starting: <input ng-change="computeNeeded()" 
+                                                 ng-model="funding.startingEstimate">
+                                Recommendation: {{ funding.needed }}
+                                <button>Fund my startup!</button>
+                                <button ng-click="reset()">Reset</button>
+                            </form>
+
+
+                            <div ng-controller="SomeTextController">
+                                {{ someText }}
+                                <!--
+                                For the data binding you do in your index.html page, however, use ng-bind 
+                                instead. That way, your users will see nothing until the data has loaded.
+                                -->
+                                <p ng-bind="someText"></p>
+                            </div>
+
+                            <div ng-controller="HelloController">
+                                <input ng-model="greeting.text">
+                                <p>{{ greeting.text }}, World</p>
+                            </div>
+
+
+                            <div ng-controller="HelloController2 as hc">
+                                <p>{{ hc.greeting.text }}, World</p>
+                            </div>
+                        <!--**********************************************************************-->
+                        </div>
+                    </div>
+                </div> 
+            </div>
+        </div>
+        <script src="./js/angular.min.js"></script>
+        <script src="./services/calculatorService.js"></script>
+        <script src="./controller/myAngular.js"></script>
+    </body>
+</html>

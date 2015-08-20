@@ -1,0 +1,9 @@
+ProductBundle\Entity\Product:
+    exclusion_policy: ALL
+    properties:
+        id:
+            expose: true
+        title:
+            expose: true
+        description:
+            expose: true

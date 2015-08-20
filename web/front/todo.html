@@ -1,0 +1,54 @@
+<!doctype html>
+<html ng-app="todoApp">
+    <head>
+        <link rel="stylesheet" href="./css/bootstrap.min.css">
+        <link rel="stylesheet" href="./css/todo.css">
+        <link rel="stylesheet" href="../css/saman.css">
+    </head>
+    <body>
+        <div class="container">
+            <div class="row margin-top-40">
+                <div class="col-sm-3">
+                    <div class="list-group">
+                        <a href="./index.html" class="list-group-item">Home</a>
+                        <a href="./store.html" class="list-group-item">Store</a>
+                        <a href="./todo.html" class="list-group-item">Todo</a>
+                        <a href="./angular.html" class="list-group-item">Angular</a>
+                        <a href="./userList.html" class="list-group-item">User List</a>
+                        <a href="./example.html" class="list-group-item">Example</a>
+                    </div>
+                </div>
+                <div class="col-sm-9">
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                        <!--**********************************************************************-->      
+                            <h2>Todo</h2>
+                            <div ng-controller="TodoListController as todoList">
+                                <span>{{todoList.remaining()}} of {{todoList.todos.length}} remaining</span>
+                                [ <a href="" ng-click="todoList.archive()">archive</a> ]
+                                <ul class="unstyled">
+                                    <li ng-repeat="todo in todoList.todos">
+                                        <input type="checkbox" ng-model="todo.done">
+                                        <span class="done-{{todo.done}}">{{todo.text}}</span>
+                                    </li>
+                                </ul>
+
+                                <form ng-submit="todoList.addTodo()" class="form-inline">
+                                    <div class="form-group">
+                                        <label for="taskTitle">Task</label>
+                                        <input type="text" id="taskTitle" class="form-control" ng-model="todoList.todoText" size="30" placeholder="add new todo here">
+                                    </div>
+                                    <button type="submit" class="btn btn-primary">Add</button>
+                                </form>                            
+
+                            </div>
+                        <!--**********************************************************************-->
+                        </div>
+                    </div>
+                </div> 
+            </div>
+        </div>                        
+        <script src="./js/angular.min.js"></script>
+        <script src="./controller/todo.js"></script>
+    </body>
+</html>

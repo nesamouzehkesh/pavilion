@@ -9,6 +9,7 @@ use CmsBundle\Entity\Page;
 use LabelBundle\Entity\Label;
 use UserBundle\Entity\User;
 use UserBundle\Entity\Role;
+use ProductBundle\Entity\Product;
 
 /**
  * User
@@ -20,6 +21,7 @@ class LoadSystemData implements FixtureInterface
 {
     private $data = array(
         'pages' => 20,
+        'products' => 20,
         'roles' => array(
             array('name' => 'User', 'role' => Role::ROLE_USER),
             array('name' => 'Admin', 'role' => Role::ROLE_ADMIN),
@@ -67,6 +69,7 @@ class LoadSystemData implements FixtureInterface
         $this->loadUsers($manager);
         $this->loadLabels($manager);
         $this->loadPages($manager);
+        $this->loadProducts($manager);
     }
     
     /**
@@ -177,4 +180,23 @@ class LoadSystemData implements FixtureInterface
         
         $manager->flush();
     }
+        
+    /**
+     * 
+     * @param type $manager
+     */
+    private function loadProducts($manager)
+    {
+        $generator = new LoremIpsumGenerator();
+        for ($i = 0; $i < $this->data['products']; $i++) {
+            $product = new Product();
+            $product->setTitle($generator->getTitle());
+            $product->setDescription($generator->getDescription());
+            $product->setPrice(rand(10, 10000));
+            
+            $manager->persist($product);
+        }
+        
+        $manager->flush();
+    }    
 }

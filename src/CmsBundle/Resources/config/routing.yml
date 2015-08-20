@@ -28,4 +28,4 @@ saman_cms_page:
     path:     /{url}
     defaults: { _controller: CmsBundle:CmsView:index, url: ''}
     requirements: 
-        url: (?!admin|media|shopping|product)(.+)
+        url: (?!api|admin|media|shopping|product)(.+)

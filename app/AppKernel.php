@@ -22,6 +22,12 @@ class AppKernel extends Kernel
             new Symfony\Bundle\AsseticBundle\AsseticBundle(),
             new Doctrine\Bundle\DoctrineBundle\DoctrineBundle(),
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
+            // Saman Rest API instaled bundles
+            new JMS\AopBundle\JMSAopBundle(),
+            new JMS\DiExtraBundle\JMSDiExtraBundle($this),
+            new JMS\SecurityExtraBundle\JMSSecurityExtraBundle(),
+            new JMS\SerializerBundle\JMSSerializerBundle(),
+            new FOS\RestBundle\FOSRestBundle(),
             // Saman instaled bundles
             new Knp\Bundle\PaginatorBundle\KnpPaginatorBundle(),
             new Knp\Bundle\GaufretteBundle\KnpGaufretteBundle(),
@@ -33,10 +39,12 @@ class AppKernel extends Kernel
             new CmsBundle\CmsBundle(),
             new LabelBundle\LabelBundle(),
             new AppBundle\AppBundle(),
+            new ProductBundle\ProductBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {
             // Saman instaled bundles
+            $bundles[] = new Nelmio\ApiDocBundle\NelmioApiDocBundle(); // For my api documenting       
             $bundles[] = new Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle();
             // End: Saman instaled bundles
             $bundles[] = new Symfony\Bundle\WebProfilerBundle\WebProfilerBundle();

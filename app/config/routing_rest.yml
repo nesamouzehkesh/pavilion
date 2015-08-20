@@ -1,0 +1,10 @@
+api_product:
+    type: rest
+    resource: ProductBundle\Controller\ProductApiController
+   
+    
+get_all_users:
+    path:     /manual-route-to-api
+    defaults: { _controller: ProductBundle:ProductApi:getProducts }    
+    requirements:
+        _method: GET    

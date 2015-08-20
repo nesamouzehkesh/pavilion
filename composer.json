@@ -20,6 +20,12 @@
         "sensio/generator-bundle": "~2.3",
         "incenteev/composer-parameter-handler": "~2.0",
         
+        "jms/security-extra-bundle": "~1.5",
+        "jms/di-extra-bundle": "~1.5",
+        "jms/serializer-bundle": "~1.0",
+        "friendsofsymfony/rest-bundle": "~1.7",
+        "nelmio/api-doc-bundle": "~2.8",
+        
         "doctrine/doctrine-fixtures-bundle": "~2.2",
         "willdurand/geocoder-bundle": "@stable",
         "knplabs/knp-paginator-bundle": "dev-master",

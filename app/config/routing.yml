@@ -1,6 +1,16 @@
 # Note:
 # The following routes should be placed before the CMS bundle route, otherwise 
 # they will be treated as CMS rout page
+saman_api:
+    type: rest
+    resource: "routing_rest.yml"
+    prefix : /api    
+    
+# For my api documenting
+NelmioApiDocBundle:
+  resource: "@NelmioApiDocBundle/Resources/config/routing.yml"
+  prefix:   /api/doc
+  
 saman_login:
     path:     /login
     defaults: { _controller: AppBundle:Security:login }
@@ -13,8 +23,6 @@ saman_logout:
 
 _liip_imagine:
     resource: "@LiipImagineBundle/Resources/config/routing.xml"
-    
-    
 
 saman_app:
     resource: "@AppBundle/Resources/config/routing.yml"

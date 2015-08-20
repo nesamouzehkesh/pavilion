@@ -1,0 +1,50 @@
+<!doctype html>
+<html ng-app="user">
+    <head>
+        <title>Hello AngularJS</title>
+        <link rel="stylesheet" href="./css/bootstrap.min.css">
+        <link rel="stylesheet" href="../css/saman.css">
+    </head>
+    <body>
+        <div class="container">
+            <div class="row margin-top-40">
+                <div class="col-sm-3">
+                    <div class="list-group">
+                        <a href="./index.html" class="list-group-item">Home</a>
+                        <a href="./store.html" class="list-group-item">Store</a>
+                        <a href="./todo.html" class="list-group-item">Todo</a>
+                        <a href="./angular.html" class="list-group-item">Angular</a>
+                        <a href="./userList.html" class="list-group-item">User List</a>
+                        <a href="./example.html" class="list-group-item">Example</a>
+                    </div>
+                </div>
+                <div class="col-sm-9">
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                        <!--**********************************************************************-->
+                            <table class="table table-hover" ng-controller="ListController">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Username</th>
+                                        <th>Email</th>
+                                    </tr>
+                                </thead>
+                                <tbody ng-repeat="product in products">
+                                    <tr>
+                                        <th scope="row">{{ product.id }}</th>
+                                        <td>{{ product.title }}</td>
+                                        <td>{{ product.price }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>                            
+                        <!--**********************************************************************-->
+                        </div>
+                    </div>
+                </div> 
+            </div>
+        </div>
+        <script src="./js/angular.min.js"></script>
+        <script src="./controller/index.js"></script>
+    </body>
+</html>
