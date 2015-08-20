@@ -1,0 +1,19 @@
+{% set twig_show_search = true %}
+{% extends "CmsBundle::layout.html.twig" %}
+
+{% block header %}
+    <button data-url="{{ path('saman_cms_admin_page_add') }}" type="button" class="btn btn-primary btn-sm action-add-item" data-toggle="modal" data-target="#page-form-container">{{ 'icon.add'|icon }} {{ 'action.addNewItem'|trans }}</button>
+{% endblock %}
+
+{% block body %}
+    <div class="modal fade" id="page-form-container" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"></div>
+    <div class="modal fade" id="page-view-container" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"></div>
+    
+    <div id="pages-list-container">
+        {{ pagesView|raw }}
+    </div>
+{% endblock %}
+    
+{% block script %}
+    {% include 'CmsBundle:CmsAdmin:js/index.html.twig' %}
+{% endblock %}

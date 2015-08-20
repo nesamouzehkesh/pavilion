@@ -1,0 +1,59 @@
+services:
+    saman_media.media:
+        class: MediaBundle\Service\MediaService
+        arguments: [@saman.appService, @saman_local_filesystem, %saman_media.media%]
+        
+    saman_media.select2:
+        class: MediaBundle\Service\Select2Service
+        arguments: [@saman.appService, %saman.saman_select2%]
+
+        
+        
+    saman.form.type.ace:
+        class: MediaBundle\Form\Type\AceType
+        tags:
+            - { name: form.type, alias: saman_ace }    
+            
+    saman.form.type.media:
+        class: MediaBundle\Form\Type\MediaType
+        tags:
+            - { name: form.type, alias: saman_media }        
+        
+    saman.form.type.icon:
+        class: MediaBundle\Form\Type\IconType
+        tags:
+            - { name: form.type, alias: saman_icon }        
+        
+    saman.form.type.toggle:
+        class: MediaBundle\Form\Type\ToggleType
+        tags:
+            - { name: form.type, alias: saman_toggle } 
+            
+    saman.form.type.colorpicker:
+        class: MediaBundle\Form\Type\ColorpickerType
+        tags:
+            - { name: form.type, alias: saman_colorpicker } 
+            
+    saman.form.type.multiple:
+        class: MediaBundle\Form\Type\MultipleType
+        arguments: [@doctrine.orm.default_entity_manager]
+        tags:
+            - { name: form.type, alias: saman_multiple }   
+            
+    saman.form.type.collection:
+        class: MediaBundle\Form\Type\CollectionType
+        arguments: [@doctrine.orm.default_entity_manager]
+        tags:
+            - { name: form.type, alias: saman_collection }  
+            
+    saman.form.type.select2:
+        class: MediaBundle\Form\Type\Select2Type
+        arguments: [@doctrine.orm.default_entity_manager, @router, %saman.saman_select2%]
+        tags:
+            - { name: form.type, alias: saman_select2 }  
+            
+    saman_media.twig.filter.extension:
+        class: MediaBundle\Twig\MediaTwigFilterExtension
+        arguments: [@router, @liip_imagine.cache.manager, %saman_media.media%]
+        tags:
+             - { name: twig.extension }

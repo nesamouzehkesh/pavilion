@@ -1,6 +1,6 @@
 security:
     encoders:
-        Saman\UserBundle\Entity\User:
+        UserBundle\Entity\User:
             id: saman.md5encoder
     
     role_hierarchy:
@@ -9,7 +9,7 @@ security:
     
     providers:
         administrators:
-            entity: { class: SamanUserBundle:User }
+            entity: { class: UserBundle:User }
 
     firewalls:
         secured_area:

@@ -1,10 +1,9 @@
-saman_app:
-    resource: "@SamanAppBundle/Resources/config/routing.yml"
-    prefix:   /
-
+# Note:
+# The following routes should be placed before the CMS bundle route, otherwise 
+# they will be treated as CMS rout page
 saman_login:
     path:     /login
-    defaults: { _controller: SamanSecurityBundle:Security:login }
+    defaults: { _controller: AppBundle:Security:login }
     
 saman_login_check:
     path: /login_check
@@ -13,26 +12,26 @@ saman_logout:
     path: /logout
 
 _liip_imagine:
-    resource: "@LiipImagineBundle/Resources/config/routing.xml"    
-
-
+    resource: "@LiipImagineBundle/Resources/config/routing.xml"
     
+    
+
+saman_app:
+    resource: "@AppBundle/Resources/config/routing.yml"
+    prefix:   /
+
 saman_media:
-    resource: "@SamanMediaBundle/Resources/config/routing.yml"
+    resource: "@MediaBundle/Resources/config/routing.yml"
     prefix:   /
 
 saman_label:
-    resource: "@SamanLabelBundle/Resources/config/routing.yml"
+    resource: "@LabelBundle/Resources/config/routing.yml"
     prefix:   /
 
 saman_cms:
-    resource: "@SamanCmsBundle/Resources/config/routing.yml"
-    prefix:   /
-
-saman_security:
-    resource: "@SamanSecurityBundle/Resources/config/routing.yml"
+    resource: "@CmsBundle/Resources/config/routing.yml"
     prefix:   /
 
 saman_user:
-    resource: "@SamanUserBundle/Resources/config/routing.yml"
+    resource: "@UserBundle/Resources/config/routing.yml"
     prefix:   /

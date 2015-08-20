@@ -2,8 +2,8 @@ imports:
     - { resource: parameters.yml }
     - { resource: security.yml }
     - { resource: validation.yml }
-    - { resource: "@SamanCmsBundle/Resources/config/parameters.yml" }
-    - { resource: "@SamanMediaBundle/Resources/config/parameters.yml" }
+    - { resource: "@CmsBundle/Resources/config/parameters.yml" }
+    - { resource: "@MediaBundle/Resources/config/parameters.yml" }
 
 # Framework Configuration        
 framework:
@@ -36,7 +36,7 @@ parameters:
     # General parameters
     generalParam1: 12483920
     saman.saltmain: 26eyhtri    
-    saman.md5encoder.class: Saman\Library\Service\Md5Encoder
+    saman.md5encoder.class: Library\Service\Md5Encoder
     saman.numberOfItemsPerPage: 10
     # Session directory
     saman.session.directory: "%kernel.root_dir%/sessions"
@@ -50,13 +50,13 @@ parameters:
         
     saman.saman_select2:
         resources: ~
-            #SamanCmsBundle.Page: ''
+            #CmsBundle.Page: ''
                 
         
 # Services Configuration        
 services:
     saman.appService:
-        class: Saman\AppBundle\Service\AppService
+        class: AppBundle\Service\AppService
         public: false
         arguments: 
             - @translator.default 
@@ -70,13 +70,13 @@ services:
             - %saman.helper.param%
 
     saman.twig.function.extension:
-        class: Saman\AppBundle\Library\Twig\TwigFunctionExtension
+        class: AppBundle\Library\Twig\TwigFunctionExtension
         arguments: [@translator.default]
         tags:
              - { name: twig.extension }    
              
     saman.twig.filter.extension:
-        class: Saman\AppBundle\Library\Twig\TwigFilterExtension
+        class: AppBundle\Library\Twig\TwigFilterExtension
         arguments: [@translator.default]
         tags:
              - { name: twig.extension }  
@@ -98,19 +98,19 @@ twig:
        
     form:
         resources:
-            - 'SamanMediaBundle:Form:_collection_widget.html.twig'
-            - 'SamanMediaBundle:Form:_icon_widget.html.twig'
-            - 'SamanMediaBundle:Form:_media_widget.html.twig'
-            - 'SamanMediaBundle:Form:_multiple_widget.html.twig'
-            - 'SamanMediaBundle:Form:_select2_widget.html.twig'
-            - 'SamanMediaBundle:Form:_toggle_widget.html.twig'
-            - 'SamanMediaBundle:Form:_colorpicker_widget.html.twig'
+            - 'MediaBundle:Form:_collection_widget.html.twig'
+            - 'MediaBundle:Form:_icon_widget.html.twig'
+            - 'MediaBundle:Form:_media_widget.html.twig'
+            - 'MediaBundle:Form:_multiple_widget.html.twig'
+            - 'MediaBundle:Form:_select2_widget.html.twig'
+            - 'MediaBundle:Form:_toggle_widget.html.twig'
+            - 'MediaBundle:Form:_colorpicker_widget.html.twig'
 
 # Assetic Configuration
 assetic:
     debug:          "%kernel.debug%"
     use_controller: false
-    bundles:        [SamanMediaBundle]
+    bundles:        [MediaBundle]
     #java: /usr/bin/java
     filters:
         cssrewrite: ~

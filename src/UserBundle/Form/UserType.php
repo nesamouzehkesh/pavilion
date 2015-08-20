@@ -1,0 +1,44 @@
+<?php
+
+namespace UserBundle\Form;
+
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\FormBuilderInterface;
+
+/**
+ * 
+ */
+class UserType extends AbstractType
+{
+    /**
+     * 
+     * @param \Symfony\Component\Form\FormBuilderInterface $builder
+     * @param array $options
+     */
+    public function buildForm(FormBuilderInterface $builder, array $options)
+    {
+        $builder
+            ->add('firstName', 'text')
+            ->add('lastName', 'text')
+            ->add('username', 'text')
+            ->add('password', 'password', array('mapped' => false))
+            ->add('rePassword', 'password', array('mapped' => false));
+    }
+    
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    {
+        $resolver->setDefaults(array(
+            'data_class' => 'UserBundle\Entity\User',
+        ));
+    }
+    
+    /**
+     * 
+     * @return string
+     */
+    public function getName()
+    {
+        return 'saman_user_form';
+    }
+}

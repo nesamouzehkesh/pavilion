@@ -1,0 +1,31 @@
+saman_cms_admin_page_home:
+    path:     /admin/cms/page
+    defaults: { _controller: CmsBundle:CmsAdmin:displayPages}
+    
+saman_cms_admin_page_add:
+    path:     /admin/cms/page/add
+    defaults: { _controller: CmsBundle:CmsAdmin:addPage }
+
+saman_cms_admin_page_edit:
+    path:     /admin/cms/page/edit/{itemId}
+    defaults: { _controller: CmsBundle:CmsAdmin:editPage }
+
+saman_cms_admin_page_display:
+    path:     /admin/cms/page/{itemId}
+    defaults: { _controller: CmsBundle:CmsAdmin:displayPage }
+    
+saman_cms_admin_page_delete:
+    path:     /admin/cms/page/delete/{itemId}
+    defaults: { _controller: CmsBundle:CmsAdmin:deletePage }
+    
+    
+    
+saman_cms_page_index:
+    path:     /
+    defaults: { _controller: CmsBundle:CmsView:index, url: ''}
+
+saman_cms_page:
+    path:     /{url}
+    defaults: { _controller: CmsBundle:CmsView:index, url: ''}
+    requirements: 
+        url: (?!admin|media|shopping|product)(.+)

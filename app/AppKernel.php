@@ -28,12 +28,11 @@ class AppKernel extends Kernel
             new Ivory\CKEditorBundle\IvoryCKEditorBundle(),
             new Liip\ImagineBundle\LiipImagineBundle(),
             // Saman Bubdles
-            new Saman\UserBundle\SamanUserBundle(),
-            new Saman\SecurityBundle\SamanSecurityBundle(),
-            new Saman\MediaBundle\SamanMediaBundle(),
-            new Saman\CmsBundle\SamanCmsBundle(),
-            new Saman\LabelBundle\SamanLabelBundle(),
-            new Saman\AppBundle\SamanAppBundle(),
+            new UserBundle\UserBundle(),
+            new MediaBundle\MediaBundle(),
+            new CmsBundle\CmsBundle(),
+            new LabelBundle\LabelBundle(),
+            new AppBundle\AppBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

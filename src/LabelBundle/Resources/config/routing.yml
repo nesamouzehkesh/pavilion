@@ -1,0 +1,18 @@
+saman_label_home:
+    path:     /admin/label
+    defaults: { _controller: LabelBundle:Label:displayLabels }
+    
+saman_label_delete:
+    path:     /admin/label/delete/{labelId}
+    defaults: { _controller: LabelBundle:Label:deleteLabel }
+    
+    
+# Note: both saman_label_add and saman_label_edit rout use same controller action
+# which is addEditLabel
+saman_label_add:
+    path:     /admin/label/add
+    defaults: { _controller: LabelBundle:Label:addEditLabel, labelId: null }
+
+saman_label_edit:
+    path:     /admin/label/edit/{labelId}
+    defaults: { _controller: LabelBundle:Label:addEditLabel }    

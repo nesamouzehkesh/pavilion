@@ -1,0 +1,29 @@
+{% extends "AppBundle::layout.html.twig" %}
+
+{% block content %}
+    <div class="panel panel-default">
+        <div class="panel-body d-margin-top-40 d-margin-bottom-30">
+            {% if error %}
+                <div class="alert alert-warning d-margin-bottom-20">Warning! {{ error.message }}</div>
+            {% endif %}
+            <form action="{{ path('saman_login_check') }}" method="post">
+                <div class="form-group">
+                    <label for="exampleInputEmail1">Email address</label>
+                    <input type="email" id="username" name="_username" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputPassword1">Password</label>
+                    <input type="password" class="form-control" id="password" name="_password" placeholder="Password">
+                </div>
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox"> Keep me logged in
+                    </label>
+                </div>
+                <button type="submit" class="btn btn-primary">Login</button>
+            </form>        
+        </div>
+    </div>
+{% endblock %}
+    
+{% block script %}{% endblock %}

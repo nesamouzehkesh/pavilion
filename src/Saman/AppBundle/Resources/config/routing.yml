@@ -1,7 +1,0 @@
-saman_app_display_flash_bag:
-    path:     /admin/app/api/flashbag
-    defaults: { _controller: SamanAppBundle:AppApi:displayFlashBag }
-
-saman_app_display_dashboard:
-    path:     /admin
-    defaults: { _controller: SamanAppBundle:DashboardController:displayDashboard }
