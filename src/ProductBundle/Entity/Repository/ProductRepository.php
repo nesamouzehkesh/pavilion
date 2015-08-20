@@ -15,6 +15,30 @@ class ProductRepository extends BaseEntityRepository
 {   
     /**
      * 
+     * @param int $id
+     * @return type
+     */
+    public function getProductForView($id)
+    {
+        $qb = $this->getQueryBuilder()
+            ->select(''
+                . 'product.id, '
+                . 'product.title, '
+                . 'product.description,'
+                . 'product.price'
+                )
+            ->from('ProductBundle:Product', 'product')
+            ->where('product.id = id AND product.deleted = 0')
+            ->setParameter('id', $id);
+
+        $result = $qb->getQuery()->getScalarResult();
+        $row = reset($result);
+        
+        return $row? $row : null;
+    }
+    
+    /**
+     * 
      * @return type
      */
     public function getProductsListForView()
