@@ -25,7 +25,7 @@
         <div class="row">
           <div class="col-md-8">{% block header %}{% endblock %}</div>
           <div class="col-md-4">
-              {% if twig_show_search is not defined or twig_show_search == true %}
+              {% if twig_show_search is defined and twig_show_search == true %}
                   {% include "::_search.html.twig" %}
               {% endif %}  
           </div>

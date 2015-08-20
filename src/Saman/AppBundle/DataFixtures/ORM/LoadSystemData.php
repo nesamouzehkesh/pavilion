@@ -29,13 +29,17 @@ class LoadSystemData implements FixtureInterface
                 'username' => 'admin@admin.com',
                 'password' => 'admin',
                 'email' => 'admin@admin.com',
-                'role' => Role::ROLE_ADMIN
+                'role' => Role::ROLE_ADMIN,
+                'firstName' => 'firstName',
+                'lastName' => 'lastName',
             ),
             array(
                 'username' => 'user@user.com',
                 'password' => 'user',
                 'email' => 'user@user.com',
-                'role' => Role::ROLE_USER
+                'role' => Role::ROLE_USER,
+                'firstName' => 'firstName',
+                'lastName' => 'lastName',
             ),
         ),
         'labels' => array(

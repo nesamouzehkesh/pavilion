@@ -823,7 +823,7 @@ class AppService
             $response = array_merge($response, $responseParam);
         }
         
-        return new JsonResponse($response);        
+        return new JsonResponse($response);
     }
     
     /**

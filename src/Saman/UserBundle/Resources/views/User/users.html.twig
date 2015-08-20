@@ -1,64 +1,52 @@
 {% extends "SamanCmsBundle::layout.html.twig" %}
 
 {% block header %}
-    <button data-url="{{ path('saman_admin_user_add') }}" type="button" class="btn btn-primary btn-sm action-add-item" data-toggle="modal" data-target="#page-form-container">{{ 'icon.add'|icon }} {{ 'action.addNewItem'|trans }}</button>
+    <button data-url="{{ path('saman_admin_user_add') }}" type="button" class="btn btn-primary btn-sm action-add-user" data-toggle="modal" data-target="#page-form-container">{{ 'icon.add'|icon }} {{ 'action.addNewItem'|trans }}</button>
 {% endblock %}
 
 {% block body %}
     <ul role="tablist" class="nav nav-tabs" id="myTabs">
-        <li class="active" role="presentation"><a aria-expanded="true" aria-controls="users" data-toggle="tab" role="tab" id="users-tab" href="#users">Users</a></li>
-        <li role="presentation"><a href="#myprofile">My Profile</a></li>
+        <li class="active" role="presentation"><a href="#users">Users</a></li>
+        <li role="presentation"><a href="{{ path('saman_admin_myprofile') }}">My Profile</a></li>
     </ul>
 
     <div class="modal fade" id="user-form-container" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"></div>
     
 
-    <div class="tab-content" id="myTabContent">
-        <div aria-labelledby="users-tab" id="users" class="tab-pane fade in active" role="tabpanel">
-            <div id="pages-list-container">
-                <table class="table table-hover">
-                    <thead>
-                        <tr>
-                            <th>User Info</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    {% for user in usersPagination %}
-                        <tr>
-                            <td>
-                                <address>
-                                    <strong>{{ user.firstName }} {{ user.lastName }}</strong><br>
-                                    <a href="mailto:#">{{ user.email }}</a>
-                                </address>                        
-                            </td>
-                            <td>
-                                <div class="pull-right">
-                                    {{ button(
-                                          'action.edit', 
-                                          {
-                                              url: path('saman_admin_user_edit', {'userId': user.id}),
-                                              icon: 'icon.edit', 
-                                              toggleModal: 'user-form-container', 
-                                              action: 'action-edit-item'
-                                          }) }}
-                                    {{ button(
-                                          'action.delete', 
-                                          {
-                                              url: path('saman_admin_user_delete', {'userId': user.id }),
-                                              icon: 'icon.delete', 
-                                              action: 'action-delete-item',
-                                          }) }}
-                                </div>  
-                            </td>
-                        </tr>
-                    {% endfor %}
-                    </tbody>
-                </table>
+    <div class="tab-content margin-top-20" id="myTabContent">
+        <div class="tab-pane fade in active" role="tabpanel">
+            {% for user in usersPagination %}
+                <div class="row">
+                    <div class="col-md-9">
+                        <address>
+                            <strong>{{ user.firstName }} {{ user.lastName }}</strong><br>
+                            <a href="mailto:#">{{ user.email }}</a>
+                        </address>                        
+                    </div>
+                    <div class="col-md-3">
+                        <div class="pull-right">
+                            {{ button(
+                                'action.edit', 
+                                {
+                                    url: path('saman_admin_user_edit', {'userId': user.id}),
+                                    icon: 'icon.edit', 
+                                    toggleModal: 'user-form-container', 
+                                    action: 'action-edit-user'
+                                }) }}
+                            {{ button(
+                                'action.delete', 
+                                {
+                                    url: path('saman_admin_user_delete', {'userId': user.id }),
+                                    icon: 'icon.delete', 
+                                    action: 'action-delete-user',
+                                }) }}
+                        </div>  
+                    </div>
+                </div>                
+            {% endfor %}
 
-                <div class="navigation">
-                    {{ knp_pagination_render(usersPagination) }}
-                </div>
+            <div class="navigation margin-top-20">
+                {{ knp_pagination_render(usersPagination) }}
             </div>
         </div>
     </div>

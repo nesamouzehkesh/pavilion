@@ -48,6 +48,7 @@ action:
 
 
 icon:
+    user: glyphicon glyphicon-user
     page: glyphicon glyphicon-list
     add: glyphicon glyphicon-plus
     colorSelect: glyphicon glyphicons-eyedropper

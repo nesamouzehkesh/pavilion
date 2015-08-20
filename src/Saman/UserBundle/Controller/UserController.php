@@ -5,12 +5,18 @@ namespace Saman\UserBundle\Controller;
 use Saman\Library\Base\BaseController;
 use Symfony\Component\HttpFoundation\Request;
 use Saman\UserBundle\Entity\User;
+use Saman\UserBundle\Form\UserType;
 
 class UserController extends BaseController
 {
-    public function myprofileAction($name)
+    public function myprofileAction()
     {
-        return $this->render('SamanUserBundle:User:myprofile.html.twig', array('name' => $name));
+        $user = $this->getAppService()->getUser();
+        
+        return $this->render(
+            'SamanUserBundle:User:myprofile.html.twig', 
+            array('user' => $user)
+            );
     }
     
     /**
@@ -48,38 +54,56 @@ class UserController extends BaseController
      */
     public function addEditUserAction(Request $request, $userId = null)
     {
-        // Get user object
-        $user = $this->getUser($userId);
-        
-        // Create a form for this $user
-        $form = $this->createFormBuilder($user)
-            ->add('title', 'text')
-            ->add('description', 'textarea')
-            ->add('save', 'submit', array('user' => 'Add User'))
-            ->getForm();
-        
-        $form->handleRequest($request);
-        // If form is submited and it is valid then add or update this $user
-        if ($form->isValid()) {
-            // Get ObjectManager
-            $em = $this->getDoctrine()->getManager();
-            
-            $em->persist($user);
-            $em->flush();
-            
-            // Redirect to user main page. First we create the url to user main page
-            // from its rout 'saman_admin_user_home' then we use redirect function to
-            // redirect to this $url
-            $url = $this->generateUrl('saman_admin_user_home');
-            return $this->redirect($url, 301);            
-        }
-        
-        return $this->render(
-            'SamanUserBundle:User:addEditUser.html.twig', 
-            array(
-                'form' => $form->createView(),
-                )
-            );
+        try {
+            // Get user object
+            $user = $this->getUserEntity($userId);
+
+            // Generate User Form
+            $userForm = $this->createForm(
+                new UserType(), 
+                $user,
+                array(
+                    'action' => $request->getUri(),
+                    'method' => 'post'
+                    )
+                );
+
+            $userForm->handleRequest($request);
+            // If form is submited and it is valid then add or update this $user
+            if ($userForm->isValid()) {
+
+                // Get some extra form field that are not mapped to user object. 
+                $password = $userForm->get('password')->getData();
+                $rePassword = $userForm->get('rePassword')->getData();
+                if ($password !== $rePassword) {
+                    return $this->getAppService()->getJsonResponse(
+                        false, 
+                        'Passwords are no matched'
+                        );
+                }
+
+                // Set this $password for user password
+                $user->setPassword($password);
+
+                // Get ObjectManager
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($user);
+                $em->flush();
+
+                return $this->getAppService()->getJsonResponse(true);
+            }
+
+            $view = $this->renderView(
+                'SamanUserBundle:User:addEditUser.html.twig', 
+                array(
+                    'form' => $userForm->createView(),
+                    )
+                );
+
+            return $this->getAppService()->getJsonResponse(true, null, $view);
+        } catch (\Exception $ex) {
+            return $this->getExceptionResponse('Can not add or edit user', $ex);
+        }         
     }
     
     /**
@@ -90,22 +114,25 @@ class UserController extends BaseController
      */
     public function deleteUserAction($userId)
     {
-        // Get user
-        $user = $this->getUser($userId);
-        
-        // Get ObjectManager
-        $em = $this->getDoctrine()->getManager();
-        // Remove user and flush ObjectManager. Note: if this $user is used
-        // running the following code will throw an exception. Before delete this 
-        // object we need to be sure that it is not in any other places.
-        $em->remove($user);
-        $em->flush();
-        
-        // Redirect to user main page. First we create the url to user main page
-        // from its rout 'saman_admin_user_home' then we use redirect function to
-        // redirect to this $url
-        $url = $this->generateUrl('saman_admin_user_home');
-        return $this->redirect($url, 301);
+        try {
+            // Get user
+            $user = $this->getUserEntity($userId);
+
+            // Get ObjectManager
+            $em = $this->getDoctrine()->getManager();
+            // Remove user and flush ObjectManager. Note: if this $user is used
+            // running the following code will throw an exception. Before delete this 
+            // object we need to be sure that it is not in any other places.
+            $em->remove($user);
+            $em->flush();
+
+            return $this->getAppService()->getJsonResponse(true);
+        } catch (\Exception $ex) {
+            return $this->getExceptionResponse(
+                'alert.error.canNotDeleteItem', 
+                $ex
+                );
+        }        
     }
     
     /**
@@ -119,7 +146,7 @@ class UserController extends BaseController
      * @return User
      * @throws NotFoundHttpException
      */
-    private function getUserE($userId = null)
+    private function getUserEntity($userId = null)
     {
         // If $userId is null it means that we want to create a new user object.
         // otherwise we find a user in DB based on this $userId
@@ -130,7 +157,7 @@ class UserController extends BaseController
             $em = $this->getDoctrine()->getManager();
             
             // Get User repository
-            $user = $em->getRepository('SamanUserBundle:User')->find($userId);
+            $user = User::getRepository($em)->find($userId);
             
             // Check if $user is found
             if (!$user) {

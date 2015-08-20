@@ -81,7 +81,9 @@ class CmsAdminService
             $page,
             $this->appService->getParameter('page')
             );
+        
         $pageForm = $this->appService->createForm($request, $pageFormType, $page);
+        
         // Handling Form Submissions and validation
         $pageForm->handleRequest($request);
         if ($pageForm->isValid()) {

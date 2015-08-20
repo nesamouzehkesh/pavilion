@@ -1,7 +1,8 @@
 <script type="text/javascript">
 $(function(){
     
-    $('.action-add-item .action-edit-item').click(function(e){
+    $('.action-add-user, .action-edit-user').click(function(e){
+        
         var url = $(this).attr('data-url');
         var formContainer = $('#user-form-container');
         $.get(url, function(response) {
@@ -13,7 +14,7 @@ $(function(){
         }, 'json');        
     });
 
-    $('.action-delete-item').click(function(e){
+    $('.action-delete-user').click(function(e){
         var url = $(this).attr('data-url');
         bootbox.confirm('Are you sure to delete this item', function(result) {
             if (result) {

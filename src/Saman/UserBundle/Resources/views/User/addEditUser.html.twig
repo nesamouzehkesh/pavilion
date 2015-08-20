@@ -2,9 +2,10 @@
 
 {% block body %}
     {{ form_errors(form) }}
-    {{ form_row(form.title) }}
-    {{ form_row(form.url) }}
-    {{ form_row(form.content) }}
-    {{ form_row(form.icon) }}
-    {{ form_row(form.labels) }}
+    {{ form_row(form.firstName) }}
+    {{ form_row(form.lastName) }}
+    {{ form_row(form.username) }}
+    <br><br>
+    {{ form_row(form.password) }}
+    {{ form_row(form.rePassword) }}
 {% endblock %}
