@@ -9,7 +9,7 @@ http://symfony.com/doc/current/reference/forms/twig_reference.html#reference-for
 #}
 <ul class="saman_multiple_type d-saman-multiple-form" data-prototype="{{ form_widget(form.saman_collection.vars.prototype)|e }}"> {#|filterMultiplePrototype#}
     {% for collection in form.saman_collection %}
-        <li class="d-margin-top-20">
+        <li class="margin-top-20">
             {{ form_row(collection) }}
         </li>
     {% endfor %}
@@ -71,7 +71,7 @@ $(function() {
         $collectionHolder.data('index', index + 1);
 
         // Display the form in the page in an li, before the "Add a tag" link li
-        var $newFormLi = $('<li class="d-margin-top-10"></li>').append(newForm);
+        var $newFormLi = $('<li class="margin-top-10"></li>').append(newForm);
         $newLinkLi.before($newFormLi);
 
         // add a delete link to the new form

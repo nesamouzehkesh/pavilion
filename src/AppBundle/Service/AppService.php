@@ -14,9 +14,9 @@ use Symfony\Component\Validator\ValidatorInterface;
 use Doctrine\ORM\EntityManager;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Knp\Component\Pager\Paginator;
-use MediaBundle\Service\MediaService;
 use ConfigBundle\Service\ConfigService;
 use MediaBundle\Form\Type\MultipleType;
+use MediaBundle\Service\MediaService;
 use Library\Exception\VisibleHttpException;
 
 class AppService 
@@ -141,7 +141,6 @@ class AppService
         $this->helperParameters = $helperParameters;
     }    
     
-    
     /**
      * Get a helper parameter from $helperParameters array
      */
@@ -187,7 +186,7 @@ class AppService
      */
     public function saveMedia($entity)
     {
-        if (null === $this->mediaService) {
+        if (!$this->mediaService instanceof MediaService) {
             throw new \Exception("No media service is seet for this helper");
         }
         

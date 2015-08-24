@@ -20,8 +20,15 @@ class ProductType extends AbstractType
     {
         $builder
             ->add('title', 'text')
+            /*
+            ->add('image', 'saman_media', array(
+                'attr'  => array('isMultiple' => false, 'dragover' => false)
+                ))
+            ->add('images', 'saman_media')
+             */
             ->add('description', 'textarea')
             ->add('price', 'number')
+            ->add('images', 'saman_media')
             ->add('available', 'choice', array(
                 'choices'  => array('1' => 'Active', '0' => 'Inactive')
                 ));

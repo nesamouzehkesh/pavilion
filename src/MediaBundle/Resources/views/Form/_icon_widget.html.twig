@@ -33,9 +33,9 @@
 {% endif %}    
 <input {{ block('widget_attributes') }} type="hidden" value="{{ value }}" />
 <button class="btn btn-default" id="display-icon-container-{{ formId }}" type="button" data-toggle="collapse" aria-expanded="false" aria-controls="icon-container-{{ formId }}">
-    <span id="selected-icon-for-{{ formId }}">{{ iconSelectText|raw }}</span><span class="d-left-5"><span class="caret"></span></span>
+    <span id="selected-icon-for-{{ formId }}">{{ iconSelectText|raw }}</span><span class="margin-left-5"><span class="caret"></span></span>
 </button>
-<div class="collapse d-margin-top-5" id="icon-container-{{ formId }}">
+<div class="collapse margin-top-5" id="icon-container-{{ formId }}">
     <div>
         <span class="clear-icon-for-{{ formId }} d-form-icon-dropdown-menu-items">Clear</span>
     </div>

@@ -4,7 +4,7 @@
 Bootstrap toggle component
 http://www.bootstraptoggle.com 
 #}
-<span class="d-left-5">
+<span class="margin-left-5">
     {% set size = (attr['data-size'] is defined)? '' : 'data-size="mini"' %}
     <input type="checkbox" {{ size |raw }} data-toggle="toggle" {{ block('widget_attributes') }}{% if value is defined %} value="{{ value }}"{% endif %}{% if checked %} checked="checked"{% endif %} />
 </span>

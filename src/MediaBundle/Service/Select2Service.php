@@ -4,30 +4,29 @@ namespace MediaBundle\Service;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Library\Service\Helper;
+use AppBundle\Service\AppService;
 use MediaBundle\Repository\Select2Repository;
 
 class Select2Service
 {
     /**
      *  
-     * @var Helper $helper
+     * @var AppService $appService
      */
-    protected $helper;
+    protected $appService;
 
     /**
      * 
-     * @param \Library\Service\Helper $helper
-     * @param \MediaBundle\Service\Filesystem $filesystem
+     * @param AppService $appService
      * @param type $parameters
      */
     public function __construct(
-        Helper $helper,
+        AppService $appService,
         $parameters
         ) 
     {
-        $this->helper = $helper;
-        $this->helper->setParametrs($parameters);
+        $this->appService = $appService;
+        $this->appService->setParametrs($parameters);
     }
     
     /**
@@ -39,7 +38,7 @@ class Select2Service
     public function select2Data(Request $request, $class)
     {
         $select2Repository = new Select2Repository(
-            $this->helper->getEntityManager(),
+            $this->appService->getEntityManager(),
             self::decodeClass($class)
             );
         
@@ -50,7 +49,7 @@ class Select2Service
         $total = $select2Repository->getCountSelect2Entities($value);
         $data = $select2Repository->getSelect2Entities($value, $page, $limit);
         
-        return $this->helper->getJsonResponse(true, null, null, 
+        return $this->appService->getJsonResponse(true, null, null, 
             array(
                 'total' => $total,
                 'data' => $data,
@@ -69,7 +68,7 @@ class Select2Service
         $selection = (array) $request->request->get('selection');
 
         $select2Repository = new Select2Repository(
-            $this->helper->getEntityManager(),
+            $this->appService->getEntityManager(),
             self::decodeClass($class)
             );
         $data = $select2Repository->getSelect2EntitiesByIds($selection);
@@ -107,6 +106,6 @@ class Select2Service
      */
     private function getMediaRepository()
     {
-        return $this->helper->getRepository('MediaBundle:Media');
+        return $this->appService->getRepository('MediaBundle:Media');
     }
 }

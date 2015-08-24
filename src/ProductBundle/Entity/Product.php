@@ -46,7 +46,21 @@ class Product extends BaseEntity
     /**
      * @ORM\Column(name="available", type="boolean", options={"default"= 1})
      */
-    protected $available;    
+    protected $available;
+    
+    /**
+     * @var string
+     * @AppBundle\Library\Annotation\MediaAnnotation(type="single")
+     * @ORM\Column(name="image", type="text", nullable=true)
+     */
+    private $image;
+    
+    /**
+     * @var string
+     * @AppBundle\Library\Annotation\MediaAnnotation(type="multiple")
+     * @ORM\Column(name="images", type="text", nullable=true)
+     */
+    private $images;
     
     /**
      * 
@@ -168,5 +182,51 @@ class Product extends BaseEntity
     public function getAvailable()
     {
         return $this->available;
+    }
+
+    /**
+     * Set image
+     *
+     * @param string $image
+     * @return Product
+     */
+    public function setImage($image)
+    {
+        $this->image = $image;
+
+        return $this;
+    }
+
+    /**
+     * Get image
+     *
+     * @return string 
+     */
+    public function getImage()
+    {
+        return $this->image;
+    }
+
+    /**
+     * Set images
+     *
+     * @param string $images
+     * @return Product
+     */
+    public function setImages($images)
+    {
+        $this->images = $images;
+
+        return $this;
+    }
+
+    /**
+     * Get images
+     *
+     * @return string 
+     */
+    public function getImages()
+    {
+        return $this->images;
     }
 }

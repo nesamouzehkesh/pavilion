@@ -20,3 +20,4 @@ Then, use the `create-project` command to generate a new Symfony application:
     sudo chmod -R 777 ./app/config/parameters.yml
     sudo chmod -R 777 ./app/cache/
     sudo chmod -R 777 ./app/cache/
+    sudo chmod -R 777 ./app/media/

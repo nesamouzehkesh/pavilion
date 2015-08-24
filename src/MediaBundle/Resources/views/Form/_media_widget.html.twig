@@ -15,7 +15,7 @@ https://github.com/blueimp/jQuery-File-Upload/wiki/Options
 
 <div id="fileupload-{{ mediaId }}">    
     {% if isMultiple %}
-        {% set uploadButton = '<span class="btn btn-default btn-file">' ~ ('icon.plus'|icon) ~ '<span class="d-left-5">' ~ ('action.addFiles'|trans) ~ '</span><input name="files[]" type="file" multiple /></span>' %}
+        {% set uploadButton = '<span class="btn btn-default btn-file">' ~ ('icon.plus'|icon) ~ '<span class="margin-left-5">' ~ ('action.addFiles'|trans) ~ '</span><input name="files[]" type="file" multiple /></span>' %}
         <input {{ block('widget_attributes') }} type="hidden" value="{{ value|toMediaId }}" />
         {% if isDragover %}
             <div class="row fileupload-buttonbar">
@@ -25,7 +25,7 @@ https://github.com/blueimp/jQuery-File-Upload/wiki/Options
                             <h4 class="d-text-muted">{{ 'word.uploadFileByDropping'|trans }}</h4>
                             {{ uploadButton|raw }}
                         </center>
-                        <div class="d-left-10 d-right-10 d-margin-bottom-10">
+                        <div class="margin-left-10 margin-right-10 margin-bottom-10">
                         {# The table listing the files available for upload/download #}
                         {{ filesContainer|raw }}
                         </div>
@@ -42,7 +42,7 @@ https://github.com/blueimp/jQuery-File-Upload/wiki/Options
             {{ filesContainer|raw }}
         {% endif %}        
     {% else %}
-        {% set uploadButton = '<span class="btn btn-default btn-file">' ~ ('icon.plus'|icon) ~ '<span class="d-left-5">' ~ ('action.addFiles'|trans) ~ '</span><input name="files" type="file" /></span>' %}    
+        {% set uploadButton = '<span class="btn btn-default btn-file">' ~ ('icon.plus'|icon) ~ '<span class="margin-left-5">' ~ ('action.addFiles'|trans) ~ '</span><input name="files" type="file" /></span>' %}    
         <input {{ block('widget_attributes') }} type="hidden" value="{{ value|toMediaId }}" />
         {% if isDragover %}
             <div class="row fileupload-buttonbar">
@@ -52,7 +52,7 @@ https://github.com/blueimp/jQuery-File-Upload/wiki/Options
                             <h4 class="d-text-muted">{{ 'word.uploadFileByDropping'|trans }}</h4>
                             {{ uploadButton|raw }}
                         </center>
-                        <div class="d-left-10 d-right-10 d-margin-bottom-10">
+                        <div class="margin-left-10 margin-right-10 margin-bottom-10">
                         {# The table listing the files available for upload/download #}
                         {{ filesContainer|raw }}
                         </div>

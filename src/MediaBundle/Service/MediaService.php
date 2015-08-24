@@ -9,7 +9,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Gaufrette\Filesystem;
 use Gaufrette\Adapter\Local;
-use Library\Service\Helper;
+use AppBundle\Service\AppService;
 use UserBundle\Entity\User;
 use MediaBundle\Entity\Media;
 
@@ -20,9 +20,9 @@ class MediaService
     
     /**
      *  
-     * @var Helper $helper
+     * @var AppService $appService
      */
-    protected $helper;
+    protected $appService;
     
     /**
      *
@@ -38,21 +38,21 @@ class MediaService
 
     /**
      * 
-     * @param \Library\Service\Helper $helper
-     * @param \MediaBundle\Service\Filesystem $filesystem
+     * @param AppService $appService
+     * @param Filesystem $filesystem
      * @param type $parameters
      */
     public function __construct(
-        Helper $helper,
+        AppService $appService,
         Filesystem $filesystem,
         $parameters
         ) 
     {
-        $this->helper = $helper;
+        $this->appService = $appService;
         $this->user = null;
         // Set the default fileSystem based on the service configurations
         $this->filesystem = $filesystem;
-        $this->helper->setParametrs($parameters);
+        $this->appService->setParametrs($parameters);
     }
     
     /**
@@ -123,7 +123,7 @@ class MediaService
         $media = $this->getMediaFormRequest($request);
         if (null !== $media) {
             $response = new Response();
-            $rootDirectory = $this->helper->getParameter('rootDirectory');
+            $rootDirectory = $this->appService->getParameter('rootDirectory');
             $mediaPath = $media->getFullPath($rootDirectory);
             $filename = $media->getTitle(true);
             
@@ -150,7 +150,7 @@ class MediaService
      */
     public function getMediaDownloadUrl($mediaId)
     {
-        return $this->helper->generateUrl(
+        return $this->appService->generateUrl(
             'saman_media_download_media', 
             array('id' => $mediaId)
             );
@@ -184,7 +184,7 @@ class MediaService
                 // Set media class
                 $media->setClass(get_class($entity));
                 // Persist new changes in media entity
-                $this->helper->persistEntity($media);
+                $this->appService->persistEntity($media);
             }
         }
 
@@ -201,7 +201,7 @@ class MediaService
     public function saveMedia($entity)
     {
         $annotationReader = new AnnotationReader();
-        $reflectionProperties = $this->helper->getObjectProperties($entity);
+        $reflectionProperties = $this->appService->getObjectProperties($entity);
         foreach ($reflectionProperties as $reflectionProperty) {
             $mediaAnnotation = $annotationReader->getPropertyAnnotation(
                 $reflectionProperty, 
@@ -218,8 +218,8 @@ class MediaService
                 $entity->$setter($medias);
             }
         }
-        $this->helper->persistEntity($entity);
-        $this->helper->flushEntityManager();
+        $this->appService->persistEntity($entity);
+        $this->appService->flushEntityManager();
         
         return true;
     }    
@@ -238,7 +238,7 @@ class MediaService
         $medias = $this->createMedia($uploadedFiles, $isPermanent, $visibility);
         $files = Media::mediasToArray($medias);
         
-        return $this->helper->getJsonResponse(true, null, null, array('files' => $files));        
+        return $this->appService->getJsonResponse(true, null, null, array('files' => $files));        
     }
     
     /**
@@ -250,17 +250,17 @@ class MediaService
     {
         $media = $this->getMediaFormRequest($request);
         if (null !== $media) {
-            $this->helper->removeEntity($media);
-            $this->helper->flushEntityManager();
+            $this->appService->removeEntity($media);
+            $this->appService->flushEntityManager();
 
-            return $this->helper->getJsonResponse(
+            return $this->appService->getJsonResponse(
                 true,
                 array(
                     'alert.success.itemHasBeenRemoved', 
                     array('%id%' => $media->getId()))
                 );
         } else {
-            return $this->helper->getJsonResponse(
+            return $this->appService->getJsonResponse(
                 true,
                 array('alert.error.noItemHasBeenFound')
                 );
@@ -298,7 +298,7 @@ class MediaService
                     $media->setTitle($file->getClientOriginalName());
                     $media->setPath($filePath);
                     $media->setSize($file->getClientSize());
-                    $this->helper->persistEntity($media);
+                    $this->appService->persistEntity($media);
                 }
             } else {
                 $media->setError($validationResult);                
@@ -306,7 +306,7 @@ class MediaService
             
             $medias->add($media);
         }
-        $this->helper->flushEntityManager();
+        $this->appService->flushEntityManager();
         
         return $medias;
     }
@@ -320,7 +320,7 @@ class MediaService
      */
     private function isValidFile($file)
     {
-        $allowedMimeTypes = $this->helper->getParameter('allowedMimeTypes');
+        $allowedMimeTypes = $this->appService->getParameter('allowedMimeTypes');
         
         if (null === $file) {
             return 'File is null';
@@ -395,13 +395,13 @@ class MediaService
         )
     {
         // Get the enviroment (e.g. dev)
-        $environment = $this->helper->getParameter('environment');
+        $environment = $this->appService->getParameter('environment');
         // Define the life cycle path of this file
         $lifeCyclePath = ($isPermanent)? 'perm' : 'temp';
         // Get file extension out of file original path
         $extension = $this->getFileExtension($originalPath);
         // Generate uniq ID for the file title
-        $uniqId = $this->helper->getRandomString();
+        $uniqId = $this->appService->getRandomString();
         // Generate flie path
         $filePath = sprintf('%s/%s/%s/%s/%s/%s.%s', 
             $environment,
@@ -423,6 +423,6 @@ class MediaService
      */
     private function getMediaRepository()
     {
-        return $this->helper->getRepository('MediaBundle:Media');
+        return $this->appService->getRepository('MediaBundle:Media');
     }
 }
