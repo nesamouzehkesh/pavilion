@@ -12,28 +12,6 @@ class ProductApiController extends Controller
     /**
      * @ApiDoc(
      *   resource = true,
-     *   description = "Get Welcome message",
-     *   statusCodes = {
-     *     200 = "Returned when successful",
-     *     403 = "Returned when the product is not authorized to say hello",
-     *     404 = {
-     *       "Returned when the product is not found",
-     *       "Returned when something else is not found"
-     *     }
-     *   }
-     * )
-     * 
-     * @return array
-     * @Rest\View()
-     */
-    public function getWelcomeSamanAction()
-    {
-        return 'Helow !';
-    }
-    
-    /**
-     * @ApiDoc(
-     *   resource = true,
      *   description = "Get all products",
      *   statusCodes = {
      *     200 = "Returned when successful",

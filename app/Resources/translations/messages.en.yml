@@ -92,7 +92,12 @@ icon:
         minus: glyphicon glyphicon-minus-sign
         plus: glyphicon glyphicon-plus-sign
 
+
 form:
+    saman_label_form:
+        title: Label
+        icon: glyphicon glyphicon-tags
+        description: "You can create new label or edit your existing label in this form"
     saman_cms_page_form:
         title: Page
         icon: glyphicon glyphicon-th-large
@@ -101,6 +106,10 @@ form:
         title: Product
         icon: glyphicon glyphicon-shopping_bag
         description: "You can add a new product or edit your existing product in this form"
+    saman_product_form:
+        title: Product
+        icon: glyphicon glyphicon-shopping_bag
+        description: "You can create new product or edit your existing product in this form"
 
 
 module: 

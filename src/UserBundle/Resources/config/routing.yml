@@ -3,7 +3,7 @@ saman_admin_user_home:
     defaults: { _controller: UserBundle:User:displayUsers }
     
 saman_admin_myprofile:
-    path:     /admin/myprofile
+    path:     /admin/user/myprofile
     defaults: { _controller: UserBundle:User:myprofile }
    
 saman_admin_user_add:

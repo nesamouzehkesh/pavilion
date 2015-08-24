@@ -6,10 +6,9 @@ saman_api:
     resource: "routing_rest.yml"
     prefix : /api    
     
-# For my api documenting
-NelmioApiDocBundle:
+saman_api_doc:
   resource: "@NelmioApiDocBundle/Resources/config/routing.yml"
-  prefix:   /api/doc
+  prefix:   /admin/api/doc
   
 saman_login:
     path:     /login
@@ -36,10 +35,14 @@ saman_label:
     resource: "@LabelBundle/Resources/config/routing.yml"
     prefix:   /
 
-saman_cms:
+saman_cms_admin:
     resource: "@CmsBundle/Resources/config/routing.yml"
     prefix:   /
 
 saman_user:
     resource: "@UserBundle/Resources/config/routing.yml"
+    prefix:   /
+    
+saman_product:
+    resource: "@ProductBundle/Resources/config/routing.yml"
     prefix:   /

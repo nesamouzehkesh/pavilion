@@ -1,10 +1,9 @@
 <script type="text/javascript">
 $(function(){
     
-    $('.action-add-user, .action-edit-user').click(function(e){
-        
+    $('#action-add-product, .action-edit-product').click(function(e){
         var url = $(this).attr('data-url');
-        var formContainer = $('#user-form-container');
+        var formContainer = $('#product-form-container');
         $.get(url, function(response) {
             if (response.success === true) {
                 postItemForm(response, formContainer);
@@ -14,7 +13,7 @@ $(function(){
         }, 'json');        
     });
 
-    $('.action-delete-user').click(function(e){
+    $('.action-delete-product').click(function(e){
         var url = $(this).attr('data-url');
         bootbox.confirm('Are you sure to delete this item', function(result) {
             if (result) {
@@ -34,7 +33,7 @@ $(function(){
     function postItemForm(response, formContainer)
     {
         formContainer.html(response.content); 
-        var forms = ['[name="saman_user_form"]'];
+        var forms = ['[name="saman_product_form"]'];
         $(forms.join(',')).submit(function(e){
             e.preventDefault();
             postFormContent($(this), function(response) {
@@ -51,6 +50,5 @@ $(function(){
             return false;
         });
     }     
-    
 });
 </script>

@@ -272,3 +272,7 @@ body .ace_scrollbar-v {
     cursor: cell;
     background-color: #f7f7f9;
 }
+
+.d-text-muted {
+    color: #ccc;
+}

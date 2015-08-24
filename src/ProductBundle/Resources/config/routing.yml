@@ -1,0 +1,15 @@
+saman_admin_product_home:
+    path:     /admin/product
+    defaults: { _controller: ProductBundle:Product:displayProducts }
+   
+saman_admin_product_add:
+    path:     /admin/product/add
+    defaults: { _controller: ProductBundle:Product:addEditProduct, productId: null }
+
+saman_admin_product_edit:
+    path:     /admin/product/edit/{productId}
+    defaults: { _controller: ProductBundle:Product:addEditProduct }
+    
+saman_admin_product_delete:
+    path:     /admin/product/delete/{productId}
+    defaults: { _controller: ProductBundle:Product:deleteProduct }
