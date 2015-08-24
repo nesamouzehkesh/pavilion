@@ -138,7 +138,7 @@ class User extends BaseEntity implements AdvancedUserInterface, \Serializable
      */
     public function setPassword($password)
     {
-        $this->password = md5($password);
+        $this->password = $password;
         
         return $this;
     } 
