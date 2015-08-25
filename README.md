@@ -8,8 +8,7 @@ This document contains information on how to download, install, and start
 using Symfony. For a more detailed explanation, see the [Installation][1]
 chapter of the Symfony Documentation.
 
-1) Installing the Standard Edition
-----------------------------------
+1) Installing
 First create a Db for this project (for example symfony_basic)
 Go to WWW and then type:
 
@@ -23,6 +22,7 @@ creating the Database Tables.
     ./make.sh
 
 Or do followings:
+
 1: Install third party vendors
 
     sudo composer install
