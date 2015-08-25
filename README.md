@@ -14,12 +14,12 @@ Go to WWW and then type:
 
     git clone https://github.com/SamanShafigh/symfony-basic.git
 
-Then, use the `./make.sh` command to generate the application. To do this first give
+Then, use the `./install.sh` command to install the application. To do this first give
 permission to this file and then run it. It will install all third party vendors, and
-creating the Database Tables. 
+creates and populates application tables.
 
-    sudo chmod 777 make.sh
-    ./make.sh
+    sudo chmod 777 install.sh
+    ./install.sh
 
 Or do followings:
 
