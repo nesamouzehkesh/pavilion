@@ -10,14 +10,22 @@ chapter of the Symfony Documentation.
 
 1) Installing the Standard Edition
 ----------------------------------
-
+Go to WWW and then type:
     git clone https://github.com/SamanShafigh/symfony-basic.git
 
-Then, use the `create-project` command to generate a new Symfony application:
+Then, use the `./make.sh` command to generate the application 
+    ./make.sh
 
+Or do followings:
+1: Install third party vendors
     sudo composer install
-
     sudo chmod -R 777 ./app/config/parameters.yml
     sudo chmod -R 777 ./app/cache/
-    sudo chmod -R 777 ./app/cache/
+    sudo chmod -R 777 ./app/logs/
     sudo chmod -R 777 ./app/media/
+    
+2: Creating the Database Tables/Schema
+    sudo php app/console doctrine:schema:update --force
+
+3: Populate System Database using Data Fixtures
+    php app/console doctrine:fixtures:load
