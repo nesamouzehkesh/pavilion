@@ -23,6 +23,7 @@ creating the Database Tables.
 Or do followings:
 1: Install third party vendors
     sudo composer install
+    sudo mkdir ./app/cache/
     sudo chmod -R 777 ./app/config/parameters.yml
     sudo chmod -R 777 ./app/cache/
     sudo chmod -R 777 ./app/logs/
