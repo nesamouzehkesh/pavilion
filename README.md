@@ -9,7 +9,6 @@ using Symfony. For a more detailed explanation, see the [Installation][1]
 chapter of the Symfony Documentation.
 
 1) Installing
-----------------------------------
 
 First create a Db for this project (for example symfony_basic)
 Go to WWW and then type:
