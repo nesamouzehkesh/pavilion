@@ -96,18 +96,18 @@ class LoadSystemData implements FixtureInterface
      */
     private function loadUsers($manager)
     {
-        $generator = new LoremIpsumGenerator();
+        $loremIpsum = new LoremIpsumGenerator();
         $usersData = $this->data['users'];
         for ($i = 0; $i < 20; $i++) {
-            $email = $generator->getEmail();
+            $email = $loremIpsum->getEmail();
             
             $usersData[] = array(
                 'username' => $email,
                 'password' => 'abcd',
                 'email' => $email,
                 'role' => Role::ROLE_USER,
-                'firstName' => $generator->getName(),
-                'lastName' => $generator->getName(),
+                'firstName' => $loremIpsum->getName(),
+                'lastName' => $loremIpsum->getName(),
             );
         }
         
@@ -137,11 +137,11 @@ class LoadSystemData implements FixtureInterface
      */
     private function loadLabels($manager)
     {
-        $generator = new LoremIpsumGenerator();
+        $loremIpsum = new LoremIpsumGenerator();
         foreach ($this->data['labels'] as $labelTitle) {
             $label = new Label();
             $label->setTitle($labelTitle);
-            $label->setDescription($generator->getDescription());
+            $label->setDescription($loremIpsum->getDescription());
             $this->labels[] = $label;
             
             $manager->persist($label);
@@ -156,11 +156,11 @@ class LoadSystemData implements FixtureInterface
      */
     private function loadPages($manager)
     {
-        $generator = new LoremIpsumGenerator();
+        $loremIpsum = new LoremIpsumGenerator();
         
         $page = new Page();
         $page->setTitle('Home Page');
-        $page->setContent($generator->getDescription());
+        $page->setContent($loremIpsum->getDescription());
         $page->setUrl('');
         $page->addLabel($this->labels[0]);
         $page->addLabel($this->labels[1]);
@@ -168,9 +168,9 @@ class LoadSystemData implements FixtureInterface
             
         for ($i = 0; $i < $this->data['pages']; $i++) {
             $page = new Page();
-            $page->setTitle($generator->getTitle());
-            $page->setContent($generator->getDescription());
-            $page->setUrl($generator->getUrl(true));
+            $page->setTitle($loremIpsum->getTitle());
+            $page->setContent($loremIpsum->getDescription());
+            $page->setUrl($loremIpsum->getUrl(true));
             for ($j = 0; $j < rand(1 , count($this->labels)); $j++) {
                 $page->addLabel($this->labels[$j]);
             }
@@ -187,11 +187,11 @@ class LoadSystemData implements FixtureInterface
      */
     private function loadProducts($manager)
     {
-        $generator = new LoremIpsumGenerator();
+        $loremIpsum = new LoremIpsumGenerator();
         for ($i = 0; $i < $this->data['products']; $i++) {
             $product = new Product();
-            $product->setTitle($generator->getTitle());
-            $product->setDescription($generator->getDescription());
+            $product->setTitle($loremIpsum->getTitle());
+            $product->setDescription($loremIpsum->getDescription());
             $product->setPrice(rand(10, 10000));
             
             $manager->persist($product);

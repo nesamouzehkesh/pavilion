@@ -5,6 +5,7 @@ namespace PlaygroundBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use PlaygroundBundle\Document\Product;
 use PlaygroundBundle\Document\Feature;
+use Library\Helpers\LoremIpsumGenerator;
 
 class MongoController extends Controller
 {
@@ -25,27 +26,21 @@ class MongoController extends Controller
      */
     public function addAction()
     {
-        $feature1 = new Feature();
-        $feature1->setName('Feature 1');
-        
-        $feature2 = new Feature();
-        $feature2->setName('Feature 2');
-        
-        $feature3 = new Feature();
-        $feature3->setName('Feature 3');
+        $loremIpsum = new LoremIpsumGenerator();
+        $dm = $this->getMongoDbManager();
         
         $product = new Product();
-        $product->setName('A Foo Bar');
-        $product->setPrice('19.99');
-        $product->addFeature($feature1);
-        $product->addFeature($feature2);
-        $product->addFeature($feature3);
-
-        $dm = $this->getMongoDbManager();
-        $dm->persist($feature1);
-        $dm->persist($feature2);
-        $dm->persist($feature3);
+        $product->setName($loremIpsum->getTitle());
+        $product->setPrice(rand(100 , 1000));
         $dm->persist($product); 
+        
+        for ($j = 0; $j < rand(3 , 6); $j++) {
+            $feature = new Feature();
+            $feature->setName($loremIpsum->getTitle());
+            $product->addFeature($feature);
+            $dm->persist($feature);
+        }        
+
         $dm->flush();
         
         return $this->redirect($this->generateUrl('saman_pg_mongo_index'), 301);
