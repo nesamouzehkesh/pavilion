@@ -8,9 +8,13 @@
     },
     "require": {
         "php": ">=5.3.3",
-        "symfony/symfony": "~2.5",
-        "doctrine/orm": "~2.2,>=2.2.3",
+        "symfony/symfony": "2.6.*",
+        "doctrine/orm": "~2.2,>=2.2.3,<2.5",
+        "doctrine/dbal": "<2.5",
         "doctrine/doctrine-bundle": "~1.2",
+        "doctrine/mongodb-odm": "~1.0.0-BETA13@dev",
+        "doctrine/mongodb-odm-bundle": "3.0.*@dev",
+        
         "twig/extensions": "~1.0",
         "symfony/assetic-bundle": "~2.3",
         "symfony/swiftmailer-bundle": "~2.3",
@@ -25,6 +29,7 @@
         "jms/serializer-bundle": "~1.0",
         "friendsofsymfony/rest-bundle": "~1.7",
         "nelmio/api-doc-bundle": "~2.8",
+        "exercise/htmlpurifier-bundle": "*",
         
         "doctrine/doctrine-fixtures-bundle": "~2.2",
         "willdurand/geocoder-bundle": "@stable",

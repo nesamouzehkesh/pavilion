@@ -1,0 +1,35 @@
+saman_pg_index:
+    path:     /
+    defaults: { _controller: PlaygroundBundle:Index:index }
+
+saman_pg_html_purifier:
+    path:     /html-purifier
+    defaults: { _controller: PlaygroundBundle:Index:htmlPurifier }
+
+
+saman_pg_mongo_index:
+    path:     /products
+    defaults: { _controller: PlaygroundBundle:Mongo:index }
+
+saman_pg_mongo_add_product:
+    path:     /product/add
+    defaults: { _controller: PlaygroundBundle:Mongo:add }
+
+saman_pg_mongo_delete_product:
+    path:     /product/delete/{id}
+    defaults: { _controller: PlaygroundBundle:Mongo:delete }
+    
+    
+    
+saman_pg_widget_display_widget_types:
+    path:     /widgets
+    defaults: { _controller: PlaygroundBundle:Widget:listWidgetTypes }
+
+saman_pg_widget_display_widgets:
+    path:     /widgets/{widgetType}
+    defaults: { _controller: PlaygroundBundle:Widget:listWidgets }
+    
+saman_pg_widget_display_widget:
+    path:     /widgets/{widgetType}/{widgetId}
+    defaults: { _controller: PlaygroundBundle:Widget:showWidget }
+    

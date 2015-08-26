@@ -27,16 +27,16 @@ saman_app:
     resource: "@AppBundle/Resources/config/routing.yml"
     prefix:   /
 
+saman_playground:
+    resource: "@PlaygroundBundle/Resources/config/routing.yml"
+    prefix:   /playground
+    
 saman_media:
     resource: "@MediaBundle/Resources/config/routing.yml"
     prefix:   /
 
 saman_label:
     resource: "@LabelBundle/Resources/config/routing.yml"
-    prefix:   /
-
-saman_cms_admin:
-    resource: "@CmsBundle/Resources/config/routing.yml"
     prefix:   /
 
 saman_user:
@@ -46,3 +46,7 @@ saman_user:
 saman_product:
     resource: "@ProductBundle/Resources/config/routing.yml"
     prefix:   /
+
+saman_cms:
+    resource: "@CmsBundle/Resources/config/routing.yml"
+    prefix:   /    

@@ -1,0 +1,13 @@
+{% extends "::base_playground.html.twig" %}
+
+{% block header %}
+    <ol class="breadcrumb">
+        <li><a href="{{ path('saman_pg_widget_display_widget_types') }}">Widget Type</a></li>
+        <li><a href="{{ path('saman_pg_widget_display_widgets', {'widgetType': widgetType}) }}">{{ widgetType }}</a></li>
+        <li class="active">Widget View</li>
+    </ol>
+{% endblock %}
+
+{% block body %}
+    {{ widgetView|raw }}
+{% endblock %}

@@ -1,0 +1,15 @@
+services:
+    saman_dashboard.widget_service:
+        class: PlaygroundBundle\Services\DashboardWidgetService
+ 
+    saman_dashboard.linking_widget_service:  
+        class: PlaygroundBundle\Library\Components\LinkingDashboardWidget
+        arguments: ["@saman.appService"]
+        tags:
+            - { name: saman_dashboard.widget, alias: linking-widget }
+            
+    saman_dashboard.welcome_widget_service:
+        class: PlaygroundBundle\Library\Components\WelcomeDashboardWidget
+        arguments: ["@saman.appService"]
+        tags:
+            - { name: saman_dashboard.widget, alias: welcome-widget }

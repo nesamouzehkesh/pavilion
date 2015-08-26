@@ -193,6 +193,22 @@ class User extends BaseEntity implements AdvancedUserInterface, \Serializable
     {
         $this->roles->removeElement($roles);
     }
+    
+    /**
+     * Check if user with admin role
+     * @return boolean
+     */
+    public function hasAnyAdminRole()
+    {
+        $arr = array_intersect(
+            array(
+                Role::ROLE_ADMIN,
+                ), 
+            $this->getRoles()
+            );
+        
+        return !empty($arr);
+    }    
 
     /**
      * @inheritDoc

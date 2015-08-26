@@ -1,0 +1,28 @@
+{% extends "::base_playground.html.twig" %}
+
+{% block header %}{% endblock %}
+
+{% block body %}
+    <a href="{{ path('saman_pg_mongo_add_product') }}">Add New Item</a>
+        
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Title</th>
+                <th>Price</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for product in products %}
+            <tr>
+                <th scope="row">{{ product.id }}</th>
+                <td>{{ product.name }}</td>
+                <td>{{ product.price }}</td>
+                <td><a href="{{ path('saman_pg_mongo_delete_product', {'id': product.id}) }}">{{ 'icon.delete'|icon }} Delete</a></td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

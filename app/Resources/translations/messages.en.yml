@@ -48,6 +48,7 @@ action:
 
 
 icon:
+    admin: glyphicon glyphicon-cog
     user: glyphicon glyphicon-user
     page: glyphicon glyphicon-list
     add: glyphicon glyphicon-plus
@@ -129,4 +130,7 @@ module:
         title: Product
         description: ""
         icon: glyphicon glyphicon-shopping_bag
-        
+    playground:
+        title: Playground
+        description: ""
+        icon: glyphicon glyphicon-star

@@ -1,0 +1,15 @@
+{% extends "::base_playground.html.twig" %}
+
+{% block header %}
+    <ol class="breadcrumb">
+        <li><a href="{{ path('saman_pg_widget_display_widget_types') }}">Widget Type</a></li>
+        <li class="active">{{ widgetType }}</li>
+    </ol>
+{% endblock %}
+
+{% block body %}
+    <h3>Widget {{ widgetType }}</h3>
+    {% for widget in widgets %}
+        {{ widget.title }} - <a href="{{ path('saman_pg_widget_display_widget', {widgetType: widgetType, widgetId: widget.id})}}">View</a><br>
+    {% endfor %}
+{% endblock %}
