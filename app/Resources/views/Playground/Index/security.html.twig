@@ -1,0 +1,38 @@
+{% extends "::base_playground.html.twig" %}
+
+{% block body %}
+    <h3>HTML Purifier</h3>
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <p>HTML Purifier is a standards-compliant HTML filter library written in PHP. HTML Purifier will not only remove all malicious code (better known as XSS) with a thoroughly audited, secure yet permissive whitelist, it will also make sure your documents are standards compliant, something only achievable with a comprehensive knowledge of W3C's specifications. Tired of using BBCode due to the current landscape of deficient or insecure HTML filters? Have a WYSIWYG editor but never been able to use it? Looking for high-quality, standards-compliant, open-source components for that application you're building? HTML Purifier is for you!</p>
+            <h4>Un purified text:</h4>
+            {{ testText|raw }}
+            
+            <br><br><h4>Purified text:</h4>
+            {{ testText|purify }}
+            
+            <br><br><h4>Purified filter in twig:</h4>
+            {% verbatim %}
+                <pre><code>
+                    {# Filters text's value through the "default" HTMLPurifier service #}
+                    {{ text|purify }}
+
+                    {# Filters text's value through the "custom" HTMLPurifier service #}
+                    {{ text|purify('custom') }}     
+                </code></pre>
+            {% endverbatim %}
+        </div>
+    </div>
+
+    <h3>Crawler Detector</h3>
+    <div class="panel panel-default">
+        <div class="panel-body">
+            Crawler Matches: {{ userAgentDetector.getMatches }}<br>
+            UserAgent: {{ userAgentDetector.getUserAgent }}<br><br>
+            
+            Test some crawlers:<br>
+            {{ userAgentDetector.testCrawlers|raw }}<br>
+        </div>
+    </div>
+    
+{% endblock %}

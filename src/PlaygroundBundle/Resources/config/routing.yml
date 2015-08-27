@@ -2,9 +2,9 @@ saman_pg_index:
     path:     /
     defaults: { _controller: PlaygroundBundle:Index:index }
 
-saman_pg_html_purifier:
-    path:     /html-purifier
-    defaults: { _controller: PlaygroundBundle:Index:htmlPurifier }
+saman_pg_security:
+    path:     /security
+    defaults: { _controller: PlaygroundBundle:Index:security }
 
 
 saman_pg_mongo_index:
