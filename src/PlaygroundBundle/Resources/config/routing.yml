@@ -1,6 +1,10 @@
 saman_pg_index:
     path:     /
     defaults: { _controller: PlaygroundBundle:Index:index }
+    
+saman_pg_ui:
+    path:     /ui
+    defaults: { _controller: PlaygroundBundle:Index:ui }    
 
 saman_pg_security:
     path:     /security

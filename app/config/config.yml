@@ -190,19 +190,23 @@ liip_imagine:
     filter_sets:
       origin:
          quality: 100
-      t_400_400:
+      _400_400:
          quality: 100
          filters:
             thumbnail: { size: [400, 400], mode: outbound }
-      t_200_200:
+      _300_300:
+         quality: 100
+         filters:
+            thumbnail: { size: [300, 300], mode: outbound }            
+      _200_200:
          quality: 100
          filters:
             thumbnail: { size: [200, 200], mode: outbound }
-      t_100_100:
+      _100_100:
          quality: 90
          filters:
             thumbnail: { size: [100, 100], mode: outbound }
-      t_50_50:
+      _50_50:
          quality: 80
          filters:
             thumbnail: { size: [50, 50], mode: outbound }

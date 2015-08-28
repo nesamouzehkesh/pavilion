@@ -12,6 +12,11 @@ class IndexController extends Controller
         return $this->render('::Playground/Index/index.html.twig');
     }
     
+    public function uiAction()
+    {
+        return $this->render('::Playground/Index/testUi.html.twig');
+    }
+    
     public function securityAction()
     {
         $testText = 'This is a <b>sample</b> text <script>bootbox.alert("This could be an XSS malicious code, you should protect your system form these attacks");</script>';

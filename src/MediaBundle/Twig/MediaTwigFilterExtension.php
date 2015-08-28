@@ -67,8 +67,12 @@ class MediaTwigFilterExtension extends Twig_Extension
                 array('is_safe' => array('html'))
                 ),
             new \Twig_SimpleFilter(
-                'getPath', 
-                array($this, 'getPath')
+                'getMedia', 
+                array($this, 'getMedia')
+                ),
+            new \Twig_SimpleFilter(
+                'getMedias', 
+                array($this, 'getMedias')
                 ),
             new \Twig_SimpleFilter(
                 'toMediaData', 
@@ -104,9 +108,20 @@ class MediaTwigFilterExtension extends Twig_Extension
      * @return type
      * @throws \Exception
      */
-    public function getPath($jsonMedia)
+    public function getMedia($jsonMedia)
     {
-        return StaticHelper::getMediaPath($jsonMedia);
+        return StaticHelper::getMedia($jsonMedia);
+    }
+    
+    /**
+     * 
+     * @param type $jsonMedias
+     * @return type
+     * @throws \Exception
+     */
+    public function getMedias($jsonMedias)
+    {
+        return StaticHelper::getMedias($jsonMedias);
     }
     
     /**

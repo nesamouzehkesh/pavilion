@@ -37,6 +37,37 @@ class ProductController extends BaseController
     }
     
     /**
+     * 
+     * @param int $productId
+     * @return type
+     * @throws type
+     */
+    public function displayProductAction($productId)
+    {
+        try {
+            // Get ObjectManager
+            $em = $this->getDoctrine()->getManager();
+        
+            // Get all Products
+            $product = Product::getRepository($em)->getProduct($productId);
+            
+            // Generate the view for this page
+            $pageView = $this->renderView(
+                'ProductBundle:Product:product.html.twig',
+                array('product' => $product)
+                );
+            
+            // Generate final jason responce
+            return $this->getJsonResponse(true, null, $pageView);
+        } catch (\Exception $ex) {
+            return $this->getExceptionResponse(
+                'alert.error.canNotDisplayItem', 
+                $ex
+                );
+        }
+    }       
+    
+    /**
      * Display and handel add edit product action
      * 
      * @param \Symfony\Component\HttpFoundation\Request $request

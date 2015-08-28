@@ -1,0 +1,34 @@
+{% extends "::twig/modal.html.twig" %}
+
+{% set modalTitle = product.title %}
+{% set modalLogo = product.logo %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-md-12"><strong>Title:</strong> {{ product.title }}</div>
+    </div>
+    <div class="row">
+        <div class="col-md-12"><strong>Price:</strong> {{ product.price }}</div>
+    </div>    
+    <div class="row">
+        <div class="col-md-12">{{ product.description|raw }}</div>
+    </div>
+    
+    {% set image = product.image|getMedia %}
+    {% if image is not null %}
+        <div class="row margin-top-10">
+            <div class="col-md-12">
+                <a href="{{ asset(image.path|imagine_filter('origin')) }}" target="_blank"><img src="{{ asset(image.path|imagine_filter('_200_200')) }}" class="img-thumbnail" /></a>
+            </div>
+        </div>
+    {% endif %}
+    
+    <div class="row margin-top-10">
+        <div class="col-md-12">
+            {% for image in product.images|getMedias %}
+                <img src="{{ asset(image.path|imagine_filter('_100_100')) }}" class="img-thumbnail" />
+            {% endfor %}
+        </div>
+    </div>
+        
+{% endblock %}

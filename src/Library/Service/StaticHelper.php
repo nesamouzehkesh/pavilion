@@ -50,19 +50,39 @@ class StaticHelper
      * @param type $jsonMedia
      * @return type
      */
-    public static function getMediaPath($jsonMedia)
+    public static function getMedia($jsonMedia)
     {
         $media = json_decode($jsonMedia, true);
         if (isset($media[0]['path'])) {
-            return $media[0]['path'];
+            return $media[0];
         }
         
         if (isset($media['path'])) {
-            return $media['path'];
+            return $media;
         }
         
         return null;        
     }
+    
+    /**
+     * 
+     * @param type $jsonMedias
+     * @return type
+     */
+    public static function getMedias($jsonMedias)
+    {
+        $medias = array();
+        $mediasData = json_decode($jsonMedias, true);
+        if (is_array($mediasData)) {
+            foreach ($mediasData as $media) {
+                if (isset($media['path'])) {
+                    $medias[] = $media;
+                }
+            }
+        }
+        
+        return $medias;        
+    }    
     
     /**
      * 

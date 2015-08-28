@@ -1,52 +1,36 @@
-{% extends "::base_playground.html.twig" %}
+<!DOCTYPE html>
+<html class="ng-scope" ng-app="myApp">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset={{ _charset }}"/>
+        <meta name="robots" content="noindex,nofollow" />
+        <title>{% block title %}{% endblock %}</title>
+        {% include "::_asset.html.twig" %}
+    </head>
+    <body>
+        <div class="container margin-top-20">
+            <a class="margin-bottom-20" href="{{ path('saman_pg_index') }}">{{ 'module.playground.icon'|icon }} Playground</a><br><br><br>
+            
+            <!-- Standard button -->
+            <button type="button" class="btn btn-default">Default</button>
 
-{% block body %}
-<a href="#" class="btn btn-alt"><span>Green</span></a>
-<a href="#" class="btn btn-alt btn-red"><span>Red</span></a>
-<a href="#" class="btn btn-alt btn-yellow"><span>Yellow</span></a>
-<a href="#" class="btn btn-alt btn-blue"><span>Blue</span></a>
+            <!-- Provides extra visual weight and identifies the primary action in a set of buttons -->
+            <button type="button" class="btn btn-primary">Primary</button>
 
+            <!-- Indicates a successful or positive action -->
+            <button type="button" class="btn btn-success">Success</button>
 
-<a href="#" class="btn btn-left"><span>Prev</span></a>
-<a href="#" class="btn btn-middle"><span>Download all files</span></a>
-<a href="#" class="btn btn-right"><span>Next</span></a>
+            <!-- Contextual button for informational alert messages -->
+            <button type="button" class="btn btn-info">Info</button>
 
-<a href="#" class="btn btn-left btn-acute"><span>Prev</span></a>
-<a href="#" class="btn btn-middle btn-acute"><span>Download all files</span></a>
-<a href="#" class="btn btn-right btn-acute"><span>Next</span></a>
+            <!-- Indicates caution should be taken with this action -->
+            <button type="button" class="btn btn-warning">Warning</button>
 
-<div class="widget-container boxed">
-    <div class="inner">
-        <h3 class="widget-title">Widget Title</h3>
-        <!-- place your content here -->
-    </div>
-</div>
+            <!-- Indicates a dangerous or potentially negative action -->
+            <button type="button" class="btn btn-danger">Danger</button>
 
-<div class="panel panel-default">
-  <div class="panel-body">
-    Basic panel example
-  </div>
-</div>
-
-<div class="comment-list message-field">
-    <ol>
-        <li class="comment">
-            <div class="comment-body">
-                <div class="comment-avatar">
-                    <div class="avatar">
-                        <img src="images/temp/avatar5.png" alt="" />
-                    </div>
-                </div>
-                <div class="comment-text">
-                    <div class="comment-author">
-                        <a href="#" class="link-author">Elijah Wood</a>
-                    </div>
-                    <div class="comment-entry">
-                        He made his film debut with a minor part in Back to the Future Part II (1989), then landed a succession. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                    </div>
-                </div>
-            </div>
-        </li>
-    </ol>
-</div>
-{% endblock %}
+            <!-- Deemphasize a button by making it look like a link while maintaining button behavior -->
+            <button type="button" class="btn btn-link">Link</button>            
+            
+        </div>
+    </body>
+</html>

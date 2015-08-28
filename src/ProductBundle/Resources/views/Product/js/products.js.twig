@@ -12,6 +12,21 @@ $(function(){
             }
         }, 'json');        
     });
+    
+    $('.action-display-item').click(function(e){
+        var url = $(this).attr('data-url');
+        var target = $($(this).attr('data-target'));
+                
+        $.get(url, function(response) {
+            if (response.success === true) {
+                target.html(response.content);
+                target.show();
+            } else {
+                target.modal('toggle');
+                bootbox.alert(response.message);
+            }
+        }, 'json');         
+    });    
 
     $('.action-delete-product').click(function(e){
         var url = $(this).attr('data-url');
