@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Library\Annotation;
+namespace Library\Annotation;
 
 use Doctrine\Common\Annotations\Annotation;
 

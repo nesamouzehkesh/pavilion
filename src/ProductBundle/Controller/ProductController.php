@@ -61,7 +61,11 @@ class ProductController extends BaseController
             $productForm->handleRequest($request);
             // If form is submited and it is valid then add or update this $product
             if ($productForm->isValid()) {
-                $this->getAppService()->saveEntity($product);
+                
+                $mediaService = $this->getService('saman_media.media');
+                $this->getAppService()
+                    ->setMediaService($mediaService)
+                    ->saveMedia($product);
                 
                 return $this->getJsonResponse(true);
             }

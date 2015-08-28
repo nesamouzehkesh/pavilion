@@ -2,10 +2,10 @@
 
 namespace MediaBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Library\Base\BaseController;
 
-class MediaController extends Controller
+class MediaController extends BaseController
 {
     /**
      * Upload a file in a temporary location and returns an JSON array of uploaded 
@@ -16,7 +16,16 @@ class MediaController extends Controller
      */
     public function uploadMediaAction(Request $request, $isPermanent)
     {
-        return $this->getMediaService()->uploadMedia($request, $isPermanent);
+        try {
+            $files = $request->files->get('files');
+
+            return $this->getMediaService()->uploadMedia($files, $isPermanent);
+        } catch (\Exception $ex) {
+            return $this->getExceptionResponse(
+                'alert.error.canNotUploadItem', 
+                $ex
+                );
+        }        
     }
     
     /**
@@ -27,7 +36,16 @@ class MediaController extends Controller
      */
     public function downloadMediaAction(Request $request)
     {
-        return $this->getMediaService()->downloadMedia($request);
+        try {
+            $id = intval($request->get('id'));
+            
+            return $this->getMediaService()->downloadMedia($id);
+        } catch (\Exception $ex) {
+            return $this->getExceptionResponse(
+                'alert.error.canNotDownloadItem', 
+                $ex
+                );
+        }        
     }
     
     /**
@@ -38,12 +56,21 @@ class MediaController extends Controller
      */
     public function deleteMediaAction(Request $request)
     {
-        return $this->getMediaService()->deleteMedia($request);
+        try {
+            $id = intval($request->get('id'));
+            
+            return $this->getMediaService()->deleteMedia($id);
+        } catch (\Exception $ex) {
+            return $this->getExceptionResponse(
+                'alert.error.canNotDeleteItem', 
+                $ex
+                );
+        }        
     }
 
     /**
      * 
-     * @return type
+     * @return \MediaBundle\Service\MediaService
      */
     protected function getMediaService()
     {

@@ -180,41 +180,6 @@ class AppService
     }
     
     /**
-     * Save media using media service
-     * 
-     * @param type $entity
-     */
-    public function saveMedia($entity)
-    {
-        if (!$this->mediaService instanceof MediaService) {
-            throw new \Exception("No media service is seet for this helper");
-        }
-        
-        $this->mediaService->saveMedia($entity);
-        $this->persistEntity($entity);
-        $this->flushEntityManager();
-        
-        return $this;
-    }
-    
-    /**
-     * 
-     * @param type $ids
-     * @param type $entity
-     * @param type $column
-     * @return \Library\Service\Helper
-     * @throws \Exception
-     */
-    public function saveMediaById($ids, $entity, $column = null)
-    {
-        if (null === $this->mediaService) {
-            throw new \Exception("No media service is seet for this helper");
-        }
-        
-        return $this->mediaService->saveMediaById($ids, $entity, $column);
-    }
-    
-    /**
      * Get a config parameter from config service
      * 
      * @param type $configKey
@@ -460,7 +425,7 @@ class AppService
     
     /**
      * 
-     * @return type
+     * @return \Doctrine\ORM\EntityManager
      */
     public function getEntityManager()
     {
@@ -532,7 +497,41 @@ class AppService
         }
         
         return $this;
-    }    
+    }
+    
+    /**
+     * Save media using media service
+     * 
+     * @param type $entity
+     */
+    public function saveMedia($entity)
+    {
+        if (!$this->mediaService instanceof MediaService) {
+            throw new \Exception("No media service is seet for this helper");
+        }
+        
+        $this->mediaService->saveMedia($entity);
+        $this->saveEntity($entity);
+        
+        return $this;
+    }
+    
+    /**
+     * 
+     * @param type $ids
+     * @param type $entity
+     * @param type $column
+     * @return \Library\Service\Helper
+     * @throws \Exception
+     */
+    public function saveMediaById($ids, $entity, $column = null)
+    {
+        if (null === $this->mediaService) {
+            throw new \Exception("No media service is seet for this helper");
+        }
+        
+        return $this->mediaService->saveMediaById($ids, $entity, $column);
+    }
     
     /**
      * use Knp\Component\Pager\Pagination\AbstractPagination;
@@ -909,6 +908,31 @@ class AppService
     }
     
     /**
+     * Get exception error
+     *
+     * @param \Exception $ex
+     * @param null|bool $forceToShow
+     * @return string $exceptionError
+     */
+    public function getExceptionError($ex, $forceToShow = false)
+    {
+        // If the exception is instace of PmsHttpException then we will display
+        // its message to the end user. 
+        if ($ex instanceof VisibleHttpException) {
+            $forceToShow = true;
+        }
+        
+        $exceptionError = null;
+        // $showErrorConfig = $this->container->getParameter('elmo_show_exception_error_detail');
+        $showErrorConfig = true;
+        if (null !== $ex and is_a($ex, '\Exception')) {
+            $exceptionError = ($showErrorConfig || $forceToShow)? $ex->getMessage() : '';
+        }
+        
+        return $exceptionError;
+    }     
+    
+    /**
      * 
      * @param type $entity
      */
@@ -937,29 +961,4 @@ class AppService
             }
         }
     }
-    
-    /**
-     * Get exception error
-     *
-     * @param \Exception $ex
-     * @param null|bool $forceToShow
-     * @return string $exceptionError
-     */
-    private function getExceptionError($ex, $forceToShow = false)
-    {
-        // If the exception is instace of PmsHttpException then we will display
-        // its message to the end user. 
-        if ($ex instanceof VisibleHttpException) {
-            $forceToShow = true;
-        }
-        
-        $exceptionError = null;
-        // $showErrorConfig = $this->container->getParameter('elmo_show_exception_error_detail');
-        $showErrorConfig = true;
-        if (null !== $ex and is_a($ex, '\Exception')) {
-            $exceptionError = ($showErrorConfig || $forceToShow)? $ex->getMessage() : '';
-        }
-        
-        return $exceptionError;
-    }    
 }

@@ -2,12 +2,12 @@
 
 namespace ProductBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Library\Base\BaseController;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use ProductBundle\Entity\Product;
 
-class ProductApiController extends Controller
+class ProductApiController extends BaseController
 {
     /**
      * @ApiDoc(
@@ -28,10 +28,14 @@ class ProductApiController extends Controller
      */
     public function getProductsAction()
     {
-        $products = Product::getRepository($this->getDoctrine()->getEntityManager())
-            ->getProductsListForView();
-        
-        return array('products' => $products);
+        try {
+            $products = Product::getRepository($this->getDoctrine()->getEntityManager())
+                ->getProductsListForView();
+            
+            return $this->getApiResponse(true, array('products' => $products));
+        } catch (\Exception $ex) {
+            return $this->getApiExceptionResponse('alert.error.canNotDisplayItems', $ex);
+        }            
     }
     
     /**
@@ -62,9 +66,13 @@ class ProductApiController extends Controller
      */
     public function getProductAction($productId)
     {
-        $product = $this->getDoctrine()->getRepository('ProductBundle:Product')
-            ->find($productId);
-        
-        return array('product' => $product);    
+        try {        
+            $product = $this->getDoctrine()->getRepository('ProductBundle:Product')
+                ->find($productId);
+            
+            return $this->getApiResponse(true, array('product' => $product));
+        } catch (\Exception $ex) {
+            return $this->getApiExceptionResponse('alert.error.canNotDisplayItem', $ex);
+        }            
     }    
 }

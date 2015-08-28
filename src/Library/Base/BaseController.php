@@ -46,23 +46,6 @@ class BaseController extends Controller
     
     /**
      * 
-     * @param type $message
-     * @param \Exception $previous
-     * @param type $code
-     * @throws VisibleHttpException
-     */
-    public function createVisibleHttpException(
-        $message = null, 
-        \Exception $previous = null, 
-        $code = 0
-        )
-    {
-        return $this->getAppService()
-            ->createVisibleHttpException($message, $previous, $code);
-    }
-    
-    /**
-     * 
      * @param type $success
      * @param type $message
      * @param type $content
@@ -82,6 +65,53 @@ class BaseController extends Controller
     
     /**
      * 
+     * @param bool $success
+     * @param array $responseParam
+     * @param string|array $message
+     * @return type
+     */
+    public function getApiResponse(
+        $success, 
+        $responseParam = array(),
+        $message = null
+        )
+    {
+        $response = array();
+        $response['success'] = $success;
+        if (null !== $message) {
+            $response['message'] = $this->transMessage($message);
+        }
+        
+        return array_merge($response, $responseParam);
+    }
+    
+    /**
+     * 
+     * @param type $message
+     * @param type $ex
+     * @param type $responseParam
+     * @return type
+     */
+    public function getApiExceptionResponse(
+        $message = null,
+        $ex = null,
+        $responseParam = array()
+        )
+    {
+        $response = array();
+        $response['success'] = false;
+        if (null !== $message) {
+            $response['message'] = $this->transMessage($message);
+        }
+        if (null !== $ex) {
+            $response['exception'] = $this->getAppService()->getExceptionError($ex);
+        }
+        
+        return array_merge($response, $responseParam);
+    }
+    
+    /**
+     * 
      * @param type $message
      * @param type $ex
      * @return type
@@ -90,6 +120,23 @@ class BaseController extends Controller
     {
         return $this->getAppService()
             ->getExceptionResponse($message, $ex, $responseParam);
+    }    
+    
+    /**
+     * 
+     * @param type $message
+     * @param \Exception $previous
+     * @param type $code
+     * @throws VisibleHttpException
+     */
+    public function createVisibleHttpException(
+        $message = null, 
+        \Exception $previous = null, 
+        $code = 0
+        )
+    {
+        return $this->getAppService()
+            ->createVisibleHttpException($message, $previous, $code);
     }    
     
     /**

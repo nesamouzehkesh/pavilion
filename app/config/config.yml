@@ -70,13 +70,13 @@ services:
             - %saman.helper.param%
 
     saman.twig.function.extension:
-        class: AppBundle\Library\Twig\TwigFunctionExtension
+        class: Library\Twig\TwigFunctionExtension
         arguments: [@translator.default]
         tags:
              - { name: twig.extension }    
              
     saman.twig.filter.extension:
-        class: AppBundle\Library\Twig\TwigFilterExtension
+        class: Library\Twig\TwigFilterExtension
         arguments: [@translator.default]
         tags:
              - { name: twig.extension }  

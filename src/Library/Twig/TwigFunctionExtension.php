@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Library\Twig;
+namespace Library\Twig;
 
 use Symfony\Bundle\FrameworkBundle\Translation\Translator;
 use \Twig_Extension;

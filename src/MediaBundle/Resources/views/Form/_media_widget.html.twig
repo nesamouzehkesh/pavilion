@@ -8,15 +8,15 @@ https://github.com/blueimp/jQuery-File-Upload/wiki/Options
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 <![endif]-->
 {% set mediaId = id|default('file') %}
-<span id="attachment-message"></span>
+<span id="attachment-message-{{ mediaId }}"></span>
+
 {% set isMultiple = attr['isMultiple'] is defined? attr['isMultiple'] : true %}
 {% set isDragover = attr['dragover'] is defined? attr['dragover'] : true %}
 {% set filesContainer = '<table role="presentation" style="width: 100%"><tbody id="files-container-' ~ mediaId ~ '" class="files">' ~ value|toMediaList ~ '</tbody></table>' %}    
-
 <div id="fileupload-{{ mediaId }}">    
     {% if isMultiple %}
         {% set uploadButton = '<span class="btn btn-default btn-file">' ~ ('icon.plus'|icon) ~ '<span class="margin-left-5">' ~ ('action.addFiles'|trans) ~ '</span><input name="files[]" type="file" multiple /></span>' %}
-        <input {{ block('widget_attributes') }} type="hidden" value="{{ value|toMediaId }}" />
+        <input {{ block('widget_attributes') }} type="hidden" value="{{ value|toMediaData }}" />
         {% if isDragover %}
             <div class="row fileupload-buttonbar">
                 <div class="col-md-12">
@@ -43,7 +43,7 @@ https://github.com/blueimp/jQuery-File-Upload/wiki/Options
         {% endif %}        
     {% else %}
         {% set uploadButton = '<span class="btn btn-default btn-file">' ~ ('icon.plus'|icon) ~ '<span class="margin-left-5">' ~ ('action.addFiles'|trans) ~ '</span><input name="files" type="file" /></span>' %}    
-        <input {{ block('widget_attributes') }} type="hidden" value="{{ value|toMediaId }}" />
+        <input {{ block('widget_attributes') }} type="hidden" value="{{ value|toMediaData }}" />
         {% if isDragover %}
             <div class="row fileupload-buttonbar">
                 <div class="col-md-12">
@@ -98,35 +98,65 @@ https://github.com/blueimp/jQuery-File-Upload/wiki/Options
         {% endif %}        
 
         $('#files-container-{{ mediaId }}').on('click', '.action-delete-file', function(e){
-            var id = $(this).attr('data-id');
-            deleteFile(id);
+            var button = $(this);
+            var content = button.html();
+            var id = button.attr('data-id');
+            
+            if (isNaN(id)) {
+               button.closest('tr').remove();
+            } else {
+                button.html('');
+                button.addClass('s-no-outline');
+                button.data('loading-text', '<div class="s-loading-1"></div>');
+                button.button('loading');
+                button.prop('disabled', true);
+
+                deleteFile(id, function(response){
+                    if (response.success === true) {
+                        $('#file-row-' + id).remove();
+                    } else {
+                        button.button('reset');
+                        button.prop('disabled', false);
+                        button.removeClass('s-no-outline');
+                        button.html(content);                    
+                    }
+                });
+            }
         });
 
-        function deleteFile(id)
+        function deleteFile(id, callback)
         {
             var url = '{{ path('saman_media_delete_media') }}';
             $.get(url, {id: id}, function(response) {
                 var fileInput = $('#{{ mediaId }}');
-                if (response.success == true) {
+   
+                if (response.success === true) {
                     {# Update the content of input files #}
-                    if (fileInput.val() != '') {
+                    if (fileInput.val() !== '') {
                         var fileIds = [];
                         fileIds = jQuery.parseJSON(fileInput.val());
                         for (var i = fileIds.length; i--;) {
-                            if (fileIds[i] == id || fileIds[i] == null) {
+                            if (fileIds[i]['id'] === parseInt(id) || fileIds[i]['id'] === null) {
                                 fileIds.splice(i, 1);
                             }
                         }
-
-                        if (fileIds.length == 0) {
+                        
+                        if (fileIds.length === 0) {
                             fileInput.val('');
                         } else {
                             fileInput.val(JSON.stringify(fileIds));
                         }
                     }
                 } else {
-                    bootbox.alert(response.message);
+                    var messageBox = $('#attachment-message-{{ mediaId }}');
+                    messageBox.html('<p class="text-danger"><span class="glyphicon glyphicon-remove-sign"></span> ' + response.message + '</p>');
+                    messageBox.show();
+                    messageBox.delay(3000).fadeOut();
                 }
+                
+                if (callback !== undefined) {
+                    callback(response);
+                }                 
             }, 'json');
         }
 
@@ -177,11 +207,17 @@ https://github.com/blueimp/jQuery-File-Upload/wiki/Options
             sent: function (e, data) {
                 {% if isMultiple != true %}
                     $('#file-row-null').remove();
-                    var currentFileId = fileInput.val();
-                    if (currentFileId != '') {
-                        currentFileId = currentFileId.substring(1, currentFileId.length - 1);
-                        $('#file-row-' + currentFileId).remove();
-                        deleteFile(currentFileId);                        
+                    var data = fileInput.val();
+                    if (data !== '') {
+                        var filesData = jQuery.parseJSON(data);
+                        var fileData = filesData[0];
+                        var fileId = fileData['id'];
+                        
+                        deleteFile(fileId, function(response){
+                            if (response.success === true) {
+                                $('#file-row-' + fileId).remove();
+                            }
+                        });
                     }
                 {% endif %}
             },   
@@ -217,25 +253,26 @@ https://github.com/blueimp/jQuery-File-Upload/wiki/Options
             },
             downloadTemplate: function (o) {
                 var rows = $();
-
+                
                 $.each(o.files, function (index, file) {
                     {# Update the content of input files #}
-                    if (file['id'] != undefined) {
-                        var currentFileId = fileInput.val();
-                        var fileIds = [];                            
+                    if (file['id'] !== undefined) {
+                        var data = fileInput.val();
+                        var filesData = [];                            
                         {% if isMultiple %}
-                            if (currentFileId != '') {
-                                fileIds = jQuery.parseJSON(currentFileId);
+                            if (data !== '') {
+                                filesData = jQuery.parseJSON(data);
                             }
                         {% else %}
-                            if (currentFileId != '') {
+                            if (data !== '') {
                                //currentFileId = currentFileId.substring(1, currentFileId.length - 1);
                                //$('#file-row-' + currentFileId).remove();
                                //deleteFile(currentFileId);
                             }
                         {% endif %}
-                        fileIds.push(file['id']);
-                        fileInput.val(JSON.stringify(fileIds));                                
+                        //[{"name":"1.png","id":82}]     
+                        filesData.push({"name":file['name'],"id":file['id']});
+                        fileInput.val(JSON.stringify(filesData));                                
                     }
 
                     var row = $(
@@ -248,7 +285,7 @@ https://github.com/blueimp/jQuery-File-Upload/wiki/Options
                                 (file.error ? '<span class="text-danger"><span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span> <span class="error" style="margin-left: 5px;"></span></span>' : '') +
                             '</td>' +
                             '<td style="width: 12px">' + 
-                                '<button type="button" data-id="' + file.id + '" class="btn btn-link delete action-delete-file" style="padding: 0px 5px 0px 5px;"><span class="glyphicon glyphicon-remove" disabled></span></button>' +
+                                '<button type="button" data-id="' + file.id + '" class="btn btn-link action-delete-file" style="padding: 0px 5px 0px 5px;"><span class="glyphicon glyphicon-remove" disabled></span></button>' +
                             '</td>' +    
                         '</tr>');
                     row.find('.size').text(o.formatFileSize(file.size));

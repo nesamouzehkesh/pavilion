@@ -27,23 +27,33 @@ class MediaRepository extends BaseEntityRepository
     /**
      * General get item function, by default it just gets one or null object.
      * 
-     * @param type $url
-     * @param type $readOnly
+     * @param type $id
+     * @param type $loadAsArray
      * @return type
      */
-    public function getItem($value, $key = 'id', $loadItem = false)
+    public function getItem($id, $loadAsArray = false)
     {
-        $qb = $this->getEntityManager()->createQueryBuilder();
-        
-        $qb->select('media')
-            ->from('MediaBundle:Media', 'media')
-            ->where(sprintf('media.%s = :%s AND media.deleted = 0', $key, $key))
-            ->setParameter($key, $value);
+        if ($loadAsArray) {
+            $qb = $this->getQueryBuilder()
+                ->select('media.id, media.title, media.path, IDENTITY(media.user), media.visibility, media.isPermanent')
+                ->from('MediaBundle:Media', 'media')
+                ->where('media.id = :id AND media.deleted = 0')
+                ->setParameter('id', $id);
 
-        $query = $qb->getQuery();
-        $result = $query->getOneOrNullResult();
+            $result = $qb->getQuery()->getScalarResult();
+            $row = reset($result);
         
-        return $result;
+            return $row? $row : null;
+        } else {
+            $qb = $this->getEntityManager()->createQueryBuilder()
+                ->select('media')
+                ->from('MediaBundle:Media', 'media')
+                ->where('media.id = :id AND media.deleted = 0')
+                ->setParameter('id', $id);
+
+            $query = $qb->getQuery();
+            return $query->getOneOrNullResult();
+        }
     }    
     
     /**
@@ -79,7 +89,7 @@ class MediaRepository extends BaseEntityRepository
      * @param type $ids
      * @param type $readOnly
      * @param type $justQuery
-     * @return type
+     * @return Media[]
      */
     public function getItemsByID($ids, $readOnly = true)
     {

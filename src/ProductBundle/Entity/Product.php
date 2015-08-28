@@ -50,14 +50,14 @@ class Product extends BaseEntity
     
     /**
      * @var string
-     * @AppBundle\Library\Annotation\MediaAnnotation(type="single")
+     * @Library\Annotation\MediaAnnotation(type="single")
      * @ORM\Column(name="image", type="text", nullable=true)
      */
     private $image;
     
     /**
      * @var string
-     * @AppBundle\Library\Annotation\MediaAnnotation(type="multiple")
+     * @Library\Annotation\MediaAnnotation(type="multiple")
      * @ORM\Column(name="images", type="text", nullable=true)
      */
     private $images;

@@ -68,13 +68,11 @@ class MediaTwigFilterExtension extends Twig_Extension
                 ),
             new \Twig_SimpleFilter(
                 'getPath', 
-                array($this, 'getPath'), 
-                array('is_safe' => array('html'))
+                array($this, 'getPath')
                 ),
             new \Twig_SimpleFilter(
-                'toMediaId', 
-                array($this, 'toMediaId'), 
-                array('is_safe' => array('html'))
+                'toMediaData', 
+                array($this, 'toMediaData')
                 ),
             new \Twig_SimpleFilter(
                 'toMediaList', 
@@ -133,14 +131,14 @@ class MediaTwigFilterExtension extends Twig_Extension
      * @param int $height
      * @return string
      */
-    public function toMediaId($jsonMedias)
+    public function toMediaData($jsonMedias)
     {
         $medias = json_decode($jsonMedias, true);
         $result = '';
         if (is_array($medias)) {
             $mediasId = array();
             foreach ($medias as $media) {
-                $mediasId[] = $media['id'];
+                $mediasId[] = array('name' => $media['name'], 'id' => $media['id']);
             }
 
             $result = json_encode($mediasId);

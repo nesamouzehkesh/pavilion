@@ -168,8 +168,18 @@ class User extends BaseEntity implements AdvancedUserInterface, \Serializable
      */
     public function getRoles()
     {
-        //return array('ROLE_ADMIN');
-        return $this->roles->toArray();
+        /*
+         * Notice that the Role class implements RoleInterface. This is because Symfony's security system requires that the User::getRoles method returns an
+         * array of either role strings or objects that implement this interface. If Role didn't implement this interface, then User::getRoles would need to
+         * iterate over all the Role objects, call getRole on each, and create an array of strings to return. Both approaches are valid and equivalent.
+         */
+        $userRoles = array();
+        foreach($this->roles as $role){
+            $userRoles[] = $role->getRole();
+        }
+        
+        return $userRoles;
+        //return $this->roles->toArray();
     }
     
     /**

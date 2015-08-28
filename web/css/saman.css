@@ -276,3 +276,15 @@ body .ace_scrollbar-v {
 .d-text-muted {
     color: #ccc;
 }
+
+.s-loading-1 {
+    background-image: url(../img/l1.gif);
+    background-repeat: no-repeat;
+    width: 16px; /*or your image's width*/
+    height: 16px; /*or your image's height*/
+    text-decoration: none;
+}
+
+.s-no-outline {
+    outline:none !important;
+}

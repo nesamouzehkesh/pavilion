@@ -3,15 +3,14 @@
 namespace MediaBundle\Service;
 
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Gaufrette\Filesystem;
-use Gaufrette\Adapter\Local;
 use AppBundle\Service\AppService;
 use UserBundle\Entity\User;
 use MediaBundle\Entity\Media;
+use Library\Exception\VisibleHttpException;
 
 class MediaService
 {
@@ -83,64 +82,62 @@ class MediaService
      */
     public function getMedias($ids, $readOnly = true)
     {
-        return $this->getMediaRepository()->getItemsByID($ids, $readOnly);
+        return Media::getRepository($this->appService->getEntityManager())
+            ->getItemsByID($ids, $readOnly);
     }
     
     /**
      * Get Media from media repository
      * 
      * @param type $id
-     * @return type
+     * @return Media|array
      */
-    public function getMedia($id)
+    public function getMedia($id, $loadAsArray = false)
     {
-        return $this->getMediaRepository()->getItem($id);
-    }
-    
-    /**
-     * 
-     * @param \Symfony\Component\HttpFoundation\Request $request
-     * @return type
-     */
-    public function getMediaFormRequest(Request $request)
-    {
-        $media = null;
-        $id = intval($request->get('id'));
-        if (0 !== $id) {
-            $media = $this->getMedia($id);
-        } 
-        
-        return $media;
+        return Media::getRepository($this->appService->getEntityManager())
+            ->getItem($id, $loadAsArray);
     }
     
     /**
      * Create a response to download a media
      * 
-     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @param type $id
+     * @return Response
+     * @throws \Exception
      */
-    public function downloadMedia(Request $request)
+    public function downloadMedia($id)
     {
-        $media = $this->getMediaFormRequest($request);
-        if (null !== $media) {
-            $response = new Response();
-            $rootDirectory = $this->appService->getParameter('rootDirectory');
-            $mediaPath = $media->getFullPath($rootDirectory);
-            $filename = $media->getTitle(true);
-            
-            // Set headers
-            $response->headers->set('Cache-Control', 'private');
-            $response->headers->set('Content-type', mime_content_type($mediaPath));
-            $response->headers->set('Content-Disposition', 'attachment; filename="' . $filename . '";');
-            $response->headers->set('Content-length', filesize($mediaPath));
+        // Get media as an array
+        $media = $this->getMedia($id, true);
+        if (null === $media) {
+            throw $this->appService->createVisibleHttpException('alert.error.noItemFound');
+        }
+        
+        // Check permission to access this file
+        if (!$this->hasAccess('download', $media)) {
+            throw $this->appService->createVisibleHttpException('alert.error.insufficientPermission');
+        }
+        
+        // Generate appropriate response for this file
+        $response = new Response();
+        $rootDirectory = $this->appService->getParameter('rootDirectory');
+        $mediaPath = $rootDirectory . '/' . $media['path'];
+        $filename = $media['title'];
+        if (null === $filename) {
+            $filename = basename($media['path']);
+        }
 
-            // Send headers before outputting anything
-            $response->sendHeaders();
-            $response->setContent(readfile($mediaPath));            
-            
-            return $response;
-        } else {
-            throw new \Exception('No media exist to be download');
-        }        
+        // Set headers
+        $response->headers->set('Cache-Control', 'private');
+        $response->headers->set('Content-type', mime_content_type($mediaPath));
+        $response->headers->set('Content-Disposition', 'attachment; filename="' . $filename . '";');
+        $response->headers->set('Content-length', filesize($mediaPath));
+
+        // Send headers before outputting anything
+        $response->sendHeaders();
+        $response->setContent(readfile($mediaPath));            
+
+        return $response;
     }
     
     /**
@@ -212,10 +209,12 @@ class MediaService
                 $column = $reflectionProperty->getName();
                 $getter = 'get' . ucfirst($column);
                 $setter = 'set' . ucfirst($column);
-                $ids = json_decode(stripslashes($entity->$getter()));
-
-                $medias = $this->saveMediaById($ids, $entity, $column);
-                $entity->$setter($medias);
+                $mediasData = json_decode(stripslashes($entity->$getter()), true);
+                if (is_array($mediasData)) {
+                    $mediasId = array_map(function ($it) {return $it['id'];}, $mediasData);
+                    $medias = $this->saveMediaById($mediasId, $entity, $column);
+                    $entity->$setter($medias);
+                }
             }
         }
         $this->appService->persistEntity($entity);
@@ -227,44 +226,49 @@ class MediaService
     /**
      * Upload files in request to the temperory or permannet location
      * 
-     * @param Request $request
+     * @param File $files
      * @param type $isPermanent
      * @param type $visibility
      * @return type
      */
-    public function uploadMedia(Request $request, $isPermanent, $visibility = null)
+    public function uploadMedia($files, $isPermanent, $visibility = null)
     {
-        $uploadedFiles = $request->files->get('files');
-        $medias = $this->createMedia($uploadedFiles, $isPermanent, $visibility);
-        $files = Media::mediasToArray($medias);
+        $medias = $this->createMedia($files, $isPermanent, $visibility);
+        $filesArray = Media::mediasToArray($medias);
         
-        return $this->appService->getJsonResponse(true, null, null, array('files' => $files));        
+        return $this->appService->getJsonResponse(true, null, null, array('files' => $filesArray));        
     }
     
     /**
      * 
-     * @param Request $request
+     * @param type $id
      * @return type
+     * @throws \Exception
      */
-    public function deleteMedia(Request $request)
+    public function deleteMedia($id)
     {
-        $media = $this->getMediaFormRequest($request);
-        if (null !== $media) {
-            $this->appService->removeEntity($media);
-            $this->appService->flushEntityManager();
+        // Get media as an array
+        $media = $this->getMedia($id, true);
+        if (null === $media) {
+            throw $this->appService->createVisibleHttpException('alert.error.noItemFound');
+        }
+        
+        // Check permission to access this file
+        if (!$this->hasAccess('delete', $media)) {
+            throw $this->appService->createVisibleHttpException('alert.error.insufficientPermission');
+        }
+        
+        $mediaR = $this->appService->getEntityManager()
+            ->getReference('MediaBundle:Media', $media['id']);
+        $this->appService->removeEntity($mediaR);
+        $this->appService->flushEntityManager();
 
-            return $this->appService->getJsonResponse(
-                true,
-                array(
-                    'alert.success.itemHasBeenRemoved', 
-                    array('%id%' => $media->getId()))
-                );
-        } else {
-            return $this->appService->getJsonResponse(
-                true,
-                array('alert.error.noItemHasBeenFound')
-                );
-        }        
+        return $this->appService->getJsonResponse(
+            true,
+            array(
+                'alert.success.itemHasBeenRemoved', 
+                array('%id%' => $media['id']))
+            );
     }
     
     /**
@@ -323,21 +327,22 @@ class MediaService
         $allowedMimeTypes = $this->appService->getParameter('allowedMimeTypes');
         
         if (null === $file) {
-            return 'File is null';
+            throw new VisibleHttpException('File is null');
         }
         
         if (!is_a($file, '\Symfony\Component\HttpFoundation\File\UploadedFile')) {
-            return 'File is not an UploadedFile object';
+            throw new VisibleHttpException('File is not an UploadedFile object');
         }
         
         if ('' === $file->getFilename()) {
-            return 'File name cannot be empty';
+            throw new VisibleHttpException('File name cannot be empty');
         }
         
         if (!in_array($file->getClientMimeType(), $allowedMimeTypes)) {
-            return sprintf(
+            throw new VisibleHttpException(sprintf(
                 'Files of type %s are not allowed.', 
-                $file->getClientMimeType());
+                $file->getClientMimeType())
+                );
         }
         
         return true;
@@ -417,12 +422,37 @@ class MediaService
     }
     
     /**
-     * Get Media Repository
      * 
-     * @return type
+     * @param type $action
+     * @param type $media
+     * @return boolean
      */
-    private function getMediaRepository()
+    private function hasAccess($action, $media)
     {
-        return $this->appService->getRepository('MediaBundle:Media');
+        $user = $this->appService->getUser();
+        if ($user instanceof User and $user->hasAnyAdminRole()) {
+            return true;
+        }
+        
+        switch ($action) {
+            case 'download':
+                if (Media::VISIBILITY_PUBLIC === $media['visibility']) {
+                    return true;
+                }
+                
+                if ($user instanceof User and $user->getId() === $media['user']) {
+                    return true;
+                }
+                break;
+            case 'delete':
+                if ('0' === $media['isPermanent']) {
+                    if ($user instanceof User and $user->getId() === $media['user']) {
+                        return true;
+                    }
+                }
+                break;                
+        }
+        
+        return false;
     }
 }
