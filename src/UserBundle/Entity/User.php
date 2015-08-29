@@ -23,7 +23,7 @@ class User extends BaseEntity implements AdvancedUserInterface, \Serializable
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=25, unique=true)
+     * @ORM\Column(type="string", length=255, unique=true)
      */
     private $username;
 

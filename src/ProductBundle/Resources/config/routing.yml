@@ -7,13 +7,13 @@ saman_admin_product_display:
     defaults: { _controller: ProductBundle:Product:displayProduct }    
    
 saman_admin_product_add:
-    path:     /admin/product/add
+    path:     /admin/add/product/
     defaults: { _controller: ProductBundle:Product:addEditProduct, productId: null }
 
 saman_admin_product_edit:
-    path:     /admin/product/edit/{productId}
+    path:     /admin/edit/product/{productId}
     defaults: { _controller: ProductBundle:Product:addEditProduct }
     
 saman_admin_product_delete:
-    path:     /admin/product/delete/{productId}
+    path:     /admin/delete/product/{productId}
     defaults: { _controller: ProductBundle:Product:deleteProduct }
