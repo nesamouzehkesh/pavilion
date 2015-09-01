@@ -3,7 +3,7 @@
 namespace Library\Base;
 
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\Common\Collections\ArrayCollection;
+use Library\Components\MediaHandler;
 
 /**
  * @ORM\MappedSuperclass
@@ -47,12 +47,6 @@ class BaseEntity
     protected $visibility;
     
     /**
-     *
-     * @var ArrayCollection $medias
-     */
-    protected $medias;
-    
-    /**
      * 
      */
     public function __construct()
@@ -61,7 +55,6 @@ class BaseEntity
         $this->deleted = 0;
         $this->createdTime = $date->getTimestamp();
         $this->modifiedTime = $date->getTimestamp();
-        $this->medias = new ArrayCollection();
         $this->setVisibility();
     }
     
@@ -264,19 +257,23 @@ class BaseEntity
     
     /**
      * 
-     * @param type $medias
+     * @param type $jsonMedia
+     * @param type $convert
+     * @return type
      */
-    public function setMedias($medias)
+    public static function getMedia($jsonMedia, $convert)
     {
-        $this->medias = $medias;
+        return MediaHandler::getMedia($jsonMedia, $convert);
     }
     
     /**
      * 
+     * @param type $jsonMedias
+     * @param type $convert
      * @return type
      */
-    public function getMedias()
+    public static function getMedias($jsonMedias, $convert)
     {
-        return $this->medias;
-    }
+        return MediaHandler::getMedias($jsonMedias, $convert);
+    }    
 }

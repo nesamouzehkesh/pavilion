@@ -4,6 +4,7 @@ namespace ProductBundle\Entity\Repository;
 
 use Library\Doctrine\BaseEntityRepository;
 use Doctrine\ORM\Query;
+use Library\Components\MediaHandler;
 
 /**
  * ProductRepository
@@ -18,35 +19,43 @@ class ProductRepository extends BaseEntityRepository
      * @param int $id
      * @return type
      */
-    public function getProductForView($id)
+    public function getProductForView($id, MediaHandler $mediaHandler = null)
     {
         $qb = $this->getQueryBuilder()
             ->select(''
                 . 'product.id, '
                 . 'product.title, '
+                . 'product.image,'
+                . 'product.images,'
                 . 'product.description,'
                 . 'product.price'
                 )
             ->from('ProductBundle:Product', 'product')
-            ->where('product.id = id AND product.deleted = 0')
+            ->where('product.id = :id AND product.deleted = 0')
             ->setParameter('id', $id);
 
         $result = $qb->getQuery()->getScalarResult();
-        $row = reset($result);
+        $product = reset($result);
+
+        if ($mediaHandler instanceof MediaHandler) {
+            $product['image'] = $mediaHandler->getBrowserMediaArray($product['image']);
+            $product['images'] = $mediaHandler->getBrowserMediaArray($product['images']);
+        }
         
-        return $row? $row : null;
+        return $product;
     }
     
     /**
      * 
      * @return type
      */
-    public function getProductsListForView()
+    public function getProductsListForView(MediaHandler $mediaHandler = null)
     {
         $qb = $this->getQueryBuilder()
             ->select(''
                 . 'product.id, '
                 . 'product.title, '
+                . 'product.image,'
                 . 'product.description,'
                 . 'product.price'
                 )
@@ -54,7 +63,15 @@ class ProductRepository extends BaseEntityRepository
             ->where('product.deleted = 0')
             ->orderBy('product.title');
         
-        return $qb->getQuery()->getScalarResult();
+        $products = $qb->getQuery()->getScalarResult();
+        if ($mediaHandler instanceof MediaHandler) {
+            foreach ($products as $key => $product) {
+                $image = $mediaHandler->getBrowserMediaArray($product['image']);
+                $products[$key]['image'] = $image;
+            }
+        }
+        
+        return $products;
     }
         
     /**
@@ -62,7 +79,7 @@ class ProductRepository extends BaseEntityRepository
      * 
      * @param type $value
      * @param type $key
-     * @return NULL|Product
+     * @return \ProductBundle\Entity\Product
      */
     public function getProduct($value, $key = 'id')
     {

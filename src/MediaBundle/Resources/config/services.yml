@@ -1,13 +1,11 @@
 services:
     saman_media.media:
         class: MediaBundle\Service\MediaService
-        arguments: [@saman.appService, @saman_local_filesystem, %saman_media.media%]
+        arguments: [@saman.appService, @saman_local_filesystem, @liip_imagine.controller, @liip_imagine.cache.manager, %saman_media.media%]
         
     saman_media.select2:
         class: MediaBundle\Service\Select2Service
         arguments: [@saman.appService, %saman.saman_select2%]
-
-        
         
     saman.form.type.ace:
         class: MediaBundle\Form\Type\AceType

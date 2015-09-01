@@ -6,7 +6,7 @@ use \Twig_Extension;
 use Liip\ImagineBundle\Imagine\Cache\CacheManager;
 use Symfony\Bundle\FrameworkBundle\Routing\Router;
 use MediaBundle\Form\Type\MultipleType;
-use Library\Service\StaticHelper;
+use Library\Components\MediaHandler;
 
 /**
  *
@@ -110,7 +110,7 @@ class MediaTwigFilterExtension extends Twig_Extension
      */
     public function getMedia($jsonMedia)
     {
-        return StaticHelper::getMedia($jsonMedia);
+        return MediaHandler::getMedia($jsonMedia, true);
     }
     
     /**
@@ -121,7 +121,7 @@ class MediaTwigFilterExtension extends Twig_Extension
      */
     public function getMedias($jsonMedias)
     {
-        return StaticHelper::getMedias($jsonMedias);
+        return MediaHandler::getMedias($jsonMedias, true);
     }
     
     /**
@@ -135,7 +135,7 @@ class MediaTwigFilterExtension extends Twig_Extension
      */
     public function image($jsonMedia, $filter, array $runtimeConfig = array())
     {
-        return StaticHelper::getMediaUrl($jsonMedia, $this->cacheManager, $filter, $runtimeConfig);
+        return MediaHandler::getMediaUrl($jsonMedia, $this->cacheManager, $filter, $runtimeConfig);
     }
     
     /**

@@ -2,15 +2,7 @@
 $(function(){
     
     $('#action-add-product, .action-edit-product').click(function(e){
-        var url = $(this).attr('data-url');
-        var formContainer = $('#product-form-container');
-        $.get(url, function(response) {
-            if (response.success === true) {
-                postItemForm(response, formContainer);
-            } else {
-                bootbox.alert(response.message);
-            }
-        }, 'json');        
+        handleForm($(this));        
     });
     
     $('.action-display-item').click(function(e){
@@ -44,26 +36,5 @@ $(function(){
             }
         });        
     });
-        
-    function postItemForm(response, formContainer)
-    {
-        formContainer.html(response.content); 
-        var forms = ['[name="saman_product_form"]'];
-        $(forms.join(',')).submit(function(e){
-            e.preventDefault();
-            postFormContent($(this), function(response) {
-                if (response.content !== undefined) {
-                    postItemForm(response, formContainer);
-                } else {
-                    if (response.success === true) {
-                        location.reload();
-                    } else {
-                        bootbox.alert(response.message);
-                    }
-                }
-            }, 'json');
-            return false;
-        });
-    }     
 });
 </script>

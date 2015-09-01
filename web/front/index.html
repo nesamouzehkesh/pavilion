@@ -27,6 +27,7 @@
                                     <tr>
                                         <th>#</th>
                                         <th>Product Title</th>
+                                        <th>Product Image</th>
                                         <th>Price</th>
                                     </tr>
                                 </thead>
@@ -34,6 +35,12 @@
                                     <tr>
                                         <th scope="row">{{ product.id }}</th>
                                         <td>{{ product.title }}</td>
+                                        <td>
+                                            <a ng-if="product.image !== undefined" href="{{ product.image.path }}">
+                                                <img ng-src="{{ product.image.thumbnails.t }}"/>
+                                                {{ product.image.name }}
+                                            </a>
+                                        </td>
                                         <td>{{ product.price }}</td>
                                     </tr>
                                 </tbody>

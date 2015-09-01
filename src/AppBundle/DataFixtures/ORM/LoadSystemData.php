@@ -12,7 +12,8 @@ use UserBundle\Entity\Role;
 use ProductBundle\Entity\Product;
 
 /**
- * User
+ * LoadSystemData:
+ * php app/console doctrine:fixtures:load
  *
  * @ORM\Table()
  * @ORM\Entity
@@ -21,7 +22,7 @@ class LoadSystemData implements FixtureInterface
 {
     private $data = array(
         'pages' => 20,
-        'products' => 20,
+        'products' => 10,
         'roles' => array(
             array('name' => 'User', 'role' => Role::ROLE_USER),
             array('name' => 'Admin', 'role' => Role::ROLE_ADMIN),

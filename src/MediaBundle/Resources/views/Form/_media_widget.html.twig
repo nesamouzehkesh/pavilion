@@ -106,7 +106,6 @@ https://github.com/blueimp/jQuery-File-Upload/wiki/Options
                button.closest('tr').remove();
             } else {
                 button.html('');
-                button.addClass('s-no-outline');
                 button.data('loading-text', '<div class="s-loading-1"></div>');
                 button.button('loading');
                 button.prop('disabled', true);
@@ -117,7 +116,6 @@ https://github.com/blueimp/jQuery-File-Upload/wiki/Options
                     } else {
                         button.button('reset');
                         button.prop('disabled', false);
-                        button.removeClass('s-no-outline');
                         button.html(content);                    
                     }
                 });
@@ -285,7 +283,7 @@ https://github.com/blueimp/jQuery-File-Upload/wiki/Options
                                 (file.error ? '<span class="text-danger"><span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span> <span class="error" style="margin-left: 5px;"></span></span>' : '') +
                             '</td>' +
                             '<td style="width: 12px">' + 
-                                '<button type="button" data-id="' + file.id + '" class="btn btn-link action-delete-file" style="padding: 0px 5px 0px 5px;"><span class="glyphicon glyphicon-remove" disabled></span></button>' +
+                                '<button type="button" data-id="' + file.id + '" class="btn btn-link d-no-outline action-delete-file" style="padding: 0px 5px 0px 5px;"><span class="glyphicon glyphicon-remove" disabled></span></button>' +
                             '</td>' +    
                         '</tr>');
                     row.find('.size').text(o.formatFileSize(file.size));

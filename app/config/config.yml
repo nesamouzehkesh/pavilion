@@ -178,7 +178,7 @@ liip_imagine:
         default:
             web_path:
                 web_root: %kernel.root_dir%/../web
-                cache_prefix:       mediacache/%kernel.environment%
+                cache_prefix:       media/cache/%kernel.environment%
     loaders:
         default:
             filesystem:
@@ -188,28 +188,29 @@ liip_imagine:
     cache:             default
     data_loader:       default
     filter_sets:
-      origin:
+      o:
          quality: 100
-      t_400_400:
+      l:
          quality: 100
          filters:
             thumbnail: { size: [400, 400], mode: outbound }
-      t_300_300:
+      m:
          quality: 100
          filters:
             thumbnail: { size: [300, 300], mode: outbound }            
-      t_200_200:
+      s:
          quality: 100
          filters:
             thumbnail: { size: [200, 200], mode: outbound }
-      t_100_100:
+      t:
          quality: 90
          filters:
             thumbnail: { size: [100, 100], mode: outbound }
-      t_50_50:
+      ti:
          quality: 80
          filters:
-            thumbnail: { size: [50, 50], mode: outbound }
+            thumbnail: { size: [100, 100], mode: inset }
+            
 
 # Gaufrette Configuration
 # Gaufrette is a PHP 5.3+ library providing a filesystem abstraction layer

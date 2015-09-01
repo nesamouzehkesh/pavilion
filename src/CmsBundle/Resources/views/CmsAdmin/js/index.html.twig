@@ -13,11 +13,11 @@ $(function(){
     });
     
     $('.action-add-item').click(function(e){
-        displayItemForm($(this), 'saman_cms_page_form', 'page-form-container', '{{ twig_url_items }}', cont_items, currentPage);       
+        handleForm($(this), '{{ twig_url_items }}', cont_items, currentPage);       
     });
     
     $('#pages-list-container').on('click', '.action-edit-item', function(e){       
-        displayItemForm($(this), 'saman_cms_page_form', 'page-form-container', '{{ twig_url_items }}', cont_items, currentPage);
+        handleForm($(this), '{{ twig_url_items }}', cont_items, currentPage);
     });
     
     $('#pages-list-container').on('click', '.action-display-item', function(e){

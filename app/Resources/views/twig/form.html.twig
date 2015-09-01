@@ -30,13 +30,13 @@
                 {% if forDescription is defined %}
                     {{ forDescription|trans }}<br><br>
                 {% endif %}
-                
+                <div class="form-message"></div>
                 {% block body %}{% endblock %}
             </div>
 
             <div class="modal-footer">
-                <button type="submit" class="btn btn-primary">{{ 'action.save'|trans }}</button>
-                <button type="button" class="btn btn-primary" data-dismiss="modal">{{ 'action.close'|trans }}</button>
+                <button id="form-submit-{{ form.vars.name }}" class="btn btn-primary ladda-button" type="submit" data-style="expand-left"><span class="ladda-label">{{ 'action.save'|trans }}</span></button>            
+                <button class="btn btn-primary" type="button" data-dismiss="modal"><span class="ladda-label">{{ 'action.close'|trans }}</span></button>
             </div>
         {{ form_end(form) }}
         
@@ -48,5 +48,13 @@
 <script type="text/javascript">
     $(document).ready(function(){
         $('.form-control-select2').select2();
+        
+        $('#form-submit-{{ form.vars.name }}').click(function(e){
+            var form = $(this).closest('form');
+            if (form.isValid()) {
+                var ladda = Ladda.create(this);
+                ladda.start();
+            }
+	});        
     });
 </script>

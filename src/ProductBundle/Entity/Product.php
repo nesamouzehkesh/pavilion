@@ -202,9 +202,9 @@ class Product extends BaseEntity
      *
      * @return string 
      */
-    public function getImage()
+    public function getImage($convert = false)
     {
-        return $this->image;
+        return parent::getMedia($this->image, $convert);
     }
 
     /**
@@ -225,8 +225,8 @@ class Product extends BaseEntity
      *
      * @return string 
      */
-    public function getImages()
+    public function getImages($convert = false)
     {
-        return $this->images;
+        return parent::getMedias($this->images, $convert);
     }
 }

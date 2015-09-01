@@ -18,8 +18,8 @@
     {% if image is not null %}
         <div class="row margin-top-10">
             <div class="col-md-12">
-                <a href="{{ asset(image.path|imagine_filter('origin')) }}" target="_blank">
-                    <img src="{{ asset(image.path|imagine_filter('t_200_200')) }}" class="img-thumbnail" />
+                <a href="{{ asset(image.path|imagine_filter('o')) }}" target="_blank">
+                    <img src="{{ asset(image.path|imagine_filter('s')) }}" class="img-thumbnail" />
                 </a>
             </div>
         </div>
@@ -28,8 +28,8 @@
     <div class="row margin-top-10">
         <div class="col-md-12">
             {% for image in product.images|getMedias %}
-                <a href="{{ asset(image.path|imagine_filter('origin')) }}" target="_blank">
-                    <img src="{{ asset(image.path|imagine_filter('t_100_100')) }}" class="img-thumbnail" />
+                <a href="{{ asset(image.path|imagine_filter('o')) }}" target="_blank">
+                    <img src="{{ asset(image.path|imagine_filter('t')) }}" class="img-thumbnail" />
                 </a>
             {% endfor %}
         </div>

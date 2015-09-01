@@ -44,6 +44,8 @@ class MediaService
     public function __construct(
         AppService $appService,
         Filesystem $filesystem,
+        $liipImagineController,
+        $liipImagineCacheManagerm,
         $parameters
         ) 
     {
@@ -182,6 +184,8 @@ class MediaService
                 $media->setClass(get_class($entity));
                 // Persist new changes in media entity
                 $this->appService->persistEntity($media);
+                
+                
             }
         }
 
@@ -222,7 +226,7 @@ class MediaService
         
         return true;
     }    
-    
+        
     /**
      * Upload files in request to the temperory or permannet location
      * 
