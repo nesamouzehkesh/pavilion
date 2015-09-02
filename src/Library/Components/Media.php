@@ -75,7 +75,19 @@ class Media
     {
         return $this->thumbnails->get($thumbnailFilter);
     }
-
+    
+    /**
+     * Set path
+     *
+     * @return string 
+     */
+    public function setPath($path)
+    {
+        $this->path = $path;
+        
+        return $this;
+    }
+    
     /**
      * Get path
      *

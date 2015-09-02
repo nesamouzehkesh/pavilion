@@ -199,9 +199,10 @@ class MediaHandler
      */
     public static function getMediaUrl($jsonMedia, $cacheManager = null, $filter = 'origin', array $runtimeConfig = array())
     {
-        $path = self::getMediaPath($jsonMedia);
+        $mediaInfo = self::getMediaInfo($jsonMedia);
         
-        if (null !== $path) {
+        if (null !== $mediaInfo) {
+            $path = $mediaInfo['path'];
             if (null !== $cacheManager && null !== $filter) {
                 return new \Twig_Markup(
                     $cacheManager->getBrowserPath($path, $filter, $runtimeConfig),

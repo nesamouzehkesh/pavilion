@@ -2,6 +2,7 @@
 
 namespace ProductBundle\Controller;
 
+use Library\Components\FormSerializer;
 use Library\Base\BaseController;
 use Symfony\Component\HttpFoundation\Request;
 use ProductBundle\Entity\Product;
@@ -100,14 +101,21 @@ class ProductController extends BaseController
                 
                 return $this->getJsonResponse(true);
             }
-
+            
+            $formSerializer = new FormSerializer();
+                
             $view = $this->renderView(
                 'ProductBundle:Product:/form/product.html.twig', 
                 array(
                     'form' => $productForm->createView(),
+                    'ser' => $formSerializer->serializeForm($productForm)
                     )
                 );
+            
 
+            
+            //var_dump($this->extractClientData($productForm->createView()));
+            
             return $this->getJsonResponse(true, null, $view);
         } catch (\Exception $ex) {
             return $this->getExceptionResponse('Can not add or edit product', $ex);

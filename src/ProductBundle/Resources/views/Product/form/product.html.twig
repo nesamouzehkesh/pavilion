@@ -1,6 +1,10 @@
 {% extends "::twig/form.html.twig" %}
 
 {% block body %}
+    <pre><code>
+        {{ ser }}    
+    </code></pre>
+    
     {{ form_errors(form) }}
     {{ form_row(form.title) }}
     {{ form_row(form.price) }}
