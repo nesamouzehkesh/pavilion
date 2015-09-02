@@ -8,13 +8,17 @@ class FormSerializer
 {
     public function serializeForm(FormInterface $form)
     {
+        $isValid = true;
+        $result = array();
         if ($form->isBound() && ! $form->isValid()) {
-            $data = $this->serializeFormError($form);
-        } else {
-            $data = $this->serializeForm($form);
-        }        
-
-        return $data;
+            $result['error'] = $this->serializeFormError($form);
+            $isValid = false;
+        }
+        
+        $result['name'] = $form->getName();
+        $result['content'] = $this->serializeFormContent($form, $isValid);         
+        
+        return $result;
     }
     
     /**
@@ -26,14 +30,7 @@ class FormSerializer
     {
         $result = array();
         foreach ($form->getErrors() as $error) {
-            $result['error'][] = $error->getMessage();
-        }
-        
-        foreach ($form->all() as $child) {
-            $errors = $this->serializeFormError($child);
-            if ($errors) {
-                $result['children'][$child->getName()] = $errors;
-            }
+            $result[] = $error->getMessage();
         }
         
         return $result;
@@ -42,27 +39,36 @@ class FormSerializer
     /**
      * 
      * @param FormInterface $form
+     * @param type $isValid
      * @return type
      */
-    private function serializeFormContent(FormInterface $form)
+    private function serializeFormContent(FormInterface $form, $isValid = true)
     {
         if (!$form->all()) {
             return $form->getViewData();
         }
-
-        $data = array();
+        
+        $result = array();
         foreach ($form->all() as $child) {
             $config = $child->getConfig();
-            
-            $data[] = array(
-                "type" => $config->getType()->getName(),
-                "name" => $child->getName(),
-                "label" => (string) $config->getOption("label"),
-                "required" => $child->isRequired(),
-                "value" => $this->serializeFormContent($child)
+            $data = array(
+                'type' => $config->getType()->getName(),
+                'name' => $child->getName(),
+                'label' => (string) $config->getOption('label'),
+                'required' => $child->isRequired(),
+                'value' => $this->serializeFormContent($child),
             );
+            
+            if (!$isValid) {
+                $errors = array();
+                foreach ($child->getErrors() as $error) {
+                    $errors[] = $error->getMessage();
+                }
+                $data['error'] = $errors;
+            }
+            $result[] = $data;
         }
 
-        return $data;
+        return $result;
     }    
 }

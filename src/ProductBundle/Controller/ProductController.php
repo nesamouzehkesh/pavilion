@@ -103,18 +103,14 @@ class ProductController extends BaseController
             }
             
             $formSerializer = new FormSerializer();
-                
+            
             $view = $this->renderView(
                 'ProductBundle:Product:/form/product.html.twig', 
                 array(
-                    'form' => $productForm->createView(),
-                    'ser' => $formSerializer->serializeForm($productForm)
+                    'ser' => $formSerializer->serializeForm($productForm),
+                    'form' => $productForm->createView()
                     )
                 );
-            
-
-            
-            //var_dump($this->extractClientData($productForm->createView()));
             
             return $this->getJsonResponse(true, null, $view);
         } catch (\Exception $ex) {

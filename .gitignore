@@ -1,6 +1,5 @@
 /nbproject/
 /nbproject/*
-/web/bundles/
 /app/bootstrap.php.cache
 /app/cache/*
 /app/sessions/*
@@ -11,9 +10,6 @@
 /vendor/
 log/
 /composer.phar
-/web/theme/*
-/web/mediacache/*
-/web/img/users
 /components
 /app/config/subdomains/*
 /web/imagecache/*
@@ -25,3 +21,8 @@ log/
 *~
 /app/logs/dev.log
 
+
+/web/bundles/
+/web/theme/*
+/web/media/*
+/web/img/users
