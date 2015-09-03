@@ -1,6 +1,6 @@
 <?php
 
-namespace Library\Components;
+namespace Library\Serializer;
 
 use Symfony\Component\Form\FormInterface;
 
@@ -15,8 +15,10 @@ class FormSerializer
             $isValid = false;
         }
         
+        $formContent = $this->serializeFormContent($form, $isValid);
         $result['name'] = $form->getName();
-        $result['content'] = $this->serializeFormContent($form, $isValid);         
+        $result['template'] = $formContent['template'];
+        $result['data'] = $formContent['data'];
         
         return $result;
     }
@@ -51,12 +53,13 @@ class FormSerializer
         $result = array();
         foreach ($form->all() as $child) {
             $config = $child->getConfig();
-            $data = array(
+            $data = $this->serializeFormContent($child);
+            
+            $template = array(
                 'type' => $config->getType()->getName(),
-                'name' => $child->getName(),
+                'model' => $child->getName(),
                 'label' => (string) $config->getOption('label'),
                 'required' => $child->isRequired(),
-                'value' => $this->serializeFormContent($child),
             );
             
             if (!$isValid) {
@@ -64,9 +67,10 @@ class FormSerializer
                 foreach ($child->getErrors() as $error) {
                     $errors[] = $error->getMessage();
                 }
-                $data['error'] = $errors;
+                $template['error'] = $errors;
             }
-            $result[] = $data;
+            $result['template'][] = $template;
+            $result['data'][$child->getName()] = $data;
         }
 
         return $result;

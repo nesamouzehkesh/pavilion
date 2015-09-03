@@ -13,6 +13,12 @@ api_product_show_product:
     defaults: { _controller: ProductBundle:ProductApi:getProduct }
     requirements:
         _method: GET
+
+api_product_get_product_form:
+    path:     /product-form/{productId}
+    defaults: { _controller: ProductBundle:ProductAdminApi:getProductForm, productId: null }
+    requirements:
+        _method: GET
         
 api_product_show_test_product:
     path:     /product/test/{productId}

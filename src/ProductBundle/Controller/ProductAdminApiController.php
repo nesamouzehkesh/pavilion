@@ -3,6 +3,7 @@
 namespace ProductBundle\Controller;
 
 use Library\Base\BaseController;
+use Library\Serializer\FormSerializer;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use ProductBundle\Entity\Product;
@@ -13,6 +14,10 @@ use FOS\RestBundle\View\View;
  * http://williamdurand.fr/2012/08/02/rest-apis-with-symfony2-the-right-way/
  * http://williamdurand.fr/2013/08/07/ddd-with-symfony2-folder-structure-and-code-first/
  * http://obtao.com/blog/2013/05/create-rest-api-in-a-symfony-application/
+ * 
+ * 
+ * curl -v -H "Accept: application/json" -H "Content-type: application/json" -X POST -d '{"user":{"username":"foo", "email": "foo@example.org", "password":"hahaha"}}' http://symfony-basic.dev/api/product
+ * 
  */
 class ProductAdminApiController extends BaseController
 {
@@ -44,16 +49,7 @@ class ProductAdminApiController extends BaseController
      */    
     public function getProductAction($productId)
     {
-        // Get ObjectManager
-        $em = $this->getDoctrine()->getManager();
-        
-        // Get all Products
-        $product = Product::getRepository($em)->getProduct($productId);
-        if (!$product instanceof Product) {
-            throw new NotFoundHttpException('User not found');
-        }
-        
-        return array('product' => $product);
+        return array('product' => $this->getProduct($productId));
     } 
     
     /**
@@ -83,8 +79,45 @@ class ProductAdminApiController extends BaseController
      */    
     public function addProductAction()
     {
-        return $this->processForm(new Product());
+        return $this->processForm($this->getProduct());
     }
+    
+    /**
+     * @\Nelmio\ApiDocBundle\Annotation\ApiDoc(
+     *   resource = true,
+     *   description = "Get one product by its ID",
+     *   requirements={
+     *     {
+     *       "name"="limit",
+     *       "dataType"="integer",
+     *       "requirement"="\d+",
+     *       "description"="how many objects to return"
+     *     }
+     *   },
+     *   statusCodes = {
+     *     200 = "Returned when successful",
+     *     403 = "Returned when the product is not authorized to say hello",
+     *     404 = {
+     *       "Returned when the product is not found",
+     *       "Returned when something else is not found"
+     *     }
+     *   }
+     * )
+     * 
+     * @return type
+     * @\FOS\RestBundle\Controller\Annotations\View()
+     */     
+    public function getProductFormAction($productId)
+    {
+        $product = $this->getProduct($productId);
+        $productForm = $this->createForm(new ProductApiType(), $product);
+        $productForm->handleRequest($this->getRequest());
+        
+        $formSerializer = new FormSerializer();
+        $serializedProductForm = $formSerializer->serializeForm($productForm);
+        
+        return array('form' => $serializedProductForm);
+    }    
     
     /**
      * @\Nelmio\ApiDocBundle\Annotation\ApiDoc(
@@ -114,14 +147,8 @@ class ProductAdminApiController extends BaseController
      */    
     public function editProductAction($productId)
     {
-        // Get ObjectManager
-        $em = $this->getDoctrine()->getManager();
-        
-        // Get all Products
-        $product = Product::getRepository($em)->getProduct($productId);
-            
-        return $this->processForm($product);
-    }    
+        return $this->processForm($this->getProduct($productId));
+    }
     
     /**
      * 
@@ -132,10 +159,9 @@ class ProductAdminApiController extends BaseController
     {
         $statusCode = $product->isNew() ? 201 : 204;
 
-        $form = $this->createForm(new ProductApiType(), $product);
-        $form->handleRequest($this->getRequest());
-
-        if ($form->isValid()) {
+        $productForm = $this->createForm(new ProductApiType(), $product);
+        $productForm->handleRequest($this->getRequest());
+        if ($productForm->isValid()) {
             // Get ObjectManager
             $em = $this->getDoctrine()->getManager();
             
@@ -157,7 +183,30 @@ class ProductAdminApiController extends BaseController
 
             return $response;
         }
-
+        
         return View::create($form, 400);
-    }    
+    }
+    
+    /**
+     * 
+     * @param type $productId
+     * @return Product
+     */
+    private function getProduct($productId = null)
+    {
+        if (null === $productId) {
+            return new Product();
+        }
+        
+        // Get ObjectManager
+        $em = $this->getDoctrine()->getManager();
+        
+        // Get all Products
+        $product = Product::getRepository($em)->getProduct($productId);
+        if (!$product instanceof Product) {
+            throw new NotFoundHttpException('User not found');
+        }
+        
+        return $product;
+    }
 }

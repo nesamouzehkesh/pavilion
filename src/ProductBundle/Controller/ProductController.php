@@ -2,7 +2,6 @@
 
 namespace ProductBundle\Controller;
 
-use Library\Components\FormSerializer;
 use Library\Base\BaseController;
 use Symfony\Component\HttpFoundation\Request;
 use ProductBundle\Entity\Product;
@@ -101,15 +100,10 @@ class ProductController extends BaseController
                 
                 return $this->getJsonResponse(true);
             }
-            
-            $formSerializer = new FormSerializer();
-            
+
             $view = $this->renderView(
                 'ProductBundle:Product:/form/product.html.twig', 
-                array(
-                    'ser' => $formSerializer->serializeForm($productForm),
-                    'form' => $productForm->createView()
-                    )
+                array('form' => $productForm->createView())
                 );
             
             return $this->getJsonResponse(true, null, $view);

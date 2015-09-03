@@ -1,12 +1,13 @@
 <!doctype html>
-<html ng-app="exampleApp">
+<html ng-app="app" id="ng-app">
     <head>
+        <title>Hello AngularJS</title>
         <link rel="stylesheet" href="./css/bootstrap.min.css">
-        <link rel="stylesheet" href="./css/todo.css">
         <link rel="stylesheet" href="../css/saman.css">
-        <title>Salam</title>
+        
     </head>
-    <body>
+    
+    <body ng-controller="AppCtrl" ng-cloak="">
         <div class="container">
             <div class="row margin-top-40">
                 <div class="col-sm-3">
@@ -24,25 +25,15 @@
                     <div class="panel panel-default">
                         <div class="panel-body">
                         <!--**********************************************************************-->
-
-                            <div ng-controller="defaultCtrl">
-                                <div class="well">
-                                    <div class="btn-group" ng-button counter="data.totalClicks" source="data.cities">
-                                        <button class="btn btn-default" ng-repeat="city in data.cities">{{city}}</button>
-                                    </div>
-                                    <h5>Total Clicks: {{ data.totalClicks }}</h5>
-                                </div>
-                            </div>
-
+                            <dynamic-form class="col-md-12" template="stdFormTemplate" ng-model="stdFormData"></dynamic-form>
                         <!--**********************************************************************-->
                         </div>
                     </div>
                 </div> 
             </div>
         </div>
-        <script src="./js/angular.min.js"></script>
-        <script src="./modules/exampleApp/exampleAppDirective.js"></script>
-        <script src="./modules/exampleApp/exampleAppServices.js"></script>
-        <script src="./modules/exampleApp/exampleAppController.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.8/angular.min.js"></script>
+        <script src="./components/angular-dynforms/dynamic-forms.js"></script>
+        <script src="./controller/dynamic-forms.js"></script>
     </body>
 </html>
