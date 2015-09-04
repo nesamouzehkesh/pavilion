@@ -12,6 +12,14 @@ class ProductApiController extends BaseController
      * @\Nelmio\ApiDocBundle\Annotation\ApiDoc(
      *   resource = true,
      *   description = "Get all products",
+     *   requirements={
+     *     {
+     *       "name"="page",
+     *       "dataType"="integer",
+     *       "requirement"="\d+",
+     *       "description"="The page"
+     *     }
+     *   },
      *   statusCodes = {
      *     200 = "Returned when successful",
      *     403 = "Returned when the product is not authorized to say hello",
@@ -24,7 +32,7 @@ class ProductApiController extends BaseController
      * 
      * @return array
      */
-    public function getProductsAction()
+    public function getProductsAction($page)
     {
         try {
             $cacheManager = $this->get('liip_imagine.cache.manager');
@@ -48,10 +56,10 @@ class ProductApiController extends BaseController
      *   description = "Get one product by its ID",
      *   requirements={
      *     {
-     *       "name"="limit",
+     *       "name"="productId",
      *       "dataType"="integer",
      *       "requirement"="\d+",
-     *       "description"="how many objects to return"
+     *       "description"="The ID of a product"
      *     }
      *   },
      *   statusCodes = {

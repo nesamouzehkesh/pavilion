@@ -114,9 +114,9 @@ class ProductAdminApiController extends BaseController
         $productForm->handleRequest($this->getRequest());
         
         $formSerializer = new FormSerializer();
-        $serializedProductForm = $formSerializer->serializeForm($productForm);
+        $serializedForm = $formSerializer->serialize($productForm);
         
-        return array('form' => $serializedProductForm);
+        return array('form' => $serializedForm->getContent());
     }    
     
     /**

@@ -5,10 +5,6 @@ saman_api:
     type: rest
     resource: "routing_rest.yml"
     prefix : /api    
-    
-saman_api_doc:
-  resource: "@NelmioApiDocBundle/Resources/config/routing.yml"
-  prefix:   /admin/api/doc
   
 saman_login:
     path:     /login

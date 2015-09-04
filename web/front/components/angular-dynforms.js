@@ -38,6 +38,7 @@ angular.module('dynform', [])
         'file': {element: 'input', type: 'file', class: '', editable: true, textBased: false},
         'range': {element: 'input', type: 'range', class: '', editable: true, textBased: false},
         'select': {element: 'select', class: 'form-control', editable: true, textBased: false},
+        'choice': {element: 'select', class: 'form-control', editable: true, textBased: false},
         //  Pseudo-non-editables (containers)
         'checklist': {element: 'div', class: '', editable: false, textBased: false},
         'fieldset': {element: 'fieldset', class: '', editable: false, textBased: false},
@@ -213,7 +214,7 @@ angular.module('dynform', [])
                     });
                   }
                 }
-                else if (field.type === 'select') {
+                else if (field.type === 'select' || field.type === 'choice') {
                   if (angular.isDefined(field.multiple) && field.multiple !== false) {newElement.attr('multiple', 'multiple');}
                   if (angular.isDefined(field.empty) && field.empty !== false) {newElement.append(angular.element($document[0].createElement('option')).attr('value', '').html(field.empty));}
                   

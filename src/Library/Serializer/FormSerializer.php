@@ -3,24 +3,32 @@
 namespace Library\Serializer;
 
 use Symfony\Component\Form\FormInterface;
+use Library\Components\SerializedForm;
 
+/**
+ * A very Simple FormSerializer
+ */
 class FormSerializer
 {
-    public function serializeForm(FormInterface $form)
+    /**
+     * 
+     * @param FormInterface $form
+     * @return SerializedForm
+     */
+    public function serialize(FormInterface $form)
     {
-        $isValid = true;
-        $result = array();
+        $serializedError = array();
+        $hasError = false;
+        // Get form serialized errors
         if ($form->isBound() && ! $form->isValid()) {
-            $result['error'] = $this->serializeFormError($form);
-            $isValid = false;
+            $serializedError = $this->serializeError($form);
+            $hasError = true;
         }
         
-        $formContent = $this->serializeFormContent($form, $isValid);
-        $result['name'] = $form->getName();
-        $result['template'] = $formContent['template'];
-        $result['data'] = $formContent['data'];
+        // Get form serialized content, including its tamplate (structure) and data
+        $serializedContent = $this->serializeForm($form, $hasError);
         
-        return $result;
+        return new SerializedForm($form, $serializedContent, $serializedError);
     }
     
     /**
@@ -28,7 +36,7 @@ class FormSerializer
      * @param FormInterface $form
      * @return type
      */
-    private function serializeFormError(FormInterface $form)
+    private function serializeError(FormInterface $form)
     {
         $result = array();
         foreach ($form->getErrors() as $error) {
@@ -41,10 +49,10 @@ class FormSerializer
     /**
      * 
      * @param FormInterface $form
-     * @param type $isValid
+     * @param type $hasError
      * @return type
      */
-    private function serializeFormContent(FormInterface $form, $isValid = true)
+    private function serializeForm(FormInterface $form, $hasError = false)
     {
         if (!$form->all()) {
             return $form->getViewData();
@@ -53,16 +61,16 @@ class FormSerializer
         $result = array();
         foreach ($form->all() as $child) {
             $config = $child->getConfig();
-            $data = $this->serializeFormContent($child);
+            $data = $this->serializeForm($child, $hasError);
             
             $template = array(
                 'type' => $config->getType()->getName(),
                 'model' => $child->getName(),
-                'label' => (string) $config->getOption('label'),
+                'label' => $this->getFormLabel($child),
                 'required' => $child->isRequired(),
             );
             
-            if (!$isValid) {
+            if ($hasError) {
                 $errors = array();
                 foreach ($child->getErrors() as $error) {
                     $errors[] = $error->getMessage();
@@ -73,6 +81,30 @@ class FormSerializer
             $result['data'][$child->getName()] = $data;
         }
 
+        $result['template'][] = array(
+            'type' => 'submit',
+            'label' => 'submit',
+        );
+        /*
+        $result['template'][] = array(
+            'type' => 'reset',
+            'label' => 'reset',
+        );
+        */
+
         return $result;
-    }    
+    }
+    
+    private function getFormLabel($child)
+    {
+        $config = $child->getConfig();
+        $label = $config->getOption('label');
+        
+        if (null === $label) {
+            $label = ucfirst(preg_replace('/(?<!^)([A-Z])/', '-\\1', $child->getName()));
+        }
+        
+        return $label;
+    }
+    
 }

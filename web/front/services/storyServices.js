@@ -12,7 +12,6 @@
         };
     }]);
 
-    
     StoryServices.factory('productFactory', function ($resource) {
         return $resource('../api/products/:id', {}, {
             show: { method: 'GET' },
@@ -20,6 +19,4 @@
             delete: { method: 'DELETE', params: {id: '@id'} }
         })
     });
-
-    
 })();
