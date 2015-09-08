@@ -5,6 +5,7 @@ namespace ProductBundle\Controller;
 use Library\Base\BaseController;
 use Library\Serializer\FormSerializer;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use ProductBundle\Entity\Product;
 use ProductBundle\Form\ProductApiType;
@@ -77,7 +78,7 @@ class ProductAdminApiController extends BaseController
      * @return type
      * @\FOS\RestBundle\Controller\Annotations\View()
      */    
-    public function addProductAction()
+    public function addProductAction(Request $request)
     {
         return $this->processForm($this->getProduct());
     }
@@ -157,34 +158,42 @@ class ProductAdminApiController extends BaseController
      */
     private function processForm(Product $product)
     {
-        $statusCode = $product->isNew() ? 201 : 204;
+        try {
+            $statusCode = $product->isNew() ? 201 : 204;
 
-        $productForm = $this->createForm(new ProductApiType(), $product);
-        $productForm->handleRequest($this->getRequest());
-        if ($productForm->isValid()) {
-            // Get ObjectManager
-            $em = $this->getDoctrine()->getManager();
-            
-            $em->persist($product);
-            $em->flush();
-            
-            $response = new Response();
-            $response->setStatusCode($statusCode);
+            $productForm = $this->createForm(new ProductApiType(), $product);
+            $productForm->handleRequest($this->getRequest());
+            if ($productForm->isValid()) {
+                // Get ObjectManager
+                $em = $this->getDoctrine()->getManager();
 
-            // set the `Location` header only when creating new resources
-            if (201 === $statusCode) {
-                $response->headers->set('Location',
-                    $this->generateUrl(
-                        'api_product_show_product', array('productId' => $product->getId()),
-                        true // absolute
-                    )
-                );
+                $em->persist($product);
+                $em->flush();
+
+                $response = new Response();
+                $response->setStatusCode($statusCode);
+
+                // set the `Location` header only when creating new resources
+                if (201 === $statusCode) {
+                    $response->headers->set('Location',
+                        $this->generateUrl(
+                            'api_product_show_product', array('productId' => $product->getId()),
+                            true // absolute
+                        )
+                    );
+                }
+
+                return $response;
             }
+            
+            $formSerializer = new FormSerializer();
+            $serializedForm = $formSerializer->serialize($productForm);
 
-            return $response;
+            return View::create(array('form' => $serializedForm->getContent()), 400);
+            //return array('form' => $serializedForm->getContent());
+        } catch (Exception $ex) {
+
         }
-        
-        return View::create($form, 400);
     }
     
     /**

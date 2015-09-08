@@ -1,0 +1,17 @@
+ProductBundle\Entity\Product:
+    properties:
+        title:
+            - NotBlank: ~
+            - Length:
+                min: 5
+                max: 50
+                minMessage: "Title must be at least {{ limit }} characters long"
+                maxMessage: "Title cannot be longer than {{ limit }} characters long"
+        price:
+            - NotBlank: ~
+            - Range:
+                min: 0.99
+                max: 100.99
+                minMessage: "Price must be at least {{ limit }}"
+                maxMessage: "Price cannot be longer than {{ limit }}"
+               

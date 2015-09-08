@@ -75,7 +75,10 @@ class FormSerializer
                 foreach ($child->getErrors() as $error) {
                     $errors[] = $error->getMessage();
                 }
-                $template['error'] = $errors;
+                
+                if (count($errors) > 0) {
+                    $template['error'] = implode('. ', $errors);
+                }
             }
             $result['template'][] = $template;
             $result['data'][$child->getName()] = $data;

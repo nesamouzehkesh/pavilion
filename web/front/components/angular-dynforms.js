@@ -293,6 +293,32 @@ angular.module('dynform', [])
                   }
                 }
                 
+                // Saman Update  
+                if (["button", "legend", "reset", "submit"].indexOf(field.type) === -1) {
+                    var alertClass = "";
+                    if (angular.isDefined(field.error)) {
+                        alertClass = "has-error has-feedback";
+                    }
+                    newElement = newElement.wrap('<div class="form-group ' + alertClass + '"></div>').parent();
+                }
+                
+                if (angular.isDefined(field.error)) {
+                    var errorIcon = document.createElement('span');
+                    errorIcon.className = 'glyphicon glyphicon-remove form-control-feedback';
+                    newElement.append(errorIcon);
+                    
+                    var sr_errorIcon = document.createElement('span');
+                    sr_errorIcon.appendChild(document.createTextNode('(error)'));
+                    sr_errorIcon.className = 'sr-only';
+                    newElement.append(sr_errorIcon);
+
+                    var error = document.createElement('div');
+                    error.appendChild(document.createTextNode(field.error + ' '));
+                    error.className = 'text-danger';
+                    newElement.append(error);
+                }
+                // End of Saman Update  
+                
                 //  If there's a label, add it.
                 if (angular.isDefined(field.label)) {
                   //  Some elements have already applied their labels.
@@ -313,9 +339,9 @@ angular.module('dynform', [])
                     // newElement = newElement.wrap('<label></label>').parent();
                     // newElement.prepend(document.createTextNode(field.label + ' '));
                     
-                    newElement = newElement.wrap('<div class="form-group"></div>').parent();
                     var label = document.createElement('label');
                     label.appendChild(document.createTextNode(field.label + ' '));
+                    label.className = 'control-label';
                     newElement.prepend(label);
                     // End of Saman Update  
                   }
