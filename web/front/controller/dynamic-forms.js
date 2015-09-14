@@ -8,7 +8,7 @@
                 $scope.formData = data.form.data;
                 
                 $scope.processForm = function () {
-                    ProductService.postForm($scope.formData)
+                    ProductService.postForm($scope.formData, data.form.name)
                         .success(function(data){ 
                             console.log("OK");
                         })

@@ -45,4 +45,4 @@ saman_product:
 
 saman_cms:
     resource: "@CmsBundle/Resources/config/routing.yml"
-    prefix:   /    
+    prefix:   /

@@ -2,7 +2,3 @@ services:
     saman_cms.cms.admin:
         class: CmsBundle\Service\CmsAdminService
         arguments: [@saman.appService, %saman_cms.cms.admin%]
-        
-    saman_cms.cms.view:
-        class: CmsBundle\Service\CmsViewService
-        arguments: [@saman.appService, %saman_cms.cms%]    

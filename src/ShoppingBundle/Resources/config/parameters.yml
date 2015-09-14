@@ -1,0 +1,5 @@
+parameters:
+    saman_shopping.shopping:
+        numberOfItemsPerPage: 2
+    saman_shopping.order:
+        numberOfItemsPerPage: 10        

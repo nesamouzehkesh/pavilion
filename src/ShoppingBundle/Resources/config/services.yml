@@ -1,0 +1,14 @@
+services:
+    saman_shopping.shopping:
+        class: Saman\ShoppingBundle\Service\ShoppingService
+        arguments: [@saman.helper, @saman_media.media, @saman_config.config, %saman_shopping.shopping%]
+        
+    saman_shopping.order:
+        class: Saman\ShoppingBundle\Service\OrderService
+        arguments: [@saman.helper, %saman_shopping.order%]            
+        
+    saman_shopping.product.form:
+        class: Saman\ShoppingBundle\Form\ProductForm
+        arguments: [@saman.helper]
+        tags:
+            - { name: form.type, alias: saman_shopping_product_form }

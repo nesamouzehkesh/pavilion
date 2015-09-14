@@ -3,6 +3,10 @@
 * @version v0.0.4 - 2014-11-16
 * @link http://github.com/danhunsaker/angular-dynamic-forms
 * @license MIT, http://opensource.org/licenses/MIT
+* 
+* 
+* @modification
+* Modified by samanshafigh@gmail.com
 */
 
 /**
@@ -297,12 +301,13 @@ angular.module('dynform', [])
                 if (["button", "legend", "reset", "submit"].indexOf(field.type) === -1) {
                     var alertClass = "";
                     if (angular.isDefined(field.error)) {
-                        alertClass = "has-error has-feedback";
+                        alertClass = "has-error"; // has-feedback
                     }
                     newElement = newElement.wrap('<div class="form-group ' + alertClass + '"></div>').parent();
                 }
                 
                 if (angular.isDefined(field.error)) {
+                    /*
                     var errorIcon = document.createElement('span');
                     errorIcon.className = 'glyphicon glyphicon-remove form-control-feedback';
                     newElement.append(errorIcon);
@@ -311,9 +316,14 @@ angular.module('dynform', [])
                     sr_errorIcon.appendChild(document.createTextNode('(error)'));
                     sr_errorIcon.className = 'sr-only';
                     newElement.append(sr_errorIcon);
+                    */
+
+                    var errorInfoIcon = document.createElement('span');
+                    errorInfoIcon.className = 'glyphicon glyphicon-info-sign';
 
                     var error = document.createElement('div');
-                    error.appendChild(document.createTextNode(field.error + ' '));
+                    error.appendChild(errorInfoIcon);
+                    error.appendChild(document.createTextNode(' ' + field.error + ' '));
                     error.className = 'text-danger';
                     newElement.append(error);
                 }

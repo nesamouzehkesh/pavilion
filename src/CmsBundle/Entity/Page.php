@@ -5,6 +5,7 @@ namespace CmsBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Library\Base\BaseEntity;
+use Library\Base\BaseHelper;
 
 /**
  * Page
@@ -62,16 +63,29 @@ class Page extends BaseEntity
     protected $labels;    
     
     /**
+     * @var array
+     *
+     * @ORM\Column(name="settings", type="array", nullable=true)
+     */
+    private $settings;
+    
+    /**
+     * @var array
+     *
+     * @ORM\Column(name="staticContent", type="array", nullable=true)
+     */
+    private $staticContent;    
+    
+    /**
      * 
      */
     public function __construct()
     {
         parent::__construct();
-        
         $this->labels = new ArrayCollection();
         $this->settings = array();
     }
-    
+        
     /**
      * 
      * @param \Doctrine\ORM\EntityManagerInterface $em
@@ -80,6 +94,14 @@ class Page extends BaseEntity
     public static function getRepository(\Doctrine\ORM\EntityManagerInterface $em)
     {
         return $em->getRepository(__CLASS__);
+    }    
+    
+    /**
+     * 
+     * @return type
+     */
+    public function __toString() {
+        return $this->getTitle();
     }
     
     /**
@@ -178,7 +200,7 @@ class Page extends BaseEntity
      */
     public function setUrl($url)
     {
-        $this->url = $url;
+        $this->url = BaseHelper::filterUrl($url);
 
         return $this;
     }
@@ -225,4 +247,95 @@ class Page extends BaseEntity
     {
         return $this->labels;
     }
+    
+    /**
+     * Set settings
+     *
+     * @param Array $settings
+     * @return Config
+     */
+    public function setSettings($settings)
+    {
+        $this->settings = $settings;
+
+        return $this;
+    }    
+    
+    /**
+     * Get settings
+     *
+     * @return Array $settings
+     */
+    public function getSettings()
+    {
+        if (!is_array($this->settings)) {
+            $this->settings = array();
+        }
+        
+        return $this->settings;
+    }
+    
+    /**
+     * Get settings
+     *
+     * @return Array $settings
+     */
+    public function getSetting($setting)
+    {
+        if (is_array($this->settings) && array_key_exists($setting, $this->settings)) {
+            return $this->settings[$setting];
+        }
+        
+        return null;
+    }
+    
+    /**
+     * Get staticContent
+     *
+     * @return array 
+     */
+    public function getStaticContent($staticContentId = null)
+    {
+        if (null !== $staticContentId) {
+            if (!array_key_exists($staticContentId, $this->staticContent)) {
+                //throw new \Exception(sprintf('No static content exist with this ID: %d', $staticContentId));
+                return null;
+            }
+            
+            return $this->staticContent[$staticContentId];
+        }
+
+        return $this->staticContent;
+    }
+
+    /**
+     * Set structure
+     *
+     * @param array $staticContent
+     * @return Theme
+     */
+    public function setStaticContent($staticContent, $staticContentId = null)
+    {
+        if (null !== $staticContentId) {
+            $this->staticContent[$staticContentId] = $staticContent;
+        } else {
+            $this->staticContent = $staticContent;
+        }
+        
+        return $this;
+    }
+    
+    /**
+     * 
+     * @param type $staticContents
+     * @return \AppearanceBundle\Entity\Theme
+     */
+    public function addStaticContents($staticContents)
+    {
+        foreach ($staticContents as $staticContentId => $staticContent) {
+            $this->staticContent[$staticContentId] = $staticContent;
+        }
+        
+        return $this;
+    }    
 }

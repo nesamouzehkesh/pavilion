@@ -3,6 +3,7 @@
 namespace CmsBundle\Controller;
 
 use Library\Base\BaseController;
+use CmsBundle\Entity\Page;
 
 class CmsViewController extends BaseController
 {
@@ -13,14 +14,23 @@ class CmsViewController extends BaseController
      */
     public function indexAction($url)
     {
-        // Get the page if the page is exist
-        $page = $this->getCmsViewService()->getPage($url);
+        // Get ObjectManager
+        $em = $this->getDoctrine()->getManager();
         
-        // Get all page links
-        $pages = $this->getCmsViewService()->getPages();
+        $page = Page::getRepository($em)->getPageForView($url);
+        // Check if this $item exist
+        if (null === $page) {
+            throw new \Exception('Page does not exist');
+        }
         
+        $pages = Page::getRepository($em)->getPagesListForView();
+        $theme = sprintf(
+            'CmsBundle:CmsView:%s.html.twig', 
+            ($url === '')? 'index' : 'second'
+            );
+            
         return $this->render(
-            'CmsBundle:CmsView:index.html.twig',
+            $theme,
             array(
                 'page' => $page,
                 'pages' => $pages,
@@ -28,13 +38,4 @@ class CmsViewController extends BaseController
                 )
             );
     }
-    
-    /**
-     * 
-     * @return \CmsBundle\Service\CmsViewService
-     */
-    private function getCmsViewService()
-    {
-        return $this->getService('saman_cms.cms.view');
-    }    
 }

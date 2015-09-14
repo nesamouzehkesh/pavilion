@@ -21,7 +21,14 @@ class PageRepository extends BaseEntityRepository
     public function getPageForView($url)
     {
         $qb = $this->getQueryBuilder()
-            ->select('page.title, page.content')
+            ->select('
+                page.title,
+                page.icon,
+                page.content,
+                page.url,
+                page.createdTime,
+                page.modifiedTime
+                ')
             ->from('CmsBundle:Page', 'page')
             ->where('page.url IN (:urls) AND page.deleted = 0')
             ->setParameter('urls', array($url, sprintf('/%s', $url)));

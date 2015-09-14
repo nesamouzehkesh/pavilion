@@ -7,41 +7,39 @@
             return $http.get('../api/product/form/1');
         };
         
-        this.postForm = function (formData) {
+        this.postForm = function (formData, formName) {
             return $http({
                 url: "../api/product/post",
-                data: serializeData(formData, 'product'),
+                data: serializeData(formData, formName),
                 method: 'POST',
                 headers : {'Content-Type':'application/x-www-form-urlencoded; charset=UTF-8'}
             });
         };
 
-        function serializeData(data, prefix) { 
+        function serializeData(data, formName) { 
             // If this is not an object, defer to native stringification.
-            if ( ! angular.isObject( data ) ) { 
-                return( ( data == null ) ? "" : data.toString() ); 
+            if (!angular.isObject(data)) { 
+                return((data == null) ? "" : data.toString()); 
             }
 
             var buffer = [];
 
             // Serialize each key in the object.
-            for ( var name in data ) { 
-                if ( ! data.hasOwnProperty( name ) ) { 
+            for (var name in data) { 
+                if (!data.hasOwnProperty(name)) { 
                     continue; 
                 }
 
-                var value = data[ name ];
+                var value = data[name];
 
                 buffer.push(
-                   prefix + "[" + encodeURIComponent( name ) + "]=" + encodeURIComponent( ( value == null ) ? "" : value )
+                   formName + "[" + encodeURIComponent(name) + "]=" + encodeURIComponent((value == null) ? "" : value)
                 ); 
             }
 
             // Serialize the buffer and clean it up for transportation.
-            var source = buffer.join( "&" ).replace( /%20/g, "+" ); 
-            return( source ); 
+            var source = buffer.join("&").replace(/%20/g, "+"); 
+            return(source); 
         }                
-                
     }]);
-    
 })();

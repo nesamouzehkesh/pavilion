@@ -1,0 +1,42 @@
+saman_shopping_orders:
+    path:     /profile/order
+    defaults: { _controller: SamanShoppingBundle:Order:displayOrders }
+
+saman_shopping_order_display:
+    path:     /profile/order/{itemId}
+    defaults: { _controller: SamanShoppingBundle:Order:displayOrder }
+    
+saman_shopping_order_add:
+    path:     /profile/order/add
+    defaults: { _controller: SamanShoppingBundle:Order:addOrder }
+
+saman_shopping_order_edit:
+    path:     /profile/order/edit/{itemId}
+    defaults: { _controller: SamanShoppingBundle:Order:editOrder }
+   
+saman_shopping_order_delete:
+    path:     /profile/order/delete/{itemId}
+    defaults: { _controller: SamanShoppingBundle:Order:deleteOrder }
+    
+
+
+
+saman_shopping_admin_product_home:
+    path:     /admin/shopping/product
+    defaults: { _controller: SamanShoppingBundle:ShoppingAdmin:displayItems}
+    
+saman_shopping_admin_product_add:
+    path:     /admin/shopping/product-add
+    defaults: { _controller: SamanShoppingBundle:ShoppingAdmin:addItem }
+
+saman_shopping_admin_product_edit:
+    path:     /admin/shopping/product-edit/{itemId}
+    defaults: { _controller: SamanShoppingBundle:ShoppingAdmin:editItem }
+
+saman_shopping_admin_product_display:
+    path:     /admin/shopping/product-display/{itemId}
+    defaults: { _controller: SamanShoppingBundle:ShoppingAdmin:displayItem }
+    
+saman_shopping_admin_product_delete:
+    path:     /admin/shopping/product-delete/{itemId}
+    defaults: { _controller: SamanShoppingBundle:ShoppingAdmin:deleteItem }
