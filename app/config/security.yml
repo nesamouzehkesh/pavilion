@@ -17,8 +17,9 @@ security:
 
     firewalls:
         secured_area:
-            pattern:   ^/
+            pattern:   ^/admin
             anonymous: ~
+            provider: administrators
             form_login:
                 login_path: saman_login
                 check_path: saman_login_check
@@ -26,8 +27,23 @@ security:
                 path:   saman_logout
                 target: saman_login
                 
+        secured_area_web:
+            pattern:   ^/shopping
+            anonymous: ~
+            provider: administrators
+            form_login:
+                login_path: saman_login_web
+                check_path: saman_login_check_web
+            logout:
+                path:   saman_logout_web
+                target: saman_login_web
+
+                
     access_control:
         #- { path: ^/admin/, roles: ROLE_ADMIN, requires_channel: https } 
-        - { path: ^/admin/, roles: ROLE_ADMIN } 
+        - { path: ^/admin/, roles: ROLE_ADMIN }
         # Include the following line to also secure the /admin path itself
         - { path: ^/admin$, roles: ROLE_ADMIN }
+        #- { path: ^/shopping/, roles: ROLE_USER, requires_channel: https } 
+        - { path: ^/shopping/, roles: ROLE_USER }
+        - { path: ^/shopping$, roles: ROLE_USER }

@@ -1,6 +1,6 @@
 <?php
 
-namespace Saman\ShoppingBundle\Tests\Controller;
+namespace ShoppingBundle\Tests\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 

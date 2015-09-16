@@ -137,36 +137,7 @@ module:
         title: Playground
         description: ""
         icon: glyphicon glyphicon-star
-    theme:
-        title: Theme        
-        description: ""
-        icon: glyphicon glyphicon-th-large
-        
-        
-    appearance:
-        title: Appearance
-        navigation:
-            pageLink: Link to Page
-            urlLink: Link to URL
-        theme:
-            title: Theme
-            themeSettings: Settings
-            themeStructure: Structure
-            themeRawStructure: Raw content
-            themeWidgets: Widgets
-        widget:
-            menu:
-                title: Menu widget
-            icon:
-                title: Icon widget
-            page:
-                title: Page widget
-            carousel:
-                title: Bootstrap Carousel        
-        alert:
-            error: ~
-            success:
-                themeIsPublished: "The theme has been published successfully"
-            info: ~
-            warning: ~
+
                 
+shopping:
+    webTitle: shopping

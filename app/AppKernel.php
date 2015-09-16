@@ -44,6 +44,7 @@ class AppKernel extends Kernel
             new LabelBundle\LabelBundle(),
             new AppBundle\AppBundle(),
             new ProductBundle\ProductBundle(),
+            new ShoppingBundle\ShoppingBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

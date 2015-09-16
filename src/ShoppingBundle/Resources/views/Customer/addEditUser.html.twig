@@ -1,0 +1,11 @@
+{% extends "::twig/form.html.twig" %}
+
+{% block body %}
+    {{ form_errors(form) }}
+    {{ form_row(form.email) }}
+    {{ form_row(form.reEmail) }}
+    <br><br>
+    {{ form_row(form.firstName) }}
+    {{ form_row(form.lastName) }}
+    {{ form_row(form.password) }}
+{% endblock %}

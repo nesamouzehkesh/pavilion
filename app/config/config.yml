@@ -4,6 +4,7 @@ imports:
     - { resource: validation.yml }
     - { resource: "@CmsBundle/Resources/config/parameters.yml" }
     - { resource: "@MediaBundle/Resources/config/parameters.yml" }
+    - { resource: "@ShoppingBundle/Resources/config/parameters.yml" }
 
 # Framework Configuration        
 framework:

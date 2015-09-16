@@ -1,10 +1,10 @@
 <?php
 
-namespace Saman\ShoppingBundle\Entity\Repository;
+namespace ShoppingBundle\Entity\Repository;
 
 use Doctrine\ORM\Query;
-use Saman\Library\Doctrine\BaseEntityRepository;
-use Saman\UserBundle\Entity\User;
+use Library\Doctrine\BaseEntityRepository;
+use UserBundle\Entity\User;
 
 /**
  * OrderRepository

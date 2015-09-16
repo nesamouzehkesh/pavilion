@@ -6,7 +6,7 @@
             {% if error %}
                 <div class="alert alert-warning d-margin-bottom-20">Warning! {{ error.message }}</div>
             {% endif %}
-            <form action="{{ path('saman_login_check') }}" method="post">
+            <form action="{{ path(action) }}" method="post">
                 <div class="form-group">
                     <label for="exampleInputEmail1">Email address</label>
                     <input type="email" id="username" name="_username" class="form-control" id="exampleInputEmail1" placeholder="Enter email">

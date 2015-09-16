@@ -434,7 +434,7 @@ class MediaService
     private function hasAccess($action, $media)
     {
         $user = $this->appService->getUser();
-        if ($user instanceof User and $user->hasAnyAdminRole()) {
+        if ($user instanceof User and $user->hasAdminRole()) {
             return true;
         }
         

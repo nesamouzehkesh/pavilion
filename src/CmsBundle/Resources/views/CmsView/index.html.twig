@@ -8,54 +8,17 @@
     </head>
     <body>
         <div class="container">
-            <nav class="navbar navbar-inverse">
-                <div class="container-fluid">
-                    <!-- Brand and toggle get grouped for better mobile display -->
-                    <div class="navbar-header">
-                        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-                            <span class="sr-only">Toggle navigation</span>
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                        </button>
-                        <a class="navbar-brand" href="#">Saman</a>
-                    </div>
-
-                    <!-- Collect the nav links, forms, and other content for toggling -->
-                    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                        <ul class="nav navbar-nav">
-                            <li><a href="{{ path('saman_cms_page_index') }}">{{ 'icon.home'|icon }} CMS Home</a></li>
-                            <li><a href="{{ path('saman_pg_index') }}">{{ 'module.playground.icon'|icon }} Playground</a></li>
-                            <li><a href="{{ app.request.getSchemeAndHttpHost() }}/front">AngularJS & Symfony</a></li>
-                            <li><a href="{{ app.request.getSchemeAndHttpHost() }}/api/doc">Symfony API Doc</a></li>
-                        </ul>
-                        <ul class="nav navbar-nav navbar-right">
-                            <li><a href='{{ path('saman_app_display_dashboard') }}'>{{ 'icon.setting'|icon }} Admin</a></li>
-                        </ul>
-                    </div>
-                </div>
-            </nav>              
-
+            {% include 'CmsBundle:CmsView:_navbar.html.twig' %}
+                        
             <div class="row margin-top-20">
-                <div class="col-sm-3">
-                    <div class="list-group">
-                        {% for page in pages %}
-                            <a href="{{ path('saman_cms_page', {'url': page['url']}) }}" 
-                               class="list-group-item {{ url == page['url']? 'active' : '' }}">
-                                {{ page['title'] }}
-                            </a>
-                        {% endfor %}
-                    </div>
-                </div>
                 <div class="col-sm-9">
                     <div class="panel panel-default">
                         <div class="panel-body">
-                            {% if page['title'] is defined %}
+                            {% if content is defined %}
                                 <div class="page-header">
-                                    <h3>{{ 'icon.page'|icon }} {{ page['title'] }}</h3>
+                                    <h3>{{ title }}</h3>
                                 </div>
-
-                                <p>{{ page['content']|raw }}</p>
+                                <p>{{ content|raw }}</p>
                             {% else %}
                                 {{ 'Whoops! Page not found'|warningAlert }}
                             {% endif %}

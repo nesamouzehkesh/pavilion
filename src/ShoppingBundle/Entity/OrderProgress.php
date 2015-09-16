@@ -1,15 +1,15 @@
 <?php
 
-namespace Saman\ShoppingBundle\Entity;
+namespace ShoppingBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Saman\Library\Base\BaseEntity;
+use Library\Base\BaseEntity;
 
 /**
  * OrderProgress
  *
  * @ORM\Table(name="saman_order_progress")
- * @ORM\Entity(repositoryClass="\Saman\ShoppingBundle\Entity\Repository\OrderProgressRepository")
+ * @ORM\Entity(repositoryClass="\ShoppingBundle\Entity\Repository\OrderProgressRepository")
  */
 class OrderProgress extends BaseEntity
 {
@@ -84,7 +84,7 @@ class OrderProgress extends BaseEntity
     
     /**
      * @var string
-     * @Saman\Library\Annotation\MediaAnnotation(type="single")
+     * @Library\Annotation\MediaAnnotation(type="single")
      * @ORM\Column(name="attachments", type="text", nullable=true)
      */
     private $attachments;

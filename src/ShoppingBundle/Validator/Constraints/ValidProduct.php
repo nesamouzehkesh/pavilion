@@ -1,6 +1,6 @@
 <?php
 
-namespace Saman\ShoppingBundle\Validator\Constraints;
+namespace ShoppingBundle\Validator\Constraints;
 
 use Symfony\Component\Validator\Constraint;
 

@@ -176,4 +176,32 @@ class BaseController extends Controller
     {
         return $this->getAppService()->transMessage($message);
     }
+
+    /**
+     * 
+     * @param type $id
+     * @param array $parameters
+     * @return type
+     */
+    public function trans($id, array $parameters = array())
+    {
+        return $this->get('translator')->trans($id, $parameters);
+    }
+    
+    /**
+     * 
+     * @param type $content
+     * @param type $title
+     * @return type
+     */
+    public function renderWebPage($content, $title)
+    {
+        return $this->render(
+            'CmsBundle:CmsView:second.html.twig',
+            array(
+                'title' => $title,
+                'content' => $content
+                )
+            );
+    }
 }

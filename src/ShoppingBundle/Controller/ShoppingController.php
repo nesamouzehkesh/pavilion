@@ -1,12 +1,25 @@
 <?php
 
-namespace Saman\ShoppingBundle\Controller;
+namespace ShoppingBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
-use Saman\Library\Base\BaseController;
+use Library\Base\BaseController;
 
-class OrderController extends BaseController
+class ShoppingController extends BaseController
 {
+    /**
+     * 
+     * @return type
+     */
+    public function displayShoppingListAction()
+    {
+        try {
+            return $this->getOrderService()->displayShoppingList();
+        } catch (Exception $ex) {
+            return $this->getExceptionResponse('There is a problem in displaying your orders', $ex);
+        }    
+    }
+    
     /**
      * 
      * @return type
@@ -64,20 +77,7 @@ class OrderController extends BaseController
     
     /**
      * 
-     * @return type
-     */
-    public function deleteOrderAction($orderId)
-    {
-        try {
-            return $this->getOrderService()->deleteOrder($orderId);
-        } catch (Exception $ex) {
-            return $this->getExceptionResponse('There is a problem in deleting your order', $ex);
-        }        
-    }
-    
-    /**
-     * 
-     * @return \Saman\ShoppingBundle\Service\OrderService
+     * @return \ShoppingBundle\Service\OrderService
      */
     private function getOrderService()
     {

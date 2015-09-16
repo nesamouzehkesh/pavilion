@@ -1,9 +1,9 @@
 <?php
 
-namespace Saman\ShoppingBundle\Controller;
+namespace ShoppingBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
-use Saman\Library\Base\BaseController;
+use Library\Base\BaseController;
 
 class ShoppingAdminController extends BaseController
 {

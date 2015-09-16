@@ -7,22 +7,32 @@ saman_api:
     prefix : /api    
   
 saman_login:
-    path:     /login
-    defaults: { _controller: AppBundle:Security:login }
-    
+    path:     /login/{isWeb}
+    defaults: { _controller: AppBundle:Security:login, isWeb: false }
 saman_login_check:
-    path: /login_check
-    
+    path: /admin/login_check
 saman_logout:
-    path: /logout
+    path: /admin/logout
+  
+saman_login_web:
+    path:     /shopp/login/{isWeb}
+    defaults: { _controller: AppBundle:Security:login, isWeb: true }
+saman_login_check_web:
+    path: /shopping/login_check
+saman_logout_web:
+    path: /shopping/logout
 
 _liip_imagine:
     resource: "@LiipImagineBundle/Resources/config/routing.xml"
-
+    
 saman_app:
     resource: "@AppBundle/Resources/config/routing.yml"
     prefix:   /
 
+saman_shopping:
+    resource: "@ShoppingBundle/Resources/config/routing.yml"
+    prefix:   /
+    
 saman_playground:
     resource: "@PlaygroundBundle/Resources/config/routing.yml"
     prefix:   /playground

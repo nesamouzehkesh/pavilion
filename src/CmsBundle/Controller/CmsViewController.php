@@ -23,18 +23,11 @@ class CmsViewController extends BaseController
             throw new \Exception('Page does not exist');
         }
         
-        $pages = Page::getRepository($em)->getPagesListForView();
-        $theme = sprintf(
-            'CmsBundle:CmsView:%s.html.twig', 
-            ($url === '')? 'index' : 'second'
-            );
-            
         return $this->render(
-            $theme,
+            sprintf('CmsBundle:CmsView:%s.html.twig', $url == ''? 'index' : 'second'),
             array(
-                'page' => $page,
-                'pages' => $pages,
-                'url' => $url
+                'title' => $page['title'],
+                'content' => $page['content']
                 )
             );
     }

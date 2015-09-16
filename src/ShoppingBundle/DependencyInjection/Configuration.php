@@ -1,6 +1,6 @@
 <?php
 
-namespace Saman\ShoppingBundle\DependencyInjection;
+namespace ShoppingBundle\DependencyInjection;
 
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;

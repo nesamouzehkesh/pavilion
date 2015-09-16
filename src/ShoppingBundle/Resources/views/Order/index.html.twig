@@ -1,6 +1,0 @@
-{% for order in orders %}
-    {{ order.title }} {{ order.type }} {{ order.status }}
-    {% for progress in order.progresses %}
-        - {{ progress.progressType }} {{ progress.content }} {{ progress.completePercentage }} {{ progress.startDate }} {{ progress.estimatedEndDate }}
-    {% endfor %}        
-{% endfor %}

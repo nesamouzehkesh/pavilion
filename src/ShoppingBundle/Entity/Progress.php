@@ -1,15 +1,15 @@
 <?php
 
-namespace Saman\ShoppingBundle\Entity;
+namespace ShoppingBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Saman\Library\Base\BaseEntity;
+use Library\Base\BaseEntity;
 
 /**
  * Progress
  *
  * @ORM\Table(name="saman_progress")
- * @ORM\Entity(repositoryClass="\Saman\ShoppingBundle\Entity\Repository\ProgressRepository")
+ * @ORM\Entity(repositoryClass="\ShoppingBundle\Entity\Repository\ProgressRepository")
  */
 class Progress extends BaseEntity
 {
@@ -55,4 +55,60 @@ class Progress extends BaseEntity
     {
         return $em->getRepository(__CLASS__);
     }     
+    
+    /**
+     * Get id
+     *
+     * @return integer 
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set title
+     *
+     * @param string $title
+     * @return Progress
+     */
+    public function setTitle($title)
+    {
+        $this->title = $title;
+
+        return $this;
+    }
+
+    /**
+     * Get title
+     *
+     * @return string 
+     */
+    public function getTitle()
+    {
+        return $this->title;
+    }
+
+    /**
+     * Set content
+     *
+     * @param string $content
+     * @return Progress
+     */
+    public function setContent($content)
+    {
+        $this->content = $content;
+
+        return $this;
+    }
+
+    /**
+     * Get content
+     *
+     * @return string 
+     */
+    public function getContent()
+    {
+        return $this->content;
+    }
 }

@@ -1,7 +1,7 @@
-Saman\ShoppingBundle\Entity\Product:
+ShoppingBundle\Entity\Product:
     # Validation the entire Page, The error message in form will display as
     constraints:
-        - Saman\ShoppingBundle\Validator\Constraints\ValidProduct: ~    
+        - ShoppingBundle\Validator\Constraints\ValidProduct: ~    
     properties:
         title:
             - Length:

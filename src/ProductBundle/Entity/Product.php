@@ -3,6 +3,7 @@
 namespace ProductBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 use Library\Base\BaseEntity;
 
 /**
@@ -63,12 +64,17 @@ class Product extends BaseEntity
     private $images;
     
     /**
+     * @ORM\ManyToMany(targetEntity="\ShoppingBundle\Entity\Order", mappedBy="products")
+     **/
+    private $orders;    
+    
+    /**
      * 
      */
     public function __construct()
     {
         parent::__construct();
-        
+        $this->orders = new ArrayCollection();
         $this->setAvailable(true);
     }
     
@@ -228,5 +234,38 @@ class Product extends BaseEntity
     public function getImages($convert = false)
     {
         return parent::getMedias($this->images, $convert);
+    }
+
+    /**
+     * Add orders
+     *
+     * @param \ShoppingBundle\Entity\Order $orders
+     * @return Product
+     */
+    public function addOrder(\ShoppingBundle\Entity\Order $orders)
+    {
+        $this->orders[] = $orders;
+
+        return $this;
+    }
+
+    /**
+     * Remove orders
+     *
+     * @param \ShoppingBundle\Entity\Order $orders
+     */
+    public function removeOrder(\ShoppingBundle\Entity\Order $orders)
+    {
+        $this->orders->removeElement($orders);
+    }
+
+    /**
+     * Get orders
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getOrders()
+    {
+        return $this->orders;
     }
 }

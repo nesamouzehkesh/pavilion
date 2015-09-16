@@ -10,7 +10,7 @@ use Library\Base\BaseEntity;
 /**
  * Acme\UserBundle\Entity\User
  *
- * @ORM\Table(name="saman_users")
+ * @ORM\Table(name="saman_user")
  * @ORM\Entity(repositoryClass="UserBundle\Entity\Repository\UserRepository")
  */
 class User extends BaseEntity implements AdvancedUserInterface, \Serializable
@@ -62,7 +62,12 @@ class User extends BaseEntity implements AdvancedUserInterface, \Serializable
      * @ORM\ManyToMany(targetEntity="Role", inversedBy="users")
      * @ORM\JoinTable(name="saman_users_roles")
      */
-    private $roles;    
+    private $roles;
+    
+    /**
+     * @ORM\OneToMany(targetEntity="Address", mappedBy="user")
+     **/
+    private $addresses;    
     
     /**
      * 
@@ -74,6 +79,7 @@ class User extends BaseEntity implements AdvancedUserInterface, \Serializable
         $this->isActive = true;
         $this->salt = md5(uniqid(null, true));
         $this->roles = new ArrayCollection();
+        $this->addresses =  new ArrayCollection();
     }
     
     /**
@@ -208,7 +214,7 @@ class User extends BaseEntity implements AdvancedUserInterface, \Serializable
      * Check if user with admin role
      * @return boolean
      */
-    public function hasAnyAdminRole()
+    public function hasAdminRole()
     {
         $arr = array_intersect(
             array(
@@ -218,8 +224,24 @@ class User extends BaseEntity implements AdvancedUserInterface, \Serializable
             );
         
         return !empty($arr);
-    }    
-
+    }
+    
+    /**
+     * Check if user with Customer role
+     * @return boolean
+     */
+    public function hasCustomerRole()
+    {
+        $arr = array_intersect(
+            array(
+                Role::ROLE_USER,
+                ), 
+            $this->getRoles()
+            );
+        
+        return !empty($arr);
+    }   
+    
     /**
      * @inheritDoc
      */
@@ -335,5 +357,38 @@ class User extends BaseEntity implements AdvancedUserInterface, \Serializable
     public function getLastName()
     {
         return $this->lastName;
+    }
+    
+    /**
+     * Add addresses
+     *
+     * @param \UserBundle\Entity\Address $addresses
+     * @return User
+     */
+    public function addAddress(\UserBundle\Entity\Address $addresses)
+    {
+        $this->addresses[] = $addresses;
+
+        return $this;
+    }
+
+    /**
+     * Remove addresses
+     *
+     * @param \UserBundle\Entity\Address $addresses
+     */
+    public function removeAddress(\UserBundle\Entity\Address $addresses)
+    {
+        $this->addresses->removeElement($addresses);
+    }
+
+    /**
+     * Get addresses
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getAddresses()
+    {
+        return $this->addresses;
     }
 }

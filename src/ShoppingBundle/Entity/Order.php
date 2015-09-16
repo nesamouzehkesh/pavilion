@@ -1,28 +1,30 @@
 <?php
 
-namespace Saman\ShoppingBundle\Entity;
+namespace ShoppingBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
-use Saman\Library\Base\BaseEntity;
+use Library\Base\BaseEntity;
 
 /**
  * Order
  *
  * @ORM\Table(name="saman_order")
- * @ORM\Entity(repositoryClass="\Saman\ShoppingBundle\Entity\Repository\OrderRepository")
+ * @ORM\Entity(repositoryClass="\ShoppingBundle\Entity\Repository\OrderRepository")
  */
 class Order extends BaseEntity
 {
     const ITEM_LOGO = 'icon.order';
     
+    const ORDER_TYPE_PRODUCT = 1;
+    const ORDER_TYPE_CUSTOM = 2;
+    
     const STATUS_SUBMITTED = 1;
-    const STATUS_APPROVED = 2;
+    const STATUS_PAID = 2;
     const STATUS_INPROGRESS = 3;
     const STATUS_STOPED = 4;
-    const STATUS_REJECT = 5;
-    const STATUS_FINALIZED = 6;
-    const STATUS_SHIPPED = 7;
+    const STATUS_FINALIZED = 5;
+    const STATUS_SHIPPED = 6;
     
     /**
      * @var integer
@@ -32,13 +34,6 @@ class Order extends BaseEntity
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="title", type="string", length=255)
-     */
-    private $title;
     
     /**
      * @var integer
@@ -48,13 +43,6 @@ class Order extends BaseEntity
     private $type;
     
     /**
-     * @var integer
-     *
-     * @ORM\Column(name="status", type="integer", nullable=true)
-     */
-    private $status;    
-
-    /**
      * @var string
      *
      * @ORM\Column(name="content", type="text", nullable=true)
@@ -62,7 +50,20 @@ class Order extends BaseEntity
     private $content;
     
     /**
-     * @ORM\ManyToOne(targetEntity="\Saman\UserBundle\Entity\User")
+     * @ORM\ManyToMany(targetEntity="\ProductBundle\Entity\Product", inversedBy="users")
+     * @ORM\JoinTable(name="saman_product_order")
+     **/  
+    private $products;
+    
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="status", type="integer", nullable=true)
+     */
+    private $status;    
+    
+    /**
+     * @ORM\ManyToOne(targetEntity="\UserBundle\Entity\User")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id", nullable=true)
      **/
     private $user;
@@ -74,7 +75,7 @@ class Order extends BaseEntity
     
     /**
      * @var string
-     * @Saman\Library\Annotation\MediaAnnotation(type="single")
+     * @Library\Annotation\MediaAnnotation(type="single")
      * @ORM\Column(name="attachments", type="text", nullable=true)
      */
     private $attachments;
@@ -85,7 +86,7 @@ class Order extends BaseEntity
     public function __construct()
     {
         parent::__construct();
-        $this->labels = new ArrayCollection();
+        $this->products = new ArrayCollection();
         $this->settings = array();
     }
     
@@ -100,15 +101,6 @@ class Order extends BaseEntity
     }
     
     /**
-     * 
-     * @return String
-     */
-    public function getLogo()
-    {
-        return self::ITEM_LOGO;
-    }    
-   
-    /**
      * Get id
      *
      * @return integer 
@@ -116,29 +108,6 @@ class Order extends BaseEntity
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * Set title
-     *
-     * @param string $title
-     * @return Order
-     */
-    public function setTitle($title)
-    {
-        $this->title = $title;
-
-        return $this;
-    }
-
-    /**
-     * Get title
-     *
-     * @return string 
-     */
-    public function getTitle()
-    {
-        return $this->title;
     }
 
     /**
@@ -165,29 +134,6 @@ class Order extends BaseEntity
     }
 
     /**
-     * Set status
-     *
-     * @param integer $status
-     * @return Order
-     */
-    public function setStatus($status)
-    {
-        $this->status = $status;
-
-        return $this;
-    }
-
-    /**
-     * Get status
-     *
-     * @return integer 
-     */
-    public function getStatus()
-    {
-        return $this->status;
-    }
-
-    /**
      * Set content
      *
      * @param string $content
@@ -208,6 +154,29 @@ class Order extends BaseEntity
     public function getContent()
     {
         return $this->content;
+    }
+
+    /**
+     * Set status
+     *
+     * @param integer $status
+     * @return Order
+     */
+    public function setStatus($status)
+    {
+        $this->status = $status;
+
+        return $this;
+    }
+
+    /**
+     * Get status
+     *
+     * @return integer 
+     */
+    public function getStatus()
+    {
+        return $this->status;
     }
 
     /**
@@ -234,12 +203,45 @@ class Order extends BaseEntity
     }
 
     /**
-     * Set User
-     * 
-     * @param \Saman\UserBundle\Entity\User $user
+     * Add products
+     *
+     * @param \ProductBundle\Entity\Product $products
      * @return Order
      */
-    public function setUser(\Saman\UserBundle\Entity\User $user = null)
+    public function addProduct(\ProductBundle\Entity\Product $products)
+    {
+        $this->products[] = $products;
+
+        return $this;
+    }
+
+    /**
+     * Remove products
+     *
+     * @param \ProductBundle\Entity\Product $products
+     */
+    public function removeProduct(\ProductBundle\Entity\Product $products)
+    {
+        $this->products->removeElement($products);
+    }
+
+    /**
+     * Get products
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getProducts()
+    {
+        return $this->products;
+    }
+
+    /**
+     * Set user
+     *
+     * @param \UserBundle\Entity\User $user
+     * @return Order
+     */
+    public function setUser(\UserBundle\Entity\User $user = null)
     {
         $this->user = $user;
 
@@ -247,9 +249,9 @@ class Order extends BaseEntity
     }
 
     /**
-     * Get User
+     * Get user
      *
-     * @return \Saman\UserBundle\Entity\User
+     * @return \UserBundle\Entity\User 
      */
     public function getUser()
     {
@@ -259,10 +261,10 @@ class Order extends BaseEntity
     /**
      * Add progresses
      *
-     * @param OrderProgress $progresses
+     * @param \ShoppingBundle\Entity\OrderProgress $progresses
      * @return Order
      */
-    public function addProgress(OrderProgress $progresses)
+    public function addProgress(\ShoppingBundle\Entity\OrderProgress $progresses)
     {
         $this->progresses[] = $progresses;
 
@@ -272,9 +274,9 @@ class Order extends BaseEntity
     /**
      * Remove progresses
      *
-     * @param OrderProgress $progresses
+     * @param \ShoppingBundle\Entity\OrderProgress $progresses
      */
-    public function removeProgress(OrderProgress $progresses)
+    public function removeProgress(\ShoppingBundle\Entity\OrderProgress $progresses)
     {
         $this->progresses->removeElement($progresses);
     }

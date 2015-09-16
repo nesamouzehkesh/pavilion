@@ -24,7 +24,7 @@
                         <ul class="nav navbar-nav">
                             <li class="active"><a href="{{ path('saman_app_display_dashboard') }}">{{ 'icon.home'|icon }} Home</a></li>
                         </ul>
-                        {% if app.user is not null and app.user.hasAnyAdminRole %}
+                        {% if app.user is not null and app.user.hasAdminRole %}
                             <ul class="nav pull-right navbar-nav">
                                 <li class="dropdown">
                                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">{{ app.user.firstName }} {{ app.user.lastName }}<span class="caret"></span></a>
