@@ -30,6 +30,7 @@ class CustomerType extends AbstractType
     {
         $resolver->setDefaults(array(
             'data_class' => 'UserBundle\Entity\User',
+            'validation_groups' => array('registration'),
         ));
     }
     

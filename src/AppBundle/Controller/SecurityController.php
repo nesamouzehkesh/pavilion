@@ -29,7 +29,7 @@ class SecurityController extends BaseController
         
         if ($isWeb) {
             $content = $this->renderView(
-                'AppBundle:Security:webLogin.html.twig',
+                '::web/form/login.html.twig',
                 array(
                     // last username entered by the user
                     'last_username' => $lastUsername,
@@ -38,7 +38,13 @@ class SecurityController extends BaseController
                 )
             );
             
-            return $this->renderWebPage($content, 'profile');
+            return $this->render(
+                '::web/login.html.twig',
+                array(
+                    'title' => 'Login',
+                    'content' => $content
+                    )
+                );            
         } else {
             return $this->render(
                 'AppBundle:Security:login.html.twig',

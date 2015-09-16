@@ -10,12 +10,14 @@
     {% set class = attr.class|default('form-control') %}
     {% set placeholder = attr.placeholder|default(form.vars.label) %}
         {% set hasError = form_errors(form)|length > 1 %}
-        <div class="form-group {{ hasError? 'alert alert-danger has-error has-feedback' : ''}}">
+        <div class="form-group {{ hasError? 'has-error has-feedback' : ''}}">
             {% if attr.icon is defined and attr.icon is not null %}
                 {{ attr.icon|icon }}
             {% endif %}
             {% if isInline == false %}
-                {{ form_label(form) }}
+                <span class="{{ hasError? 'text-danger' : '' }}">
+                    {{ form_label(form) }}
+                </span>
             {% endif %}    
             {% if attr.description is defined and attr.description is not null %}
                 <div class="d-margin-bottom-5">
@@ -63,7 +65,7 @@
             {% for error in errors %}
             <div class="row">
                 <div class="col-md-12">
-                    {{ 'icon.alert.warning'|icon  }} {{ error.message }}
+                    <span class="text-danger">{{ 'icon.alert.warning'|icon  }} {{ error.message }}</span>
                 </div>	
             </div>
             {% endfor %}

@@ -3,6 +3,7 @@
 namespace Library\Base;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Form\FormError;
 
 class BaseController extends Controller
 {
@@ -188,20 +189,9 @@ class BaseController extends Controller
         return $this->get('translator')->trans($id, $parameters);
     }
     
-    /**
-     * 
-     * @param type $content
-     * @param type $title
-     * @return type
-     */
-    public function renderWebPage($content, $title)
+    public function addFormError($form, $message)
     {
-        return $this->render(
-            'CmsBundle:CmsView:second.html.twig',
-            array(
-                'title' => $title,
-                'content' => $content
-                )
-            );
+        $form->addError(new FormError($this->transMessage($message)));
     }
+    
 }

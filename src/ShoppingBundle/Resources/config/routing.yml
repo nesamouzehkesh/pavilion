@@ -2,7 +2,15 @@ saman_shopping_customer_profile:
     path:     /shopping/myprofile
     defaults: { _controller: ShoppingBundle:Customer:displayProfile }
 
-
+saman_shopping_customer_joinus:
+    path:     /shopp/joinus
+    defaults: { _controller: ShoppingBundle:Customer:joinus }
+    
+saman_shopping_customer_joinus_confirmation:
+    path:     /shopp/joinus/confirmation
+    defaults: { _controller: ShoppingBundle:Customer:joinusConfirmation }
+    
+    
 
 saman_shopping_orders:
     path:     /shopping/order

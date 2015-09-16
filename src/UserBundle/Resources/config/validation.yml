@@ -1,0 +1,17 @@
+UserBundle\Entity\User:
+    properties:
+        firstName:
+            - Length:
+                min: 5
+                max: 50
+                minMessage: "Your first name must be at least {{ limit }} characters long"
+                maxMessage: "Your first name cannot be longer than {{ limit }} characters long"
+                groups: [registration, Default]
+        password:
+            - NotBlank: 
+                groups: [registration, Default]
+            - Length: 
+                min: 7
+                minMessage: "Your password must be at least {{ limit }} characters long"
+                groups: [registration, Default]
+                

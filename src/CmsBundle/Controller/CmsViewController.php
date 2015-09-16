@@ -24,7 +24,7 @@ class CmsViewController extends BaseController
         }
         
         return $this->render(
-            sprintf('CmsBundle:CmsView:%s.html.twig', $url == ''? 'index' : 'second'),
+            sprintf('::web/%s.html.twig', $url === ''? 'index' : 'content'),
             array(
                 'title' => $page['title'],
                 'content' => $page['content']

@@ -115,7 +115,7 @@ class LoadSystemData implements FixtureInterface
         foreach ($usersData as $userData) {
             $user = new User();
             $user->setUsername($userData['username']);
-            $user->setPassword(md5($userData['password']));
+            $user->setPassword($userData['password']);
             $user->setEmail($userData['email']);
             $user->addRole($this->roles[$userData['role']]);
             

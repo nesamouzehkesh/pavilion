@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html class="ng-scope" ng-app="myApp">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset={{ _charset }}"/>
+        <meta name="robots" content="noindex,nofollow" />
+        <title>{% block title %}{% endblock %}</title>
+        {% include "::_asset.html.twig" %}
+    </head>
+    <body>
+        <div class="container">
+            {% include '::web/_navbar.html.twig' with {'isSecond': true} %}
+                        
+            <div class="row margin-top-20">
+                <div class="col-sm-9">
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            {% if content is defined %}
+                                <div class="page-header">
+                                    <h3>{{ title }}</h3>
+                                </div>
+                                <p>{{ content|raw }}</p>
+                            {% else %}
+                                {{ 'Whoops! Page not found'|warningAlert }}
+                            {% endif %}
+                        </div>
+                    </div>
+                </div> 
+            </div>
+        </div>
+    </body>
+</html>

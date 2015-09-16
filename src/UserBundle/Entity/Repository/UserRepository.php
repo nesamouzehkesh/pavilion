@@ -36,6 +36,26 @@ class UserRepository extends BaseEntityRepository implements UserProviderInterfa
             
         return $qb->getQuery();
     }
+
+    /**
+     * 
+     * @param type $username
+     * @return type
+     * @throws UsernameNotFoundException
+     */
+    public function hasUserByUsername($username)
+    {
+        $qb = $this->getQueryBuilder()
+            ->select('u.id')
+            ->from('UserBundle:User', 'u')
+            ->where('(u.username = :username OR u.email = :email) AND u.deleted = 0')
+            ->setParameter('username', $username)
+            ->setParameter('email', $username);
+                
+        $result = $qb->getQuery()->getScalarResult();
+        
+        return reset($result)? true : false;
+    }
     
     /**
      * 
