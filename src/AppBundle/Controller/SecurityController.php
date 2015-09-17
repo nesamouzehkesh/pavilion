@@ -28,21 +28,13 @@ class SecurityController extends BaseController
         $lastUsername = (null === $session) ? '' : $session->get(SecurityContextInterface::LAST_USERNAME);
         
         if ($isWeb) {
-            $content = $this->renderView(
-                '::web/form/login.html.twig',
-                array(
-                    // last username entered by the user
-                    'last_username' => $lastUsername,
-                    'action'        => 'saman_login_check_web',
-                    'error'         => $error,
-                )
-            );
-            
             return $this->render(
                 '::web/login.html.twig',
                 array(
                     'title' => 'Login',
-                    'content' => $content
+                    'last_username' => $lastUsername,
+                    'action'        => 'saman_login_check_web',
+                    'error'         => $error,
                     )
                 );            
         } else {

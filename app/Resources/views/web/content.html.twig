@@ -3,7 +3,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset={{ _charset }}"/>
         <meta name="robots" content="noindex,nofollow" />
-        <title>{% block title %}{% endblock %}</title>
+        <title>{% block title %}{{ title }}{% endblock %}</title>
         {% include "::_asset.html.twig" %}
     </head>
     <body>
@@ -14,14 +14,18 @@
                 <div class="col-sm-9">
                     <div class="panel panel-default">
                         <div class="panel-body">
-                            {% if content is defined %}
-                                <div class="page-header">
-                                    <h3>{{ title }}</h3>
-                                </div>
-                                <p>{{ content|raw }}</p>
-                            {% else %}
-                                {{ 'Whoops! Page not found'|warningAlert }}
-                            {% endif %}
+                            
+                            <div class="page-header">
+                                <h3>{% block pageTitle %}{{ title }}{% endblock %}</h3>
+                            </div>
+                            
+                            {% block pageBody %}
+                                {% if content is defined %}
+                                    <p>{{ content|raw }}</p>
+                                {% else %}
+                                    {{ 'Whoops! Page not found'|warningAlert }}
+                                {% endif %}
+                            {% endblock %}
                         </div>
                     </div>
                 </div> 

@@ -15,36 +15,24 @@ use UserBundle\Entity\User;
 class OrderRepository extends BaseEntityRepository
 {
     /**
-     * Load item by its ID
-     * 
-     * @param type $id
-     * @return type
-     */
-    public function loadItem($value, $key = 'id')
-    {
-        return $this->getItem($value, $key, true);
-    }
-        
-    /**
      * General get item function, by default it just gets one or null object.
      * 
-     * @param type $url
-     * @param type $readOnly
+     * @param type $value
+     * @param type $key
      * @return type
      */
-    public function getItem($value, $key = 'id', $loadItem = false)
+    public function getOrder($value, $key = 'id')
     {
         $qb = $this->getEntityManager()->createQueryBuilder();
         
-        $qb->select('order')
-            ->from('SamanShoppingBundle:Order', 'order')
-            ->where(sprintf('order.%s = :%s AND order.deleted = 0', $key, $key))
+        $qb->select('o')
+            ->from('ShoppingBundle:Order', 'o')
+            ->where(sprintf('o.%s = :%s AND o.deleted = 0', $key, $key))
             ->setParameter($key, $value);
 
         $query = $qb->getQuery();
-        $result = $query->getOneOrNullResult();
         
-        return $result;
+        return $query->getOneOrNullResult();
     }    
     
     /**
@@ -54,15 +42,15 @@ class OrderRepository extends BaseEntityRepository
      * @param type $readOnly
      * @return type
      */
-    public function getItems($param = array(), $justQuery = true, $order = 'order.id', $readOnly = true)
+    public function getOrders($param = array(), $justQuery = true, $order = 'order.id', $readOnly = true)
     {
         $hydrationMode = $readOnly? Query::HYDRATE_ARRAY : null;
         $qb = $this->getQueryBuilder();
         
-        $qb->select('order')
-            ->from('SamanShoppingBundle:Order', 'order')
-            ->where('order.deleted = 0')
-            ->search('order.title', $param)
+        $qb->select('o')
+            ->from('ShoppingBundle:Order', 'o')
+            ->where('o.deleted = 0')
+            //->search('o.title', $param)
             ->orderBy($order);
         
         $query = $qb->getQuery();
@@ -86,13 +74,12 @@ class OrderRepository extends BaseEntityRepository
         $hydrationMode = $readOnly? Query::HYDRATE_ARRAY : null;
         $qb = $this->getQueryBuilder();
         
-        $qb->select('d')
-            ->from('SamanShoppingBundle:Order', 'd')
-            ->leftJoin('d.progresses', 'progress', 'WITH', 'progress.deleted = 0')
-            ->where('d.deleted = 0 AND d.user = :user')
+        $qb->select('o')
+            ->from('ShoppingBundle:Order', 'o')
+            ->leftJoin('o.progresses', 'progress', 'WITH', 'progress.deleted = 0')
+            ->where('o.deleted = 0 AND o.user = :user')
             ->setParameter('user', $user);
         
         return $qb->getQuery()->getResult();
-        
-    }    
+    }
 }

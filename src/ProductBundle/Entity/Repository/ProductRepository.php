@@ -2,8 +2,8 @@
 
 namespace ProductBundle\Entity\Repository;
 
-use Library\Doctrine\BaseEntityRepository;
 use Doctrine\ORM\Query;
+use Library\Doctrine\BaseEntityRepository;
 use Library\Components\MediaHandler;
 
 /**

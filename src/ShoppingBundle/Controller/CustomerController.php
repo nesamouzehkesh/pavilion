@@ -16,34 +16,21 @@ class CustomerController extends BaseController
      */
     public function displayProfileAction()
     {
-        $content = $this->renderView(
-            'ShoppingBundle:Customer:profile.html.twig', 
-            array(
-                'user' => $this->getUser(),
-                )
-            );
-        
         return $this->render(
-            '::web/content.html.twig',
+            '::web/customer/profile.html.twig',
             array(
                 'title' => $this->trans('shopping.webTitle'),
-                'content' => $content
+                'user' => $this->getUser(),
                 )
             );
     }
     
     public function joinusConfirmationAction()
     {
-        $content = $this->renderView(
-            '::web/modules/joinUsConfirmation.html.twig',
-            array()
-            );
-        
         return $this->render(
-            '::web/content.html.twig',
+            '::web/customer/joinUsConfirmation.html.twig',
             array(
-                'title' => $this->trans('shopping.webTitle'),
-                'content' => $content
+                'title' => $this->trans('shopping.webTitle')
                 )
             );        
     }
@@ -79,18 +66,11 @@ class CustomerController extends BaseController
             return $this->redirectToRoute('saman_shopping_customer_joinus_confirmation');
         }
         
-        $content = $this->renderView(
-            'ShoppingBundle:Customer:joinus.html.twig', 
-            array(
-                'form' => $customerForm->createView(),
-                )
-            );
-        
         return $this->render(
-            '::web/content.html.twig',
+            '::web/customer/joinUs.html.twig', 
             array(
                 'title' => $this->trans('shopping.webTitle'),
-                'content' => $content
+                'form' => $customerForm->createView(),
                 )
             );
     }

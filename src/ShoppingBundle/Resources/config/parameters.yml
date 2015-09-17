@@ -1,5 +1,19 @@
 parameters:
-    saman_shopping.shopping:
+    saman_shopping_shopping:
         numberOfItemsPerPage: 2
-    saman_shopping.order:
-        numberOfItemsPerPage: 10        
+    saman_shopping_order:
+        numberOfItemsPerPage: 10
+        orderStructure:
+            navbarType:
+                type: choice
+                choices:
+                    normal: Normal navbar
+                    inverse: Inverted navbar
+                label: configs.general.options.title.brandTitle
+                default: "Normal navbar"
+                required: true
+            brandTitle:
+                type: text
+                label: configs.general.options.title.brandTitle
+                default: ""
+                required: false

@@ -45,7 +45,7 @@ class Order extends BaseEntity
     /**
      * @var string
      *
-     * @ORM\Column(name="content", type="text", nullable=true)
+     * @ORM\Column(name="content", type="array", nullable=true)
      */
     private $content;
     
@@ -75,7 +75,7 @@ class Order extends BaseEntity
     
     /**
      * @var string
-     * @Library\Annotation\MediaAnnotation(type="single")
+     * @Library\Annotation\MediaAnnotation(type="multiple")
      * @ORM\Column(name="attachments", type="text", nullable=true)
      */
     private $attachments;

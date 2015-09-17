@@ -17,16 +17,24 @@ saman_shopping_orders:
     defaults: { _controller: ShoppingBundle:Shopping:displayOrders }
 
 saman_shopping_order_display:
-    path:     /shopping/order/{itemId}
+    path:     /shopping/order/show/{itemId}
     defaults: { _controller: ShoppingBundle:Shopping:displayOrder }
     
 saman_shopping_order_add:
-    path:     /shopping/order/add
-    defaults: { _controller: ShoppingBundle:Shopping:addOrder }
+    path:     /shopping/order
+    defaults: { _controller: ShoppingBundle:Shopping:addEditOrder, orderId: null }
+
+saman_shopping_order_add_confirmation:
+    path:     /shopping/order/confirmation/{orderId}
+    defaults: { _controller: ShoppingBundle:Shopping:orderConfirmation }
+    
+saman_shopping_order_set_shipping_address:
+    path:     /shopping/order/shipping/{orderId}
+    defaults: { _controller: ShoppingBundle:Shopping:setShippingAddress, orderId: null }
 
 saman_shopping_order_edit:
-    path:     /shopping/order/edit/{itemId}
-    defaults: { _controller: ShoppingBundle:Shopping:editOrder }
+    path:     /shopping/order/update/{orderId}
+    defaults: { _controller: ShoppingBundle:Shopping:addEditOrder }
    
 saman_shopping_order_delete:
     path:     /shopping/order/delete/{itemId}

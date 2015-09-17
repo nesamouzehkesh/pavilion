@@ -1,0 +1,40 @@
+{% extends "::web/content.html.twig" %}
+
+{% set title = 'Add new Order'|trans %}
+{% block pageBody %}
+    
+    Order ID: {{ order.id }}
+    {% set content = order.content %}
+    Order Content:
+    <ul>
+    {% for key, structure in orderConfig.orderStructure %}
+        {% if content[key] is defined %}
+            <li>{{ key }}: {{ content[key] }}</li>
+        {% endif %}
+    {% endfor %}
+    </ul>
+    
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <div class="row">
+                {% for address in [primaryBillingAddress, primaryShippingAddress] %}
+                    {% if address is not null %}
+                        <div class="col-md-6">
+                            Name: {{ address.fullName }}<br>
+                            First Address Line: {{ address.firstAddressLine }}<br>
+                            Second Address Line: {{ address.secondAddressLine }}<br>
+                            City: {{ address.city }}<br>
+                            State: {{ address.state }}<br>
+                            PostCode: {{ address.postCode }}<br>
+                            Country: {{ address.country }}<br>
+                            PhoneNumber: {{ address.phoneNumber }}<br>
+                        </div>
+                    {% endif %}
+                {% endfor %}    
+            </div>            
+
+            {% include '::web/order/form/setShippingAddressForm.html.twig' %}
+        </div>
+    </div>
+    
+{% endblock %}

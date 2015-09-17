@@ -67,7 +67,9 @@ class User extends BaseEntity implements AdvancedUserInterface, \Serializable
     /**
      * @ORM\OneToMany(targetEntity="Address", mappedBy="user")
      **/
-    private $addresses;    
+    private $addresses;
+    
+    private $primaryAddresses = null;
     
     /**
      * 
@@ -101,6 +103,15 @@ class User extends BaseEntity implements AdvancedUserInterface, \Serializable
         return $this->id;
     }
     
+    /**
+     * 
+     * @return type
+     */
+    public function getName()
+    {
+        return $this->getFirstName() . ' ' . $this->getLastName();
+    }
+
     /**
      * @inheritDoc
      */
@@ -390,5 +401,61 @@ class User extends BaseEntity implements AdvancedUserInterface, \Serializable
     public function getAddresses()
     {
         return $this->addresses;
+    }
+    
+    /**
+     * Get user primary shipping address
+     * 
+     * @return Address
+     */
+    public function getPrimaryShippingAddress()
+    {
+        if (null === $this->primaryAddresses) {
+            $this->populatePrimaryAddress();
+        }
+        
+        return $this->primaryAddresses['shipping'];
+    }
+    
+    /**
+     * Get user primary billing address
+     * 
+     * @return Address
+     */
+    public function getPrimaryBillingAddress()
+    {
+        if (null === $this->primaryAddresses) {
+            $this->populatePrimaryAddress();
+        }
+        
+        return $this->primaryAddresses['billing'];
+    }
+    
+    /**
+     * Populate user primary shipping and billing address
+     */
+    private function populatePrimaryAddress()
+    {
+        $this->primaryAddresses = array(
+            'shipping' => null,
+            'billing' => null,
+        );
+        
+        foreach ($this->addresses as $address) {
+            if (!$address->isDeleted() and $address->isPrimary()) {
+                switch ($address->getAddressType()) {
+                    case Address::ADDRESS_TYPE_BILLING:
+                        $this->primaryAddresses['billing'] = $address;
+                        break;
+                    case Address::ADDRESS_TYPE_SHIPPING:
+                        $this->primaryAddresses['shipping'] = $address;
+                        break;
+                    case Address::ADDRESS_TYPE_BILLING_SHIPPING:
+                        $this->primaryAddresses['billing'] = $address;
+                        $this->primaryAddresses['shipping'] = $address;
+                        break;
+                }
+            }
+        }
     }
 }

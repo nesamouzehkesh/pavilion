@@ -1,5 +1,6 @@
 {% extends "::web/content.html.twig" %}
 
 {% block pageBody %}
-    {% include '::web/form/login.html.twig' %}
+    {{ user.firstName }} 
+    {{ user.lastName }}
 {% endblock %}

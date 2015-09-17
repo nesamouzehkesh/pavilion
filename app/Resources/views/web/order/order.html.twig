@@ -1,0 +1,27 @@
+{% extends "::web/content.html.twig" %}
+
+{% set title = 'Order Confirm'|trans %}
+{% block pageBody %}
+    
+    Order ID: {{ order.id }}
+    {% set content = order.content %}
+    Order Content:
+    <ul>
+    {% for key, structure in orderConfig.orderStructure %}
+        {% if content[key] is defined %}
+            <li>{{ key }}: {{ content[key] }}</li>
+        {% endif %}
+    {% endfor %}
+    </ul>
+    
+    <div class="row margin-top-10">
+        <div class="col-md-12">
+            {% for image in order.attachments|getMedias %}
+                <a href="{{ asset(image.path|imagine_filter('o')) }}" target="_blank">
+                    <img src="{{ asset(image.path|imagine_filter('t')) }}" class="img-thumbnail" />
+                </a>
+            {% endfor %}
+        </div>
+    </div>
+            
+{% endblock %}

@@ -1,8 +1,8 @@
 services:
     saman_shopping.shopping:
         class: ShoppingBundle\Service\ShoppingService
-        arguments: [@saman.appService, %saman_shopping.shopping%]
+        arguments: [@saman.appService, %saman_shopping_shopping%]
         
     saman_shopping.order:
         class: ShoppingBundle\Service\OrderService
-        arguments: [@saman.appService, %saman_shopping.order%]
+        arguments: [@saman.appService, %saman_shopping_order%]

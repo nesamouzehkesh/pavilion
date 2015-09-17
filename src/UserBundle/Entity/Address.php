@@ -17,6 +17,9 @@ class Address extends BaseEntity
     const ADDRESS_TYPE_SHIPPING = 2;
     const ADDRESS_TYPE_BILLING_SHIPPING = 3;
     
+    const TYPE_PRIMARY = 1;
+    const TYPE_SECONDARY = 2;
+    
     /**
      * @ORM\Column(type="integer")
      * @ORM\Id
@@ -71,6 +74,13 @@ class Address extends BaseEntity
     /**
      * @var integer
      *
+     * @ORM\Column(name="address_type", type="integer")
+     */
+    private $addressType;        
+    
+    /**
+     * @var integer
+     *
      * @ORM\Column(name="type", type="integer")
      */
     private $type;    
@@ -92,7 +102,7 @@ class Address extends BaseEntity
     /**
      * 
      * @param \Doctrine\ORM\EntityManagerInterface $em
-     * @return \UserBundle\Entity\Repository\UserRepository
+     * @return \UserBundle\Entity\Repository\AddressRepository
      */
     public static function getRepository(\Doctrine\ORM\EntityManagerInterface $em)
     {
@@ -293,6 +303,29 @@ class Address extends BaseEntity
     }
 
     /**
+     * Set addressType
+     *
+     * @param integer $addressType
+     * @return Address
+     */
+    public function setAddressType($addressType)
+    {
+        $this->addressType = $addressType;
+
+        return $this;
+    }
+
+    /**
+     * Get addressType
+     *
+     * @return integer 
+     */
+    public function getAddressType()
+    {
+        return $this->addressType;
+    }
+    
+    /**
      * Set type
      *
      * @param integer $type
@@ -313,6 +346,24 @@ class Address extends BaseEntity
     public function getType()
     {
         return $this->type;
+    }
+    
+    /**
+     * 
+     * @return type
+     */
+    public function isPrimary()
+    {
+        return $this->type === self::TYPE_PRIMARY;
+    }
+
+    /**
+     * 
+     * @return type
+     */
+    public function isSecondary()
+    {
+        return $this->type === self::TYPE_SECONDARY;
     }
 
     /**
