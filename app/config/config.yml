@@ -91,6 +91,7 @@ twig:
     debug:            "%kernel.debug%"
     strict_variables: "%kernel.debug%"
     globals:
+        date_format: "d/m/Y"
         saman_twig_param_displaySimpleView: "%saman.twig.param.displaySimpleView%"
         saman_app_modules:
             label: saman_label_home

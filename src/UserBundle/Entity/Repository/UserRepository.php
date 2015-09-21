@@ -25,6 +25,24 @@ class UserRepository extends BaseEntityRepository implements UserProviderInterfa
      * @param type $readOnly
      * @return type
      */
+    public function getUser($id)
+    {
+        $qb = $this->getQueryBuilder()
+            ->select('u')
+            ->from('UserBundle:User', 'u')
+            ->where('u.deleted = 0 AND u.id = :id')
+            ->setParameter('id', $id);
+            
+        return $qb->getQuery()->getOneOrNullResult();
+    }
+    
+    /**
+     * Get all users
+     * 
+     * @param type $order
+     * @param type $readOnly
+     * @return type
+     */
     public function findAllUsers()
     {
         $qb = $this->getQueryBuilder()

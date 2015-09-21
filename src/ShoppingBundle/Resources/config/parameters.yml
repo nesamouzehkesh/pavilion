@@ -4,16 +4,41 @@ parameters:
     saman_shopping_order:
         numberOfItemsPerPage: 10
         orderStructure:
-            navbarType:
+            dpi:
                 type: choice
                 choices:
-                    normal: Normal navbar
-                    inverse: Inverted navbar
-                label: configs.general.options.title.brandTitle
-                default: "Normal navbar"
+                    1: 100
+                    2: 200
+                    3: 300
+                    4: 400
+                label: DPI (Raj)
+                default: 1
                 required: true
-            brandTitle:
+            colors:
+                type: choice
+                choices:
+                    1: Black & With
+                    2: Rust
+                    3: Colorful
+                label: Color
+                default: 1
+                required: true
+            numberOfColors:
+                type: choice
+                choices:
+                    1: 10
+                    2: 20
+                    3: 30
+                label: Number Of Colors
+                default: 1
+                required: true
+            width:
                 type: text
-                label: configs.general.options.title.brandTitle
+                label: Width (cm)
                 default: ""
-                required: false
+                required: true
+            height:
+                type: text
+                label: Height (cm)
+                default: ""
+                required: true

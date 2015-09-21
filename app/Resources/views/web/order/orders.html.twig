@@ -1,0 +1,18 @@
+{% extends "::web/content.html.twig" %}
+
+{% set title = 'My Orders'|trans %}
+{% block pageBody %}
+    {% for order in orders %}
+        <strong>Order ID:</strong> <a href="{{ path('saman_shopping_order_display', {'orderId': order.id }) }}">{{ order.type }}-{{ order.id }}</a> 
+        <a href="{{ path('saman_shopping_order_edit', {'orderId': order.id }) }}" class="btn btn-default btn-xs">{{ 'icon.edit'|icon }}</a><br>
+        <strong>Status:</strong>
+        {% if order.getActiveProgress is not null %}
+            <br>
+            {% set orderProgress = order.getActiveProgress %}
+            {{ orderProgress.progress.title }} - Start Date: {{ orderProgress.startDate|date(date_format) }} - Estimated End Date {{ orderProgress.estimatedEndDate|date(date_format) }}
+        {% endif %}
+        <br>
+        ..........................................<br><br>
+    {% endfor %}
+    <a href="{{ path('saman_shopping_order_add') }}" class="btn btn-primary">Make Order</a>
+{% endblock %}

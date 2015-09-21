@@ -19,13 +19,6 @@ class Order extends BaseEntity
     const ORDER_TYPE_PRODUCT = 1;
     const ORDER_TYPE_CUSTOM = 2;
     
-    const STATUS_SUBMITTED = 1;
-    const STATUS_PAID = 2;
-    const STATUS_INPROGRESS = 3;
-    const STATUS_STOPED = 4;
-    const STATUS_FINALIZED = 5;
-    const STATUS_SHIPPED = 6;
-    
     /**
      * @var integer
      *
@@ -56,13 +49,6 @@ class Order extends BaseEntity
     private $products;
     
     /**
-     * @var integer
-     *
-     * @ORM\Column(name="status", type="integer", nullable=true)
-     */
-    private $status;    
-    
-    /**
      * @ORM\ManyToOne(targetEntity="\UserBundle\Entity\User")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id", nullable=true)
      **/
@@ -79,6 +65,18 @@ class Order extends BaseEntity
      * @ORM\Column(name="attachments", type="text", nullable=true)
      */
     private $attachments;
+    
+    /**
+     * @ORM\ManyToOne(targetEntity="\UserBundle\Entity\Address")
+     * @ORM\JoinColumn(name="billing_address_id", referencedColumnName="id")
+     **/
+    private $billingAddress;
+    
+    /**
+     * @ORM\ManyToOne(targetEntity="\UserBundle\Entity\Address")
+     * @ORM\JoinColumn(name="shipping_address_id", referencedColumnName="id")
+     **/
+    private $shippingAddress;    
     
     /**
      * 
@@ -154,29 +152,6 @@ class Order extends BaseEntity
     public function getContent()
     {
         return $this->content;
-    }
-
-    /**
-     * Set status
-     *
-     * @param integer $status
-     * @return Order
-     */
-    public function setStatus($status)
-    {
-        $this->status = $status;
-
-        return $this;
-    }
-
-    /**
-     * Get status
-     *
-     * @return integer 
-     */
-    public function getStatus()
-    {
-        return $this->status;
     }
 
     /**
@@ -289,5 +264,67 @@ class Order extends BaseEntity
     public function getProgresses()
     {
         return $this->progresses;
+    }
+    
+    /**
+     * Get active Progress
+     * 
+     * @return type
+     */
+    public function getActiveProgress()
+    {
+        foreach($this->getProgresses() as $progresses) {
+            if ($progresses->getStatus() === OrderProgress::STATUS_INPROGRESS) {
+                return $progresses;
+            }
+        }
+        
+        return null;
+    }
+
+    /**
+     * Set billingAddress
+     *
+     * @param \UserBundle\Entity\Address $billingAddress
+     * @return Order
+     */
+    public function setBillingAddress(\UserBundle\Entity\Address $billingAddress = null)
+    {
+        $this->billingAddress = $billingAddress;
+
+        return $this;
+    }
+
+    /**
+     * Get billingAddress
+     *
+     * @return \UserBundle\Entity\Address 
+     */
+    public function getBillingAddress()
+    {
+        return $this->billingAddress;
+    }
+
+    /**
+     * Set shippingAddress
+     *
+     * @param \UserBundle\Entity\Address $shippingAddress
+     * @return Order
+     */
+    public function setShippingAddress(\UserBundle\Entity\Address $shippingAddress = null)
+    {
+        $this->shippingAddress = $shippingAddress;
+
+        return $this;
+    }
+
+    /**
+     * Get shippingAddress
+     *
+     * @return \UserBundle\Entity\Address 
+     */
+    public function getShippingAddress()
+    {
+        return $this->shippingAddress;
     }
 }

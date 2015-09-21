@@ -7,6 +7,7 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Library\Helpers\LoremIpsumGenerator;
 use CmsBundle\Entity\Page;
 use LabelBundle\Entity\Label;
+use UserBundle\Entity\Address;
 use UserBundle\Entity\User;
 use UserBundle\Entity\Role;
 use ProductBundle\Entity\Product;
@@ -18,7 +19,7 @@ use ProductBundle\Entity\Product;
  * @ORM\Table()
  * @ORM\Entity
  */
-class LoadSystemData implements FixtureInterface
+class LoadSampleData implements FixtureInterface
 {
     private $data = array(
         'pages' => 20,
@@ -35,6 +36,28 @@ class LoadSystemData implements FixtureInterface
                 'role' => Role::ROLE_ADMIN,
                 'firstName' => 'firstName',
                 'lastName' => 'lastName',
+                'addresses' => array(
+                    array(
+                        'type' => Address::ADDRESS_TYPE_BILLING,
+                        'city' => 'Sydney',
+                        'country' => 'AU',
+                        'fullName' => 'Admin User',
+                        'state' => 'NSW',
+                        'firstAddressLine' => '43/6 Jon Street, Wellington',
+                        'phoneNumber' => '23489234',
+                        'postCode' => '2345',
+                    ),
+                    array(
+                        'type' => Address::ADDRESS_TYPE_SHIPPING,
+                        'city' => 'Sydney',
+                        'country' => 'AU',
+                        'fullName' => 'Admin User',
+                        'state' => 'NSW',
+                        'firstAddressLine' => '43/2 Timberland Street, Wellington',
+                        'phoneNumber' => '3454359',
+                        'postCode' => '2345',
+                    ),
+                )
             ),
             array(
                 'username' => 'user@user.com',
@@ -43,6 +66,18 @@ class LoadSystemData implements FixtureInterface
                 'role' => Role::ROLE_USER,
                 'firstName' => 'firstName',
                 'lastName' => 'lastName',
+                'addresses' => array(
+                    array(
+                        'type' => Address::ADDRESS_TYPE_BILLING_SHIPPING,
+                        'city' => 'Sydney',
+                        'country' => 'AU',
+                        'fullName' => 'User',
+                        'state' => 'NSW',
+                        'firstAddressLine' => '12/1 A32 Street, Rhod',
+                        'phoneNumber' => '09378265',
+                        'postCode' => '1675',
+                    ),
+                )
             ),
         ),
         'labels' => array(
@@ -53,7 +88,7 @@ class LoadSystemData implements FixtureInterface
             'E'
         ),
     );
-
+    
     /** @var Label[] */
     private $labels;
     
@@ -77,7 +112,7 @@ class LoadSystemData implements FixtureInterface
      * 
      * @param type $manager
      */
-    private function loadUserRoles($manager)
+    private function loadUserRoles(ObjectManager $manager)
     {
         foreach ($this->data['roles'] as $roleData) {
             $role = new Role();
@@ -95,7 +130,7 @@ class LoadSystemData implements FixtureInterface
      * 
      * @param type $manager
      */
-    private function loadUsers($manager)
+    private function loadUsers(ObjectManager $manager)
     {
         $loremIpsum = new LoremIpsumGenerator();
         $usersData = $this->data['users'];
@@ -125,6 +160,25 @@ class LoadSystemData implements FixtureInterface
             if (isset($userData['lastName'])) {
                 $user->setLastName($userData['lastName']);
             }
+            if (isset($userData['addresses'])) {
+                foreach ($userData['addresses'] as $addressData) {
+                    $address = new Address();
+                    $address->setAddressType($addressData['type']);
+                    $address->setCity($addressData['city']);
+                    $address->setCountry($addressData['country']);
+                    $address->setFullName($addressData['fullName']);
+                    $address->setState($addressData['state']);
+                    $address->setFirstAddressLine($addressData['firstAddressLine']);
+                    $address->setPhoneNumber($addressData['phoneNumber']);
+                    $address->setPostCode($addressData['postCode']);
+                    $address->setType(Address::TYPE_PRIMARY);
+                    $address->setUser($user);
+                    $user->addAddress($address);
+                        
+                    $manager->persist($address);
+                }
+                
+            }
             
             $manager->persist($user);
         }
@@ -136,7 +190,7 @@ class LoadSystemData implements FixtureInterface
      * 
      * @param type $manager
      */
-    private function loadLabels($manager)
+    private function loadLabels(ObjectManager $manager)
     {
         $loremIpsum = new LoremIpsumGenerator();
         foreach ($this->data['labels'] as $labelTitle) {
@@ -155,7 +209,7 @@ class LoadSystemData implements FixtureInterface
      * 
      * @param type $manager
      */
-    private function loadPages($manager)
+    private function loadPages(ObjectManager $manager)
     {
         $loremIpsum = new LoremIpsumGenerator();
         
@@ -186,7 +240,7 @@ class LoadSystemData implements FixtureInterface
      * 
      * @param type $manager
      */
-    private function loadProducts($manager)
+    private function loadProducts(ObjectManager $manager)
     {
         $loremIpsum = new LoremIpsumGenerator();
         for ($i = 0; $i < $this->data['products']; $i++) {

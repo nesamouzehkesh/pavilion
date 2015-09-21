@@ -1,9 +1,10 @@
+{% set title = title|trans %}
 <!DOCTYPE html>
 <html class="ng-scope" ng-app="myApp">
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset={{ _charset }}"/>
         <meta name="robots" content="noindex,nofollow" />
-        <title>{% block title %}{% endblock %}</title>
+        <title>{% block title %}{{ title }}{% endblock %}</title>
         {% include "::_asset.html.twig" %}
     </head>
     <body>

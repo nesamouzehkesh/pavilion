@@ -1,6 +1,6 @@
 {% extends "::web/content.html.twig" %}
 
-{% set title = 'Order Confirm'|trans %}
+{% set title = 'Order'|trans %}
 {% block pageBody %}
     
     Order ID: {{ order.id }}
@@ -23,5 +23,11 @@
             {% endfor %}
         </div>
     </div>
-            
+        
+    <div class="row margin-top-10">
+        <div class="col-md-12">
+            {% include '::web/user/address.html.twig' with {'address': order.billingAddress} only %}
+            {% include '::web/user/address.html.twig' with {'address': order.shippingAddress} only %}
+        </div>
+    </div>
 {% endblock %}

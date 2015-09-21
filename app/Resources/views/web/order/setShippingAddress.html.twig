@@ -18,18 +18,9 @@
         <div class="panel-body">
             <div class="row">
                 {% for address in [primaryBillingAddress, primaryShippingAddress] %}
-                    {% if address is not null %}
-                        <div class="col-md-6">
-                            Name: {{ address.fullName }}<br>
-                            First Address Line: {{ address.firstAddressLine }}<br>
-                            Second Address Line: {{ address.secondAddressLine }}<br>
-                            City: {{ address.city }}<br>
-                            State: {{ address.state }}<br>
-                            PostCode: {{ address.postCode }}<br>
-                            Country: {{ address.country }}<br>
-                            PhoneNumber: {{ address.phoneNumber }}<br>
-                        </div>
-                    {% endif %}
+                    <div class="col-md-6">
+                        {% include '::web/user/address.html.twig' with {'address': address} only %}
+                    </div>
                 {% endfor %}    
             </div>            
 

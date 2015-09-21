@@ -365,7 +365,25 @@ class Address extends BaseEntity
     {
         return $this->type === self::TYPE_SECONDARY;
     }
-
+    
+    /**
+     * 
+     * @return type
+     */
+    public function isBillingAddress()
+    {
+        return $this->addressType === self::ADDRESS_TYPE_BILLING;
+    }
+    
+    /**
+     * 
+     * @return type
+     */
+    public function isShippingAddress()
+    {
+        return $this->addressType === self::ADDRESS_TYPE_SHIPPING;
+    }
+    
     /**
      * Set user
      *

@@ -1,6 +1,9 @@
 {% extends "::web/content.html.twig" %}
 
 {% block pageBody %}
+    Heeeeeeeeeeeey you are a member now, You can log in to you profile or order a product
+    <a href="{{ path('saman_shopping_customer_profile') }}">My Profile</a>
+
     <address>
       <h3><strong>{{ user.firstName }} {{ user.lastName }}</strong></h3>
       <a href="mailto:#">{{ user.email }}</a>
@@ -8,6 +11,4 @@
     {% include '::web/user/address.html.twig' with {'address': user.primaryBillingAddress} only %}
     {% include '::web/user/address.html.twig' with {'address': user.primaryShippingAddress} only %}
     
-    <a href="{{ path('saman_shopping_order_add') }}" class="btn btn-primary">Make Order</a>
-    <a href="{{ path('saman_shopping_orders') }}" class="btn btn-primary">My Orders</a>
 {% endblock %}

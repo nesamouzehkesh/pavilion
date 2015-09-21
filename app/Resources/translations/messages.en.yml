@@ -13,6 +13,14 @@ word:
     off: Off
     uploadFileByDropping: "Drop files here or click to upload"
     selectAnItem: Select an item
+    warning: Warning
+    
+    logIn: Sign In
+    logOut: Sign Out
+    createAccount: Create Account
+    keepMeLoggedIn: Keep me logged in
+    emailAddress: Email address
+    password: Password
     
 alert:
     error:
@@ -141,3 +149,7 @@ module:
                 
 shopping:
     webTitle: shopping
+    
+customer:
+    registerConfirmation: Confirmation
+    profile: My Profile

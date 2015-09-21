@@ -15,6 +15,27 @@ class Progress extends BaseEntity
 {
     const ITEM_LOGO = 'icon.progress';
     
+    const PROGRESS_TYPE_STATIC = 1;
+    const PROGRESS_TYPE_DYNAMIC = 1;
+    
+    const PROGRESS_SUBMITTED = 1;
+    const PROGRESS_PAID = 2;
+    const PROGRESS_INPROGRESS = 3;
+    const PROGRESS_STOPED = 4;
+    const PROGRESS_FINALIZED = 5;
+    const PROGRESS_SHIPPED = 6;
+    const PROGRESS_REFUND = 7;
+    
+    public static $staticProgress = array(
+        self::PROGRESS_SUBMITTED => 'SUBMITTED',
+        self::PROGRESS_PAID => 'PAID',
+        self::PROGRESS_INPROGRESS => 'INPROGRESS',
+        self::PROGRESS_STOPED => 'STOPED',
+        self::PROGRESS_FINALIZED => 'FINALIZED',
+        self::PROGRESS_SHIPPED => 'SHIPPED',
+        self::PROGRESS_REFUND => 'REFUND'
+    );
+    
     /**
      * @var integer
      *
@@ -39,6 +60,13 @@ class Progress extends BaseEntity
     private $content;
     
     /**
+     * @var integer
+     *
+     * @ORM\Column(name="type", type="integer", nullable=true)
+     */
+    private $type;    
+    
+    /**
      * 
      */
     public function __construct()
@@ -55,6 +83,16 @@ class Progress extends BaseEntity
     {
         return $em->getRepository(__CLASS__);
     }     
+    
+    /**
+     * Get id
+     *
+     * @return integer 
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+    }
     
     /**
      * Get id

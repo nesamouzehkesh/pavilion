@@ -31,7 +31,14 @@ class ShoppingController extends BaseController
     public function displayOrdersAction()
     {
         try {
-            return $this->getOrderService()->displayOrders();
+            $user = $this->getUser();
+            $em = $this->getDoctrine()->getManager();
+            $orders = Order::getRepository($em)->getUserOrders($user);
+
+            return $this->render(
+                '::web/order/orders.html.twig',
+                array('orders' => $orders)
+                );            
         } catch (Exception $ex) {
             return $this->getExceptionResponse('There is a problem in displaying your orders', $ex);
         }    
@@ -45,7 +52,15 @@ class ShoppingController extends BaseController
     public function displayOrderAction($orderId)
     {
         try {
-            return $this->getOrderService()->displayOrder($orderId);
+            $order = $this->getOrder($orderId);
+
+            return $this->render(
+                '::web/order/order.html.twig',
+                array(
+                    'order' => $order,
+                    'orderConfig' => $this->getParameter('saman_shopping_order')
+                )
+            );          
         } catch (Exception $ex) {
             return $this->getExceptionResponse('There is a problem in displaying your order', $ex);
         }    
@@ -65,15 +80,9 @@ class ShoppingController extends BaseController
         $orderForm->handleRequest($request);
         // If form is submited and it is valid then add or update this $label
         if ($orderForm->isValid()) {
-            // Get ObjectManager
-            $order->setStatus(Order::STATUS_SUBMITTED);
-            $order->setType(Order::ORDER_TYPE_CUSTOM);
-            $order->setUser($this->getUser());
             
             $mediaService = $this->getService('saman_media.media');
-            $this->getAppService()
-                ->setMediaService($mediaService)
-                ->saveMedia($order);
+            $this->getOrderService()->updateCustomOrder($order, $mediaService);
             
             return $this->redirectToRoute(
                 'saman_shopping_order_add_confirmation', 
@@ -224,7 +233,7 @@ class ShoppingController extends BaseController
         } else {
             $order = Order::getRepository($em)->getOrder($orderId);
             if (!$order instanceof Order) {
-                throw new \Exception('No item sbeen found');
+                throw $this->createVisibleHttpException('No user has been found');
             }            
         }
         

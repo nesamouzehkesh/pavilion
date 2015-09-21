@@ -13,13 +13,11 @@ use UserBundle\Entity\User;
 class ShippingAddressType extends AbstractType
 {
     private $user;
-    
-    private $primarryAddresses;
-    
+        
     /**
      * @param User $user
      */
-    public function __construct(User $user = null, $primarryAddresses)
+    public function __construct(User $user = null)
     {
         $this->user = $user;
     }

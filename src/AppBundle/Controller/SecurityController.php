@@ -31,7 +31,7 @@ class SecurityController extends BaseController
             return $this->render(
                 '::web/login.html.twig',
                 array(
-                    'title' => 'Login',
+                    'title' => 'word.logIn',
                     'last_username' => $lastUsername,
                     'action'        => 'saman_login_check_web',
                     'error'         => $error,

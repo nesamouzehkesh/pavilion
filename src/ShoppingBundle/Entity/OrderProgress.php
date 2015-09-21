@@ -65,9 +65,9 @@ class OrderProgress extends BaseEntity
     
     /**
      * @ORM\ManyToOne(targetEntity="Progress")
-     * @ORM\JoinColumn(name="progress_type_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="progress_id", referencedColumnName="id")
      **/
-    private $progressType;
+    private $progress;
     
     /**
      * @var string
@@ -173,26 +173,26 @@ class OrderProgress extends BaseEntity
     }
 
     /**
-     * Set progressType
+     * Set progress
      *
-     * @param Progress $progressType
+     * @param Progress $progress
      * @return OrderProgress
      */
-    public function setProgressType(Progress $progressType = null)
+    public function setProgress(Progress $progress = null)
     {
-        $this->progressType = $progressType;
+        $this->progress = $progress;
 
         return $this;
     }
 
     /**
-     * Get progressType
+     * Get progress
      *
      * @return Progress 
      */
-    public function getProgressType()
+    public function getProgress()
     {
-        return $this->progressType;
+        return $this->progress;
     }
 
     /**

@@ -4,28 +4,28 @@ saman_shopping_customer_profile:
 
 saman_shopping_customer_joinus:
     path:     /shopp/joinus
-    defaults: { _controller: ShoppingBundle:Customer:joinus }
+    defaults: { _controller: ShoppingBundle:Customer:register }
     
 saman_shopping_customer_joinus_confirmation:
-    path:     /shopp/joinus/confirmation
-    defaults: { _controller: ShoppingBundle:Customer:joinusConfirmation }
+    path:     /shopp/joinus/confirmation/{userId}
+    defaults: { _controller: ShoppingBundle:Customer:registerConfirmation }
     
     
 
 saman_shopping_orders:
-    path:     /shopping/order
+    path:     /shopping/orders
     defaults: { _controller: ShoppingBundle:Shopping:displayOrders }
 
 saman_shopping_order_display:
-    path:     /shopping/order/show/{itemId}
+    path:     /shopping/order/show/{orderId}
     defaults: { _controller: ShoppingBundle:Shopping:displayOrder }
     
 saman_shopping_order_add:
-    path:     /shopping/order
+    path:     /shopping/order/create
     defaults: { _controller: ShoppingBundle:Shopping:addEditOrder, orderId: null }
 
 saman_shopping_order_add_confirmation:
-    path:     /shopping/order/confirmation/{orderId}
+    path:     /shopping/order/confirm/{orderId}
     defaults: { _controller: ShoppingBundle:Shopping:orderConfirmation }
     
 saman_shopping_order_set_shipping_address:

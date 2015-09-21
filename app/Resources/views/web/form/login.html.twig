@@ -1,24 +1,24 @@
 {% spaceless %}
     {% if error %}
-        <div class="alert alert-warning d-margin-bottom-20">Warning! {{ error.message }}</div>
+        <div class="alert alert-warning d-margin-bottom-20">{{ 'word.warning'|trans }}! {{ error.message }}</div>
     {% endif %}
 
     <form action="{{ path(action) }}" method="post">
         <div class="form-group">
-            <label for="exampleInputEmail1">Email address</label>
+            <label for="exampleInputEmail1">{{ 'word.emailAddress'|trans }}</label>
             <input type="email" id="username" name="_username" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
         </div>
         <div class="form-group">
-            <label for="exampleInputPassword1">Password</label>
+            <label for="exampleInputPassword1">{{ 'word.password'|trans }}</label>
             <input type="password" class="form-control" id="password" name="_password" placeholder="Password">
         </div>
         <div class="checkbox">
             <label>
-                <input type="checkbox"> Keep me logged in
+                <input type="checkbox"> {{ 'word.keepMeLoggedIn'|trans }}
             </label>
         </div>
-        <button id="form-submit-login" class="btn btn-primary ladda-button" type="submit" data-style="expand-left"><span class="ladda-label">Login</span></button>
-        <a class="margin-left-20" href="{{ path('saman_shopping_customer_joinus') }}">Joinus</a>
+        <button id="form-submit-login" class="btn btn-primary ladda-button" type="submit" data-style="expand-left"><span class="ladda-label">{{ 'word.logIn'|trans }}</span></button>
+        <a class="margin-left-20" href="{{ path('saman_shopping_customer_joinus') }}">{{ 'word.createAccount'|trans }}</a>
     </form>        
         
     <script type="text/javascript">

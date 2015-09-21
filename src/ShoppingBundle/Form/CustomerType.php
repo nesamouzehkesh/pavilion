@@ -40,6 +40,6 @@ class CustomerType extends AbstractType
      */
     public function getName()
     {
-        return 'saman_user_form';
+        return 'saman_customer_register_form';
     }
 }

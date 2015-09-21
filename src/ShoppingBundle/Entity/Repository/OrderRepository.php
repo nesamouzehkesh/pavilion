@@ -76,7 +76,8 @@ class OrderRepository extends BaseEntityRepository
         
         $qb->select('o')
             ->from('ShoppingBundle:Order', 'o')
-            ->leftJoin('o.progresses', 'progress', 'WITH', 'progress.deleted = 0')
+            ->leftJoin('o.progresses', 'op', 'WITH', 'op.deleted = 0')
+            ->leftJoin('op.progress', 'p', 'WITH', 'p.deleted = 0')
             ->where('o.deleted = 0 AND o.user = :user')
             ->setParameter('user', $user);
         
