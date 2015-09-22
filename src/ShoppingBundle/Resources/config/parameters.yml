@@ -1,6 +1,6 @@
 parameters:
-    saman_shopping_shopping:
-        numberOfItemsPerPage: 2
+    saman_shopping_shopping: ~
+    saman_shopping_payment: ~
     saman_shopping_order:
         numberOfItemsPerPage: 10
         orderStructure:

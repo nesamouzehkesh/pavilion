@@ -4,49 +4,78 @@
     {% endfor %}
 {% endblock field_rows %}
 
+
+{% block checkbox_widget %}
+{% spaceless %}
+    <label {% for attrname, attrvalue in label_attr %} {{ attrname }}="{{ attrvalue }}"{% endfor %}>
+        <input type="checkbox" {{ block('widget_attributes') }}{% if value is defined %} value="{{ value }}"{% endif %}{% if checked %} checked="checked"{% endif %} />  
+        <strong> {{ label }}</strong>
+    </label>
+{% endspaceless %}
+{% endblock checkbox_widget %}
+
+{% block checkbox_row %}
+{% spaceless %}
+    {% set hasError = form_errors(form)|length > 1 %}
+    <div class="row">
+        <div class="{{ attr.grid|default('col-md-12') }}">
+            <div class="checkbox">
+                {{ form_widget(form) }}
+                {{ form_errors(form) }}
+                {% if hasError %}
+                    <div class="d-margin-top-5">
+                        {{ form_errors(form) }}
+                    </div>	
+                {% endif %}                
+            </div>
+        </div>
+    </div>            
+{% endspaceless %}
+{% endblock checkbox_row %}
+
 {% block form_row %}
     {# Variable inheritance #}
     {% set isInline = attr.inline|default(false) %}
     {% set class = attr.class|default('form-control') %}
     {% set placeholder = attr.placeholder|default(form.vars.label) %}
         {% set hasError = form_errors(form)|length > 1 %}
-        <div class="form-group {{ hasError? 'has-error has-feedback' : ''}}">
-            {% if attr.icon is defined and attr.icon is not null %}
-                {{ attr.icon|icon }}
-            {% endif %}
-            {% if isInline == false %}
-                <span class="{{ hasError? 'text-danger' : '' }}">
-                    {{ form_label(form) }}
-                </span>
-            {% endif %}    
-            {% if attr.description is defined and attr.description is not null %}
-                <div class="d-margin-bottom-5">
-                    {{ attr.description|trans }}
-                </div>
-            {% endif %}
-            <div class="row">
-                <div class="{{ attr.grid|default('col-md-12') }}">
+        <div class="row">
+            <div class="{{ attr.grid|default('col-md-12') }}">
+                <div class="form-group {{ hasError? 'has-error has-feedback' : ''}}">
+                    {% if attr.icon is defined and attr.icon is not null %}
+                        {{ attr.icon|icon }}
+                    {% endif %}
+                    {% if isInline == false %}
+                        <span class="{{ hasError? 'text-danger' : '' }}">
+                            {{ form_label(form) }}
+                        </span>
+                    {% endif %}    
+                    {% if attr.description is defined and attr.description is not null %}
+                        <div class="d-margin-bottom-5">
+                            {{ attr.description|trans }}
+                        </div>
+                    {% endif %}
+                    
                     {% if isInline == true %}
                         {{ form_label(form) }}
                     {% endif %}    
                     {{ form_widget(form, {'attr':{'class':class, 'placeholder':placeholder}}) }}
+                    
+                    {% if attr.possibleValues is defined and attr.possibleValues is not null %}
+                        <div class="d-margin-bottom-5 d-text-muted">
+                            {{ attr.possibleValues|raw }}
+                        </div>
+                    {% endif %}
+                    
+                    {% if hasError %}
+                        <div class="d-margin-top-5">
+                            {{ form_errors(form) }}
+                        </div>	
+                    {% endif %}    
                 </div>
             </div>
-            {% if attr.possibleValues is defined and attr.possibleValues is not null %}
-                <div class="d-margin-bottom-5 d-text-muted">
-                    {{ attr.possibleValues|raw }}
-                </div>
-            {% endif %}            
-            {% if hasError %}
-                <div class="row">
-                    <div class="col-md-12 d-margin-top-5">
-                        {{ form_errors(form) }}
-                    </div>	
-                </div>
-            {% endif %}    
         </div>
 {% endblock form_row %}
-
 
 {% block form_errors %}
 {% spaceless %}

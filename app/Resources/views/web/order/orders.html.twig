@@ -2,17 +2,33 @@
 
 {% set title = 'My Orders'|trans %}
 {% block pageBody %}
-    {% for order in orders %}
-        <strong>Order ID:</strong> <a href="{{ path('saman_shopping_order_display', {'orderId': order.id }) }}">{{ order.type }}-{{ order.id }}</a> 
-        <a href="{{ path('saman_shopping_order_edit', {'orderId': order.id }) }}" class="btn btn-default btn-xs">{{ 'icon.edit'|icon }}</a><br>
-        <strong>Status:</strong>
-        {% if order.getActiveProgress is not null %}
-            <br>
-            {% set orderProgress = order.getActiveProgress %}
-            {{ orderProgress.progress.title }} - Start Date: {{ orderProgress.startDate|date(date_format) }} - Estimated End Date {{ orderProgress.estimatedEndDate|date(date_format) }}
-        {% endif %}
-        <br>
-        ..........................................<br><br>
-    {% endfor %}
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>Order ID</th>
+                <th>Status</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for order in orders %}
+                {% if order.getActiveProgress is not null %}
+                    {% set orderProgress = order.getActiveProgress %}
+                    <tr>
+                        <td>{{ order.type }}-{{ order.id }}</td>
+                        <td>{{ orderProgress.progress.title }} - Start Date: {{ orderProgress.startDate|date(date_format) }} - Estimated End Date {{ orderProgress.estimatedEndDate|date(date_format) }}</td>
+                        <td>
+                            <a class="btn btn-primary btn-sm" href="{{ path('saman_shopping_order_display', {'orderId': order.id }) }}">View Order</a>
+                            {% if order.isSubmitted %}
+                                <a class="btn btn-primary btn-sm" href="{{ path('saman_shopping_order_set_shipping_address', {'orderId': order.id }) }}">Confirm</a> 
+                                <a class="btn btn-primary btn-sm" href="{{ path('saman_shopping_order_edit', {'orderId': order.id }) }}">Edit</a>
+                            {% endif %}    
+                        </td>
+                    </tr>
+                {% endif %}
+            {% endfor %}
+        </tbody>
+    </table>    
+    
     <a href="{{ path('saman_shopping_order_add') }}" class="btn btn-primary">Make Order</a>
 {% endblock %}

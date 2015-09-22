@@ -57,7 +57,19 @@ class Order extends BaseEntity
     /**
      * @ORM\OneToMany(targetEntity="OrderProgress", mappedBy="order")
      **/
-    private $progresses;    
+    private $progresses; 
+    
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="progresses", type="integer", nullable=true)
+     */
+    private $progressesStatus;    
+    
+    /**
+     * @ORM\OneToMany(targetEntity="OrderPayment", mappedBy="order")
+     **/
+    private $payments;
     
     /**
      * @var string
@@ -85,13 +97,15 @@ class Order extends BaseEntity
     {
         parent::__construct();
         $this->products = new ArrayCollection();
+        $this->progresses = new ArrayCollection();
+        $this->payments = new ArrayCollection();        
         $this->settings = array();
     }
     
     /**
      * 
      * @param \Doctrine\ORM\EntityManagerInterface $em
-     * @return Repository\OrderRepository
+     * @return \ShoppingBundle\Entity\Repository\OrderRepository
      */
     public static function getRepository(\Doctrine\ORM\EntityManagerInterface $em)
     {
@@ -263,7 +277,14 @@ class Order extends BaseEntity
      */
     public function getProgresses()
     {
-        return $this->progresses;
+        $progresses = new ArrayCollection();
+        foreach ($this->progresses as $progress) {
+            if (!$progress->isDeleted()) {
+                $progresses->add($progress);
+            }
+        }
+        
+        return $progresses;        
     }
     
     /**
@@ -273,7 +294,7 @@ class Order extends BaseEntity
      */
     public function getActiveProgress()
     {
-        foreach($this->getProgresses() as $progresses) {
+        foreach ($this->getProgresses() as $progresses) {
             if ($progresses->getStatus() === OrderProgress::STATUS_INPROGRESS) {
                 return $progresses;
             }
@@ -281,7 +302,47 @@ class Order extends BaseEntity
         
         return null;
     }
+    
+    /**
+     * @return bool
+     */
+    public function isSubmitted()
+    {
+        return $this->getProgressesStatus() === Progress::PROGRESS_SUBMITTED;
+    } 
+    
+    /**
+     * @return bool
+     */
+    public function isPaid()
+    {
+        return $this->getProgressesStatus() === Progress::PROGRESS_PAID;
+    }
 
+    /**
+     * @return bool
+     */
+    public function isInProgress()
+    {
+        return $this->getProgressesStatus() === Progress::PROGRESS_INPROGRESS;
+    }
+    
+    /**
+     * @return bool
+     */
+    public function isFinalized()
+    {
+        return $this->getProgressesStatus() === Progress::PROGRESS_FINALIZED;
+    }
+    
+    /**
+     * @return bool
+     */
+    public function isShipped()
+    {
+        return $this->getProgressesStatus() === Progress::PROGRESS_SHIPPED;
+    }    
+    
     /**
      * Set billingAddress
      *
@@ -326,5 +387,61 @@ class Order extends BaseEntity
     public function getShippingAddress()
     {
         return $this->shippingAddress;
+    }
+
+    /**
+     * Add payments
+     *
+     * @param \ShoppingBundle\Entity\OrderPayment $payments
+     * @return Order
+     */
+    public function addPayment(\ShoppingBundle\Entity\OrderPayment $payments)
+    {
+        $this->payments[] = $payments;
+
+        return $this;
+    }
+
+    /**
+     * Remove payments
+     *
+     * @param \ShoppingBundle\Entity\OrderPayment $payments
+     */
+    public function removePayment(\ShoppingBundle\Entity\OrderPayment $payments)
+    {
+        $this->payments->removeElement($payments);
+    }
+
+    /**
+     * Get payments
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getPayments()
+    {
+        return $this->payments;
+    }
+    
+    /**
+     * Set progressesStatus
+     *
+     * @param integer $progressesStatus
+     * @return Order
+     */
+    public function setProgressesStatus($progressesStatus)
+    {
+        $this->progressesStatus = $progressesStatus;
+
+        return $this;
+    }
+
+    /**
+     * Get progressesStatus
+     *
+     * @return integer 
+     */
+    public function getProgressesStatus()
+    {
+        return $this->progressesStatus;
     }
 }

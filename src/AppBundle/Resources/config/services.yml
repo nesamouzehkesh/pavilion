@@ -1,4 +1,18 @@
 services:
-#    saman_app.example:
-#        class: AppBundle\Example
-#        arguments: [@service_id, "plain_value", %parameter%]
+    saman.appService:
+        class: AppBundle\Service\AppService
+        public: false
+        arguments: 
+            - @translator.default 
+            - @security.context
+            - @form.factory
+            - @router
+            - @templating
+            - @doctrine.orm.default_entity_manager
+            - @knp_paginator
+            - @validator
+            - %saman.helper.param%
+            
+    saman.eventHandler:
+        class: AppBundle\Service\EventHandler
+        arguments: [@saman.appService]

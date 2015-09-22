@@ -52,7 +52,7 @@ class ShoppingController extends BaseController
     public function displayOrderAction($orderId)
     {
         try {
-            $order = $this->getOrder($orderId);
+            $order = $this->getOrderService()->getOrder($orderId);
 
             return $this->render(
                 '::web/order/order.html.twig',
@@ -73,7 +73,7 @@ class ShoppingController extends BaseController
      */
     public function addEditOrderAction(Request $request, $orderId)
     {
-        $order = $this->getOrder($orderId);
+        $order = $this->getOrderService()->getOrder($orderId);
         $orderConfig = $this->getParameter('saman_shopping_order');
         // Generate Product Form
         $orderForm = $this->createForm(new OrderType($orderConfig), $order);        
@@ -104,7 +104,7 @@ class ShoppingController extends BaseController
      */
     public function orderConfirmationAction($orderId)
     {
-        $order = $this->getOrder($orderId);
+        $order = $this->getOrderService()->getOrder($orderId);
         
         return $this->render(
             '::web/order/orderConfirmation.html.twig',
@@ -123,12 +123,11 @@ class ShoppingController extends BaseController
     public function setShippingAddressAction(Request $request, $orderId)
     {
         $em = $this->getDoctrine()->getManager();
-        $order = $this->getOrder($orderId);
+        $order = $this->getOrderService()->getOrder($orderId);
         $user = $this->getUser();
         
         $orderShippingAddress = null;
         $orderBillingAddress = null;
-        
         $primaryShippingAddress = $user->getPrimaryShippingAddress();
         $primaryBillingAddress = $user->getPrimaryBillingAddress();
         
@@ -163,7 +162,6 @@ class ShoppingController extends BaseController
                 $orderShippingAddress = $primaryShippingAddress;
             }
             
-            
             if (!$billingSameAsShipping) {
                 if ($form->has('setNewBilling') and $form->get('setNewBilling')->getData()) {
                     $billingAddress = $form->get('billing')->getData();
@@ -185,12 +183,16 @@ class ShoppingController extends BaseController
             }
             
             if ($orderShippingAddress instanceof Address and $orderBillingAddress instanceof Address) {
-                //$order->setB
+                $order->setShippingAddress($orderShippingAddress);
+                $order->setBillingAddress($orderBillingAddress);
                 $em->flush();
+                
                 return $this->redirectToRoute(
-                    'saman_shopping_order_add_confirmation', 
+                    'saman_shopping_order_payment', 
                     array('orderId' => $order->getId())
                     );
+            } else {
+                throw $this->createVisibleHttpException('No valid addresses are defined');
             }
         }
 
@@ -214,29 +216,5 @@ class ShoppingController extends BaseController
     private function getOrderService()
     {
         return $this->getService('saman_shopping.order');
-    }
-    
-    /**
-     * Get an order
-     * 
-     * @param type $orderId
-     * @return Order
-     * @throws \Exception
-     */
-    private function getOrder($orderId = null)
-    {
-        // Get ObjectManager
-        $em = $this->getDoctrine()->getManager();        
-        if (null === $orderId) {
-            // Get label object
-            $order = new Order();
-        } else {
-            $order = Order::getRepository($em)->getOrder($orderId);
-            if (!$order instanceof Order) {
-                throw $this->createVisibleHttpException('No user has been found');
-            }            
-        }
-        
-        return $order;
     }
 }

@@ -2,30 +2,47 @@
 
 namespace ShoppingBundle\Service;
 
+use AppBundle\Entity\Event;
 use AppBundle\Service\AppService;
+use AppBundle\Service\EventHandler;
 use ShoppingBundle\Entity\Order;
 use ShoppingBundle\Entity\Progress;
-use ShoppingBundle\Entity\OrderProgress;
+use ShoppingBundle\Service\OrderProgressHandler;
 
 class OrderService
 {
     /**
-     *
      * @var AppService $appService
      */
     protected $appService;
     
     /**
+     * @var EventHandler $eventHandler
+     */
+    protected $eventHandler;
+    
+    /**
+     * @var OrderProgressHandler $progressHandler
+     */
+    protected $progressHandler;
+
+    /**
      * 
-     * @param \AppBundle\Service\AppService $appService
+     * @param AppService $appService
+     * @param EventHandler $eventHandler
+     * @param OrderProgressHandler $progressHandler
      * @param type $parameters
      */
     public function __construct(
         AppService $appService, 
+        EventHandler $eventHandler,
+        OrderProgressHandler $progressHandler,
         $parameters
         ) 
     {
         $this->appService = $appService;
+        $this->eventHandler = $eventHandler;
+        $this->progressHandler = $progressHandler;
         $this->appService->setParametrs($parameters);
     }
     
@@ -36,17 +53,33 @@ class OrderService
      */
     public function updateCustomOrder(Order $order, $mediaService)
     {
-        if (null === $order->getId()) {
-            $this->handleOrderProgress($order, Progress::PROGRESS_SUBMITTED);
-        }
+        $this->appService->transactionBegin();
         
-        // Get ObjectManager
-        $order->setType(Order::ORDER_TYPE_CUSTOM);
-        $order->setUser($this->appService->getUser());
+        try {
+            $isNew = (null === $order->getId());
+            $order->setType(Order::ORDER_TYPE_CUSTOM);
+            $order->setUser($this->appService->getUser());
+            $this->appService
+                ->setMediaService($mediaService)
+                ->saveMedia($order);
 
-        $this->getAppService()
-            ->setMediaService($mediaService)
-            ->saveMedia($order);
+            // Handle the SUBMITTED progress order
+            if ($isNew) {
+                $this->progressHandler
+                    ->handleProgress($order, Progress::PROGRESS_SUBMITTED);
+            }
+            
+            // Handle the event related to this action
+            $this->eventHandler->handleEvent(
+                $order, 
+                $isNew? Event::TR_ADD_ORDER : Event::TR_EDIT_ORDER
+                );
+            $this->appService->transactionCommit();
+        } catch (\Exception $ex) {
+            $this->appService->transactionRollback();
+            
+            throw $ex;
+        }            
     }
     
     /**
@@ -71,39 +104,24 @@ class OrderService
     }
     
     /**
+     * Get an order
      * 
-     * @param Order $order
-     * @param type $progressId
-     */
-    public function handleOrderProgress(Order $order, $progressId)
-    {
-        $progress = $this->getProgressReference($progressId);
-        $orderProgress = new OrderProgress();
-        $orderProgress->setProgress($progress);
-        
-        // Set an "original expiry"
-        $date = new \DateTime();        
-        $orderProgress->setStartDate($date->getTimestamp());
-        $orderProgress->setStatus(OrderProgress::STATUS_INPROGRESS);
-        
-        $order->addProgress($orderProgress);
-    }
-    
-    /**
-     * 
-     * @param type $progressId
-     * @return type
+     * @param type $orderId
+     * @return Order
      * @throws \Exception
      */
-    private function getProgressReference($progressId)
+    public function getOrder($orderId = null)
     {
-        if (!isset(Progress::$staticProgress[$progressId])) {
-            throw new \Exception('Invalid order progress type is defined');
+        if (null === $orderId) {
+            return new Order();
         }
         
-        return $this->appService->getEntityManager()->getReference(
-            'ShoppingBundle:Progress', 
-            Progress::PROGRESS_SUBMITTED
-            );
+        $order = Order::getRepository($this->appService->getEntityManager())
+            ->getOrder($orderId);
+        if (!$order instanceof Order) {
+            throw $this->appService->createVisibleHttpException('No user has been found');
+        }            
+        
+        return $order;
     }
 }

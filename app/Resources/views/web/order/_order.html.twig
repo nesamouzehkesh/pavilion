@@ -1,0 +1,29 @@
+Order ID: {{ order.id }}
+{% set content = order.content %}
+Order Content:
+<ul>
+{% for key, structure in orderConfig.orderStructure %}
+    {% if content[key] is defined %}
+        <li>{{ key }}: {{ content[key] }}</li>
+    {% endif %}
+{% endfor %}
+</ul>
+
+{% if noImage is not defined or noImage == false %}
+    <div class="row margin-top-10">
+        <div class="col-md-12">
+            {% for image in order.attachments|getMedias %}
+                <a href="{{ asset(image.path|imagine_filter('o')) }}" target="_blank">
+                    <img src="{{ asset(image.path|imagine_filter('t')) }}" class="img-thumbnail" />
+                </a>
+            {% endfor %}
+        </div>
+    </div>
+{% endif %}
+
+<div class="row margin-top-10">
+    <div class="col-md-12">
+        {% include '::web/user/address.html.twig' with {'address': order.billingAddress, 'billingTitle': 'Order billing address'} only %}
+        {% include '::web/user/address.html.twig' with {'address': order.shippingAddress, 'shippingTitle': 'Order shipping address'} only %}
+    </div>
+</div>

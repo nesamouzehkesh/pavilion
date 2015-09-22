@@ -15,8 +15,8 @@ class Progress extends BaseEntity
 {
     const ITEM_LOGO = 'icon.progress';
     
-    const PROGRESS_TYPE_STATIC = 1;
-    const PROGRESS_TYPE_DYNAMIC = 1;
+    const TYPE_STATIC = 1;
+    const TYPE_DYNAMIC = 2;
     
     const PROGRESS_SUBMITTED = 1;
     const PROGRESS_PAID = 2;
@@ -77,7 +77,7 @@ class Progress extends BaseEntity
     /**
      * 
      * @param \Doctrine\ORM\EntityManagerInterface $em
-     * @return Repository\ProductRepository
+     * @return \ShoppingBundle\Entity\Repository\ProgressRepository
      */
     public static function getRepository(\Doctrine\ORM\EntityManagerInterface $em)
     {
@@ -149,4 +149,27 @@ class Progress extends BaseEntity
     {
         return $this->content;
     }
+    
+    /**
+     * Set type
+     *
+     * @param integer $type
+     * @return Order
+     */
+    public function setType($type)
+    {
+        $this->type = $type;
+
+        return $this;
+    }
+
+    /**
+     * Get type
+     *
+     * @return integer 
+     */
+    public function getType()
+    {
+        return $this->type;
+    }    
 }

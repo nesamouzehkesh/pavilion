@@ -56,20 +56,6 @@ parameters:
         
 # Services Configuration        
 services:
-    saman.appService:
-        class: AppBundle\Service\AppService
-        public: false
-        arguments: 
-            - @translator.default 
-            - @security.context
-            - @form.factory
-            - @router
-            - @templating
-            - @doctrine.orm.default_entity_manager
-            - @knp_paginator
-            - @validator
-            - %saman.helper.param%
-
     saman.twig.function.extension:
         class: Library\Twig\TwigFunctionExtension
         arguments: [@translator.default]

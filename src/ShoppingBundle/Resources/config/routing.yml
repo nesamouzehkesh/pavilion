@@ -11,6 +11,18 @@ saman_shopping_customer_joinus_confirmation:
     defaults: { _controller: ShoppingBundle:Customer:registerConfirmation }
     
     
+    
+    
+saman_shopping_order_payment:
+    path:     /shopping/order/payment/{orderId}
+    defaults: { _controller: ShoppingBundle:Payment:orderPayment }
+    
+saman_shopping_order_payment_confirmation:
+    path:     /shopping/order/payment/confirm/{paymentId}
+    defaults: { _controller: ShoppingBundle:Payment:orderPaymentConfirmation }
+    
+    
+    
 
 saman_shopping_orders:
     path:     /shopping/orders

@@ -27,7 +27,13 @@ class OrderProgress extends BaseEntity
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
-
+    
+    /**
+     * @ORM\ManyToOne(targetEntity="\UserBundle\Entity\User")
+     * @ORM\JoinColumn(name="user_id", referencedColumnName="id", nullable=true)
+     **/
+    private $user;
+    
     /**
      * @var integer
      *
@@ -90,6 +96,13 @@ class OrderProgress extends BaseEntity
     private $attachments;
     
     /**
+     * @var string
+     *
+     * @ORM\Column(name="description", type="text", nullable=true)
+     */
+    private $description;
+    
+    /**
      * 
      */
     public function __construct()
@@ -100,7 +113,7 @@ class OrderProgress extends BaseEntity
     /**
      * 
      * @param \Doctrine\ORM\EntityManagerInterface $em
-     * @return Repository\OrderProgressRepository
+     * @return \ShoppingBundle\Entity\Repository\OrderProgressRepository
      */
     public static function getRepository(\Doctrine\ORM\EntityManagerInterface $em)
     {
@@ -124,6 +137,29 @@ class OrderProgress extends BaseEntity
     public function getId()
     {
         return $this->id;
+    }
+    
+    /**
+     * Set user
+     *
+     * @param \UserBundle\Entity\User $user
+     * @return Order
+     */
+    public function setUser(\UserBundle\Entity\User $user = null)
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * Get user
+     *
+     * @return \UserBundle\Entity\User 
+     */
+    public function getUser()
+    {
+        return $this->user;
     }
     
     /**
@@ -332,4 +368,27 @@ class OrderProgress extends BaseEntity
     {
         return $this->completePercentage;
     }
+    
+    /**
+     * Set description
+     *
+     * @param string $description
+     * @return Order
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    /**
+     * Get description
+     *
+     * @return string 
+     */
+    public function getDescription()
+    {
+        return $this->description;
+    }       
 }

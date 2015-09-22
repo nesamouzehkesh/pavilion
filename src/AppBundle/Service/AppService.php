@@ -139,7 +139,34 @@ class AppService
         $this->paginator = $paginator;
         $this->validator = $validator;
         $this->helperParameters = $helperParameters;
-    }    
+    }   
+    
+    /**
+     * Starts a transaction by suspending auto-commit mode.
+     */
+    public function transactionBegin()
+    {
+        $this->getEntityManager()->getConnection()->beginTransaction();
+    }
+    
+    /**
+     * Commits the current transaction
+     */
+    public function transactionCommit()
+    {
+        $this->getEntityManager()->getConnection()->commit();
+    }
+    
+    /**
+     * Cancels any database changes done during the current transaction.
+     *
+     * This method can be listened with onPreTransactionRollback and onTransactionRollback
+     * eventlistener methods.
+     */    
+    public function transactionRollback()
+    {
+        $this->getEntityManager()->getConnection()->rollback();
+    }
     
     /**
      * Get a helper parameter from $helperParameters array

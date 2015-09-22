@@ -1,31 +1,78 @@
+{% form_theme form '::twig/formRow.html.twig' %}
 {% extends "::web/content.html.twig" %}
 
-{% set title = 'Add new Order'|trans %}
+
+{% set title = ''|trans %}
 {% block pageBody %}
     
-    Order ID: {{ order.id }}
-    {% set content = order.content %}
-    Order Content:
-    <ul>
-    {% for key, structure in orderConfig.orderStructure %}
-        {% if content[key] is defined %}
-            <li>{{ key }}: {{ content[key] }}</li>
-        {% endif %}
-    {% endfor %}
-    </ul>
+    {% include '::web/order/_order.html.twig' with {'order': order, 'orderConfig': orderConfig, 'noImage': true} only %}
     
+    {{ form_start(form) }}
+    {{ form_errors(form) }}
+    {% set hideNewShipping = false %}
     <div class="panel panel-default">
         <div class="panel-body">
             <div class="row">
-                {% for address in [primaryBillingAddress, primaryShippingAddress] %}
-                    <div class="col-md-6">
-                        {% include '::web/user/address.html.twig' with {'address': address} only %}
-                    </div>
-                {% endfor %}    
+                <div class="col-md-6">
+                    {% include '::web/user/address.html.twig' with {'address': primaryBillingAddress} only %}
+                    {% if form.setNewShipping is defined %}
+                        {{ form_widget(form.setNewShipping) }}
+                        {% set hideNewShipping = true %}
+                    {% endif %}
+                    <div style="{{ hideNewShipping? 'display: none;' : '' }}">
+                        {{ form_row(form.shipping.fullName) }}
+                        {{ form_row(form.shipping.firstAddressLine) }}
+                        {{ form_row(form.shipping.secondAddressLine) }}
+                        {{ form_row(form.shipping.city) }}
+                        {{ form_row(form.shipping.state) }}
+                        {{ form_row(form.shipping.postCode) }}
+                        {{ form_row(form.shipping.country) }}
+                        {{ form_row(form.shipping.phoneNumber) }}
+                        {% if form.setShippingPrimary is defined %}
+                            {{ form_row(form.setShippingPrimary) }}
+                        {% endif %}
+                        {{ form_row(form.billingSameAsShipping) }}
+                    </div>                    
+                </div>
+                <div class="col-md-6">
+                    {% include '::web/user/address.html.twig' with {'address': primaryShippingAddress} only %}
+                    {% set hideNewBilling = false %}
+                    {% if form.setNewBilling is defined %}
+                        {{ form_widget(form.setNewBilling) }}
+                        {% set hideNewBilling = true %}
+                    {% endif %}
+                    <div style="{{ hideNewBilling? 'display: none;' : '' }}">
+                        {{ form_row(form.billing.fullName) }}
+                        {{ form_row(form.billing.firstAddressLine) }}
+                        {{ form_row(form.billing.secondAddressLine) }}
+                        {{ form_row(form.billing.city) }}
+                        {{ form_row(form.billing.state) }}
+                        {{ form_row(form.billing.postCode) }}
+                        {{ form_row(form.billing.country) }}
+                        {{ form_row(form.billing.phoneNumber) }}
+                        {% if form.setShippingPrimary is defined %}
+                            {{ form_row(form.setBillingPrimary) }}
+                        {% endif %}
+                    </div>                    
+                </div>
             </div>            
-
-            {% include '::web/order/form/setShippingAddressForm.html.twig' %}
         </div>
     </div>
-    
+                
+    By click on the Payment button you confirm your product's Shipping and Billing addresses
+    {#
+    <div class="row margin-top-10">
+        <div class="col-md-12">
+            <a class="btn btn-primary" href="{{ path('saman_shopping_order_payment', {'orderId': order.id}) }}">Payment</a>     
+        </div>
+    </div>
+    #}
+    <div class="row margin-top-10">
+        <div class="col-md-12">
+            <button id="form-submit-{{ form.vars.name }}" class="btn btn-primary ladda-button" type="submit" data-style="expand-left">
+                <span class="ladda-label">{{ 'Payment'|trans }}</span>
+            </button>            
+        </div>
+    </div>
+    {{ form_end(form) }}
 {% endblock %}

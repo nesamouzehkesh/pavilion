@@ -2,36 +2,15 @@
 
 {% set title = 'Order Confirm'|trans %}
 {% block pageBody %}
-    
-    Order ID: {{ order.id }}
-    {% set content = order.content %}
-    Order Content:
-    <ul>
-    {% for key, structure in orderConfig.orderStructure %}
-        {% if content[key] is defined %}
-            <li>{{ key }}: {{ content[key] }}</li>
-        {% endif %}
-    {% endfor %}
-    </ul>
-    
-    <div class="row margin-top-10">
-        <div class="col-md-12">
-            {% for image in order.attachments|getMedias %}
-                <a href="{{ asset(image.path|imagine_filter('o')) }}" target="_blank">
-                    <img src="{{ asset(image.path|imagine_filter('t')) }}" class="img-thumbnail" />
-                </a>
-            {% endfor %}
-        </div>
-    </div>
+    {% include '::web/order/_order.html.twig' with {'order': order, 'orderConfig': orderConfig} only %}
     
     Your order is with us now, you still can modify it. But you need to finalize your order by
     payment, then we will start working on your order. To change your order <a href="{{ path('saman_shopping_order_edit', {'orderId': order.id}) }}">click this</a> 
     and to finalize your ourde click on the following button.
-    
     <div class="row margin-top-10">
         <div class="col-md-12">
             <a class="btn btn-primary" href="{{ path('saman_shopping_order_set_shipping_address', {'orderId': order.id}) }}">Confirm Order</a>     
+            <a class="btn btn-primary" href="{{ path('saman_shopping_orders') }}">My Orders</a>
         </div>
     </div>
-            
 {% endblock %}
