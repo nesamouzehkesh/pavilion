@@ -1,0 +1,40 @@
+<script type="text/javascript">
+$(function(){
+    
+    $('#action-add-product, .action-edit-product').click(function(e){
+        handleForm($(this));        
+    });
+    
+    $('.action-display-item').click(function(e){
+        var url = $(this).attr('data-url');
+        var target = $($(this).attr('data-target'));
+                
+        $.get(url, function(response) {
+            if (response.success === true) {
+                target.html(response.content);
+                target.show();
+            } else {
+                target.modal('toggle');
+                bootbox.alert(response.message);
+            }
+        }, 'json');         
+    });    
+
+    $('.action-delete-product').click(function(e){
+        var url = $(this).attr('data-url');
+        bootbox.confirm('Are you sure to delete this item', function(result) {
+            if (result) {
+                $.post(url, function(response) {
+                    if (response.success === true) {
+                        location.reload();
+                    } else{
+                        bootbox.alert(response.message);
+                    }
+                }, 'json');
+            } else {
+                return true;
+            }
+        });        
+    });
+});
+</script>

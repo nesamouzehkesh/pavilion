@@ -27,7 +27,7 @@ class CustomerController extends BaseController
     }
     
     /**
-     * 
+     * TODO: security issue 
      * @return type
      */
     public function registerConfirmationAction($userId)
@@ -58,7 +58,7 @@ class CustomerController extends BaseController
         $customerForm = $this->createForm(new CustomerType(), $customer);        
         $customerForm->handleRequest($request);
         // If form is submited and it is valid then add or update this $label
-        if ($customerForm->isValid() and $this->customerFormDataIsValid($customerForm)) {
+        if ($customerForm->isValid() and $this->isCustomerFormDataValid($customerForm)) {
             // Get ObjectManager
             $em = $this->getDoctrine()->getManager();
             $userRole = Role::getRepository($em)->getUserRole();
@@ -95,7 +95,7 @@ class CustomerController extends BaseController
      * @param type $customerForm
      * @return boolean
      */
-    private function customerFormDataIsValid($customerForm)
+    private function isCustomerFormDataValid($customerForm)
     {
         // Get ObjectManager
         $em = $this->getDoctrine()->getManager();

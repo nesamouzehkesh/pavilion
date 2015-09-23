@@ -42,7 +42,7 @@ class ProductController extends BaseController
      * @return type
      * @throws type
      */
-    public function displayProductAction(Request $request, $productId)
+    public function displayProductAction($productId)
     {
         try {
             // Get ObjectManager

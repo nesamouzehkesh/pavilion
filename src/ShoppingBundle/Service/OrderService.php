@@ -8,6 +8,7 @@ use AppBundle\Service\EventHandler;
 use ShoppingBundle\Entity\Order;
 use ShoppingBundle\Entity\Progress;
 use ShoppingBundle\Service\OrderProgressHandler;
+use UserBundle\Entity\User;
 
 class OrderService
 {
@@ -83,24 +84,37 @@ class OrderService
     }
     
     /**
-     * Display page
      * 
-     * @param \Symfony\Component\HttpFoundation\Request $request
-     * @param type $pageUrl
+     * @param User $user
+     * @param type $params
      * @return type
      */
-    public function displayOrders()
+    public function getUserOrders(User $user, $params = array())
     {
-        $user = $this->appService->getUser();
-        $orders = Order::getRepository($this->appService->getEntityManager())
-            ->getUserOrders($user);
-        
-        $content = $this->appService->renderView(
-            'ShoppingBundle:Order:index.html.twig',
-            array('orders' => $orders)
-            );
-        
-        return $this->displayPage($content);
+        return $this->getOrders($user, $params, false);
+    }
+    
+    /**
+     * 
+     * @param User $user
+     * @param type $justQuery
+     * @return type
+     */
+    public function getOrders(User $user = null, $params = array(), $justQuery = true)
+    {
+        return Order::getRepository($this->appService->getEntityManager())
+            ->getOrders($user, $params, $justQuery);
+    }
+    
+    /**
+     * 
+     * @param User $user
+     * @param type $orderId
+     * @return type
+     */
+    public function getUserOrder(User $user, $orderId = null)
+    {
+        return $this->getOrder($orderId, $user);
     }
     
     /**
@@ -110,16 +124,16 @@ class OrderService
      * @return Order
      * @throws \Exception
      */
-    public function getOrder($orderId = null)
+    public function getOrder($orderId = null, User $user = null)
     {
         if (null === $orderId) {
             return new Order();
         }
         
         $order = Order::getRepository($this->appService->getEntityManager())
-            ->getOrder($orderId);
+            ->getOrder($orderId, $user);
         if (!$order instanceof Order) {
-            throw $this->appService->createVisibleHttpException('No user has been found');
+            throw $this->appService->createVisibleHttpException('No order has been found');
         }            
         
         return $order;

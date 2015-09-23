@@ -50,11 +50,12 @@ class PaymentService
     
     /**
      * 
+     * @param User $user
      * @param Order $order
-     * @param \ShoppingBundle\Service\User $user
      * @return type
+     * @throws \Exception
      */
-    public function handlePayment(Order $order, User $user)
+    public function handleUserPayment(User $user, Order $order)
     {
         $this->appService->transactionBegin();
         
@@ -93,20 +94,34 @@ class PaymentService
     }
     
     /**
-     * Get an order
+     * Get a user payment
+     * @scope user
      * 
      * @param type $paymentId
      * @return OrderPayment
      * @throws \Exception
      */
-    public function getPayment($paymentId = null)
+    public function getUserPayment(User $user, $paymentId = null)
+    {
+        return $this->getPayment($paymentId, $user);
+    }
+    
+    /**
+     * Get a payment
+     * @scope admin
+     * 
+     * @param type $paymentId
+     * @return OrderPayment
+     * @throws \Exception
+     */
+    public function getPayment($paymentId = null, User $user = null)
     {
         if (null === $paymentId) {
             return new OrderPayment();
         }
         
         $payment = OrderPayment::getRepository($this->appService->getEntityManager())
-            ->getPayment($paymentId);
+            ->getPayment($paymentId, $user);
         if (!$payment instanceof OrderPayment) {
             throw $this->appService->createVisibleHttpException('No payment has been found');
         }

@@ -9,72 +9,131 @@ class ShoppingAdminController extends BaseController
 {
     /**
      * 
-     * @param \Symfony\Component\HttpFoundation\Request $request
      * @return type
      */
-    public function indexAction(Request $request)
+    public function displayOrdersAction(Request $request)
     {
-    }
+        try {
+            
+            // Get all Orders
+            $orders = $this->getOrderService()->getOrders();
 
-    /**
-     * 
-     * @param \Symfony\Component\HttpFoundation\Request $request
-     * @return type
-     */
-    public function displayItemsAction(Request $request)
-    {
-        return $this->getShoppingService()->displayItems($request);
+            // Get pagination
+            $ordersPagination = $this->getAppService()
+                ->paginate($request, $orders);
+
+            // Render and return the view
+            return $this->render(
+                'ShoppingBundle:Shopping:orders.html.twig',
+                array('ordersPagination' => $ordersPagination)
+                );
+        } catch (Exception $ex) {
+            return $this->getExceptionResponse('There is a problem in displaying your orders', $ex);
+        }
     }
     
     /**
      * 
-     * @param \Symfony\Component\HttpFoundation\Request $request
-     * @param type $itemId
+     * @param Request $request
+     * @param type $orderId
      * @return type
      */
-    public function displayItemAction(Request $request, $itemId)
+    public function displayOrderAction($orderId)
     {
-        return $this->getShoppingService()->displayItem($request, $itemId);
+        try {
+            // Get all Products
+            $order = $this->getOrderService()->getOrder($orderId);
+            
+            // Render and return the view
+            return $this->render(
+                'ShoppingBundle:Shopping:order.html.twig',
+                array('order' => $order)
+                );
+        } catch (\Exception $ex) {
+            return $this->getExceptionResponse(
+                'alert.error.canNotDisplayItem', 
+                $ex
+                );
+        }
+    }  
+    
+    /**
+     * Delete a Order
+     * 
+     * @param type $orderId
+     * @return type
+     */
+    public function deleteOrderAction($orderId)
+    {
+        try {
+            // Get Product
+            $order = $this->getOrderService()->getOrder($orderId);
+            
+            // Soft-deleting an entity
+            $this->getAppService()->deleteEntity($order);
+
+            return $this->getJsonResponse(true);
+        } catch (\Exception $ex) {
+            return $this->getExceptionResponse(
+                'alert.error.canNotDeleteItem', 
+                $ex
+                );
+        }        
+    }
+    
+    /**
+     * Display and handel add edit product action
+     * 
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @return type
+     */
+    public function addEditOrderProgressAction(Request $request, $orderId, $progressId = null)
+    {
+        try {
+            // Get product object
+            $order = $this->getOrderService()->getOrder($orderId);
+            $progress = $this->getProductEntity($progressId);
+
+            // Generate Product Form
+            $productForm = $this->createForm(
+                new ProductType(), 
+                $product,
+                array(
+                    'action' => $request->getUri(),
+                    'method' => 'post'
+                    )
+                );
+
+            $productForm->handleRequest($request);
+            // If form is submited and it is valid then add or update this $product
+            if ($productForm->isValid()) {
+                
+                $mediaService = $this->getService('saman_media.media');
+                $this->getAppService()
+                    ->setMediaService($mediaService)
+                    ->saveMedia($product);
+                
+                return $this->getJsonResponse(true);
+            }
+
+            $view = $this->renderView(
+                'ProductBundle:Product:/form/product.html.twig', 
+                array('form' => $productForm->createView())
+                );
+            
+            return $this->getJsonResponse(true, null, $view);
+        } catch (\Exception $ex) {
+            return $this->getExceptionResponse('Can not add or edit product', $ex);
+        }         
     }    
     
     /**
+     * Get Order service
      * 
-     * @param \Symfony\Component\HttpFoundation\Request $request
-     * @return type
+     * @return \ShoppingBundle\Service\OrderService
      */
-    public function addItemAction(Request $request)
+    private function getOrderService()
     {
-        return $this->getShoppingService()->addEditItem($request, null);
-    }
-
-    /**
-     * 
-     * @param \Symfony\Component\HttpFoundation\Request $request
-     * @param type $itemId
-     * @return type
-     */
-    public function editItemAction(Request $request, $itemId)
-    {
-        return $this->getShoppingService()->addEditItem($request, $itemId);
-    }
-    
-    /**
-     * 
-     * @param \Symfony\Component\HttpFoundation\Request $request
-     * @param type $itemId
-     * @return type
-     */
-    public function deleteItemAction(Request $request, $itemId)
-    {
-        return $this->getShoppingService()->deleteItem($request, $itemId);
-    }
-    
-    /**
-     * 
-     * @return type
-     */
-    private function getShoppingService()
-    {
-        return $this->getService('saman_shopping.shopping');
-    }
+        return $this->getService('saman_shopping.order');
+    }    
 }

@@ -15,61 +15,38 @@ use UserBundle\Entity\User;
 class OrderRepository extends BaseEntityRepository
 {
     /**
-     * General get item function, by default it just gets one or null object.
      * 
-     * @param type $value
-     * @param type $key
+     * @param type $orderId
+     * @param User $user
      * @return type
      */
-    public function getOrder($value, $key = 'id')
+    public function getOrder($orderId, User $user = null)
     {
         $qb = $this->getEntityManager()->createQueryBuilder();
         
         $qb->select('o')
             ->from('ShoppingBundle:Order', 'o')
-            ->where(sprintf('o.%s = :%s AND o.deleted = 0', $key, $key))
-            ->setParameter($key, $value);
-
-        $query = $qb->getQuery();
+            ->where('o.id = :id AND o.deleted = 0')
+            ->setParameter('id', $orderId);
         
-        return $query->getOneOrNullResult();
-    }    
-    
-    /**
-     * Get all items
-     * 
-     * @param type $order
-     * @param type $readOnly
-     * @return type
-     */
-    public function getOrders($param = array(), $justQuery = true, $order = 'order.id', $readOnly = true)
-    {
-        $hydrationMode = $readOnly? Query::HYDRATE_ARRAY : null;
-        $qb = $this->getQueryBuilder();
-        
-        $qb->select('o')
-            ->from('ShoppingBundle:Order', 'o')
-            ->where('o.deleted = 0')
-            //->search('o.title', $param)
-            ->orderBy($order);
-        
-        $query = $qb->getQuery();
-        if ($justQuery) {
-            return $query;
-        } else {
-            $result = $query->getResult($hydrationMode);
-            return $result;
+        if ($user instanceof User) {
+            $qb->andWhere('o.user = :user');
+            $qb->setParameter('user', $user);
         }
+
+        return $qb->getQuery()->getOneOrNullResult();
     }
     
     /**
      * Get all user's orders
      * 
      * @param User $user
+     * @param type $params
+     * @param type $justQuery
      * @param type $readOnly
      * @return type
      */
-    public function getUserOrders(User $user, $readOnly = true)
+    public function getOrders(User $user = null, $params = array(), $justQuery = true, $readOnly = true)
     {
         $hydrationMode = $readOnly? Query::HYDRATE_ARRAY : null;
         $qb = $this->getQueryBuilder();
@@ -78,9 +55,19 @@ class OrderRepository extends BaseEntityRepository
             ->from('ShoppingBundle:Order', 'o')
             ->leftJoin('o.progresses', 'op', 'WITH', 'op.deleted = 0')
             ->leftJoin('op.progress', 'p', 'WITH', 'p.deleted = 0')
-            ->where('o.deleted = 0 AND o.user = :user')
-            ->setParameter('user', $user);
+            ->where('o.deleted = 0');
         
+        if ($user instanceof User) {
+            $qb->andWhere('o.user = :user');
+            $qb->setParameter('user', $user);
+        }
+        
+        if ($justQuery) {
+            return $qb->getQuery();
+        }
+        
+        // If we use this it will generate just array
+        //return $qb->getQuery()->getResult($hydrationMode);
         return $qb->getQuery()->getResult();
     }
 }

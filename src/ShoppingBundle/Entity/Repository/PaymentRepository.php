@@ -3,6 +3,7 @@
 namespace ShoppingBundle\Entity\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use UserBundle\Entity\User;
 
 /**
  * PaymentRepository
@@ -13,23 +14,27 @@ use Doctrine\ORM\EntityRepository;
 class PaymentRepository extends EntityRepository
 {
     /**
-     * General get item function, by default it just gets one or null object.
      * 
-     * @param type $value
-     * @param type $key
+     * @param type $paymentId
+     * @param User $user
      * @return type
      */
-    public function getPayment($value, $key = 'id')
+    public function getPayment($paymentId, User $user = null)
     {
         $qb = $this->getEntityManager()->createQueryBuilder();
         
         $qb->select('op')
             ->from('ShoppingBundle:OrderPayment', 'op')
-            ->where(sprintf('op.%s = :%s AND op.deleted = 0', $key, $key))
-            ->setParameter($key, $value);
-
+            ->where('op.id = :id AND op.deleted = 0')
+            ->setParameter('id', $paymentId);
+        
+        if ($user instanceof User) {
+            $qb->andWhere('op.user = :user');
+            $qb->setParameter('user', $user);
+        }
+        
         $query = $qb->getQuery();
         
         return $query->getOneOrNullResult();
-    }    
+    } 
 }

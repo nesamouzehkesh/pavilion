@@ -15,8 +15,8 @@ class PaymentController extends BaseController
     public function orderPaymentAction($orderId)
     {
         $user = $this->getUser();
-        $order = $this->getOrderService()->getOrder($orderId);
-        $payment = $this->getPaymentService()->handlePayment($order, $user);
+        $order = $this->getOrderService()->getUserOrder($user, $orderId);
+        $payment = $this->getPaymentService()->handleUserPayment($user, $order);
         
         return $this->redirectToRoute(
             'saman_shopping_order_payment_confirmation', 
@@ -32,7 +32,8 @@ class PaymentController extends BaseController
      */
     public function orderPaymentConfirmationAction($paymentId)
     {
-        $payment = $this->getPaymentService()->getPayment($paymentId);
+        $user = $this->getUser();
+        $payment = $this->getPaymentService()->getUserPayment($user, $paymentId);
         
         return $this->render(
             '::web/order/orderPaymentConfirmation.html.twig',

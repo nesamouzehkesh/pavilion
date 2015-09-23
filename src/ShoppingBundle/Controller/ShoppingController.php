@@ -4,7 +4,6 @@ namespace ShoppingBundle\Controller;
 
 use Library\Base\BaseController;
 use Symfony\Component\HttpFoundation\Request;
-use ShoppingBundle\Entity\Order;
 use ShoppingBundle\Form\OrderType;
 use ShoppingBundle\Form\ShippingAddressType;
 use UserBundle\Entity\Address;
@@ -32,8 +31,7 @@ class ShoppingController extends BaseController
     {
         try {
             $user = $this->getUser();
-            $em = $this->getDoctrine()->getManager();
-            $orders = Order::getRepository($em)->getUserOrders($user);
+            $orders = $this->getOrderService()->getUserOrders($user);
 
             return $this->render(
                 '::web/order/orders.html.twig',
@@ -52,7 +50,8 @@ class ShoppingController extends BaseController
     public function displayOrderAction($orderId)
     {
         try {
-            $order = $this->getOrderService()->getOrder($orderId);
+            $user = $this->getUser();
+            $order = $this->getOrderService()->getUserOrder($user, $orderId);
 
             return $this->render(
                 '::web/order/order.html.twig',
@@ -73,7 +72,8 @@ class ShoppingController extends BaseController
      */
     public function addEditOrderAction(Request $request, $orderId)
     {
-        $order = $this->getOrderService()->getOrder($orderId);
+        $user = $this->getUser();
+        $order = $this->getOrderService()->getUserOrder($user, $orderId);
         $orderConfig = $this->getParameter('saman_shopping_order');
         // Generate Product Form
         $orderForm = $this->createForm(new OrderType($orderConfig), $order);        
@@ -104,7 +104,8 @@ class ShoppingController extends BaseController
      */
     public function orderConfirmationAction($orderId)
     {
-        $order = $this->getOrderService()->getOrder($orderId);
+        $user = $this->getUser();
+        $order = $this->getOrderService()->getUserOrder($user, $orderId);
         
         return $this->render(
             '::web/order/orderConfirmation.html.twig',
@@ -123,8 +124,8 @@ class ShoppingController extends BaseController
     public function setShippingAddressAction(Request $request, $orderId)
     {
         $em = $this->getDoctrine()->getManager();
-        $order = $this->getOrderService()->getOrder($orderId);
         $user = $this->getUser();
+        $order = $this->getOrderService()->getUserOrder($user, $orderId);
         
         $orderShippingAddress = null;
         $orderBillingAddress = null;
