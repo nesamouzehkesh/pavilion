@@ -1,7 +1,7 @@
 {% import _self as self %}
 
 {% if noLayout is not defined or noLayout == false %}
-    {% if saman_production_view %}
+    {% if saman_displayFullView %}
     {% spaceless %}
         <ul id="sidebar" class="nav nav-pills nav-stacked">
             {% for module, url in saman_app_modules %}

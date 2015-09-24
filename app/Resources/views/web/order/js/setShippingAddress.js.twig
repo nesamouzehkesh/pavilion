@@ -1,0 +1,49 @@
+<script type="text/javascript">
+$(function(){
+    $('.action-filter-progress-order').click(function(e){
+        e.preventDefault();
+        var url = $(this).attr('href');
+        displayItems(url, cont_orders, '1');
+    });   
+
+    var shippingContainer = $("#shipping-container");
+    var shippingFormContainer = $("#shipping-form-container");
+    var billingContainer = $("#billing-container");
+    var billingFormContainer = $("#billing-form-container");
+    
+    var shippingSetNewCheck = $("#saman_shipping_form_setNewShipping");
+    shippingSetNewCheck.attr('checked', false);
+    shippingSetNewCheck.change(function() {
+        if (this.checked) {
+            shippingContainer.fadeOut();
+            shippingFormContainer.fadeIn();
+        } else {
+            shippingContainer.fadeIn();
+            shippingFormContainer.fadeOut();
+        }
+    });    
+    
+    var billingSetNewCheck = $("#saman_shipping_form_setNewBilling");
+    billingSetNewCheck.attr('checked', false);
+    billingSetNewCheck.change(function() {
+        if (this.checked) {
+            billingContainer.fadeOut();
+            billingFormContainer.fadeIn();
+        } else {
+            billingContainer.fadeIn();
+            billingFormContainer.fadeOut();
+        }
+    });
+    
+    var billingSameAsShippingCheck = $("#saman_shipping_form_billingSameAsShipping");
+    billingSameAsShippingCheck.attr('checked', false);
+    billingSameAsShippingCheck.change(function() {
+        var billing = $("#billing");
+        if (this.checked) {
+            billing.fadeOut();
+        } else {
+            billing.fadeIn();
+        }
+    });
+});
+</script>

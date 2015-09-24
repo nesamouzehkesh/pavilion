@@ -44,9 +44,6 @@ monolog:
 
 assetic:
     use_controller: "%use_assetic_controller%"
-
-parameters:
-    saman.twig.param.displaySimpleView: true
     
 #swiftmailer:
 #    delivery_address: me@example.com

@@ -6,6 +6,7 @@
 {% block pageBody %}
     
     {% include '::web/order/_order.html.twig' with {'order': order, 'orderConfig': orderConfig, 'noImage': true} only %}
+    {% include '::web/order/js/setShippingAddress.js.twig' %}
     
     {{ form_start(form) }}
     {{ form_errors(form) }}
@@ -14,12 +15,14 @@
         <div class="panel-body">
             <div class="row">
                 <div class="col-md-6">
-                    {% include '::web/user/address.html.twig' with {'address': primaryBillingAddress} only %}
+                    <div id="shipping-container">
+                        {% include '::web/user/address.html.twig' with {'address': primaryShippingAddress} only %}
+                    </div>
                     {% if form.setNewShipping is defined %}
                         {{ form_widget(form.setNewShipping) }}
                         {% set hideNewShipping = true %}
                     {% endif %}
-                    <div style="{{ hideNewShipping? 'display: none;' : '' }}">
+                    <div id="shipping-form-container" style="{{ hideNewShipping? 'display: none;' : '' }}">
                         {{ form_row(form.shipping.fullName) }}
                         {{ form_row(form.shipping.firstAddressLine) }}
                         {{ form_row(form.shipping.secondAddressLine) }}
@@ -34,14 +37,16 @@
                         {{ form_row(form.billingSameAsShipping) }}
                     </div>                    
                 </div>
-                <div class="col-md-6">
-                    {% include '::web/user/address.html.twig' with {'address': primaryShippingAddress} only %}
+                <div id="billing" class="col-md-6">
+                    <div id="billing-container">
+                        {% include '::web/user/address.html.twig' with {'address': primaryBillingAddress} only %}
+                    </div>
                     {% set hideNewBilling = false %}
                     {% if form.setNewBilling is defined %}
                         {{ form_widget(form.setNewBilling) }}
                         {% set hideNewBilling = true %}
                     {% endif %}
-                    <div style="{{ hideNewBilling? 'display: none;' : '' }}">
+                    <div id="billing-form-container" style="{{ hideNewBilling? 'display: none;' : '' }}">
                         {{ form_row(form.billing.fullName) }}
                         {{ form_row(form.billing.firstAddressLine) }}
                         {{ form_row(form.billing.secondAddressLine) }}

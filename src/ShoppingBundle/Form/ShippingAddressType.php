@@ -33,7 +33,7 @@ class ShippingAddressType extends AbstractType
             ->add('shipping', new AddressType($this->user))
             ->add('billing', new AddressType($this->user))
             ->add('billingSameAsShipping', 'checkbox', array(
-                'data' => true,
+                'data' => false,
                 'label'    => 'Billing address same as shipping address?',
                 'required' => false,
             ));

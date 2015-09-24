@@ -43,8 +43,6 @@ parameters:
     saman.session.directory: "%kernel.root_dir%/sessions"
     # Filesystems parameters
     saman.filesystems.local.directory: %kernel.root_dir%/media
-    # Twig parameters
-    saman.twig.param.displaySimpleView: true
     # Helper service parameters
     saman.helper.param:
         numberOfItemsPerPage: %saman.numberOfItemsPerPage%
@@ -77,15 +75,14 @@ twig:
     debug:            "%kernel.debug%"
     strict_variables: "%kernel.debug%"
     globals:
-        saman_production_view: %saman_production_view%
         date_format: "d/m/Y"
-        saman_twig_param_displaySimpleView: "%saman.twig.param.displaySimpleView%"
+        saman_displayFullView: %saman_displayFullView%
         saman_app_modules:
-            label: saman_label_home
+            order: saman_admin_shopping_order_home
+            product: saman_admin_product_home
             user: saman_admin_user_home
             cms: saman_cms_admin_page_home
-            product: saman_admin_product_home
-            order: saman_admin_shopping_order_home
+            label: saman_label_home
 
        
     form:

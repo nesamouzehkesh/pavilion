@@ -148,7 +148,7 @@ module:
     order:
         title: Orders
         description: ""
-        icon: glyphicon glyphicon-gif
+        icon: glyphicon glyphicon-shopping-cart
         
 
                 
