@@ -1,0 +1,59 @@
+{% set twig_show_search = true %}
+{% extends "CmsBundle::layout.html.twig" %}
+
+{% block headerContainer %}
+    <div class="block" id="headerContainer">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="dropdown">
+                    <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                        Show All
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                        {% for key, staticProgress in staticProgresses %}
+                            <li><a class="action-filter-progress-order" href="{{ path('saman_admin_shopping_order_home', {'progressFilter': key, 'headless': true}) }}">{{ staticProgress }}</a></li>
+                        {% endfor %}
+                        <li role="separator" class="divider"></li>
+                        <li><a class="action-filter-progress-order" href="{{ path('saman_admin_shopping_order_home', {'headless': true}) }}">Show All</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-md-8">
+                <div class="pull-right">
+                    <form class="form-inline">
+                        <div class="form-group">
+                            <div class="dropdown">
+                                <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                    Order Id
+                                    <span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                                    <li><a href="#" class="action-set-search-type" data-search-input="input-search" data-search-target="o.id" data-search-type="int">Order Id</a></li>
+                                    <li><a href="#" class="action-set-search-type" data-search-input="input-search" data-search-target="ou.email" data-search-type="text">User Email</a></li>
+                                </ul>
+                            </div>
+                        </div>                
+                        <div class="form-group">
+                            <label class="sr-only" for="input-search">Amount (in dollars)</label>
+                            <div class="input-group">
+                                <div class="input-group-addon">{{ 'icon.search'|icon }}</div>
+                                <input type="text" class="form-control" id="input-search" placeholder="Search">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>            
+    </div>
+{% endblock %}
+
+{% block body %}
+    <div id="orders-list-container">
+        {{ ordersView|raw }}
+    </div>
+{% endblock %}
+    
+{% block script %}
+    {% include 'ShoppingBundle:Shopping:js/orders.js.twig' %}
+{% endblock %}

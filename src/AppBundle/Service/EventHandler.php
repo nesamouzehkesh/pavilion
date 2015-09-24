@@ -31,6 +31,21 @@ class EventHandler
     /**
      * 
      * @param BaseEntity $entity
+     * @param type $triggers
+     * @return type
+     */
+    public function getEvents(BaseEntity $entity, $triggers = array())
+    {
+        $entityPathName = get_class($entity);
+        $entityPathId = $entity->getId();
+            
+        return Event::getRepository($this->appService->getEntityManager())
+            ->getEvents($entityPathId, $entityPathName, $triggers);
+    }
+    
+    /**
+     * 
+     * @param BaseEntity $entity
      * @param type $trigger
      */
     public function handleEvent(BaseEntity $entity, $trigger)

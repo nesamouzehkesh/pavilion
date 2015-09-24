@@ -1,0 +1,46 @@
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>User</th>
+            <th>Progress</th>
+            <th>Start</th>
+            <th>Estimated End</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for order in ordersPagination %}
+        {% set orderProgress = order.getActiveProgress %}
+        <tr>
+            <th>{{ order.id }}</th>
+            <td>{{ order.user.email }}</td>
+            <td>{{ orderProgress.progress.title }}</td> 
+            <td>{{ orderProgress.startDate|date(date_format) }}</td>
+            <td>Estimated End Date {{ orderProgress.estimatedEndDate|date(date_format) }}</td>
+            <td>
+                <div class="pull-right">
+                    {{ button(
+                          'action.display', 
+                          {
+                              url: path('saman_admin_shopping_order_display', {'orderId': order.id}),
+                              icon: 'icon.display', 
+                              action: 'action-display-order'
+                          }) }}                        
+                    {{ button(
+                        'action.delete', 
+                        {
+                            url: path('saman_admin_shopping_order_delete', {'orderId': order.id }),
+                            icon: 'icon.delete', 
+                            action: 'action-delete-order',
+                        }) }}
+                </div>  
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>    
+
+<div class="navigation margin-top-20">
+    {{ knp_pagination_render(ordersPagination) }}
+</div>

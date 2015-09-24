@@ -52,16 +52,16 @@ class OrderProgressHandler
             $user = $this->appService->getUser();
         }
 
-        $orderProgress = new OrderProgress();
+        $orderProgress = $this->getOrderProgress(null, $order);
         $orderProgress->setUser($user);
         $orderProgress->setProgress($progress);
         $orderProgress->setDescription($description);
+        $orderProgress->setIsManual(false);
         
         // Set an "original expiry"
         $date = new \DateTime();        
         $orderProgress->setStartDate($date->getTimestamp());
         $orderProgress->setStatus(OrderProgress::STATUS_INPROGRESS);
-        $orderProgress->setOrder($order);
         $this->appService->persistEntity($orderProgress);
         $order->addProgress($orderProgress);
         
@@ -72,7 +72,34 @@ class OrderProgressHandler
         
         return $orderProgress;
     }
-    
+  
+    /**
+     * 
+     * @param type $progressId
+     * @param Order $order
+     * @param User $user
+     * @return OrderProgress
+     * @throws type
+     */
+    public function getOrderProgress($progressId = null, Order $order = null, User $user = null)
+    {
+        if (null === $progressId) {
+            $orderProgress = new OrderProgress();
+            $orderProgress->setOrder($order);
+            $orderProgress->setIsManual(true);
+            
+            return $orderProgress;
+        }
+        
+        $orderProgress = OrderProgress::getRepository($this->appService->getEntityManager())
+            ->getOrderProgress($progressId, $user);
+        if (!$orderProgress instanceof OrderProgress) {
+            throw $this->appService->createVisibleHttpException('No order progress has been found');
+        }            
+        
+        return $orderProgress;
+    }  
+
     /**
      * 
      * @param type $progressId
@@ -81,7 +108,7 @@ class OrderProgressHandler
      */
     private function getProgressReference($progressId)
     {
-        if (!isset(Progress::$staticProgress[$progressId])) {
+        if (!isset(Progress::$staticProgresses[$progressId])) {
             throw new \Exception('Invalid order progress type is defined');
         }
         

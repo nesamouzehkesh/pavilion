@@ -1,40 +1,33 @@
+{% set twig_url_items = path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')|merge({'headless': true})) %}
+
 <script type="text/javascript">
 $(function(){
+    var currentPage = '1';
+    var cont_orders = $('#orders-list-container');
+    var cont_item = $('#order-view-container');
     
-    $('#action-add-product, .action-edit-product').click(function(e){
-        handleForm($(this));        
+    cont_orders.on('click', '.action-pagination', function(e){      
+        e.preventDefault();
+        currentPage = $(this).attr('data-page');
+        displayItems('{{ twig_url_items }}', cont_orders, currentPage);
+    });
+
+    $('.action-filter-progress-order').click(function(e){
+        e.preventDefault();
+        var url = $(this).attr('href');
+        displayItems(url, cont_orders, '1');
+    });   
+    
+    cont_orders.on('click', '.action-display-order', function(e){
+        location.href = $(this).attr('data-url');
     });
     
-    $('.action-display-item').click(function(e){
-        var url = $(this).attr('data-url');
-        var target = $($(this).attr('data-target'));
-                
-        $.get(url, function(response) {
-            if (response.success === true) {
-                target.html(response.content);
-                target.show();
-            } else {
-                target.modal('toggle');
-                bootbox.alert(response.message);
-            }
-        }, 'json');         
-    });    
+    cont_orders.on('click', '.action-delete-order', function(e){   
+        deleteItem($(this), '{{ twig_url_items }}', cont_orders, currentPage);
+    });
 
-    $('.action-delete-product').click(function(e){
-        var url = $(this).attr('data-url');
-        bootbox.confirm('Are you sure to delete this item', function(result) {
-            if (result) {
-                $.post(url, function(response) {
-                    if (response.success === true) {
-                        location.reload();
-                    } else{
-                        bootbox.alert(response.message);
-                    }
-                }, 'json');
-            } else {
-                return true;
-            }
-        });        
+    $("#input-search").keyup(function(e) {
+        searchItems($(this), '{{ twig_url_items }}', cont_orders, currentPage);
     });
 });
 </script>

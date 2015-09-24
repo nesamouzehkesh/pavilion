@@ -4,6 +4,7 @@ namespace Library\Base;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\FormError;
+use Symfony\Component\HttpKernel\Exception\GoneHttpException;
 
 class BaseController extends Controller
 {
@@ -117,6 +118,25 @@ class BaseController extends Controller
      * @param type $ex
      * @return type
      */
+    public function getException($message, $ex = null)
+    {
+        $exceptionError = $this->getAppService()
+            ->getExceptionError($ex);
+        
+        $transMessage = $this->transMessage($message);
+        if ('' !== $exceptionError) {
+            $transMessage = sprintf('%s [%s]', $transMessage, $exceptionError);
+        }
+        
+        return new GoneHttpException($transMessage);
+    } 
+    
+    /**
+     * 
+     * @param type $message
+     * @param type $ex
+     * @return type
+     */
     public function getExceptionResponse($message, $ex = null, $responseParam = null)
     {
         return $this->getAppService()
@@ -147,6 +167,15 @@ class BaseController extends Controller
     public function getAppService()
     {
         return $this->getService('saman.appService');
+    }
+    
+    /**
+     * 
+     * @return \AppBundle\Service\EventHandler
+     */
+    public function getEventHandler()
+    {
+        return $this->getService('saman.eventHandler');
     }
     
     /**

@@ -13,5 +13,23 @@ use Library\Doctrine\BaseEntityRepository;
  */
 class EventRepository extends BaseEntityRepository
 {   
-    
+    /**
+     * 
+     * @param type $orderId
+     * @param User $user
+     * @return type
+     */
+    public function getEvents($entityPathId, $entityPathName, $triggers = array())
+    {
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        
+        $qb->select('e')
+            ->from('AppBundle:Event', 'e')
+            ->leftJoin('e.user', 'u')
+            ->where('e.entityPathId = :entityPathId AND e.entityPathName = :entityPathName')
+            ->setParameter('entityPathId', $entityPathId)
+            ->setParameter('entityPathName', $entityPathName);
+
+        return $qb->getQuery()->getResult();
+    }
 }

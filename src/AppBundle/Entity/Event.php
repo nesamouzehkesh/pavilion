@@ -116,6 +116,16 @@ class Event
     {
         return $this->trigger;
     }
+    
+    /**
+     * Get trigger
+     *
+     * @return string 
+     */
+    public function getTriggerLabel()
+    {
+        return self::$triggers[$this->trigger];
+    }
 
     /**
      * Set entityPathName

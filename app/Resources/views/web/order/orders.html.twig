@@ -15,7 +15,7 @@
                 {% if order.getActiveProgress is not null %}
                     {% set orderProgress = order.getActiveProgress %}
                     <tr>
-                        <td>{{ order.type }}-{{ order.id }}</td>
+                        <td>{{ order.id }}</td>
                         <td>{{ orderProgress.progress.title }} - Start Date: {{ orderProgress.startDate|date(date_format) }} - Estimated End Date {{ orderProgress.estimatedEndDate|date(date_format) }}</td>
                         <td>
                             <a class="btn btn-primary btn-sm" href="{{ path('saman_shopping_order_display', {'orderId': order.id }) }}">View Order</a>

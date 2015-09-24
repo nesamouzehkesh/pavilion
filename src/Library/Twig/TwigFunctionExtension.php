@@ -116,6 +116,13 @@ class TwigFunctionExtension extends Twig_Extension
         return (strlen($string) * 10) + 20;
     }    
     
+    /**
+     * 
+     * @param type $navigations
+     * @param type $parameters
+     * @return type
+     * @throws \Exception
+     */
     public function breadcrumb($navigations ,$parameters = array())
     {
         $defaultParameters = array(

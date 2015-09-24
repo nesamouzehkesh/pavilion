@@ -1,0 +1,13 @@
+{% extends "::twig/form.html.twig" %}
+
+{% block body %}
+    {{ form_errors(form) }}
+    {{ form_row(form.progress) }}
+    {{ form_row(form.status) }}
+    {{ form_row(form.startDate) }}
+    {{ form_row(form.estimatedEndDate) }}
+    {{ form_row(form.actualEndDate) }}
+    {{ form_row(form.completePercentage) }}
+    {{ form_row(form.attachments) }}
+    {{ form_row(form.description) }}
+{% endblock %}

@@ -22,6 +22,8 @@ use Library\Exception\VisibleHttpException;
 class AppService 
 {
     const PARAM_SEARCH_TEXT = 'searchText';
+    const PARAM_SEARCH_TARGET = 'searchTarget';
+    const PARAM_SEARCH_TYPE = 'searchType';
     const PARAM_PAGE = 'page';
     const DEFAULT_LENGTH_RANDOM_STRING = 30;
     
@@ -704,6 +706,14 @@ class AppService
         
         if (null !== ($searchText = $request->get(self::PARAM_SEARCH_TEXT, null))) {
             $param[self::PARAM_SEARCH_TEXT] = $searchText;
+        }
+        
+        if (null !== ($searchTarget = $request->get(self::PARAM_SEARCH_TARGET, null))) {
+            $param[self::PARAM_SEARCH_TARGET] = $searchTarget;
+        }
+        
+        if (null !== ($searchType = $request->get(self::PARAM_SEARCH_TYPE, null))) {
+            $param[self::PARAM_SEARCH_TYPE] = $searchType;
         }
         
         return $param;

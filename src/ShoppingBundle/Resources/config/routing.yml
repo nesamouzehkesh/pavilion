@@ -10,8 +10,7 @@ saman_shopping_customer_joinus_confirmation:
     path:     /shopp/joinus/confirmation/{userId}
     defaults: { _controller: ShoppingBundle:Customer:registerConfirmation }
     
-    
-    
+        
     
 saman_shopping_order_payment:
     path:     /shopping/order/payment/{orderId}
@@ -20,8 +19,7 @@ saman_shopping_order_payment:
 saman_shopping_order_payment_confirmation:
     path:     /shopping/order/payment/confirm/{paymentId}
     defaults: { _controller: ShoppingBundle:Payment:orderPaymentConfirmation }
-    
-    
+        
     
 
 saman_shopping_orders:
@@ -51,3 +49,29 @@ saman_shopping_order_edit:
 saman_shopping_order_delete:
     path:     /shopping/order/delete/{itemId}
     defaults: { _controller: ShoppingBundle:Shopping:deleteOrder }
+    
+    
+    
+saman_admin_shopping_order_home:
+    path:     /admin/shopping/orders
+    defaults: { _controller: ShoppingBundle:ShoppingAdmin:displayOrders }
+    
+saman_admin_shopping_order_display:
+    path:     /admin/shopping/order/{orderId}
+    defaults: { _controller: ShoppingBundle:ShoppingAdmin:displayOrder }
+    
+saman_admin_shopping_order_delete:
+    path:     /admin/shopping/delete/order/{orderId}
+    defaults: { _controller: ShoppingBundle:ShoppingAdmin:deleteOrder }
+    
+saman_admin_shopping_order_progress_edit:
+    path:     /admin/shopping/edit/order-progress/{orderId}/{progressId}
+    defaults: { _controller: ShoppingBundle:ShoppingAdmin:addEditOrderProgress }    
+    
+saman_admin_shopping_order_progress_add:
+    path:     /admin/shopping/add/order-progress/{orderId}
+    defaults: { _controller: ShoppingBundle:ShoppingAdmin:addEditOrderProgress, progressId: null }    
+    
+saman_admin_shopping_order_progress_delete:
+    path:     /admin/shopping/delete/order-progress/{progressId}
+    defaults: { _controller: ShoppingBundle:ShoppingAdmin:deleteOrderProgress }      

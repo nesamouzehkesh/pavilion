@@ -1,0 +1,24 @@
+<script type="text/javascript">
+$(function(){
+    $('#action-add-order-progress, .action-edit-order-progress').click(function(e){
+        handleForm($(this));        
+    });    
+    
+    $('.action-delete-order-progress').click(function(e){
+        var url = $(this).attr('data-url');
+        bootbox.confirm('Are you sure to delete this item', function(result) {
+            if (result) {
+                $.post(url, function(response) {
+                    if (response.success === true) {
+                        location.reload();
+                    } else{
+                        bootbox.alert(response.message);
+                    }
+                }, 'json');
+            } else {
+                return true;
+            }
+        });        
+    }); 
+});
+</script>

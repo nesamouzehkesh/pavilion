@@ -31,7 +31,7 @@ class LoadSystemData implements FixtureInterface
     private function loadOrderProgress(ObjectManager $manager)
     {
         
-        foreach (Progress::$staticProgress as $progressId => $progressTitle) {
+        foreach (Progress::$staticProgresses as $progressId => $progressTitle) {
             $progress = new Progress();
             $progress->setId($progressId);
             $progress->setTitle($progressTitle);

@@ -40,14 +40,44 @@ class BaseQueryBuilder extends QueryBuilder
      * @param type $itemParam
      * @param type $param
      */
-    public function search($itemParam, $param)
+    public function search($itemParam, $param, $searchType = 'text')
     {
         if (is_array($param) and array_key_exists(AppService::PARAM_SEARCH_TEXT, $param)) {
             $searchText = $param[AppService::PARAM_SEARCH_TEXT];
             if (null !== $searchText and '' !== $searchText) {
-                $this->andWhere($itemParam . ' LIKE :searchText')
-                    ->setParameter('searchText', '%'.$searchText.'%');
+                if (array_key_exists(AppService::PARAM_SEARCH_TARGET, $param)) {
+                    $searchTarget = $param[AppService::PARAM_SEARCH_TARGET];
+                    if (array_key_exists(AppService::PARAM_SEARCH_TYPE, $param)) {
+                        $searchType = $param[AppService::PARAM_SEARCH_TYPE];
+                    }
+                    
+                    $this->searchParam($searchTarget, $searchText, $searchType);
+                } else {
+                    $this->searchParam($itemParam, $searchText, $searchType);
+                }
             }
+        }
+        
+        return $this;
+    }
+    
+    /**
+     * 
+     * @param type $searchTarget
+     * @param type $searchText
+     * @param type $searchType
+     */
+    private function searchParam($searchTarget, $searchText, $searchType)
+    {
+        switch ($searchType) {
+            case 'text':
+                $this->andWhere($searchTarget . ' LIKE :searchText')
+                    ->setParameter('searchText', '%'.$searchText.'%');
+                break;
+            case 'int':
+                $this->andWhere($searchTarget . ' = :searchText')
+                    ->setParameter('searchText', intval($searchText));
+                break;
         }
         
         return $this;

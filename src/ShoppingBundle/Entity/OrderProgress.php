@@ -19,6 +19,12 @@ class OrderProgress extends BaseEntity
     const STATUS_STOPED = 2;
     const STATUS_FINALIZED = 3;
     
+    public static $statuses = array(
+        self::STATUS_INPROGRESS => array('title' => 'Inprogress', 'class' => 'text-danger'),
+        self::STATUS_STOPED =>     array('title' => 'Stoped', 'class' => 'text-warning'),
+        self::STATUS_FINALIZED =>  array('title' => 'Finalized', 'class' => 'text-success'),
+    );
+    
     /**
      * @var integer
      *
@@ -81,6 +87,13 @@ class OrderProgress extends BaseEntity
      * @ORM\Column(name="content", type="text", nullable=true)
      */
     private $content;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="is_manual", type="boolean", nullable=true, options={"default"= 0})
+     */    
+    private $isManual;
     
     /**
      * @ORM\ManyToOne(targetEntity="Order", inversedBy="progresses")
@@ -183,7 +196,17 @@ class OrderProgress extends BaseEntity
     public function getStatus()
     {
         return $this->status;
-    }    
+    }
+    
+    /**
+     * Get status
+     *
+     * @return integer 
+     */
+    public function getStatusLabel()
+    {
+        return self::$statuses[$this->status];
+    }       
 
     /**
      * Set content
@@ -229,6 +252,29 @@ class OrderProgress extends BaseEntity
     public function getProgress()
     {
         return $this->progress;
+    }
+    
+    /**
+     * Set order
+     *
+     * @param bool $isManual
+     * @return OrderProgress
+     */
+    public function setIsManual($isManual)
+    {
+        $this->isManual = $isManual;
+
+        return $this;
+    }
+
+    /**
+     * Get isManual
+     *
+     * @return bool
+     */
+    public function isManual()
+    {
+        return $this->isManual;
     }
 
     /**

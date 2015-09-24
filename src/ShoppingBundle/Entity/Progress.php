@@ -26,14 +26,14 @@ class Progress extends BaseEntity
     const PROGRESS_SHIPPED = 6;
     const PROGRESS_REFUND = 7;
     
-    public static $staticProgress = array(
-        self::PROGRESS_SUBMITTED => 'SUBMITTED',
-        self::PROGRESS_PAID => 'PAID',
-        self::PROGRESS_INPROGRESS => 'INPROGRESS',
-        self::PROGRESS_STOPED => 'STOPED',
-        self::PROGRESS_FINALIZED => 'FINALIZED',
-        self::PROGRESS_SHIPPED => 'SHIPPED',
-        self::PROGRESS_REFUND => 'REFUND'
+    public static $staticProgresses = array(
+        self::PROGRESS_SUBMITTED => 'Submitted',
+        self::PROGRESS_PAID => 'Paid',
+        self::PROGRESS_INPROGRESS => 'Inprogress',
+        self::PROGRESS_STOPED => 'Stoped',
+        self::PROGRESS_FINALIZED => 'Finalized',
+        self::PROGRESS_SHIPPED => 'Shipped',
+        self::PROGRESS_REFUND => 'Refund'
     );
     
     /**
@@ -72,6 +72,14 @@ class Progress extends BaseEntity
     public function __construct()
     {
         parent::__construct();
+    }
+    
+    /**
+     * 
+     */
+    public function __toString()
+    {
+        return $this->title;
     }
     
     /**
@@ -171,5 +179,14 @@ class Progress extends BaseEntity
     public function getType()
     {
         return $this->type;
-    }    
+    }
+    
+    /**
+     * 
+     * @return type
+     */
+    public function isDynamic()
+    {
+        return $this->getType() === self::TYPE_DYNAMIC;
+    }
 }

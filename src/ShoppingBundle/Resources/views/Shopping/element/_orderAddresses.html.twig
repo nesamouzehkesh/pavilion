@@ -1,0 +1,9 @@
+Order ID: {{ order.id }}<br>
+Order User:<br>
+<address>
+  <strong>{{ order.user.firstName }} {{ order.user.lastName }}</strong><br>
+  <a href="mailto:#">{{ order.user.email }}</a>
+</address>
+  
+{% include '::web/user/address.html.twig' with {'address': order.billingAddress, 'billingTitle': 'Order billing address'} only %}
+{% include '::web/user/address.html.twig' with {'address': order.shippingAddress, 'shippingTitle': 'Order shipping address'} only %}

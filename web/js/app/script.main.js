@@ -18,6 +18,23 @@ $(document).ready(function(){
           }
     });
     
+    /* Display Selected Item in Bootstrap Button Dropdown Title */
+    $(".dropdown-menu li a").click(function(){
+      $(this).parents(".dropdown").find('.btn').html($(this).text() + ' <span class="caret"></span>');
+      $(this).parents(".dropdown").find('.btn').val($(this).data('value'));
+    });  
+    
+    /* Set Search type */
+    $('.action-set-search-type').click(function(e){
+        var searchTarget = $(this).attr('data-search-target');
+        var searchType = $(this).attr('data-search-type');
+        var searchTextInput = $(this).attr('data-search-input');
+        if (searchType !== undefined) {
+            $("#" + searchTextInput).attr('data-search-type', searchType);
+        }        
+        $("#" + searchTextInput).attr('data-search-target', searchTarget);
+    });    
+    
     Ladda.bind('button[type=submit]');
 });
 
@@ -86,7 +103,17 @@ function displayItems(url, cont_items, page)
     var searchText = $("#input-search").val();
     var param;
     if ('' !== searchText) {
-        param = {searchText: searchText, page: page};
+        var searchTarget = $("#input-search").attr('data-search-target');
+        var searchType = $("#input-search").attr('data-search-type');
+        if (searchTarget !== undefined) {
+            if (searchType !== undefined) {
+                param = {searchText: searchText, searchTarget: searchTarget, searchType: searchType, page: page};
+            } else {
+                param = {searchText: searchText, searchTarget: searchTarget, page: page};
+            }
+        } else {
+            param = {searchText: searchText, page: page};
+        }
     } else {
         param = {page: page};
     }

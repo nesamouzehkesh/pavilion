@@ -145,6 +145,11 @@ module:
         title: Playground
         description: ""
         icon: glyphicon glyphicon-star
+    order:
+        title: Orders
+        description: ""
+        icon: glyphicon glyphicon-gif
+        
 
                 
 shopping:

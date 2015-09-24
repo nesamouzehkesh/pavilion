@@ -1,38 +1,39 @@
-{% extends "::twig/modal.html.twig" %}
+{% set twig_show_search = true %}
+{% extends "CmsBundle::layout.html.twig" %}
 
-{% set modalTitle = product.title %}
-{% set modalLogo = product.logo %}
+{% block headerContainer %}{% endblock %}
 
 {% block body %}
-    <div class="row">
-        <div class="col-md-12"><strong>Title:</strong> {{ product.title }}</div>
-    </div>
-    <div class="row">
-        <div class="col-md-12"><strong>Price:</strong> {{ product.price }}</div>
-    </div>    
-    <div class="row">
-        <div class="col-md-12">{{ product.description|raw }}</div>
-    </div>
-    
-    {% set image = product.image|getMedia %}
-    {% if image is not null %}
-        <div class="row margin-top-10">
-            <div class="col-md-12">
-                <a href="{{ asset(image.path|imagine_filter('o')) }}" target="_blank">
-                    <img src="{{ asset(image.path|imagine_filter('s')) }}" class="img-thumbnail" />
-                </a>
+    <ul role="tablist" class="nav nav-tabs" id="myTabs">
+        <li class="active" role="presentation">
+            <a aria-expanded="true" aria-controls="order-home" data-toggle="tab" role="tab" id="order-home-tab" href="#order-home">Order Info</a>
+        </li>
+        <li role="presentation" class="">
+            <a aria-controls="order-addresses" data-toggle="tab" id="order-addresses-tab" role="tab" href="#order-addresses" aria-expanded="false">Order Addresses</a>
+        </li>
+        <li role="presentation" class="">
+            <a aria-controls="order-events" data-toggle="tab" id="order-events-tab" role="tab" href="#order-events" aria-expanded="false">Events</a>
+        </li>
+    </ul>
+    <div class="tab-content" id="myTabContent">
+        <div aria-labelledby="order-home-tab" id="order-home" class="tab-pane fade active in" role="tabpanel">
+            <div class="margin-left-10 margin-right-10 margin-top-20">
+                {% include 'ShoppingBundle:Shopping:element/_orderInfo.html.twig' %}
             </div>
         </div>
-    {% endif %}
-    
-    <div class="row margin-top-10">
-        <div class="col-md-12">
-            {% for image in product.images|getMedias %}
-                <a href="{{ asset(image.path|imagine_filter('o')) }}" target="_blank">
-                    <img src="{{ asset(image.path|imagine_filter('t')) }}" class="img-thumbnail" />
-                </a>
-            {% endfor %}
+        <div aria-labelledby="order-addresses-tab" id="order-addresses" class="tab-pane fade" role="tabpanel">
+            <div class="margin-left-10 margin-right-10 margin-top-20">
+                {% include 'ShoppingBundle:Shopping:element/_orderAddresses.html.twig' %}
+            </div>
         </div>
+        <div aria-labelledby="order-events-tab" id="order-events" class="tab-pane fade" role="tabpanel">
+            <div class="margin-left-10 margin-right-10 margin-top-20">
+                {% include 'ShoppingBundle:Shopping:element/_orderEvents.html.twig' %}
+            </div>
+        </div>            
     </div>
-        
+{% endblock %}
+    
+{% block script %}
+    {% include 'ShoppingBundle:Shopping:js/order.js.twig' %}
 {% endblock %}

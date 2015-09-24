@@ -29,6 +29,29 @@ class OrderProgressRepository extends BaseEntityRepository
     }
     
     /**
+     * 
+     * @param type $progressId
+     * @param User $user
+     * @return type
+     */
+    public function getOrderProgress($progressId, User $user = null)
+    {
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        
+        $qb->select('op')
+            ->from('ShoppingBundle:OrderProgress', 'op')
+            ->where('op.id = :id AND op.deleted = 0')
+            ->setParameter('id', $progressId);
+        
+        if ($user instanceof User) {
+            $qb->andWhere('op.user = :user');
+            $qb->setParameter('user', $user);
+        }
+
+        return $qb->getQuery()->getOneOrNullResult();
+    }
+        
+    /**
      * @param Order $order
      * @param type $status
      * @param type $currentStatuses

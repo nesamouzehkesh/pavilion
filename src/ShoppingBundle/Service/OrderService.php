@@ -91,19 +91,20 @@ class OrderService
      */
     public function getUserOrders(User $user, $params = array())
     {
-        return $this->getOrders($user, $params, false);
+        return Order::getRepository($this->appService->getEntityManager())
+            ->getUserOrders($user, $params);        
     }
     
     /**
      * 
-     * @param User $user
+     * @param type $params
      * @param type $justQuery
      * @return type
      */
-    public function getOrders(User $user = null, $params = array(), $justQuery = true)
+    public function getOrders($params = array(), $justQuery = true)
     {
         return Order::getRepository($this->appService->getEntityManager())
-            ->getOrders($user, $params, $justQuery);
+            ->getOrders($params, $justQuery);
     }
     
     /**

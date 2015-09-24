@@ -46,7 +46,7 @@ class OrderRepository extends BaseEntityRepository
      * @param type $readOnly
      * @return type
      */
-    public function getOrders(User $user = null, $params = array(), $justQuery = true, $readOnly = true)
+    public function getUserOrders(User $user, $params = array(), $readOnly = true)
     {
         $hydrationMode = $readOnly? Query::HYDRATE_ARRAY : null;
         $qb = $this->getQueryBuilder();
@@ -55,11 +55,38 @@ class OrderRepository extends BaseEntityRepository
             ->from('ShoppingBundle:Order', 'o')
             ->leftJoin('o.progresses', 'op', 'WITH', 'op.deleted = 0')
             ->leftJoin('op.progress', 'p', 'WITH', 'p.deleted = 0')
-            ->where('o.deleted = 0');
+            ->where('o.deleted = 0 AND o.user = :user')
+            ->setParameter('user', $user);
         
-        if ($user instanceof User) {
-            $qb->andWhere('o.user = :user');
-            $qb->setParameter('user', $user);
+        // If we use this it will generate just array
+        //return $qb->getQuery()->getResult($hydrationMode);
+        return $qb->getQuery()->getResult();
+    }
+    
+    /**
+     * Get all user's orders
+     * 
+     * @param type $params
+     * @param type $justQuery
+     * @param type $readOnly
+     * @return type
+     */
+    public function getOrders($params = array(), $justQuery = true, $readOnly = true)
+    {
+        $hydrationMode = $readOnly? Query::HYDRATE_ARRAY : null;
+        $qb = $this->getQueryBuilder();
+        
+        $qb->select('o')
+            ->from('ShoppingBundle:Order', 'o')
+            ->leftJoin('o.user', 'ou')
+            ->leftJoin('o.progresses', 'op', 'WITH', 'op.deleted = 0')
+            ->leftJoin('op.progress', 'p', 'WITH', 'p.deleted = 0')
+            ->where('o.deleted = 0')
+            ->search('o.id', $params, 'int');
+        
+        if (isset($params['progressFilter'])) {
+            $qb->andWhere('o.progressesStatus = :status');
+            $qb->setParameter('status', $params['progressFilter']);
         }
         
         if ($justQuery) {

@@ -77,6 +77,7 @@ twig:
     debug:            "%kernel.debug%"
     strict_variables: "%kernel.debug%"
     globals:
+        saman_production_view: %saman_production_view%
         date_format: "d/m/Y"
         saman_twig_param_displaySimpleView: "%saman.twig.param.displaySimpleView%"
         saman_app_modules:
@@ -84,6 +85,7 @@ twig:
             user: saman_admin_user_home
             cms: saman_cms_admin_page_home
             product: saman_admin_product_home
+            order: saman_admin_shopping_order_home
 
        
     form:
