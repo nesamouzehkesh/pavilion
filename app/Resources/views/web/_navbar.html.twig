@@ -18,7 +18,7 @@
                 {% if isSecond is defined and isSecond %}
                     <li><a href="{{ path('saman_cms_page_index') }}">{{ 'icon.home'|icon }} CMS Home</a></li>
                 {% endif %}
-                <li><a href="{{ path('saman_pg_index') }}">{{ 'module.playground.icon'|icon }} Playground</a></li>
+                {#<li><a href="{{ path('saman_pg_index') }}">{{ 'module.playground.icon'|icon }} Playground</a></li>#}
                 <li><a href="{{ path('saman_shopping_customer_profile') }}">My Profile</a></li>
                 <li><a href="{{ app.request.getSchemeAndHttpHost() }}/front">AngularJS & Symfony</a></li>
                 <li><a href="{{ app.request.getSchemeAndHttpHost() }}/api/doc">Symfony API Doc</a></li>
