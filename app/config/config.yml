@@ -244,12 +244,12 @@ exercise_html_purifier:
 nelmio_api_doc: ~
 
 # app/config/config.yml
-doctrine_mongodb:
-    connections:
-        default:
-            server: mongodb://localhost:27017
-            options: {}
-    default_database: %mongodb_database_name%
-    document_managers:
-        default:
-            auto_mapping: true
+#doctrine_mongodb:
+#    connections:
+#        default:
+#            server: mongodb://localhost:27017
+#            options: {}
+#    default_database: %mongodb_database_name%
+#    document_managers:
+#        default:
+#            auto_mapping: true
