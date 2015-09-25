@@ -87,7 +87,9 @@ icon:
     url: glyphicon glyphicon-link
     page: glyphicon glyphicon-th-large
     paperclip: glyphicon glyphicon-paperclip
+    logIn: glyphicon glyphicon-lock
     logout: glyphicon glyphicon-off
+    createAccount: glyphicon glyphicon-user
     visibility:
         public: glyphicon glyphicon-unlock
         private: glyphicon glyphicon-lock
@@ -159,6 +161,16 @@ module:
                 
 shopping:
     webTitle: shopping
+
+order:
+    myOrders: My Orders
+    progress: Order Progress
+    payments: Order Payments
+    action:
+        confirm: Confirm Order
+        edit: Edit Order
+        view: View Order
+        makeOrder: Make Order
     
 customer:
     registerConfirmation: Confirmation

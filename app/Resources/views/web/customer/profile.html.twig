@@ -5,8 +5,8 @@
       <h3><strong>{{ user.firstName }} {{ user.lastName }}</strong></h3>
       <a href="mailto:#">{{ user.email }}</a>
     </address>
-    {% include '::web/user/address.html.twig' with {'address': user.primaryBillingAddress} only %}
-    {% include '::web/user/address.html.twig' with {'address': user.primaryShippingAddress} only %}
+    {% include '::web/user/_address.html.twig' with {'address': user.primaryBillingAddress} only %}
+    {% include '::web/user/_address.html.twig' with {'address': user.primaryShippingAddress} only %}
     
     <a href="{{ path('saman_shopping_order_add') }}" class="btn btn-primary">Make Order</a>
     <a href="{{ path('saman_shopping_orders') }}" class="btn btn-primary">My Orders</a>

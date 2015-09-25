@@ -18,15 +18,13 @@
                 {% if isSecond is defined and isSecond %}
                     <li><a href="{{ path('saman_cms_page_index') }}">{{ 'icon.home'|icon }} CMS Home</a></li>
                 {% endif %}
-                <li><a href="{{ path('saman_shopping_customer_profile') }}">My Profile</a></li>
+                {#
                 <li><a href="{{ app.request.getSchemeAndHttpHost() }}/front">AngularJS & Symfony</a></li>
                 <li><a href="{{ app.request.getSchemeAndHttpHost() }}/api/doc">Symfony API Doc</a></li>
+                #}
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li><a href='{{ path('saman_app_display_dashboard') }}'>{{ 'icon.setting'|icon }} Admin</a></li>
-                {% if app.user is not null %}
-                    <li><a href="{{ path('saman_logout_web') }}">{{ 'icon.logout'|icon }} {{ 'action.logout'|trans }}</a></li>
-                {% endif %}
             </ul>
         </div>
     </div>

@@ -28,7 +28,8 @@ security:
                 target: saman_login
                 
         secured_area_web:
-            pattern:   ^/shopping|media
+            #pattern:   ^/shopping|media
+            pattern:   ^/shopping|/media|/
             anonymous: ~
             provider: administrators
             form_login:

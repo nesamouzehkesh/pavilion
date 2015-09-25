@@ -13,13 +13,12 @@
                         
             <div class="row margin-top-20">
                 <div class="col-sm-9">
+                    {% include '::web/user/_navigator.html.twig' %}
                     <div class="panel panel-default">
                         <div class="panel-body">
-                            
                             <div class="page-header">
                                 <h3>{% block pageTitle %}{{ title }}{% endblock %}</h3>
                             </div>
-                            
                             {% block pageBody %}
                                 {% if content is defined %}
                                     <p>{{ content|raw }}</p>

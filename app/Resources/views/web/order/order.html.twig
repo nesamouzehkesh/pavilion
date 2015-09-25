@@ -6,13 +6,13 @@
     {% include '::web/order/_order.html.twig' with {'order': order, 'orderConfig': orderConfig, 'noImage': true} only %}
     
     {% if order.isSubmitted == false %}
-        <h4>Order Payments</h4>
+        <h4>{{ 'order.payments'|trans }}</h4>
         {% for payment in order.payments %}
             {{ payment.date|date(date_format) }} - {{ payment.content }}
             ..............................................................................................................................................................<br>
         {% endfor %}
         <br>
-        <h4>Order Progress</h4>
+        <h4>{{ 'order.progress'|trans }}</h4>
         {% for progress in order.progresses %}
             {{ progress.progress.title }} - Start Date: {{ progress.startDate|date(date_format) }} - Estimated End Date {{ progress.estimatedEndDate|date(date_format) }} - Status: {{ progress.status }}<br>
             ..............................................................................................................................................................<br>
@@ -21,8 +21,8 @@
     {% endif %}
     
     {% if order.isSubmitted %}
-        <a href="{{ path('saman_shopping_order_set_shipping_address', {'orderId': order.id }) }}" class="btn btn-primary">Confirm</a>
-        <a href="{{ path('saman_shopping_order_edit', {'orderId': order.id }) }}" class="btn btn-primary">Edit</a>
+        <a href="{{ path('saman_shopping_order_set_shipping_address', {'orderId': order.id }) }}" class="btn btn-primary">{{ 'order.action.confirm'|trans }}</a>
+        <a href="{{ path('saman_shopping_order_edit', {'orderId': order.id }) }}" class="btn btn-primary">{{ 'order.action.edit'|trans }}</a>
     {% endif %}
-    <a class="btn btn-primary" href="{{ path('saman_shopping_orders') }}">My Orders</a>
+    <a class="btn btn-primary" href="{{ path('saman_shopping_orders') }}">{{ 'order.myOrders'|trans }}</a>
 {% endblock %}

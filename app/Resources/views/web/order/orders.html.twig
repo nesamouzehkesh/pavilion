@@ -18,10 +18,10 @@
                         <td>{{ order.id }}</td>
                         <td>{{ orderProgress.progress.title }} - Start Date: {{ orderProgress.startDate|date(date_format) }} - Estimated End Date {{ orderProgress.estimatedEndDate|date(date_format) }}</td>
                         <td>
-                            <a class="btn btn-primary btn-sm" href="{{ path('saman_shopping_order_display', {'orderId': order.id }) }}">View Order</a>
+                            <a class="btn btn-primary btn-sm" href="{{ path('saman_shopping_order_display', {'orderId': order.id }) }}">{{ 'order.action.view'|trans }}</a>
                             {% if order.isSubmitted %}
-                                <a class="btn btn-primary btn-sm" href="{{ path('saman_shopping_order_set_shipping_address', {'orderId': order.id }) }}">Confirm</a> 
-                                <a class="btn btn-primary btn-sm" href="{{ path('saman_shopping_order_edit', {'orderId': order.id }) }}">Edit</a>
+                                <a class="btn btn-primary btn-sm" href="{{ path('saman_shopping_order_set_shipping_address', {'orderId': order.id }) }}">{{ 'order.action.confirm'|trans }}</a> 
+                                <a class="btn btn-primary btn-sm" href="{{ path('saman_shopping_order_edit', {'orderId': order.id }) }}">{{ 'order.action.edit'|trans }}</a>
                             {% endif %}    
                         </td>
                     </tr>
@@ -30,5 +30,5 @@
         </tbody>
     </table>    
     
-    <a href="{{ path('saman_shopping_order_add') }}" class="btn btn-primary">Make Order</a>
+    <a href="{{ path('saman_shopping_order_add') }}" class="btn btn-primary">{{ 'order.action.makeOrder'|trans }}</a>
 {% endblock %}

@@ -1,0 +1,19 @@
+{% if app.user %}
+    {% set user = app.user %}
+    <div class="dropdown">
+        <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+            {{ user.firstName }} {{ user.lastName }}
+            <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+            <li><a href="{{ path('saman_shopping_customer_profile') }}">My Profile</a></li>
+            <li><a href="{{ path('saman_shopping_order_add') }}">{{ 'order.action.makeOrder'|trans }}</a></li>
+            <li><a href="{{ path('saman_shopping_orders') }}">{{ 'order.myOrders'|trans }}</a></li>
+            <li role="separator" class="divider"></li>
+            <li><a href="{{ path('saman_logout_web') }}">{{ 'icon.logout'|icon }} {{ 'action.logout'|trans }}</a></li>
+        </ul>
+    </div>
+{% else %}
+    <a class="btn btn-default" href="{{ path('saman_login_web') }}">{{ 'icon.logIn'|icon }} {{ 'word.logIn'|trans }}</a>
+    <a class="btn btn-default" href="{{ path('saman_shopping_customer_joinus') }}">{{ 'icon.createAccount'|icon }} {{ 'word.createAccount'|trans }}</a>
+{% endif %}
