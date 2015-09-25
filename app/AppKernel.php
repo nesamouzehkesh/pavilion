@@ -50,7 +50,6 @@ class AppKernel extends Kernel
             // Saman instaled bundles
             $bundles[] = new Nelmio\ApiDocBundle\NelmioApiDocBundle(); // For my api documenting       
             $bundles[] = new Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle();
-            $bundles[] = new PlaygroundBundle\PlaygroundBundle();
             // End: Saman instaled bundles
             $bundles[] = new Symfony\Bundle\WebProfilerBundle\WebProfilerBundle();
             $bundles[] = new Sensio\Bundle\DistributionBundle\SensioDistributionBundle();
