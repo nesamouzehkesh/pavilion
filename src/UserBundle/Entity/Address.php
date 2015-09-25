@@ -13,8 +13,8 @@ use Library\Base\BaseEntity;
  */
 class Address extends BaseEntity
 {
-    const ADDRESS_TYPE_BILLING = 1;
-    const ADDRESS_TYPE_SHIPPING = 2;
+    const ADDRESS_TYPE_SHIPPING = 1;
+    const ADDRESS_TYPE_BILLING = 2;
     const ADDRESS_TYPE_BILLING_SHIPPING = 3;
     
     const TYPE_PRIMARY = 1;

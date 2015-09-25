@@ -137,18 +137,24 @@ class ShoppingController extends BaseController
         $form->handleRequest($request);
         // If form is submited and it is valid then add or update this $label
         if ($form->isValid()) {
-            
             $billingSameAsShipping = false;
-            if ($form->has('setNewShipping') and $form->get('setNewShipping')->getData()) {
+            $setNewShipping = ($form->has('setNewShipping') and $form->get('setNewShipping')->getData())? true : false;
+            $setNewBilling = ($form->has('setNewBilling') and $form->get('setNewBilling')->getData())? true : false;
+            if (null === $primaryShippingAddress or $setNewShipping) {
                 $shippingAddress = $form->get('shipping')->getData();
                 $shippingAddress->setAddressType(Address::ADDRESS_TYPE_SHIPPING);
                 $shippingAddress->setType(Address::TYPE_SECONDARY);
+                $shippingAddress->setUser($user);
                 //TODO: validate $shippingAddress
-                if ($form->has('setShippingPrimary') and $form->get('setShippingPrimary')->getData()) {
+                if (null === $primaryShippingAddress) {
                     $shippingAddress->setType(Address::TYPE_PRIMARY);
-                    if ($primaryShippingAddress instanceof Address) {
-                        $primaryShippingAddress->setType(Address::TYPE_SECONDARY);
-                        $em->persist($primaryShippingAddress);
+                } else {
+                    if ($form->has('setShippingPrimary') and $form->get('setShippingPrimary')->getData()) {
+                        $shippingAddress->setType(Address::TYPE_PRIMARY);
+                        if ($primaryShippingAddress instanceof Address) {
+                            $primaryShippingAddress->setType(Address::TYPE_SECONDARY);
+                            $em->persist($primaryShippingAddress);
+                        }
                     }
                 }
                 
@@ -164,16 +170,21 @@ class ShoppingController extends BaseController
             }
             
             if (!$billingSameAsShipping) {
-                if ($form->has('setNewBilling') and $form->get('setNewBilling')->getData()) {
+                if (null === $primaryBillingAddress or $setNewBilling) {
                     $billingAddress = $form->get('billing')->getData();
                     $billingAddress->setAddressType(Address::ADDRESS_TYPE_BILLING);
                     $billingAddress->setType(Address::TYPE_SECONDARY);
+                    $billingAddress->setUser($user);
                     //TODO: validate $billingAddress
-                    if ($form->has('setBillingPrimary') and $form->get('setBillingPrimary')->getData()) {
+                    if (null === $primaryBillingAddress) {
                         $billingAddress->setType(Address::TYPE_PRIMARY);
-                        if ($primaryBillingAddress instanceof Address) {
-                            $primaryBillingAddress->setType(Address::TYPE_SECONDARY);
-                            $em->persist($primaryBillingAddress);
+                    } else {                    
+                        if ($form->has('setBillingPrimary') and $form->get('setBillingPrimary')->getData()) {
+                            $billingAddress->setType(Address::TYPE_PRIMARY);
+                            if ($primaryBillingAddress instanceof Address) {
+                                $primaryBillingAddress->setType(Address::TYPE_SECONDARY);
+                                $em->persist($primaryBillingAddress);
+                            }
                         }
                     }
                     $em->persist($billingAddress);

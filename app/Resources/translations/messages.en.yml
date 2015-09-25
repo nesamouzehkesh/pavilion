@@ -122,6 +122,11 @@ form:
         title: Product
         icon: glyphicon glyphicon-shopping_bag
         description: "You can create new product or edit your existing product in this form"
+    saman_order_form:
+        title: ""
+        icon: ""
+        description: ""
+
 
 
 module: 

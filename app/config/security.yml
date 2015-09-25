@@ -28,7 +28,7 @@ security:
                 target: saman_login
                 
         secured_area_web:
-            pattern:   ^/shopping
+            pattern:   ^/shopping|media
             anonymous: ~
             provider: administrators
             form_login:
@@ -37,7 +37,6 @@ security:
             logout:
                 path:   saman_logout_web
                 target: saman_login_web
-
                 
     access_control:
         #- { path: ^/admin/, roles: ROLE_ADMIN, requires_channel: https } 
@@ -46,4 +45,5 @@ security:
         - { path: ^/admin$, roles: ROLE_ADMIN }
         #- { path: ^/shopping/, roles: ROLE_USER, requires_channel: https } 
         - { path: ^/shopping/, roles: ROLE_USER }
-        - { path: ^/shopping$, roles: ROLE_USER }
+        - { path: ^/media/, roles: ROLE_USER }
+      

@@ -61,7 +61,7 @@ class MediaService
      * @param type $user
      * @return \MediaBundle\Service\MediaService
      */
-    public function setUser($user)
+    public function setUser(User $user)
     {
         $this->user = $user;
         
@@ -433,8 +433,7 @@ class MediaService
      */
     private function hasAccess($action, $media)
     {
-        $user = $this->appService->getUser();
-        if ($user instanceof User and $user->hasAdminRole()) {
+        if ($this->user instanceof User and $this->user->hasAdminRole()) {
             return true;
         }
         
@@ -444,13 +443,16 @@ class MediaService
                     return true;
                 }
                 
-                if ($user instanceof User and $user->getId() === $media['user']) {
+                if ($this->user instanceof User and $this->user->getId() === $media['user']) {
                     return true;
                 }
                 break;
             case 'delete':
-                if ('0' === $media['isPermanent']) {
-                    if ($user instanceof User and $user->getId() === $media['user']) {
+                if (0 === intval($media['isPermanent'])) {
+                    echo "sss";echo "/";
+                    var_dump($this->user->getId());echo "/";
+                    var_dump(intval($media['user']));echo "/";
+                    if ($this->user instanceof User and $this->user->getId() === intval($media['user'])) {
                         return true;
                     }
                 }

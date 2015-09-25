@@ -23,6 +23,9 @@
                         {% set hideNewShipping = true %}
                     {% endif %}
                     <div id="shipping-form-container" style="{{ hideNewShipping? 'display: none;' : '' }}">
+                        <div class="margin-bottom-10">
+                            <strong>{{ shippingTitle|default('Shipping address')|trans }}</strong><br>
+                        </div>                    
                         {{ form_row(form.shipping.fullName) }}
                         {{ form_row(form.shipping.firstAddressLine) }}
                         {{ form_row(form.shipping.secondAddressLine) }}
@@ -47,6 +50,9 @@
                         {% set hideNewBilling = true %}
                     {% endif %}
                     <div id="billing-form-container" style="{{ hideNewBilling? 'display: none;' : '' }}">
+                        <div class="margin-bottom-10">
+                            <strong>{{ billingTitle|default('Billing address')|trans }}</strong><br>
+                        </div>
                         {{ form_row(form.billing.fullName) }}
                         {{ form_row(form.billing.firstAddressLine) }}
                         {{ form_row(form.billing.secondAddressLine) }}
