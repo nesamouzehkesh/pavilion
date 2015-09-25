@@ -33,9 +33,9 @@ saman_shopping:
     resource: "@ShoppingBundle/Resources/config/routing.yml"
     prefix:   /
 
-#saman_playground:
-#    resource: "@PlaygroundBundle/Resources/config/routing.yml"
-#    prefix:   /playground
+saman_playground:
+    resource: "@PlaygroundBundle/Resources/config/routing.yml"
+    prefix:   /playground
     
 saman_media:
     resource: "@MediaBundle/Resources/config/routing.yml"
