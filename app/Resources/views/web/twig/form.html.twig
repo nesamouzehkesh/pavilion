@@ -35,7 +35,14 @@
             {% endif %}
             {% block body %}{% endblock %}
 
-            <button id="form-submit-{{ form.vars.name }}" class="btn btn-primary ladda-button" type="submit" data-style="expand-left"><span class="ladda-label">{{ 'action.save'|trans }}</span></button>            
+            <button id="form-submit-{{ form.vars.name }}" class="btn btn-primary ladda-button" type="submit" data-style="expand-left">
+                <span class="ladda-label">
+                    {% if submitButtonIcon is defined %}
+                        <spam class="margin-right-5">{{ submitButtonIcon|icon }}</spam>
+                    {% endif %} 
+                    {{ (submitButton|default('action.save'))|trans }}
+                </span>
+            </button>
         {{ form_end(form) }}
     </div>
 </div>

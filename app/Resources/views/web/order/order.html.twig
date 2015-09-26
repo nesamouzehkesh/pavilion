@@ -21,8 +21,8 @@
     {% endif %}
     
     {% if order.isSubmitted %}
-        <a href="{{ path('saman_shopping_order_set_shipping_address', {'orderId': order.id }) }}" class="btn btn-primary">{{ 'order.action.confirm'|trans }}</a>
-        <a href="{{ path('saman_shopping_order_edit', {'orderId': order.id }) }}" class="btn btn-primary">{{ 'order.action.edit'|trans }}</a>
+        <a href="{{ path('saman_shopping_order_set_shipping_address', {'orderId': order.id }) }}" class="btn btn-primary">{{ 'order.icon.confirm'|icon }} {{ 'order.action.confirm'|trans }}</a>
+        <a href="{{ path('saman_shopping_order_edit', {'orderId': order.id }) }}" class="btn btn-primary">{{ 'order.icon.edit'|icon }} {{ 'order.action.edit'|trans }}</a>
     {% endif %}
-    <a class="btn btn-primary" href="{{ path('saman_shopping_orders') }}">{{ 'order.myOrders'|trans }}</a>
+    <a class="btn btn-primary" href="{{ path('saman_shopping_orders') }}">{{ 'order.icon.myOrders'|icon }} {{ 'order.myOrders'|trans }}</a>
 {% endblock %}

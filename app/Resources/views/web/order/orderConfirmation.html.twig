@@ -1,17 +1,16 @@
 {% extends "::web/content.html.twig" %}
 
 {% set title = 'Order Confirm'|trans %}
+{% set pageIcon = 'order.icon.confirm' %}
+
 {% block pageBody %}
     {% include '::web/order/_order.html.twig' with {'order': order, 'orderConfig': orderConfig} only %}
+    <p>
+        Your order is with us now, you still can modify it. But you need to finalize your order by
+        payment, then we will start working on your order. To change your order click <a href="{{ path('saman_shopping_order_edit', {'orderId': order.id}) }}">{{ 'order.action.edit'|trans }}</a> 
+        and to finalize your ourde click on the following button.
+    </p>
     
-    Your order is with us now, you still can modify it. But you need to finalize your order by
-    payment, then we will start working on your order. To change your order click <a href="{{ path('saman_shopping_order_edit', {'orderId': order.id}) }}">{{ 'order.action.edit'|trans }}</a> 
-    and to finalize your ourde click on the following button.
-    
-    <div class="row margin-top-10">
-        <div class="col-md-12">
-            <a class="btn btn-primary" href="{{ path('saman_shopping_order_set_shipping_address', {'orderId': order.id}) }}">{{ 'order.action.confirm'|trans }}</a>     
-            <a class="btn btn-primary" href="{{ path('saman_shopping_orders') }}">{{ 'order.myOrders'|trans }}</a>
-        </div>
-    </div>
+    <a class="btn btn-primary" href="{{ path('saman_shopping_order_set_shipping_address', {'orderId': order.id }) }}">{{ 'order.icon.confirm'|icon }} <spam class="hidden-xs">{{ 'order.action.confirm'|trans }}</spam></a> 
+    <a class="btn btn-primary" href="{{ path('saman_shopping_orders') }}">{{ 'order.icon.myOrders'|icon }} {{ 'order.myOrders'|trans }}</a>
 {% endblock %}

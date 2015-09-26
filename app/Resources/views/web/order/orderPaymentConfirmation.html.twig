@@ -1,12 +1,15 @@
 {% extends "::web/content.html.twig" %}
 
 {% set title = 'Order Confirm'|trans %}
+{% set pageIcon = 'order.icon.order' %}
+
 {% block pageBody %}
-    Your order and your payment is finalized and we will start it as soon as possible. 
-    Hear is the summary of your order, your shipping and billing addresses. If there 
-    is any change in your billing or shipping addresses please contact us as soon as possible. 
-    You can always track your orders in your <a href="{{ path('saman_shopping_orders') }}">orders list page</a>.
-    
+    <p>
+        Your order and your payment is finalized and we will start it as soon as possible. 
+        Hear is the summary of your order, your shipping and billing addresses. If there 
+        is any change in your billing or shipping addresses please contact us as soon as possible. 
+        You can always track your orders in your <a href="{{ path('saman_shopping_orders') }}">orders list page</a>.
+    </p>
     {% set order = payment.order %}
     <div class="panel panel-default">
         <div class="panel-body">
@@ -20,4 +23,6 @@
             {% include '::web/order/_order.html.twig' with {'order': order, 'orderConfig': orderConfig} only %}
         </div>
     </div>
+
+    <a class="btn btn-primary" href="{{ path('saman_shopping_orders') }}">{{ 'order.icon.myOrders'|icon }} {{ 'order.myOrders'|trans }}</a>
 {% endblock %}

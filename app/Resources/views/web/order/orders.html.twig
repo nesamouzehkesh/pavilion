@@ -1,34 +1,44 @@
 {% extends "::web/content.html.twig" %}
 
 {% set title = 'My Orders'|trans %}
+{% set pageIcon = 'order.icon.myOrders' %}
+
 {% block pageBody %}
-    <table class="table table-hover">
-        <thead>
-            <tr>
-                <th>Order ID</th>
-                <th>Status</th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for order in orders %}
-                {% if order.getActiveProgress is not null %}
-                    {% set orderProgress = order.getActiveProgress %}
+    <div class="panel panel-default">
+        <div class="panel-body">    
+            <table class="table table-hover">
+                <thead>
                     <tr>
-                        <td>{{ order.id }}</td>
-                        <td>{{ orderProgress.progress.title }} - Start Date: {{ orderProgress.startDate|date(date_format) }} - Estimated End Date {{ orderProgress.estimatedEndDate|date(date_format) }}</td>
-                        <td>
-                            <a class="btn btn-primary btn-sm" href="{{ path('saman_shopping_order_display', {'orderId': order.id }) }}">{{ 'order.action.view'|trans }}</a>
-                            {% if order.isSubmitted %}
-                                <a class="btn btn-primary btn-sm" href="{{ path('saman_shopping_order_set_shipping_address', {'orderId': order.id }) }}">{{ 'order.action.confirm'|trans }}</a> 
-                                <a class="btn btn-primary btn-sm" href="{{ path('saman_shopping_order_edit', {'orderId': order.id }) }}">{{ 'order.action.edit'|trans }}</a>
-                            {% endif %}    
-                        </td>
+                        <th>Order ID</th>
+                        <th>Status</th>
+                        <th></th>
                     </tr>
-                {% endif %}
-            {% endfor %}
-        </tbody>
-    </table>    
-    
-    <a href="{{ path('saman_shopping_order_add') }}" class="btn btn-primary">{{ 'order.action.makeOrder'|trans }}</a>
+                </thead>
+                <tbody>
+                    {% for order in orders %}
+                        {% if order.getActiveProgress is not null %}
+                            {% set orderProgress = order.getActiveProgress %}
+                            <tr>
+                                <th>#{{ order.id }}</th>
+                                <td>
+                                    <a href="{{ path('saman_shopping_order_display', {'orderId': order.id }) }}">
+                                        {{ orderProgress.progress.title }} - Start Date: {{ orderProgress.startDate|date(date_format) }} - Estimated End Date {{ orderProgress.estimatedEndDate|date(date_format) }}
+                                    </a>    
+                                </td>
+                                <td>
+                                    {% if order.isSubmitted %}
+                                        <a class="btn btn-primary btn-sm" href="{{ path('saman_shopping_order_set_shipping_address', {'orderId': order.id }) }}">{{ 'order.icon.confirm'|icon }} <spam class="hidden-xs">{{ 'order.action.confirm'|trans }}</spam></a> 
+                                        <a class="btn btn-primary btn-sm" href="{{ path('saman_shopping_order_edit', {'orderId': order.id }) }}">{{ 'order.icon.edit'|icon }} <spam class="hidden-xs">{{ 'order.action.edit'|trans }}</spam></a>
+                                        <a class="btn btn-primary btn-sm action-delete" href="{{ path('saman_shopping_order_delete', {'orderId': order.id }) }}">{{ 'icon.delete'|icon }} <spam class="hidden-xs">{{ 'order.action.delete'|trans }}</spam></a>
+                                    {% endif %}    
+                                </td>
+                            </tr>
+                        {% endif %}
+                    {% endfor %}
+                </tbody>
+            </table>    
+        </div>
+    </div>
+        
+    <a class="btn btn-primary" href="{{ path('saman_shopping_order_add') }}">{{ 'order.icon.makeOrder'|icon }} {{ 'order.action.makeOrder'|trans }}</a>
 {% endblock %}

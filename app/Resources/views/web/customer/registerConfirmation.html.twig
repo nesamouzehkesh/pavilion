@@ -1,9 +1,13 @@
 {% extends "::web/content.html.twig" %}
 
-{% block pageBody %}
-    Heeeeeeeeeeeey you are a member now, You can log in to you profile or order a product
-    <a href="{{ path('saman_shopping_customer_profile') }}">My Profile</a>
+{% set title = 'word.createAccount'|trans %}
+{% set pageIcon = 'customer.icon.myProfile' %}
 
+{% block pageBody %}
+    <P>
+    Welcome :) you are a member now, You can log in to you profile AND order a product
+    </P>
+    
     <address>
       <h3><strong>{{ user.firstName }} {{ user.lastName }}</strong></h3>
       <a href="mailto:#">{{ user.email }}</a>
@@ -11,4 +15,6 @@
     {% include '::web/user/_address.html.twig' with {'address': user.primaryBillingAddress} only %}
     {% include '::web/user/_address.html.twig' with {'address': user.primaryShippingAddress} only %}
     
+    <a class="btn btn-primary" href="{{ path('saman_shopping_customer_profile') }}">{{ 'customer.icon.myProfile'|icon }} {{ 'customer.profile'|trans }}</a>    
+    <a class="btn btn-primary" href="{{ path('saman_shopping_order_add') }}">{{ 'order.icon.makeOrder'|icon }} {{ 'order.action.makeOrder'|trans }}</a>
 {% endblock %}

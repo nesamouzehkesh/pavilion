@@ -1,10 +1,10 @@
-Order ID: {{ order.id }}
+<h5>Order ID: #{{ order.id }}</h5>
 {% set content = order.content %}
-Order Content:
+<h5>Order Content:</h5>
 <ul>
 {% for key, structure in orderConfig.orderStructure %}
     {% if content[key] is defined %}
-        <li>{{ key }}: {{ content[key] }}</li>
+        <li><strong>{{ key }}:</strong> {{ content[key] }}</li>
     {% endif %}
 {% endfor %}
 </ul>

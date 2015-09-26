@@ -7,7 +7,7 @@
 </head>
 
 <body id="page-top" data-spy="scroll" data-target=".navbar-fixed-top">
-    {% include "::web/_navbar.html.twig" %}
+    {% include "::web/_navbar.html.twig" with {isIndex: true} %}
     <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
         <ol class="carousel-indicators">
             <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
@@ -19,8 +19,8 @@
                 <img src="theme/img/a1.jpg" alt="...">
                 <div class="carousel-caption saman-carousel">
                     <div class="intro">
-                        <h2 class="brand-heading">Order Your Custom Design Handmade Persian Carpet</h1>
-                        <p class="intro-text">
+                        <h2 class="brand-heading hidden-xs hidden-sm">Order Your Custom Design Handmade Persian Carpet</h1>
+                        <p class="intro-text hidden-xs">
                             We handmade your carpet based on your design, whether its an abstract painting, 
                             a family picture a company logo or a pattern of your choice from our gallery.
                         </p>
@@ -34,8 +34,8 @@
                 <img src="theme/img/a2.jpg" alt="...">
                 <div class="carousel-caption saman-carousel">
                     <div class="intro">
-                        <h2 class="brand-heading">Your Unique Master Piece</h1>
-                        <p class="intro-text">
+                        <h2 class="brand-heading hidden-xs hidden-sm">Your Unique Master Piece</h1>
+                        <p class="intro-text hidden-xs">
                             Your carpet can become a painting frame on your wall, a family picture in your room, a wedding 
                             present to your friend, or your company logo to carry your passion for quality to 
                             your business partners.
@@ -50,8 +50,8 @@
                 <img src="theme/img/a3.jpg" alt="...">
                 <div class="carousel-caption saman-carousel">
                     <div class="intro">
-                        <h2 class="brand-heading">How We Handmade Your Custom Design Carpet</h1>
-                        <p class="intro-text">
+                        <h2 class="brand-heading hidden-xs hidden-sm">How We Handmade Your Custom Design Carpet</h1>
+                        <p class="intro-text hidden-xs">
                             Our intelligent software 
                             turns your design into a recipe for a handmade carpet. Then Your carpet will be 
                             woven by the skilful hands of our craftsmen with best organic materials. 
@@ -82,12 +82,12 @@
                     <h2>Order your Custom Design Handmade Persian Carpet</h2>
                     <div class="row">
                         <div class="col-md-6 margin-top-10">
-                            <a href="http://startbootstrap.com/template-overviews/grayscale/" class="btn btn-default btn-xxlg">Make your Order</a>
+                            <a href="{{ path('saman_shopping_order_add') }}" class="btn btn-default btn-xxlg">Make your Order</a>
                             <p class="margin-top-10 no-padding">
                                 We handmade your carpet based on your design, whether its an abstract painting, 
                                 a family picture a company logo or a pattern of your choice from our gallery. <br>
                             </p>
-                            <div class="row no-padding">
+                            <div class="row no-padding hidden-xs">
                                 <div class="col-md-3 col-sm-3 col-xs-6">
                                     <img src="theme/img/step1.png"  alt="Google Map" /><br>
                                     Upload Photo

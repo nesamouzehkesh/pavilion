@@ -100,6 +100,33 @@ class ShoppingController extends BaseController
      * 
      * @param type $orderId
      * @return type
+     */
+    public function deleteOrderAction($orderId)
+    {
+        try {
+            $user = $this->getUser();
+            $order = $this->getOrderService()->getUserOrder($user, $orderId);
+        
+            if ($order->isSubmitted()) {
+                // Soft-deleting an entity
+                $this->getAppService()->deleteEntity($order);
+            } else {
+                throw new \Exception('Order is in progress');
+            }
+            
+            return $this->getJsonResponse(true);
+        } catch (\Exception $ex) {
+            return $this->getExceptionResponse(
+                'You can not delete this order, please contact admin', 
+                $ex
+                );
+        }        
+    }    
+    
+    /**
+     * 
+     * @param type $orderId
+     * @return type
      * @throws \Exception
      */
     public function orderConfirmationAction($orderId)

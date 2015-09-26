@@ -19,6 +19,27 @@ $(document).ready(function(){
     });
     
     /* Display Selected Item in Bootstrap Button Dropdown Title */
+    $(".action-delete").click(function(e){
+        e.preventDefault();
+        var messageDeleteItem = 'Do your really want to delete this order?';
+        var deleteActionUrl = $(this).attr('href');
+        bootbox.confirm(messageDeleteItem, function(result) {
+            if (result) {
+                $.post(deleteActionUrl, function(response) {
+                    if (response.success === true) {
+                        location.reload();
+                    } else {
+                        bootbox.alert(response.message);
+                    }
+                }, 'json');
+            } else {
+                return true;
+            }
+        });
+
+    });  
+    
+    /* Display Selected Item in Bootstrap Button Dropdown Title */
     $(".dropdown-menu li a").click(function(){
       $(this).parents(".dropdown").find('.btn').html($(this).text() + ' <span class="caret"></span>');
       $(this).parents(".dropdown").find('.btn').val($(this).data('value'));

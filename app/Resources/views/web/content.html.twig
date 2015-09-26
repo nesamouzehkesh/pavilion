@@ -7,12 +7,16 @@
 </head>
 
 <body id="page-top" data-spy="scroll" data-target=".navbar-fixed-top">
-    {% include "::web/_navbar.html.twig" %}
+    {% include "::web/_navbar.html.twig" with {isIndex: true} %}
     <section id="order" class="">
         <div class="container section-continer-other">
             <div class="row margin-top-50">
                 <div class="col-md-10 col-md-offset-1">
-                    <h3>{% block pageTitle %}{{ title }}{% endblock %}</h3>
+                    <h3>
+                        {% block pageTitle %}
+                            {% if pageIcon is defined %}{{ pageIcon|icon }}{% endif %} {{ title }}
+                        {% endblock %}
+                    </h3>
                     {% block pageBody %}
                         <p>
                         {% if content is defined %}

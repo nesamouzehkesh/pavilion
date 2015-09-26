@@ -47,7 +47,7 @@ saman_shopping_order_edit:
     defaults: { _controller: ShoppingBundle:Shopping:addEditOrder }
    
 saman_shopping_order_delete:
-    path:     /shopping/order/delete/{itemId}
+    path:     /shopping/order/delete/{orderId}
     defaults: { _controller: ShoppingBundle:Shopping:deleteOrder }
     
     

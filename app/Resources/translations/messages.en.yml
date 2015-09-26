@@ -128,7 +128,10 @@ form:
         title: ""
         icon: ""
         description: ""
-
+    saman_customer_register_form:
+        title: ""
+        icon: ""
+        description: ""
 
 
 module: 
@@ -167,11 +170,31 @@ order:
     progress: Order Progress
     payments: Order Payments
     action:
-        confirm: Confirm Order
-        edit: Edit Order
-        view: View Order
+        payment: Payment
+        confirm: Confirm
+        edit: Edit
+        view: View
+        delete: Delete
         makeOrder: Make Order
+        submitOrder: Submit Order 
+    icon:
+        payment: glyphicon glyphicon-credit-card
+        paymentConfirmed: glyphicon glyphicon-ok
+        confirm: glyphicon glyphicon-ok
+        order: glyphicon glyphicon-gift
+        edit: glyphicon glyphicon-pencil
+        view: glyphicon glyphicon-eye-open
+        makeOrder: glyphicon glyphicon-gift
+        myOrders: glyphicon glyphicon-shopping_bag
+        submitOrder: glyphicon glyphicon-send
     
 customer:
+    register: 
     registerConfirmation: Confirmation
     profile: My Profile
+    action:
+        submitRegisteration: Submit Your Info 
+    icon:
+        myProfile: glyphicon glyphicon-user    
+        submitRegisteration: glyphicon glyphicon-send
+        

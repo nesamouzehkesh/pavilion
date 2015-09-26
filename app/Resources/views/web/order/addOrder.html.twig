@@ -1,6 +1,8 @@
 {% extends "::web/content.html.twig" %}
 
 {% set title = 'Add new Order'|trans %}
+{% set pageIcon = 'order.icon.makeOrder' %}
+
 {% block pageBody %}
     {% include '::web/order/form/addOrderForm.html.twig' %}
 {% endblock %}

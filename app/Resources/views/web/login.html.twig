@@ -1,12 +1,15 @@
 {% extends "::web/content.html.twig" %}
 
+{% set title = 'word.logIn'|trans %}
+{% set pageIcon = 'icon.logIn' %}
+
 {% block pageBody %}
     {% if error %}
         <div class="alert alert-warning d-margin-bottom-20">{{ 'word.warning'|trans }}! {{ error.message }}</div>
     {% endif %}
 
     <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-5 col-xs-6">
         <form action="{{ path(action) }}" method="post">
             <div class="form-group">
                 <label for="exampleInputEmail1">{{ 'word.emailAddress'|trans }}</label>
@@ -31,6 +34,7 @@
 
     <script type="text/javascript">
         $(document).ready(function(){
+            Ladda.stopAll();
             $('#form-submit-login').click(function(e){
                 var form = $(this).closest('form');
                 if (!form.isValid()) {

@@ -9,29 +9,47 @@
                 <i class="fa fa-play-circle"></i>  <span class="light">Zibaf</span>
             </a>
         </div>
-
-        <div class="collapse navbar-collapse navbar-right navbar-main-collapse">
+        
+        <div class="collapse navbar-collapse navbar-left navbar-main-collapse">
+        {% if isIndex %}
             <ul class="nav navbar-nav">
+                <li><a href="{{ base_urls }}">{{ 'icon.home'|icon }} Home</a></li>
+            </ul>    
+        {% endif %}
+        </div>
+        
+        <div class="collapse navbar-collapse navbar-right navbar-main-collapse">
+            <ul class="nav navbar-nav navbar-right">
                 <li class="hidden"><a href="#page-top"></a></li>
-                <li><a class="page-scroll" href="#order">Order</a></li>
-                <li><a class="page-scroll" href="#gallery">Gallery</a></li>
-                <li><a class="page-scroll" href="#about">About</a></li>
-                <li><a class="page-scroll" href="#contact">Contact</a></li>
+                {% if isIndex %}
+                    <li><a href="{{ base_urls }}/order">Order</a></li>
+                    <li><a href="{{ base_urls }}/shop/gallery">Gallery</a></li>
+                    <li><a href="{{ base_urls }}/aboutus">About</a></li>
+                    <li><a href="{{ base_urls }}/contact">Contact</a></li>
+                {% else %}
+                    <li><a class="page-scroll" href="#order">Order</a></li>
+                    <li><a class="page-scroll" href="#gallery">Gallery</a></li>
+                    <li><a class="page-scroll" href="#about">About</a></li>
+                    <li><a class="page-scroll" href="#contact">Contact</a></li>
+                {% endif %}
                 {% if app.user %}
-                <li class="dropdown">
+                <li class="dropdown hidden-xs">
                     {% set user = app.user %}
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true">
-                        {{ 'icon.createAccount'|icon }} My Profile {# {{ user.firstName }} {{ user.lastName }} #}
+                        {{ 'customer.icon.myProfile'|icon }} {{ 'customer.profile'|trans }}
                         <span class="caret"></span>
                     </a>
                     <ul class="dropdown-menu">
-                        <li><a href="{{ path('saman_shopping_customer_profile') }}">My Profile</a></li>
-                        <li><a href="{{ path('saman_shopping_order_add') }}">{{ 'order.action.makeOrder'|trans }}</a></li>
-                        <li><a href="{{ path('saman_shopping_orders') }}">{{ 'order.myOrders'|trans }}</a></li>
+                        <li><a href="{{ path('saman_shopping_customer_profile') }}">{{ 'customer.icon.myProfile'|icon }} {{ user.firstName }} {{ user.lastName }}</a></li>
+                        <li><a href="{{ path('saman_shopping_order_add') }}">{{ 'order.icon.makeOrder'|icon }} {{ 'order.action.makeOrder'|trans }}</a></li>
+                        <li><a href="{{ path('saman_shopping_orders') }}">{{ 'order.icon.myOrders'|icon }} {{ 'order.myOrders'|trans }}</a></li>
                         <li role="separator" class="divider"></li>
                         <li><a href="{{ path('saman_logout_web') }}">{{ 'icon.logout'|icon }} {{ 'action.logout'|trans }}</a></li>
                     </ul>
                 </li>
+                <li class="visible-xs"><a href="{{ path('saman_shopping_customer_profile') }}">{{ 'customer.icon.myProfile'|icon }} My Profile</a></li>
+                <li class="visible-xs"><a href="{{ path('saman_shopping_orders') }}">{{ 'order.icon.myOrders'|icon }} {{ 'order.myOrders'|trans }}</a></li>
+                <li class="visible-xs"><a href="{{ path('saman_logout_web') }}">{{ 'icon.logout'|icon }} {{ 'action.logout'|trans }}</a></li>
                 {% else %}
                     <li><a href="{{ path('saman_login_web') }}">{{ 'icon.logIn'|icon }} {{ 'word.logIn'|trans }}</a></li>
                     {#<li><a href="{{ path('saman_shopping_customer_joinus') }}">{{ 'icon.createAccount'|icon }} {{ 'word.createAccount'|trans }}</a></li>#}

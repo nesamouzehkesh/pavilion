@@ -20,7 +20,6 @@ class CustomerController extends BaseController
         return $this->render(
             '::web/customer/profile.html.twig',
             array(
-                'title' => $this->trans('customer.profile'),
                 'user' => $this->getUser(),
                 )
             );
@@ -37,7 +36,6 @@ class CustomerController extends BaseController
         return $this->render(
             '::web/customer/registerConfirmation.html.twig',
             array(
-                'title' => $this->trans('customer.registerConfirmation'),
                 'user' => $customer,
                 )
             );
