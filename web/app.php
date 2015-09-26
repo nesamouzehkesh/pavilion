@@ -1,5 +1,9 @@
 <?php
 
+ini_set('display_errors',1);
+ini_set('display_startup_errors',1);
+error_reporting(-1);
+
 use Symfony\Component\ClassLoader\ApcClassLoader;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -21,7 +25,7 @@ $kernel = new AppKernel('prod', false);
 $kernel->loadClassCache();
 
 // The caching kernel will immediately act as a reverse proxy - caching responses from your application and returning them to the client.
-$kernel = new AppCache($kernel);
+//$kernel = new AppCache($kernel);
 
 // When using the HttpCache, you need to call the method in your front controller instead of relying on the configuration parameter
 //Request::enableHttpMethodParameterOverride();
