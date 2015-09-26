@@ -23,6 +23,5 @@ log/
 
 
 /web/bundles/
-/web/theme/*
 /web/media/*
 /web/img/users
