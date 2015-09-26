@@ -22,13 +22,68 @@ use ProductBundle\Entity\Product;
 class LoadSampleData implements FixtureInterface
 {
     private $data = array(
-        'pages' => 20,
+        'pages' => 0,
+        'pagesData' => array(
+            array(
+                'title'   => 'Order',
+                'url'     => '/order',
+                'content' => 'We handmade your carpet based on your design, whether its an abstract painting, 
+                        a family picture a company logo or a pattern of your choice from our gallery. 
+                        First you select your design, the size, colour and specific manner in which 
+                        your unique, high quality Persian carpet will be made. Our intelligent 
+                        software turns your design into a recipe for a handmade carpet using the 
+                        best matching colours and patterns and you made your order.                         
+                        Then we choose the best organic materials which are hand-carded and hand-dyed, 
+                        producing a rich, harmonious effect for your carpet. Your carpet will be 
+                        woven by skilful hands of our craftsmen. The result is an eye-catching masterpiece 
+                        which is unique in both its built and design.
+                        We bear with you throughout the entire design and production process so that you 
+                        will be able to make trivial or substantive alteration as your carpet is being 
+                        made in our workshop. When your Carpet is ready we will ship it free of any charge
+                        to your address.
+                '
+            ),
+            array(
+                'title'   => 'Gallery',
+                'url'     => '/gallery',
+                'content' => 'We believe our custom handmade Persian carpet collection offers perfect choices 
+                    that would creatively match your style and individuality. Each knot and pieces 
+                    is made by hand and passion. Depending on your design, your carpet can 
+                    become a painting frame on your wall, a family picture in your room, a wedding 
+                    present to your friend, or your company logo to carry your passion for quality to 
+                    your business partners. If you still prefer traditional Iranian designs, you can
+                    browse our extensive collection of royalty-free designs, ready to be ordered.'
+            ),
+            array(
+                'title'   => 'Aboutus',
+                'url'     => '/aboutus',
+                'content' => 'We are a family of designers and craftsmen working together to revive 
+                    the most iconic product of the Iranian art and culture, the Persian carpet. You 
+                    can mix the authenticity of the handmade Persian carpets with any design of your 
+                    own. Your carpet will be woven by skilful hands of our craftsmen, with knots of 
+                    silk and wool on strings of love and passion. The product is a masterpiece with 
+                    quality of ancient persian carpets and the unique design of your own taste.'
+            ),
+            array(
+                'title'   => 'Contact',
+                'url'     => '/contact',
+                'content' => 'We are located in Tabriz, IRAN, one of the world’s greatest hubs for Persian handmade carpet and rug industry. 
+                    <address>
+                        <strong>Address</strong><br>
+                            Unit 2, Tech Hub Tabriz Islamic Art University<br>
+                            Azadi Street, Tabriz - Iran<br>
+                            Postcode: 5164736931<br>
+                        <a href="mailto:info@zibaf.com">info@zibaf.com</a>
+                    </address>'
+            ),
+        ),
         'products' => 10,
         'roles' => array(
             array('name' => 'User', 'role' => Role::ROLE_USER),
             array('name' => 'Admin', 'role' => Role::ROLE_ADMIN),
         ),
-        'users' => array(
+        'users' => 5,
+        'usersData' => array(
             array(
                 'username' => 'admin@admin.com',
                 'password' => 'admin',
@@ -133,8 +188,8 @@ class LoadSampleData implements FixtureInterface
     private function loadUsers(ObjectManager $manager)
     {
         $loremIpsum = new LoremIpsumGenerator();
-        $usersData = $this->data['users'];
-        for ($i = 0; $i < 20; $i++) {
+        $usersData = $this->data['usersData'];
+        for ($i = 0; $i < $this->data['users']; $i++) {
             $email = $loremIpsum->getEmail();
             
             $usersData[] = array(
@@ -220,7 +275,17 @@ class LoadSampleData implements FixtureInterface
         $page->addLabel($this->labels[0]);
         $page->addLabel($this->labels[1]);
         $manager->persist($page);
+
+        foreach ($this->data['pagesData'] as $pageData) {
+            $page = new Page();
+            $page->setTitle($pageData['title']);
+            $page->setContent($pageData['content']);
+            $page->setUrl($pageData['url']);
+            $page->addLabel($this->labels[1]);
             
+            $manager->persist($page);
+        }
+        
         for ($i = 0; $i < $this->data['pages']; $i++) {
             $page = new Page();
             $page->setTitle($loremIpsum->getTitle());
