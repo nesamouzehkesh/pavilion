@@ -1,9 +1,9 @@
 {% if address is defined and address is not null %}
 <address>
     {% if address.isBillingAddress %}
-        <strong>{{ billingTitle|default('Your primary billing address')|trans }}</strong><br>
+        <strong>{{ addressTitle|default('Your primary billing address')|trans }}</strong><br>
     {% else %}
-        <strong>{{ shippingTitle|default('Your primary shipping address')|trans }}</strong><br>
+        <strong>{{ addressTitle|default('Your primary shipping address')|trans }}</strong><br>
     {% endif %}
     {{ address.fullName }}<br>
     {{ address.firstAddressLine }} {{ address.secondAddressLine }}<br>

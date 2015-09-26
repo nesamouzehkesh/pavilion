@@ -1,39 +1,44 @@
 {% form_theme form '::twig/formRow.html.twig' %}
 
-{% if noFormInfo is not defined %}
-    {% set formName = form.vars.full_name %}
-    {% set forTitle = 'form.' ~ formName ~ '.title' %}
-    {% set forLogo = 'form.' ~ formName ~ '.icon' %}
-    {% set forDescription = 'form.' ~ formName ~ '.description' %}
-{% endif %}
-
-{% for type, flashes in app.session.flashbag.all %}
-    {% for flash in flashes %}
-        {{ flash|showAlert(type) }}
-    {% endfor %}
-{% endfor %}
-<div class="form-message"></div>
-
-{% if forTitle is defined %}
-    <h4 class="modal-title" id="myModalLabel">
-        {% if forLogo is defined %}
-            {{ forLogo|icon }}
+<div class="row">
+    <div class="col-md-{{ form_col_md|default(8) }} col-sm-{{ form_col_sm|default(9) }} col-xs-{{ form_col_xs|default(12) }} form-panel">
+        {% if noFormInfo is not defined %}
+            {% set formName = form.vars.full_name %}
+            {% set forTitle = 'form.' ~ formName ~ '.title' %}
+            {% set forLogo = 'form.' ~ formName ~ '.icon' %}
+            {% set forDescription = 'form.' ~ formName ~ '.description' %}
         {% endif %}
-        {{ forTitle|trans }}
-    </h4>
-{% endif %}
+
+        {% for type, flashes in app.session.flashbag.all %}
+            {% for flash in flashes %}
+                {{ flash|showAlert(type) }}
+            {% endfor %}
+        {% endfor %}
+        <div class="form-message"></div>
+
+        {% if forTitle is defined %}
+            <h4 class="modal-title" id="myModalLabel">
+                {% if forLogo is defined %}
+                    {{ forLogo|icon }}
+                {% endif %}
+                {{ forTitle|trans }}
+            </h4>
+        {% endif %}
 
 
-{{ form_start(form) }}
-    {% if forDescription is defined %}
-        {{ forDescription|trans }}<br><br>
-    {% endif %}
-    {% block body %}{% endblock %}
+        {{ form_start(form) }}
+            {% if forDescription is defined %}
+                {% set forDescription = forDescription|trans %}
+                {% if forDescription != '' %}
+                    {{ forDescription }}<br><br>
+                {% endif %}
+            {% endif %}
+            {% block body %}{% endblock %}
 
-    <div class="modal-footer">
-        <button id="form-submit-{{ form.vars.name }}" class="btn btn-primary ladda-button" type="submit" data-style="expand-left"><span class="ladda-label">{{ 'action.save'|trans }}</span></button>            
+            <button id="form-submit-{{ form.vars.name }}" class="btn btn-primary ladda-button" type="submit" data-style="expand-left"><span class="ladda-label">{{ 'action.save'|trans }}</span></button>            
+        {{ form_end(form) }}
     </div>
-{{ form_end(form) }}
+</div>
 
 {% block formScript %}{% endblock %}
 

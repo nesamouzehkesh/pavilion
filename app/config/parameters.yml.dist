@@ -19,3 +19,4 @@ parameters:
     use_assetic_controller: true
     mongodb_database_name:  ~
     saman_displayFullView: true
+    base_urls: http://

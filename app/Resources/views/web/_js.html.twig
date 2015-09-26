@@ -1,0 +1,40 @@
+<script type="text/javascript">
+var CKEDITOR_BASEPATH = '/js/ckeditor/';
+</script>
+
+{% javascripts 
+    'js/bootstrap-toggle/bootstrap-toggle.min.js'
+    'js/bootstrap-js/transition.js'
+    'js/bootstrap-js/collapse.js'
+    'js/bootstrap.min.js'
+    'js/bootbox.min.js'
+    'js/select2/select2.js'
+    'js/jquery.liveFilter.js'
+    'js/bootstrap-editable.min.js'
+    'js/bootstrap-datetimepicker.js'
+    'js/jquery.vegas/jquery.vegas.js'
+    'js/ladda-bootstrap/spin.min.js'
+    'js/ladda-bootstrap/ladda.min.js'
+    'js/bootstrap-colorpicker.min.js'
+    'js/ckeditor/ckeditor.js'
+    'js/ladda/spin.min.js'
+    'js/ladda/ladda.min.js'
+
+    'js/blueimp/jquery.iframe-transport.js'
+    'js/blueimp/jquery.fileupload.js'
+    'js/blueimp/jquery.fileupload-process.js'
+    'js/blueimp/jquery.fileupload-ui.js'
+ output='js/saman-blueimp-main.js' %}
+   <script type="text/javascript" src="{{ asset_url }}"></script>
+{% endjavascripts %}
+
+<!-- Bootstrap Core JavaScript -->
+{# Do not use this it breaks the navbar dropdown menu
+<script src="{{ asset('theme/js/bootstrap.min.js', absolute=true) }}"></script>
+#}
+<!-- Plugin JavaScript -->
+<script src="{{ asset('theme/js/jquery.easing.min.js', absolute=true) }}"></script>
+<!-- Google Maps API Key - Use your own API key to enable the map feature. More information on the Google Maps API can be found at https://developers.google.com/maps/ -->
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCRngKslUGJTlibkQ3FkfTxj3Xss1UlZDA&sensor=false"></script>
+<!-- Custom Theme JavaScript -->
+<script src="{{ asset('theme/js/grayscale.js', absolute=true) }}"></script>

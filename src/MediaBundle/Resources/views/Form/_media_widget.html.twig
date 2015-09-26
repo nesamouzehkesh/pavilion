@@ -22,7 +22,9 @@ https://github.com/blueimp/jQuery-File-Upload/wiki/Options
                 <div class="col-md-12">
                     <div id="files-dropzone-container-{{ mediaId }}" class="d-saman-media-form-dropzone">
                         <center>
-                            <h4 class="d-text-muted">{{ 'word.uploadFileByDropping'|trans }}</h4>
+                            <div id="uploadFileByDropping">
+                                <h4 class="d-text-muted">{{ 'word.uploadFileByDropping'|trans }}</h4>
+                            </div>
                             {{ uploadButton|raw }}
                         </center>
                         <div class="margin-left-10 margin-right-10 margin-bottom-10">

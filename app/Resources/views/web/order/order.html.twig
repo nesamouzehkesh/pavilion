@@ -9,13 +9,13 @@
         <h4>{{ 'order.payments'|trans }}</h4>
         {% for payment in order.payments %}
             {{ payment.date|date(date_format) }} - {{ payment.content }}
-            ..............................................................................................................................................................<br>
+            <hr class="d-divider">
         {% endfor %}
         <br>
         <h4>{{ 'order.progress'|trans }}</h4>
         {% for progress in order.progresses %}
             {{ progress.progress.title }} - Start Date: {{ progress.startDate|date(date_format) }} - Estimated End Date {{ progress.estimatedEndDate|date(date_format) }} - Status: {{ progress.status }}<br>
-            ..............................................................................................................................................................<br>
+            <hr class="d-divider">
         {% endfor %}
         <br>
     {% endif %}

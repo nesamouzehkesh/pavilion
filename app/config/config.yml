@@ -75,6 +75,7 @@ twig:
     debug:            "%kernel.debug%"
     strict_variables: "%kernel.debug%"
     globals:
+        base_urls: "%base_urls%"
         date_format: "d/m/Y"
         saman_displayFullView: %saman_displayFullView%
         saman_app_modules:

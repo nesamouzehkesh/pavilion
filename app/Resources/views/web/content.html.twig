@@ -1,3 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% include "::web/_meta.html.twig" %}
+    <title>Grayscale - Start Bootstrap Theme</title>
+    {% include "::web/_asset.html.twig" %}
+</head>
+
+<body id="page-top" data-spy="scroll" data-target=".navbar-fixed-top">
+    {% include "::web/_navbar.html.twig" %}
+    <section id="order" class="">
+        <div class="container section-continer-other">
+            <div class="row margin-top-50">
+                <div class="col-md-10 col-md-offset-1">
+                    <h3>{% block pageTitle %}{{ title }}{% endblock %}</h3>
+                    {% block pageBody %}
+                        <p>
+                        {% if content is defined %}
+                            {{ content|raw }}
+                        {% else %}
+                            <center>Whoops! Page not found</center>
+                        {% endif %}
+                        </p>
+                    {% endblock %}
+                    </p>
+                </div>            
+            </div>            
+        </div>
+    </section>
+    {% include "::web/_footer.html.twig" %}
+    {% include "::web/_js.html.twig" %}
+    </body>
+</html>
+{#
 {% set title = title|trans %}
 <!DOCTYPE html>
 <html class="ng-scope" ng-app="myApp">
@@ -33,3 +67,4 @@
         </div>
     </body>
 </html>
+#}

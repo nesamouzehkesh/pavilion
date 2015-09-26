@@ -1,10 +1,12 @@
 {% extends "::web/twig/form.html.twig" %}
+{% set form_col_md = 7 %}
+{% set form_col_sm = 8 %}
 
 {% block body %}
     {{ form_errors(form) }}
     {{ form_row(form.email) }}
     {{ form_row(form.reEmail) }}
-    <br><br>
+    <hr class="d-divider">
     {{ form_row(form.firstName) }}
     {{ form_row(form.lastName) }}
     {{ form_row(form.password) }}
