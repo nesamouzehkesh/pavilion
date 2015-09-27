@@ -36,6 +36,11 @@ h6 {
     letter-spacing: 1px;
 }
 
+strong {
+    margin: 0 0 10px;
+    font-weight: 900 !important;
+}
+
 p {
     margin: 0 0 15px;
     font-size: 18px;

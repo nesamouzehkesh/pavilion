@@ -170,8 +170,16 @@ order:
     myOrders: My Orders
     progress: Order Progress
     payments: Order Payments
+    confirmOrderAddresses: Confirm Shipping/Billing Addresses
+    contentItems:
+        dpi: DPI
+        colors: Colors
+        numberOfColors: Number Of Colors
+        width: Width
+        height: Height
     action:
         payment: Payment
+        goToPayment: Go to Payment
         confirm: Confirm
         edit: Edit
         view: View
@@ -180,6 +188,7 @@ order:
         submitOrder: Submit Order
         submitOrderLoading: Submiting Order ...
     icon:
+        confirmOrderAddresses: glyphicon glyphicon-gift
         payment: glyphicon glyphicon-credit-card
         paymentConfirmed: glyphicon glyphicon-ok
         confirm: glyphicon glyphicon-ok
@@ -189,6 +198,7 @@ order:
         makeOrder: glyphicon glyphicon-gift
         myOrders: glyphicon glyphicon-shopping_bag
         submitOrder: glyphicon glyphicon-send
+        order: glyphicon glyphicon-shopping_bag
     
 customer:
     register: 

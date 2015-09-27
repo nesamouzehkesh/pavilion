@@ -4,7 +4,7 @@
 <ul>
 {% for key, structure in orderConfig.orderStructure %}
     {% if content[key] is defined %}
-        <li><strong>{{ key }}:</strong> {{ content[key] }}</li>
+        <li><strong>{{ ('order.contentItems.' ~ key)|trans }}:</strong> {{ content[key] }}</li>
     {% endif %}
 {% endfor %}
 </ul>

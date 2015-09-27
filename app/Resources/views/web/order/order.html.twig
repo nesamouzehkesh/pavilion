@@ -1,8 +1,10 @@
 {% extends "::web/content.html.twig" %}
 
 {% set title = 'Order'|trans %}
+{% set pageIcon = 'order.icon.order' %}
+
 {% block pageBody %}
-    <strong>{{ 'Order detail'|trans }}</strong><br>
+    <strong>{{ 'Order Details'|trans }}</strong><br>
     {% include '::web/order/_order.html.twig' with {'order': order, 'orderConfig': orderConfig, 'noImage': true} only %}
     
     {% if order.isSubmitted == false %}

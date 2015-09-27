@@ -1,7 +1,9 @@
 {% form_theme form '::twig/formRow.html.twig' %}
 {% extends "::web/content.html.twig" %}
 
-{% set title = ''|trans %}
+{% set title = 'order.confirmOrderAddresses'|trans %}
+{% set pageIcon = 'order.icon.confirmOrderAddresses' %}
+
 {% block pageBody %}
     {% include '::web/order/_order.html.twig' with {'order': order, 'orderConfig': orderConfig, 'noImage': true} only %}
     {% include '::web/order/js/setShippingAddress.js.twig' %}
@@ -77,10 +79,10 @@
     </div>
     #}
     <button class="form-submit-{{ form.vars.name }} btn btn-primary hidden-xs" type="submit" style="padding-left: 20px; padding-right: 20px;">
-        <span class="ladda-label">{{ 'order.icon.payment'|icon }} {{ 'order.action.payment'|trans }}</span>
+        <span class="ladda-label">{{ 'order.icon.payment'|icon }} {{ 'order.action.goToPayment'|trans }}</span>
     </button>            
     <button class="form-submit-{{ form.vars.name }} btn btn-primary btn-block visible-xs" type="submit">
-        <span class="ladda-label">{{ 'order.icon.payment'|icon }} {{ 'order.action.payment'|trans }}</span>
+        <span class="ladda-label">{{ 'order.icon.payment'|icon }} {{ 'order.action.goToPayment'|trans }}</span>
     </button>            
     {{ form_end(form) }}
     
