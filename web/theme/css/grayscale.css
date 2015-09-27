@@ -690,3 +690,12 @@ section:nth-of-type(1):after,section:nth-of-type(3):after,section:nth-of-type(5)
     background-color: rgba(255, 255, 255, 0.3) !important;
     border-style: none !important;
 }
+
+.fa-bars {
+    font-size: 22px !important;
+    padding: 3px 10px 3px 10px;
+    border: 1px solid #494c50 !important;
+    border-radius: 3px;
+    color: #fff;
+    //color: 
+}

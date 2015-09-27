@@ -7,7 +7,7 @@
 </head>
 
 <body id="page-top" data-spy="scroll" data-target=".navbar-fixed-top">
-    {% include "::web/_navbar.html.twig" with {isIndex: true} %}
+    {% include "::web/_navbar.html.twig" with {isNotIndex: false} %}
     <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
         <ol class="carousel-indicators">
             <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
@@ -186,7 +186,7 @@
                         facility is developed to follow customers’ insights as closely as possible 
                         and bring their ideas into life in the most flawless and perfect way.
                     </p>    
-                    <a href="http://startbootstrap.com/template-overviews/grayscale/" class="btn btn-default btn-lg">Visit Download Page</a>
+                    <a href="{{ base_urls }}/aboutus" class="btn btn-default btn-lg">Visit Our Team</a>
                 </div>
             </div>
         </div>
