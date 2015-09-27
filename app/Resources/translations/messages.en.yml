@@ -170,6 +170,7 @@ order:
     myOrders: My Orders
     progress: Order Progress
     payments: Order Payments
+    orderConfirmation: Order Confirmation
     confirmOrderAddresses: Confirm Shipping/Billing Addresses
     contentItems:
         dpi: DPI
