@@ -308,3 +308,7 @@ button:active,
 .ladda-button {
     outline:none !important;
 }
+
+.btn-loading:after {
+    content: " ...";// url(../img/loading.gif);
+}

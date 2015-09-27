@@ -76,8 +76,23 @@
         </div>
     </div>
     #}
-    <button id="form-submit-{{ form.vars.name }}" class="btn btn-primary ladda-button" type="submit" data-style="expand-left">
+    <button class="form-submit-{{ form.vars.name }} btn btn-primary hidden-xs" type="submit" style="padding-left: 20px; padding-right: 20px;">
+        <span class="ladda-label">{{ 'order.icon.payment'|icon }} {{ 'order.action.payment'|trans }}</span>
+    </button>            
+    <button class="form-submit-{{ form.vars.name }} btn btn-primary btn-block visible-xs" type="submit">
         <span class="ladda-label">{{ 'order.icon.payment'|icon }} {{ 'order.action.payment'|trans }}</span>
     </button>            
     {{ form_end(form) }}
+    
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $('.form-submit-{{ form.vars.name }}').click(function(e){
+                var button = $(this);
+                var form = button.closest('form');
+                if (form.isValid()) {
+                    button.addClass('disabled btn-loading');
+                }
+            });
+        });
+    </script>    
 {% endblock %}

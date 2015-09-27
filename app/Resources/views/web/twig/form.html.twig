@@ -34,13 +34,23 @@
                 {% endif %}
             {% endif %}
             {% block body %}{% endblock %}
-
-            <button id="form-submit-{{ form.vars.name }}" class="btn btn-primary ladda-button" type="submit" data-style="expand-left">
+            
+            
+            {% set submitButtonIconContent = "" %}
+            {% if submitButtonIcon is defined %}
+                {% set submitButtonIconContent = '<span class="margin-right-5">' ~ submitButtonIcon|icon ~ '</span>' %}
+            {% endif %} 
+            
+            {% set submitButton = (submitButton|default('action.save'))|trans %}
+            {#<button id="form-submit-{{ form.vars.name }}" class="btn btn-primary ladda-button" type="submit" data-style="expand-left">#}
+            <button {% if submitButtonLoading is defined %}data-loading-text="{{ submitButtonIconContent }}{{ submitButtonLoading|trans }}"{% endif %} class="btn btn-primary hidden-xs form-submit-{{ form.vars.name }}" type="submit">
                 <span class="ladda-label">
-                    {% if submitButtonIcon is defined %}
-                        <spam class="margin-right-5">{{ submitButtonIcon|icon }}</spam>
-                    {% endif %} 
-                    {{ (submitButton|default('action.save'))|trans }}
+                    {{ submitButtonIconContent|raw }}{{ submitButton }}
+                </span>
+            </button>
+            <button {% if submitButtonLoading is defined %}data-loading-text="{{ submitButtonIconContent }}{{ submitButtonLoading|trans }}"{% endif %} class="btn btn-primary btn-block visible-xs form-submit-{{ form.vars.name }}" type="submit">
+                <span class="ladda-label">
+                    {{ submitButtonIconContent|raw }}{{ submitButton }}
                 </span>
             </button>
         {{ form_end(form) }}
@@ -52,13 +62,23 @@
 <script type="text/javascript">
     $(document).ready(function(){
         $('.form-control-select2').select2();
-        
-        $('#form-submit-{{ form.vars.name }}').click(function(e){
-            var form = $(this).closest('form');
+        //Ladda.stopAll();
+        $('.form-submit-{{ form.vars.name }}').click(function(e){
+            //e.preventDefault();
+            var button = $(this);
+            var form = button.closest('form');
             if (form.isValid()) {
+                button.addClass('disabled btn-loading');
+            }
+            {#
+            if (!form.isValid()) {
+                Ladda.stopAll();
+            } else {
                 var ladda = Ladda.create(this);
                 ladda.start();
+                
             }
+            #}
 	});        
     });
 </script>

@@ -56,7 +56,7 @@ $(document).ready(function(){
         $("#" + searchTextInput).attr('data-search-target', searchTarget);
     });    
     
-    Ladda.bind('button[type=submit]');
+    //Ladda.bind('button[type=submit]');
 });
 
 $.fn.isValid = function(){

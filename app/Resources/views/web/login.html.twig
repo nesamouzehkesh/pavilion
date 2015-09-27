@@ -5,11 +5,13 @@
 
 {% block pageBody %}
     {% if error %}
-        <div class="alert alert-warning d-margin-bottom-20">{{ 'word.warning'|trans }}! {{ error.message }}</div>
+        <div class="margin-bottom-20">
+            <h5><span class="text-danger">{{ 'icon.alert.warning'|icon  }} {{ 'word.warning'|trans }}! {{ error.message }}</span></h5>
+        </div>
     {% endif %}
-
+    
     <div class="row">
-        <div class="col-md-5 col-xs-6">
+        <div class="col-md-5 col-sm-5 col-xs-10">
         <form action="{{ path(action) }}" method="post">
             <div class="form-group">
                 <label for="exampleInputEmail1">{{ 'word.emailAddress'|trans }}</label>
@@ -26,14 +28,33 @@
                 </label>
             </div>
             #}
-            <button id="form-submit-login" class="btn btn-primary ladda-button" type="submit" data-style="expand-left"><span class="ladda-label">{{ 'word.logIn'|trans }}</span></button>
-            <a id="createAccount" class="margin-left-20" href="{{ path('saman_shopping_customer_joinus') }}">{{ 'word.createAccount'|trans }}</a>
+            {#<button id="form-submit-login" class="btn btn-primary ladda-button" type="submit" data-style="expand-left"><span class="ladda-label">{{ 'word.logIn'|trans }}</span></button>#}
+            <button class="btn btn-primary hidden-xs form-submit-login" type="submit" style="padding-left: 20px; padding-right: 20px;"><span>{{ 'word.logIn'|trans }}</span></button>
+            <a class="hidden-xs margin-left-10" id="createAccount" href="{{ path('saman_shopping_customer_joinus') }}">{{ 'word.createAccount'|trans }}</a>
+
+            <button class="btn btn-primary btn-block visible-xs form-submit-login" type="submit"><span>{{ 'word.logIn'|trans }}</span></button>
+            <div class="margin-top-10 visible-xs">
+                <a id="createAccount" href="{{ path('saman_shopping_customer_joinus') }}">{{ 'word.createAccount'|trans }}</a>
+            </div>    
+            {% if error %}
+                <div class="margin-top-10">
+                    <a id="createAccount" href="{{ path('saman_shopping_customer_joinus') }}">{{ 'word.forgotPassword'|trans }}</a>
+                </div>    
+            {% endif %}
         </form>        
         </div>
     </div>    
 
     <script type="text/javascript">
         $(document).ready(function(){
+            $('.form-submit-login').click(function(e){
+                var button = $(this);
+                var form = button.closest('form');
+                if (form.isValid()) {
+                    button.addClass('disabled btn-loading');
+                }
+            });
+            {#
             Ladda.stopAll();
             $('#form-submit-login').click(function(e){
                 var form = $(this).closest('form');
@@ -41,6 +62,7 @@
                     Ladda.stopAll();
                 }
             });
+            #}
         });
     </script>
 {% endblock %}

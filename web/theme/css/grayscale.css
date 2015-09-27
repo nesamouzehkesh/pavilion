@@ -427,6 +427,12 @@ a:focus {
     background-color: #b2c437;
 }
 
+.btn.disabled,
+.btn[disabled] {
+    border: 2px solid #dbe2ae !important;
+    background-color: #b2c437 !important;
+}
+
 .table tbody td .btn-primary {
     border: 1px solid #dbe2ae !important;
     padding: 5px 10px 5px 10px !important;

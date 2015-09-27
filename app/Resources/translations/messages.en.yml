@@ -18,6 +18,7 @@ word:
     logIn: Sign In
     logOut: Sign Out
     createAccount: Create Account
+    forgotPassword: "Forgot your password?"
     keepMeLoggedIn: Keep me logged in
     emailAddress: Email address
     password: Password
@@ -176,7 +177,8 @@ order:
         view: View
         delete: Delete
         makeOrder: Make Order
-        submitOrder: Submit Order 
+        submitOrder: Submit Order
+        submitOrderLoading: Submiting Order ...
     icon:
         payment: glyphicon glyphicon-credit-card
         paymentConfirmed: glyphicon glyphicon-ok

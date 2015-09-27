@@ -27,9 +27,9 @@
                                 </td>
                                 <td>
                                     {% if order.isSubmitted %}
-                                        <a class="btn btn-primary btn-sm" href="{{ path('saman_shopping_order_set_shipping_address', {'orderId': order.id }) }}">{{ 'order.icon.confirm'|icon }} <spam class="hidden-xs">{{ 'order.action.confirm'|trans }}</spam></a> 
-                                        <a class="btn btn-primary btn-sm" href="{{ path('saman_shopping_order_edit', {'orderId': order.id }) }}">{{ 'order.icon.edit'|icon }} <spam class="hidden-xs">{{ 'order.action.edit'|trans }}</spam></a>
-                                        <a class="btn btn-primary btn-sm action-delete" href="{{ path('saman_shopping_order_delete', {'orderId': order.id }) }}">{{ 'icon.delete'|icon }} <spam class="hidden-xs">{{ 'order.action.delete'|trans }}</spam></a>
+                                        <a class="btn btn-primary btn-sm" href="{{ path('saman_shopping_order_set_shipping_address', {'orderId': order.id }) }}">{{ 'order.icon.confirm'|icon }} <span class="hidden-xs">{{ 'order.action.confirm'|trans }}</span></a> 
+                                        <a class="btn btn-primary btn-sm" href="{{ path('saman_shopping_order_edit', {'orderId': order.id }) }}">{{ 'order.icon.edit'|icon }} <span class="hidden-xs">{{ 'order.action.edit'|trans }}</span></a>
+                                        <a class="btn btn-primary btn-sm action-delete" href="{{ path('saman_shopping_order_delete', {'orderId': order.id }) }}">{{ 'icon.delete'|icon }} <span class="hidden-xs">{{ 'order.action.delete'|trans }}</span></a>
                                     {% endif %}    
                                 </td>
                             </tr>
