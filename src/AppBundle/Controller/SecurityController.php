@@ -5,13 +5,18 @@ namespace AppBundle\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 use Library\Base\BaseController;
+use Library\Helpers\UserAgentDetector;
 
 class SecurityController extends BaseController
 {
     public function loginAction(Request $request, $isWeb)
     {
-        $session = $request->getSession();
-
+        $userAgentDetector = new UserAgentDetector;
+        if ($userAgentDetector->isCrawler()) {
+            throw $this->createAccessDeniedException('Crawlers and Robots cannot access to this page');
+        }
+        
+        $session = $request->getSession();        
         // get the login error if there is one
         if ($request->attributes->has(SecurityContextInterface::AUTHENTICATION_ERROR)) {
             $error = $request->attributes->get(

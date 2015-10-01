@@ -16,7 +16,7 @@
             <div class="row">
                 <div class="col-md-6">
                     <div id="shipping-container">
-                        {% include '::web/user/_address.html.twig' with {'address': primaryShippingAddress} only %}
+                        {% include '::web/customer/_address.html.twig' with {'address': primaryShippingAddress} only %}
                     </div>
                     {% if form.setNewShipping is defined %}
                         {{ form_widget(form.setNewShipping) }}
@@ -42,7 +42,7 @@
                 </div>
                 <div id="billing" class="col-md-6">
                     <div id="billing-container">
-                        {% include '::web/user/_address.html.twig' with {'address': primaryBillingAddress} only %}
+                        {% include '::web/customer/_address.html.twig' with {'address': primaryBillingAddress} only %}
                     </div>
                     {% set hideNewBilling = false %}
                     {% if form.setNewBilling is defined %}

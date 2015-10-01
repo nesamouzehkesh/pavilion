@@ -1,13 +1,21 @@
 {% form_theme form '::twig/formRow.html.twig' %}
 
-<div class="row">
-    <div class="col-md-{{ form_col_md|default(8) }} col-sm-{{ form_col_sm|default(9) }} col-xs-{{ form_col_xs|default(12) }} form-panel">
-        {% if noFormInfo is not defined %}
-            {% set formName = form.vars.full_name %}
-            {% set forTitle = 'form.' ~ formName ~ '.title' %}
-            {% set forLogo = 'form.' ~ formName ~ '.icon' %}
-            {% set forDescription = 'form.' ~ formName ~ '.description' %}
-        {% endif %}
+{% if noFormInfo is not defined %}
+    {% set formName = form.vars.full_name %}
+    {% set forTitle = 'form.' ~ formName ~ '.title' %}
+    {% set forLogo = 'form.' ~ formName ~ '.icon' %}
+    {% set forDescription = 'form.' ~ formName ~ '.description' %}
+{% endif %}
+
+{% set isModal = isModalDialogForm|default(false) %}
+
+{% if isModal %}
+    <div class="modal-dialog">
+        <div class="modal-content">
+{% else %}
+    <div class="row">
+        <div class="col-md-{{ form_col_md|default(8) }} col-sm-{{ form_col_sm|default(9) }} col-xs-{{ form_col_xs|default(12) }} form-panel">
+{% endif %}
 
         {% for type, flashes in app.session.flashbag.all %}
             {% for flash in flashes %}
@@ -17,16 +25,37 @@
         <div class="form-message"></div>
 
         {% if forTitle is defined %}
-            <h4 class="modal-title" id="myModalLabel">
-                {% if forLogo is defined %}
-                    {{ forLogo|icon }}
-                {% endif %}
-                {{ forTitle|trans }}
-            </h4>
+            {% if isModal %}
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span aria-hidden="true">&times;</span>
+                        <span class="sr-only">{{ 'action.close'|trans }}</span>
+                    </button>
+                    {% if forTitle is defined %}
+                        <h4 class="modal-title" id="myModalLabel">
+                            {% if forLogo is defined %}
+                                {{ forLogo|icon }}
+                            {% endif %}
+                            {{ forTitle|trans }}
+                        </h4>
+                    {% endif %}
+                </div>                
+            {% else %}
+                <h4 class="modal-title">
+                    {% if forLogo is defined %}
+                        {{ forLogo|icon }}
+                    {% endif %}
+                    {{ forTitle|trans }}
+                </h4>
+            {% endif %}
         {% endif %}
 
 
         {{ form_start(form) }}
+            {% if isModal %}
+                <div class="modal-body">
+            {% endif %}
+            
             {% if forDescription is defined %}
                 {% set forDescription = forDescription|trans %}
                 {% if forDescription != '' %}
@@ -35,6 +64,10 @@
             {% endif %}
             {% block body %}{% endblock %}
             
+            {% if isModal %}
+                </div>
+                <div class="modal-footer">
+            {% endif %}
             
             {% set submitButtonIconContent = "" %}
             {% if submitButtonIcon is defined %}
@@ -42,17 +75,30 @@
             {% endif %} 
             
             {% set submitButton = (submitButton|default('action.save'))|trans %}
-            {#<button id="form-submit-{{ form.vars.name }}" class="btn btn-primary ladda-button" type="submit" data-style="expand-left">#}
-            <button {% if submitButtonLoading is defined %}data-loading-text="{{ submitButtonIconContent }}{{ submitButtonLoading|trans }}"{% endif %} class="btn btn-primary hidden-xs form-submit-{{ form.vars.name }}" type="submit">
-                <span class="ladda-label">
-                    {{ submitButtonIconContent|raw }}{{ submitButton }}
-                </span>
-            </button>
-            <button {% if submitButtonLoading is defined %}data-loading-text="{{ submitButtonIconContent }}{{ submitButtonLoading|trans }}"{% endif %} class="btn btn-primary btn-block visible-xs form-submit-{{ form.vars.name }}" type="submit">
-                <span class="ladda-label">
-                    {{ submitButtonIconContent|raw }}{{ submitButton }}
-                </span>
-            </button>
+            
+            {% if isModal %}
+                <button {% if submitButtonLoading is defined %}data-loading-text="{{ submitButtonIconContent }}{{ submitButtonLoading|trans }}"{% endif %} class="btn btn-primary btn-modal form-submit-{{ form.vars.name }}" type="submit">
+                    <span class="ladda-label">
+                        {{ submitButtonIconContent|raw }}{{ submitButton }}
+                    </span>
+                </button>
+                <button class="btn btn-primary btn-modal" style type="button" data-dismiss="modal"><span class="ladda-label">{{ 'action.close'|trans }}</span></button>
+            {% else %}
+                {#<button id="form-submit-{{ form.vars.name }}" class="btn btn-primary ladda-button" type="submit" data-style="expand-left">#}
+                <button {% if submitButtonLoading is defined %}data-loading-text="{{ submitButtonIconContent }}{{ submitButtonLoading|trans }}"{% endif %} class="btn btn-primary hidden-xs form-submit-{{ form.vars.name }}" type="submit">
+                    <span class="ladda-label">
+                        {{ submitButtonIconContent|raw }}{{ submitButton }}
+                    </span>
+                </button>
+                <button {% if submitButtonLoading is defined %}data-loading-text="{{ submitButtonIconContent }}{{ submitButtonLoading|trans }}"{% endif %} class="btn btn-primary btn-block visible-xs form-submit-{{ form.vars.name }}" type="submit">
+                    <span class="ladda-label">
+                        {{ submitButtonIconContent|raw }}{{ submitButton }}
+                    </span>
+                </button>
+            {% endif %}
+            {% if isModal %}
+                </div>
+            {% endif %}
         {{ form_end(form) }}
     </div>
 </div>

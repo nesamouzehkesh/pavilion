@@ -205,6 +205,8 @@ customer:
     register: 
     registerConfirmation: Confirmation
     profile: My Profile
+    mainBillingAddress: Your main billing address
+    mainShippingAddress: Your main shipping address
     action:
         submitRegisteration: Submit Your Info 
     icon:

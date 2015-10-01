@@ -12,8 +12,8 @@
       <h3><strong>{{ user.firstName }} {{ user.lastName }}</strong></h3>
       <a href="mailto:#">{{ user.email }}</a>
     </address>
-    {% include '::web/user/_address.html.twig' with {'address': user.primaryBillingAddress} only %}
-    {% include '::web/user/_address.html.twig' with {'address': user.primaryShippingAddress} only %}
+    {% include '::web/customer/_address.html.twig' with {'address': user.primaryBillingAddress} only %}
+    {% include '::web/customer/_address.html.twig' with {'address': user.primaryShippingAddress} only %}
     
     <a class="btn btn-primary" href="{{ path('saman_shopping_customer_profile') }}">{{ 'customer.icon.myProfile'|icon }} {{ 'customer.profile'|trans }}</a>    
     <a class="btn btn-primary" href="{{ path('saman_shopping_order_add') }}">{{ 'order.icon.makeOrder'|icon }} {{ 'order.action.makeOrder'|trans }}</a>

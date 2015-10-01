@@ -15,7 +15,9 @@
 <!-- Bootstrap Core CSS -->
 <link href="{{ asset('theme/css/bootstrap.min.css', absolute=true) }}" rel="stylesheet">
 <!-- Custom CSS -->
-<link href="{{ asset('theme/css/grayscale.css', absolute=true) }}" rel="stylesheet">
+{% if saman_displayFullView %}
+    <link href="{{ asset('theme/css/grayscale.css', absolute=true) }}" rel="stylesheet">
+{% endif %}
 <!-- Custom Fonts -->
 <link href="{{ asset('theme/font-awesome/css/font-awesome.min.css', absolute=true) }}" rel="stylesheet" type="text/css">
 <link href="http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" rel="stylesheet" type="text/css">

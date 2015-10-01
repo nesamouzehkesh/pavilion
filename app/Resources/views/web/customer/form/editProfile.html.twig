@@ -1,0 +1,33 @@
+{% extends "::web/twig/form.html.twig" %}
+
+{% set isModalDialogForm = true %}
+{% set submitButton = '' %}
+{% set submitButtonIcon = '' %}
+
+{% block body %}
+    {{ form_row(form.firstName) }}
+    {{ form_row(form.lastName) }}
+    {{ form_row(form.changePassword) }}
+    
+    <div id="set-new-password-form-container" style="display: none;">
+        <hr class="d-divider">
+        {{ form_row(form.password) }}
+        {{ form_row(form.newPassword) }}
+        {{ form_row(form.reNewPassword) }}
+    </div>
+    
+    <script type="text/javascript">
+        $(document).ready(function(){
+            var shippingSetNewCheck = $("#saman_customer_register_form_changePassword");
+            var passwordContainer = $("#set-new-password-form-container");
+            
+            shippingSetNewCheck.change(function() {
+                if (this.checked) {
+                    passwordContainer.fadeIn();
+                } else {
+                    passwordContainer.fadeOut();
+                }
+            });  
+        });
+    </script>    
+{% endblock %}

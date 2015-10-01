@@ -5,8 +5,10 @@ namespace ShoppingBundle\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Library\Base\BaseController;
 use ShoppingBundle\Form\CustomerType;
+use UserBundle\Form\AddressType;
 use UserBundle\Entity\User;
 use UserBundle\Entity\Role;
+use UserBundle\Entity\Address;
 
 class CustomerController extends BaseController
 {
@@ -49,14 +51,14 @@ class CustomerController extends BaseController
      */
     public function registerAction(Request $request)
     {
-        // Get label object
+        // Create new customer
         $customer = $this->getCustomer();
 
         // Generate Product Form
         $customerForm = $this->createForm(new CustomerType(), $customer);        
         $customerForm->handleRequest($request);
         // If form is submited and it is valid then add or update this $label
-        if ($customerForm->isValid() and $this->isCustomerFormDataValid($customerForm)) {
+        if ($this->isCustomerFormDataValid($customerForm)) {
             // Get ObjectManager
             $em = $this->getDoctrine()->getManager();
             $userRole = Role::getRepository($em)->getUserRole();
@@ -86,30 +88,154 @@ class CustomerController extends BaseController
                 )
             );
     }
+
+    /**
+     * Edit user profile info
+     * 
+     * @param Request $request
+     * @param type $customerId
+     * @return type
+     * @throws type
+     */
+    public function editProfileAction(Request $request, $customerId)
+    {
+        try {
+            // Get customer
+            $customer = $this->getCustomer($customerId);
+            if (!$customer instanceof User) {
+                throw $this->createVisibleHttpException('No profile has been found');       
+            }
+
+            // Generate Customer edit profile Form
+            $customerForm = $this->createForm(
+                new CustomerType('editUser'), 
+                $customer,
+                array(
+                    'action' => $request->getUri(),
+                    'method' => 'post'
+                    )
+                );            
+            $customerForm->handleRequest($request);
+            // If form is submited and it is valid then add or update this $label
+            if ($this->isCustomerFormDataValid($customerForm, 'editUser')) {
+                // Get ObjectManager
+                $em = $this->getDoctrine()->getManager();
+
+                // Set this email for user email and username
+                $password = $customerForm->get('password')->getData();
+                $customer->setPassword($password);
+
+                $em->persist($customer);
+                $em->flush();
+
+                return $this->getJsonResponse(true);
+            }
+
+            $view = $this->renderView(
+                '::web/customer/form/editProfile.html.twig', 
+                array(
+                    'form' => $customerForm->createView(),
+                    )
+                );
+            return $this->getJsonResponse(true, null, $view);
+        } catch (\Exception $ex) {
+            return $this->getExceptionResponse('Can not edit address', $ex);
+        }
+    }
+    
+    /**
+     * 
+     * @param Request $request
+     * @param type $addressId
+     * @return type
+     * @throws type
+     */
+    public function addEditAddressAction(Request $request, $addressId)
+    {
+        try {
+            // Get ObjectManager
+            $em = $this->getDoctrine()->getManager();
+            // Get Address object
+            $address = Address::getRepository($em)
+                ->findUserAddress($this->getUser(), $addressId);
+            if (!$address instanceof Address) {
+                throw $this->createVisibleHttpException('No address has been found');       
+            }
+
+            // Generate Product Form
+            $addressForm = $this->createForm(
+                new AddressType(), 
+                $address,
+                array(
+                    'action' => $request->getUri(),
+                    'method' => 'post'
+                    )
+                );            
+            $addressForm->handleRequest($request);
+            // If form is submited and it is valid then add or update this $label
+            if ($addressForm->isValid()) {
+                
+                $em->persist($address);
+                $em->flush();
+
+                return $this->getJsonResponse(true);
+            }
+            
+            $view = $this->renderView(
+                '::web/customer/form/address.html.twig', 
+                array(
+                    'title' => $this->trans('word.createAccount'),
+                    'form' => $addressForm->createView(),
+                    )
+                );
+            
+            return $this->getJsonResponse(true, null, $view);
+        } catch (\Exception $ex) {
+            return $this->getExceptionResponse('Can not edit address', $ex);
+        }
+    }
     
     /**
      * Check if customer form data is valid
      * 
      * @param type $customerForm
+     * @param type $type
      * @return boolean
      */
-    private function isCustomerFormDataValid($customerForm)
+    private function isCustomerFormDataValid($customerForm, $type = null)
     {
-        // Get ObjectManager
-        $em = $this->getDoctrine()->getManager();
-        
-        // Get some extra form field that are not mapped to user object. 
-        $email = $customerForm->get('email')->getData();
-        $reEmail = $customerForm->get('reEmail')->getData();
-
-        if ($email !== $reEmail) {
-            $this->addFormError($customerForm->get('reEmail'), 'Emails are not same');
+        if (!$customerForm->isValid()) {
             return false;
         }
         
-        if (User::getRepository($em)->hasUserByUsername($email)) {
-            $this->addFormError($customerForm->get('email'), 'This emails is already used');
-            return false;
+        if ('editUser' === $type) {
+            // Get some extra form field that are not mapped to user object. 
+            $password = $customerForm->get('password')->getData();
+            $rePassword = $customerForm->get('rePassword')->getData();
+            if ($password !== $rePassword) {
+                $this->addFormError($customerForm->get('rePassword'), 'Passwords are not same');
+                
+                return false;
+            }
+        } else {
+            // Get ObjectManager
+            $em = $this->getDoctrine()->getManager();
+            
+            // Get some extra form field that are not mapped to user object. 
+            $email = $customerForm->get('email')->getData();
+            $reEmail = $customerForm->get('reEmail')->getData();
+
+            if ($email !== $reEmail) {
+                $this->addFormError($customerForm->get('reEmail'), 'Emails are not same');
+                
+                return false;
+            }
+
+            if (User::getRepository($em)->hasUserByUsername($email)) {
+                $this->addFormError($customerForm->get('email'), 'This emails is already used');
+                
+                return false;
+            }
         }
         
         return true;

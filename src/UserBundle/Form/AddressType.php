@@ -28,8 +28,15 @@ class AddressType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        if (!$this->user instanceof User) {
+            $builder
+                ->add('fullName', 'text', array('required' => false));
+        } else {
+            $builder
+                ->add('fullName', 'text', array('data' => $this->user->getName(), 'required' => false));
+        }
+        
         $builder
-            ->add('fullName', 'text', array('data' => $this->user->getName(), 'required' => false))
             ->add('firstAddressLine', 'text', array('required' => false))
             ->add('secondAddressLine', 'text', array('required' => false))
             ->add('city', 'text', array('required' => false))

@@ -23,9 +23,9 @@
 
 <div class="row margin-top-10">
     <div class="col-md-6">
-        {% include '::web/user/_address.html.twig' with {'address': order.shippingAddress, addressTitle: 'Order shipping address'} only %}
+        {% include '::web/customer/_address.html.twig' with {'address': order.shippingAddress, addressTitle: 'Order shipping address'} only %}
     </div>
     <div class="col-md-6">
-        {% include '::web/user/_address.html.twig' with {'address': order.billingAddress, addressTitle: 'Order billing address'} only %}
+        {% include '::web/customer/_address.html.twig' with {'address': order.billingAddress, addressTitle: 'Order billing address'} only %}
     </div>
 </div>

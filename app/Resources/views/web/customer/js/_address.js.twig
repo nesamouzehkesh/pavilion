@@ -1,0 +1,36 @@
+<script type="text/javascript">
+$(function(){
+    $('.action-edit-profile-item').click(function(e){
+        var url = $(this).attr('data-url');
+        var target = $($(this).attr('data-target'));
+                
+        $.get(url, function(response) {
+            if (response.success === true) {
+                target.html(response.content);
+                target.modal('toggle');
+                
+                postAddressForm(response, target);
+            } else {
+                target.modal('toggle');
+                bootbox.alert(response.message);
+            }
+        }, 'json');         
+    });
+    
+    function postAddressForm(response, formContainer)
+    {
+        var form = formContainer.find('form');
+        form.submit(function(e){
+            e.preventDefault();
+            postFormContent($(this), function(response) {
+                if (response.content !== undefined) {
+                    postAddressForm(response, formContainer);
+                } else {
+                    location.reload();
+                }
+            }, 'json');
+            return false;
+        });        
+    }
+});
+</script>

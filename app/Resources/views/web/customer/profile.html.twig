@@ -4,20 +4,36 @@
 {% set pageIcon = 'customer.icon.myProfile' %}
 
 {% block pageBody %}
+    <div class="modal fade" id="profile-form-container" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"></div>
+
     <address>
-        <h3><strong>{{ user.firstName }} {{ user.lastName }}</strong></h3>
+        <h3>
+            <strong>{{ user.firstName }} {{ user.lastName }}</strong>
+            <button class="btn btn-primary btn-xs btn-fade action-edit-profile-item" data-target="#profile-form-container" data-url="{{ path('saman_shopping_customer_edit_profile', {'customerId': user.id }) }}">{{ 'icon.edit'|icon }}</button>
+        </h3>             
+
         <a href="mailto:#">{{ user.email }}</a>
     </address>
     
     <div class="row margin-top-10">
         <div class="col-md-6">
-            {% include '::web/user/_address.html.twig' with {'address': user.primaryShippingAddress} only %}
+            {% include '::web/customer/_address.html.twig' with {
+                'address': user.primaryShippingAddress, 
+                'editAble': true, 
+                'editContainer': '#profile-form-container'} only 
+            %}
         </div>
         <div class="col-md-6">
-            {% include '::web/user/_address.html.twig' with {'address': user.primaryBillingAddress} only %}
+            {% include '::web/customer/_address.html.twig' with {
+                'address': user.primaryBillingAddress, 
+                'editAble': true, 
+                'editContainer': '#profile-form-container'} only 
+            %}
         </div>
     </div>    
     
     <a href="{{ path('saman_shopping_order_add') }}" class="btn btn-primary">{{ 'order.icon.makeOrder'|icon }} {{ 'order.action.makeOrder'|trans }}</a>
     <a href="{{ path('saman_shopping_orders') }}" class="btn btn-primary">{{ 'order.icon.myOrders'|icon }} {{ 'order.myOrders'|trans }}</a>
+
+    {% include '::web/customer/js/_address.js.twig' %}
 {% endblock %}

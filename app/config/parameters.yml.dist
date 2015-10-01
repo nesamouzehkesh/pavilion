@@ -20,3 +20,4 @@ parameters:
     mongodb_database_name:  ~
     saman_displayFullView: true
     base_urls: http://
+    base_title: Site Name
