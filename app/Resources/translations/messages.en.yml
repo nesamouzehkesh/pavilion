@@ -166,6 +166,10 @@ module:
 shopping:
     webTitle: shopping
 
+product:
+    products: Products
+    configs: Configs
+
 order:
     myOrders: My Orders
     progress: Order Progress

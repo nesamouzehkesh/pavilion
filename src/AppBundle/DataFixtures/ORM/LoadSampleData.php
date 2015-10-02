@@ -11,6 +11,7 @@ use UserBundle\Entity\Address;
 use UserBundle\Entity\User;
 use UserBundle\Entity\Role;
 use ProductBundle\Entity\Product;
+use ProductBundle\Entity\Category as ProductCategory;
 
 /**
  * LoadSystemData:
@@ -158,7 +159,8 @@ class LoadSampleData implements FixtureInterface
                     '
             ),
         ),
-        'products' => 10,
+        'productCategories' => 10,
+        'products' => 20,
         'roles' => array(
             array('name' => 'User', 'role' => Role::ROLE_USER),
             array('name' => 'Admin', 'role' => Role::ROLE_ADMIN),
@@ -388,12 +390,29 @@ class LoadSampleData implements FixtureInterface
      */
     private function loadProducts(ObjectManager $manager)
     {
+        $productCategories = array();
         $loremIpsum = new LoremIpsumGenerator();
+        for ($i = 0; $i < $this->data['productCategories']; $i++) {
+            $productCategory = new ProductCategory();
+            $productCategory->setTitle($loremIpsum->getTitle());
+            $productCategory->setDescription($loremIpsum->getDescription());
+            $productCategories[$i] = $productCategory;
+            
+            $manager->persist($productCategory);
+        }
+        
         for ($i = 0; $i < $this->data['products']; $i++) {
             $product = new Product();
             $product->setTitle($loremIpsum->getTitle());
             $product->setDescription($loremIpsum->getDescription());
             $product->setPrice(rand(10, 10000));
+            
+            shuffle($productCategories);
+            for ($j = 0; $j < rand(1 , count($productCategories)); $j++) {
+                $productCategory = $productCategories[$j];
+                $productCategory->addProduct($product);
+                $product->addCategory($productCategory);
+            }
             
             $manager->persist($product);
         }

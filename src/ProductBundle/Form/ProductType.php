@@ -2,6 +2,7 @@
 
 namespace ProductBundle\Form;
 
+use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
@@ -29,6 +30,18 @@ class ProductType extends AbstractType
             ->add('available', 'choice', array(
                 'choices'  => array('1' => 'Active', '0' => 'Inactive')
                 ));
+        
+        $builder->add('categories', 'entity', array(
+            'required' => false,
+            'attr' => array('class' => 'form-control form-control-select2'),
+            'empty_value' => 'Choose a label',
+            'multiple'  => true,
+            'class' => 'ProductBundle:Category',
+            'query_builder' => function(EntityRepository $er) {
+                return $er->createQueryBuilder('c')
+                    ->where('c.deleted = 0');
+            }
+        ));        
     }
     
     public function setDefaultOptions(OptionsResolverInterface $resolver)

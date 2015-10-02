@@ -171,15 +171,15 @@ class TwigFunctionExtension extends Twig_Extension
                     );
             }
             
-            $attrUrlContent = '';
-            if (null !== $navigationParameters['url']) {
-                $attrUrlContent = sprintf(
-                    'data-url="%s"', 
-                    $this->translator->trans($navigationParameters['url'])
-                    );
-            }
-            
             if (null !== $navigationParameters['action']) {
+                $attrUrlContent = '';
+                if (null !== $navigationParameters['url']) {
+                    $attrUrlContent = sprintf(
+                        'data-url="%s"', 
+                        $navigationParameters['url']
+                        );
+                }
+                
                 $breadcrumbItemsContent = $breadcrumbItemsContent . sprintf(
                     self::BREADCRUMB_JS_ACTION_ITEM_TEMPLATE, 
                     $attrUrlContent,
@@ -248,6 +248,8 @@ class TwigFunctionExtension extends Twig_Extension
             }
         }
         
+        $linkText = (null === $text)? '' : $this->translator->trans($text);
+        
         return sprintf(
             self::LINK_TEMPLATE, 
             $parameters['url'],
@@ -255,7 +257,7 @@ class TwigFunctionExtension extends Twig_Extension
             $parameters['class'],
             $attrContent,
             $iconContent,
-            $this->translator->trans($text)
+            $linkText
             );
     }
     

@@ -63,6 +63,12 @@ $.fn.isValid = function(){
     return this[0].checkValidity();
 };
 
+// activate the tooltip    
+function fireTooltip(itemId)
+{
+    $('#' + itemId).tooltip({ selector: '[data-toggle="tooltip"]' });
+}
+
 function searchItems(searchInput, url_items, cont_items, currentPage)
 {
     var newSearchText = searchInput.val();
@@ -80,8 +86,12 @@ function deleteItem(button, currentUrl, cont_items, currentPage)
         if (result) {
             $.post(deleteActionUrl, function(response) {
                 if (response.success === true) {
-                    displayItems(currentUrl, cont_items, currentPage);
-                    getFlashBag();
+                    if (currentUrl !== undefined) {
+                        displayItems(currentUrl, cont_items, currentPage);
+                        getFlashBag();
+                    } else {
+                        location.reload();
+                    }
                 } else{
                     bootbox.alert(response.message);
                 }

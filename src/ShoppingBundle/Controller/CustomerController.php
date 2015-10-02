@@ -122,7 +122,7 @@ class CustomerController extends BaseController
                 $em = $this->getDoctrine()->getManager();
 
                 // Set this email for user email and username
-                $password = $customerForm->get('password')->getData();
+                $password = $customerForm->get('newPassword')->getData();
                 $customer->setPassword($password);
 
                 $em->persist($customer);
@@ -211,9 +211,14 @@ class CustomerController extends BaseController
         if ('editUser' === $type) {
             // Get some extra form field that are not mapped to user object. 
             $password = $customerForm->get('password')->getData();
-            $rePassword = $customerForm->get('rePassword')->getData();
-            if ($password !== $rePassword) {
-                $this->addFormError($customerForm->get('rePassword'), 'Passwords are not same');
+            if ($this->getUser()->checkPassword($password)) {
+                $this->addFormError($customerForm->get('password'), 'Password is not right');
+            }
+            
+            $newPassword = $customerForm->get('newPassword')->getData();
+            $reNewPassword = $customerForm->get('reNewPassword')->getData();
+            if ($newPassword !== $reNewPassword) {
+                $this->addFormError($customerForm->get('reNewPassword'), 'Passwords are not same');
                 
                 return false;
             }

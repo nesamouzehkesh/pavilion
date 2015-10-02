@@ -5,9 +5,10 @@ namespace ProductBundle\Controller;
 use Library\Base\BaseController;
 use Symfony\Component\HttpFoundation\Request;
 use ProductBundle\Entity\Product;
+use ProductBundle\Entity\Category;
 use ProductBundle\Form\ProductType;
 
-class ProductController extends BaseController
+class ProductAdminController extends BaseController
 {
     /**
      * Display all Products in the Product main page
@@ -17,23 +18,47 @@ class ProductController extends BaseController
      */
     public function displayProductsAction(Request $request)
     {
-        // Get ObjectManager
-        $em = $this->getDoctrine()->getManager();
-        
-        // Get all Products
-        $products = Product::getRepository($em)->getProducts();
+        try {
+            // Get search parameters from HTTP request
+            $searchParam = $this->getAppService()
+                ->getSearchParam($request);
+            $searchParam['categoryId'] = $request->get('categoryId', null);
+            
+            // Get ObjectManager
+            $em = $this->getDoctrine()->getManager();
+            // Get all Products
+            $products = Product::getRepository($em)->getProducts($searchParam);
+            // Get pagination
+            $productsPagination = $this->getAppService()
+                ->paginate($request, $products);
 
-        // Get pagination
-        $productsPagination = $this->getAppService()
-            ->paginate($request, $products);
-        
-        // Render and return the view
-        return $this->render(
-            'ProductBundle:Product:products.html.twig',
-            array(
-                'productsPagination' => $productsPagination
-                )
-            );
+            // Render and return the view
+            $productsView = $this->renderView(
+                'ProductBundle:Product:element/products.html.twig',
+                array(
+                    'productsPagination' => $productsPagination
+                    )
+                );
+            
+            // If user use the pagination to view other pages then we just return the 
+            // $pagesView as a jason response array
+            if ($request->get('headless')) {
+                return $this->getAppService()->getJsonResponse(true, null, $productsView);
+            } 
+            
+            // Get all Categories
+            $categories = Category::getRepository($em)->getCategories();
+            
+            return $this->render(
+                'ProductBundle:Product:index.html.twig',
+                array(
+                    'productsView' => $productsView,
+                    'categories' => $categories,
+                    )
+                );
+        } catch (Exception $ex) {
+            return $this->getExceptionResponse('There is a problem in displaying your orders', $ex);
+        }            
     }
     
     /**

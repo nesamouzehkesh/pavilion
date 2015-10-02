@@ -1,19 +1,38 @@
 saman_admin_product_home:
     path:     /admin/product
-    defaults: { _controller: ProductBundle:Product:displayProducts }
+    defaults: { _controller: ProductBundle:ProductAdmin:displayProducts }
     
 saman_admin_product_display:
     path:     /admin/product/{productId}
-    defaults: { _controller: ProductBundle:Product:displayProduct }    
+    defaults: { _controller: ProductBundle:ProductAdmin:displayProduct }    
    
 saman_admin_product_add:
-    path:     /admin/add/product/
-    defaults: { _controller: ProductBundle:Product:addEditProduct, productId: null }
+    path:     /admin/product/add/
+    defaults: { _controller: ProductBundle:ProductAdmin:addEditProduct, productId: null }
 
 saman_admin_product_edit:
-    path:     /admin/edit/product/{productId}
-    defaults: { _controller: ProductBundle:Product:addEditProduct }
+    path:     /admin/product/edit/{productId}
+    defaults: { _controller: ProductBundle:ProductAdmin:addEditProduct }
     
 saman_admin_product_delete:
-    path:     /admin/delete/product/{productId}
-    defaults: { _controller: ProductBundle:Product:deleteProduct }
+    path:     /admin/product/delete/{productId}
+    defaults: { _controller: ProductBundle:ProductAdmin:deleteProduct }
+    
+    
+    
+saman_admin_product_configs:
+    path:     /admin/product/configs
+    defaults: { _controller: ProductBundle:ProductAdminConfig:configProducts }    
+    
+saman_admin_product_category_delete:
+    path:     /admin/product/configs/category/delete/{categoryId}
+    defaults: { _controller: ProductBundle:ProductAdminConfig:deleteCategory }    
+    
+saman_admin_product_category_add:
+    path:     /admin/product/configs/category/add/
+    defaults: { _controller: ProductBundle:ProductAdminConfig:addEditCategory, categoryId: null }
+
+saman_admin_product_category_edit:
+    path:     /admin/product/configs/category/edit/{categoryId}
+    defaults: { _controller: ProductBundle:ProductAdminConfig:addEditCategory }
+    

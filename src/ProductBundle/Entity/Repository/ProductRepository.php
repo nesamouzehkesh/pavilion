@@ -44,7 +44,7 @@ class ProductRepository extends BaseEntityRepository
         
         return $product;
     }
-    
+
     /**
      * 
      * @return type
@@ -108,6 +108,12 @@ class ProductRepository extends BaseEntityRepository
             ->where('product.deleted = 0')
             ->search('product.title', $param)
             ->orderBy($order);
+        
+        if (isset($param['categoryId'])) {
+            $qb->leftJoin('product.categories', 'category', 'WITH', 'category.deleted = 0')
+                ->where('category.id = :categoryId')
+                ->setParameter('categoryId', $param['categoryId']);
+        }
         
         $query = $qb->getQuery();
         if (!$justQuery) {

@@ -66,7 +66,12 @@ class Product extends BaseEntity
     /**
      * @ORM\ManyToMany(targetEntity="\ShoppingBundle\Entity\Order", mappedBy="products")
      **/
-    private $orders;    
+    private $orders;
+    
+    /**
+     * @ORM\ManyToMany(targetEntity="Category", mappedBy="products")
+     **/
+    private $categories;    
     
     /**
      * 
@@ -75,6 +80,7 @@ class Product extends BaseEntity
     {
         parent::__construct();
         $this->orders = new ArrayCollection();
+        $this->categories = new ArrayCollection();
         $this->setAvailable(true);
     }
     
@@ -267,5 +273,38 @@ class Product extends BaseEntity
     public function getOrders()
     {
         return $this->orders;
+    }
+    
+    /**
+     * Add categories
+     *
+     * @param \ProductBundle\Entity\Category $categories
+     * @return Product
+     */
+    public function addCategory(\ProductBundle\Entity\Category $categories)
+    {
+        $this->categories[] = $categories;
+
+        return $this;
+    }
+
+    /**
+     * Remove categories
+     *
+     * @param \ProductBundle\Entity\Category $categories
+     */
+    public function removeCategory(\ProductBundle\Entity\Category $categories)
+    {
+        $this->categories->removeElement($categories);
+    }
+
+    /**
+     * Get categories
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getCategories()
+    {
+        return $this->categories;
     }
 }

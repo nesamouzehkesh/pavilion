@@ -1,0 +1,48 @@
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Price</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for product in productsPagination %}
+        <tr class="{{ product.available? '' : 'active' }}">
+            <td class="{{ product.available? '' : 'd-text-muted' }}">{{ product.title }}</td>
+            <td class="{{ product.available? '' : 'd-text-muted' }}">{{ product.price }}</td>
+            <td>
+                <div class="pull-right">
+                    {{ button(
+                          'action.display', 
+                          {
+                              url: path('saman_admin_product_display', {'productId': product.id}),
+                              icon: 'icon.display', 
+                              toggleModal: 'product-view-container', 
+                              action: 'action-display-product'
+                          }) }}                        
+                    {{ button(
+                        'action.edit', 
+                        {
+                            url: path('saman_admin_product_edit', {'productId': product.id}),
+                            icon: 'icon.edit', 
+                            toggleModal: 'product-form-container', 
+                            action: 'action-edit-product'
+                        }) }}
+                    {{ button(
+                        'action.delete', 
+                        {
+                            url: path('saman_admin_product_delete', {'productId': product.id }),
+                            icon: 'icon.delete', 
+                            action: 'action-delete-product',
+                        }) }}
+                </div>  
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>    
+
+<div class="navigation margin-top-20">
+    {{ knp_pagination_render(productsPagination) }}
+</div>

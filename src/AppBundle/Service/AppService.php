@@ -584,19 +584,20 @@ class AppService
     /**
      * 
      * @param type $entity
-     * @return type
+     * @param array|null $groups   The validation groups to validate.
+     * @param type $responce
+     * @return boolean
      */
-    public function validate($entity, $responce = true)
+    public function validate($entity, $groups = null, $responce = true)
     {
-        $errors = $this->getValidator()->validate($entity);
+        $errors = $this->getValidator()->validate($entity, $groups);
         
         if (count($errors) > 0) {
             if (!$responce) {
                 return $errors;
             }
-            $errorsString = (string) $errors;
-
-            return $this->getExceptionResponse($errorsString);
+            
+            return $this->getExceptionResponse(implode(' ', $errors));
         }
         
         return true;

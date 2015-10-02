@@ -1,0 +1,15 @@
+<script type="text/javascript">
+$(function(){
+    $('#action-add-category').click(function(e){
+        handleForm($(this));       
+    });
+    
+    $('.action-edit-category').click(function(e){
+        handleForm($(this));
+    });    
+    
+    $('.action-delete-category').click(function(e){
+        deleteItem($(this));
+    });
+});
+</script>

@@ -14,4 +14,12 @@ ProductBundle\Entity\Product:
                 max: 100.99
                 minMessage: "Price must be at least {{ limit }}"
                 maxMessage: "Price cannot be longer than {{ limit }}"
-               
+                
+                
+ProductBundle\Entity\Goal:
+  constraints:
+      - Elmo\PmsBundle\Validator\Constraints\ValidGoalNotInUse: { groups: ["delete"] }
+  properties:
+      title:
+         - NotBlank:
+             message: goal.title.isBlank               
