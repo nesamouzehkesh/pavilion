@@ -103,16 +103,16 @@ class ProductRepository extends BaseEntityRepository
     {
         $hydrationMode = $readOnly? Query::HYDRATE_ARRAY : null;
         $qb = $this->getQueryBuilder()
-            ->select('product')
+            ->select('product, category')
             ->from('ProductBundle:Product', 'product')
             ->where('product.deleted = 0')
+            ->join('product.categories', 'category', 'WITH', 'category.deleted = 0')            
             ->search('product.title', $param)
             ->orderBy($order);
         
         if (isset($param['categoryId'])) {
-            $qb->leftJoin('product.categories', 'category', 'WITH', 'category.deleted = 0')
-                ->where('category.id = :categoryId')
-                ->setParameter('categoryId', $param['categoryId']);
+            $qb->where('category.id = :categoryId')
+               ->setParameter('categoryId', $param['categoryId']);
         }
         
         $query = $qb->getQuery();

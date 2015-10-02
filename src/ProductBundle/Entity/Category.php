@@ -43,13 +43,7 @@ class Category extends BaseEntity
      * @ORM\Column(name="type", type="integer", nullable=true)
      */
     private $type;
-    
-    /**
-     * @ORM\ManyToMany(targetEntity="Product", inversedBy="categories")
-     * @ORM\JoinTable(name="saman_products_productcategory")
-     **/
-    private $products;    
-    
+  
     /**
      * @var string
      *
@@ -63,7 +57,6 @@ class Category extends BaseEntity
     public function __construct()
     {
         parent::__construct();
-        $this->products = new ArrayCollection();
     }
     
     /**
@@ -162,40 +155,7 @@ class Category extends BaseEntity
     {
         return $this->type;
     }
-    
-    /**
-     * Add products
-     *
-     * @param \ProductBundle\Entity\Product $products
-     * @return Category
-     */
-    public function addProduct(\ProductBundle\Entity\Product $products)
-    {
-        $this->products[] = $products;
-
-        return $this;
-    }
-
-    /**
-     * Remove products
-     *
-     * @param \ProductBundle\Entity\Product $products
-     */
-    public function removeProduct(\ProductBundle\Entity\Product $products)
-    {
-        $this->products->removeElement($products);
-    }
-
-    /**
-     * Get products
-     *
-     * @return \Doctrine\Common\Collections\Collection 
-     */
-    public function getProducts()
-    {
-        return $this->products;
-    }
-    
+   
     /**
      * Set type
      *

@@ -26,7 +26,7 @@
         <div class="col-md-12">
             {% for category in categories %}
                 {% set id = 'category-' ~ category.id %}
-                <span class="btn btn-default temporarily-selected-item margin-top-2" id="{{ id }}" name="{{ id }}">
+                <span class="btn btn-default margin-top-2" id="{{ id }}" name="{{ id }}">
                     {{ category.title }}
                     {#
                     <a style="margin: 5px;" rel="tooltip" href="#">

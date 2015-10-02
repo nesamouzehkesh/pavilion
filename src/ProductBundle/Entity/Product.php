@@ -69,9 +69,12 @@ class Product extends BaseEntity
     private $orders;
     
     /**
-     * @ORM\ManyToMany(targetEntity="Category", mappedBy="products")
-     **/
-    private $categories;    
+     * @ORM\ManyToMany(targetEntity="Category")
+     * @ORM\JoinTable(name="saman_products_productcategory",
+     * joinColumns={@ORM\JoinColumn(name="product_id", referencedColumnName="id")},
+     * inverseJoinColumns={@ORM\JoinColumn(name="category_id", referencedColumnName="id")})
+     */
+    protected $categories;    
     
     /**
      * 

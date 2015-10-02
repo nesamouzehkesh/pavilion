@@ -408,9 +408,8 @@ class LoadSampleData implements FixtureInterface
             $product->setPrice(rand(10, 10000));
             
             shuffle($productCategories);
-            for ($j = 0; $j < rand(1 , count($productCategories)); $j++) {
+            for ($j = 0; $j < rand(1 , 3); $j++) {
                 $productCategory = $productCategories[$j];
-                $productCategory->addProduct($product);
                 $product->addCategory($productCategory);
             }
             
