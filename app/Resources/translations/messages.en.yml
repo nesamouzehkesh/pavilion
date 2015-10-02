@@ -169,6 +169,9 @@ shopping:
 product:
     products: Products
     configs: Configs
+    categories: Product Categories
+    action:
+        addNewCategory: Add Category
 
 order:
     myOrders: My Orders

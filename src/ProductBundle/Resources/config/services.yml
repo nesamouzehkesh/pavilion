@@ -1,1 +1,6 @@
 services:
+    saman_product.validator.product.category.for.delete:
+        class: ProductBundle\Validator\Constraints\ValidCategoryForDeleteValidator
+        arguments: ["@doctrine.orm.entity_manager"]
+        tags:
+            - { name: validator.constraint_validator, alias: validator.product.category.for.delete }    

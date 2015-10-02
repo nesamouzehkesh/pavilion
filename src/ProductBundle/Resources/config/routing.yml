@@ -3,7 +3,7 @@ saman_admin_product_home:
     defaults: { _controller: ProductBundle:ProductAdmin:displayProducts }
     
 saman_admin_product_display:
-    path:     /admin/product/{productId}
+    path:     /admin/product/show/{productId}
     defaults: { _controller: ProductBundle:ProductAdmin:displayProduct }    
    
 saman_admin_product_add:

@@ -34,7 +34,7 @@ class ProductAdminConfigController extends BaseController
      * @param type $categoryId
      * @return type
      */
-    public function addEditCategory(Request $request, $categoryId = null)
+    public function addEditCategoryAction(Request $request, $categoryId = null)
     {
         try {
             // Get category object
@@ -53,7 +53,7 @@ class ProductAdminConfigController extends BaseController
             $categoryForm->handleRequest($request);
             // If form is submited and it is valid then add or update this $product
             if ($categoryForm->isValid()) {
-                $this->getAppService()->persistEntity($category);
+                $this->getAppService()->saveEntity($category);
                 
                 return $this->getJsonResponse(true);
             }
@@ -84,7 +84,7 @@ class ProductAdminConfigController extends BaseController
             // Validate if this category can be deleted
             $validationResponce = $this->getAppService()->validate($category, 'delete');
             if (true !== $validationResponce) {
-                return $this->getJsonResponse(false, $validationResponce);
+                return $validationResponce;
             }
             
             // Soft-deleting an entity

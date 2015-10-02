@@ -35,6 +35,23 @@ class CategoryRepository extends BaseEntityRepository
     }
     
     /**
+     * 
+     * @param type $categoryId
+     * @return type
+     */
+    public function countCategoryProducts($categoryId)
+    {
+        $qb = $this->getQueryBuilder()
+            ->select('count(p.id)')
+            ->from('ProductBundle:Category', 'c')
+            ->leftJoin('c.products', 'p', 'p.deleted = 0')
+            ->where('c.deleted = 0 AND c.id = :id')
+            ->setParameter('id', $categoryId);
+        
+        return intval($qb->getQuery()->getSingleScalarResult());
+    }
+    
+    /**
      * Get one or null category
      * 
      * @param type $value

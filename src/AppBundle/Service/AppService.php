@@ -11,6 +11,7 @@ use Symfony\Bundle\FrameworkBundle\Translation\Translator;
 use Symfony\Component\Security\Core\SecurityContext;
 use Symfony\Bundle\TwigBundle\TwigEngine;
 use Symfony\Component\Validator\ValidatorInterface;
+use Symfony\Component\Validator\ConstraintViolationList;
 use Doctrine\ORM\EntityManager;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Knp\Component\Pager\Paginator;
@@ -591,13 +592,13 @@ class AppService
     public function validate($entity, $groups = null, $responce = true)
     {
         $errors = $this->getValidator()->validate($entity, $groups);
-        
         if (count($errors) > 0) {
+            $errorsString = $this->getErrorString($errors);
             if (!$responce) {
-                return $errors;
+                return $errorsString;
             }
-            
-            return $this->getExceptionResponse(implode(' ', $errors));
+
+            return $this->getExceptionResponse($errorsString);
         }
         
         return true;
@@ -968,7 +969,29 @@ class AppService
         }
         
         return $exceptionError;
-    }     
+    }
+    
+    /**
+     * Generate an string error based on given errors
+     * Convert Symfony\Component\Validator\ConstraintViolationList errors to string
+     *
+     * @param type $errors
+     * @return type
+     */
+    private function getErrorString(ConstraintViolationList $errors, $glue = ',')
+    {
+        $errorArray = array();
+        if ($errors instanceof ConstraintViolationList) {
+            foreach ($errors as $error) {
+                $errorArray[] = $this->trans(
+                    $error->getMessage(), 
+                    $error->getMessageParameters()
+                    );
+            }
+        }
+                    
+        return implode($glue ,$errorArray);
+    }    
     
     /**
      * 

@@ -16,10 +16,10 @@ ProductBundle\Entity\Product:
                 maxMessage: "Price cannot be longer than {{ limit }}"
                 
                 
-ProductBundle\Entity\Goal:
+ProductBundle\Entity\Category:
   constraints:
-      - Elmo\PmsBundle\Validator\Constraints\ValidGoalNotInUse: { groups: ["delete"] }
+      - ProductBundle\Validator\Constraints\ValidCategoryForDelete: { groups: ["delete"] }
   properties:
       title:
          - NotBlank:
-             message: goal.title.isBlank               
+             message: "Title can not be blank"  

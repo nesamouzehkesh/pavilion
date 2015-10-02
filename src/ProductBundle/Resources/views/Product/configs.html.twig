@@ -14,40 +14,45 @@
           ]) }}
 {% endblock %}
 
-{% block header %}
-    <button data-url="{{ path('saman_admin_product_category_add') }}" id="action-add-category" type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#category-form-container">{{ 'icon.add'|icon }} {{ 'action.addNewItem'|trans }}</button>
-{% endblock %}
-
 {% block body %}
+    <h4>{{ 'product.categories'|trans }}</h4>
     <div class="modal fade" id="category-form-container" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"></div>
     
-    {% for category in categories %}
-        {% set id = 'category-' ~ category.id %}
-        <span class="btn btn-default temporarily-selected-item margin-top-2" id="{{ id }}" name="{{ id }}">
-            {{ category.title }}
-            {#
-            <a style="margin: 5px;" rel="tooltip" href="#">
-                <span data-placement="right" data-toggle="tooltip" title="" class="glyphicon glyphicon glyphicon-info-sign" id="5" onmouseover="fireTooltip('{{ id }}')" data-original-title="....."></span>
-            </a>
-            #}
-            {{ button(
-                null, 
-                {
-                    url: path('saman_admin_product_category_edit', {'categoryId': category.id}),
-                    icon: 'icon.edit', 
-                    toggleModal: 'product-form-container', 
-                    action: 'action-edit-category'
-                }) }}
-            {{ button(
-                null, 
-                {
-                    url: path('saman_admin_product_category_delete', {'categoryId': category.id }),
-                    icon: 'icon.delete', 
-                    action: 'action-delete-category',
-                }) }}            
-        </span>
-    {% endfor %}        
-
+    <button data-url="{{ path('saman_admin_product_category_add') }}" id="action-add-category" type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#category-form-container">
+            {{ 'icon.add'|icon }} {{ 'product.action.addNewCategory'|trans }}
+    </button>
+    
+    <div class="row margin-top-10">
+        <div class="col-md-12">
+            {% for category in categories %}
+                {% set id = 'category-' ~ category.id %}
+                <span class="btn btn-default temporarily-selected-item margin-top-2" id="{{ id }}" name="{{ id }}">
+                    {{ category.title }}
+                    {#
+                    <a style="margin: 5px;" rel="tooltip" href="#">
+                        <span data-placement="right" data-toggle="tooltip" title="" class="glyphicon glyphicon glyphicon-info-sign" id="5" onmouseover="fireTooltip('{{ id }}')" data-original-title="....."></span>
+                    </a>
+                    #}
+                    {{ button(
+                        null, 
+                        {
+                            url: path('saman_admin_product_category_edit', {'categoryId': category.id}),
+                            icon: 'icon.edit', 
+                            toggleModal: 'category-form-container', 
+                            action: 'action-edit-category'
+                        }) }}
+                    {{ button(
+                        null, 
+                        {
+                            url: path('saman_admin_product_category_delete', {'categoryId': category.id }),
+                            icon: 'icon.delete', 
+                            action: 'action-delete-category',
+                        }) }}            
+                </span>
+            {% endfor %}        
+        </div>
+    </div>
+            
 {% endblock %}
     
 {% block script %}
