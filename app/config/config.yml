@@ -80,11 +80,11 @@ twig:
         date_format: "d/m/Y"
         saman_displayFullView: %saman_displayFullView%
         saman_app_modules:
-            order: saman_admin_shopping_order_home
             product: saman_admin_product_home
-            user: saman_admin_user_home
             cms: saman_cms_admin_page_home
-            label: saman_label_home
+            order: saman_admin_shopping_order_home
+            user: saman_admin_user_home
+            #label: saman_label_home
 
        
     form:

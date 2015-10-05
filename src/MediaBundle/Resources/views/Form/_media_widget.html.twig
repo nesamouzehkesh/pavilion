@@ -10,6 +10,13 @@ https://github.com/blueimp/jQuery-File-Upload/wiki/Options
 {% set mediaId = id|default('file') %}
 <span id="attachment-message-{{ mediaId }}"></span>
 
+{% set pathUpload = 'saman_media_upload_temp_media' %}
+{% set pathDelete = 'saman_media_delete_media' %}
+{% if app.request.requestUri|getBaseUri == 'admin' %}
+    {% set pathUpload = 'saman_admin_media_upload_temp_media' %}
+    {% set pathDelete = 'saman_admin_media_delete_media' %}
+{% endif %}
+
 {% set isMultiple = attr['isMultiple'] is defined? attr['isMultiple'] : true %}
 {% set isDragover = attr['dragover'] is defined? attr['dragover'] : true %}
 {% set filesContainer = '<table role="presentation" style="width: 100%"><tbody id="files-container-' ~ mediaId ~ '" class="files">' ~ value|toMediaList ~ '</tbody></table>' %}    
@@ -126,7 +133,7 @@ https://github.com/blueimp/jQuery-File-Upload/wiki/Options
 
         function deleteFile(id, callback)
         {
-            var url = '{{ path('saman_media_delete_media') }}';
+            var url = '{{ path(pathDelete) }}';
             $.get(url, {id: id}, function(response) {
                 var fileInput = $('#{{ mediaId }}');
    
@@ -167,7 +174,7 @@ https://github.com/blueimp/jQuery-File-Upload/wiki/Options
         $('#fileupload-{{ mediaId }}').fileupload({
             multipart: true,
             autoUpload: true,
-            url: '{{ path('saman_media_upload_temp_media') }}',
+            url: '{{ path(pathUpload) }}',
             dataType: 'json',
             maxFileSize: 5000000, //5mb
             accept: 'application/json',

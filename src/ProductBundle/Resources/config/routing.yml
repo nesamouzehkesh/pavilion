@@ -22,17 +22,26 @@ saman_admin_product_delete:
     
 saman_admin_product_configs:
     path:     /admin/product/configs
-    defaults: { _controller: ProductBundle:ProductAdminConfig:configProducts }    
+    defaults: { _controller: ProductBundle:ProductAdminConfig:configProducts }
     
 saman_admin_product_category_delete:
     path:     /admin/product/configs/category/delete/{categoryId}
-    defaults: { _controller: ProductBundle:ProductAdminConfig:deleteCategory }    
+    defaults: { _controller: ProductBundle:ProductAdminConfig:deleteCategory }
     
-saman_admin_product_category_add:
-    path:     /admin/product/configs/category/add/
+saman_admin_product_category_addedit:
+    path:     /admin/product/configs/category/update/{categoryId}
     defaults: { _controller: ProductBundle:ProductAdminConfig:addEditCategory, categoryId: null }
 
-saman_admin_product_category_edit:
-    path:     /admin/product/configs/category/edit/{categoryId}
-    defaults: { _controller: ProductBundle:ProductAdminConfig:addEditCategory }
+saman_admin_product_custom_field_delete:
+    path:     /admin/product/configs/customfield/delete/{fieldKey}
+    defaults: { _controller: ProductBundle:ProductAdminConfig:deleteCustomField }
+    
+saman_admin_product_custom_field_addedit:
+    path:     /admin/product/configs/customfield/update/{fieldKey}
+    defaults: { _controller: ProductBundle:ProductAdminConfig:addEditCustomField, fieldKey: null }
+    
+    
+saman_shopping_product_home:
+    path:     /shop/gallery
+    defaults: { _controller: ProductBundle:Product:displayProducts }
     

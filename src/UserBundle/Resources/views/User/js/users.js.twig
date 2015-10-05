@@ -4,6 +4,8 @@ $(function(){
     $('.action-add-user, .action-edit-user').click(function(e){
         var url = $(this).attr('data-url');
         var formContainer = $('#user-form-container');
+        
+        showModal(formContainer);
         $.get(url, function(response) {
             if (response.success === true) {
                 postItemForm(response, formContainer);
@@ -34,7 +36,6 @@ $(function(){
     {
         formContainer.html(response.content); 
         var form = formContainer.find('form');
-        
         form.submit(function(e){
             e.preventDefault();
             postFormContent($(this), function(response) {

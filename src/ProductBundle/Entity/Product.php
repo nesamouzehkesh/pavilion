@@ -29,6 +29,13 @@ class Product extends BaseEntity
      * @ORM\Column(name="title", type="string", length=255)
      */
     private $title;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="content", type="array", nullable=true)
+     */
+    private $content;
 
     /**
      * @var string
@@ -43,6 +50,13 @@ class Product extends BaseEntity
      * @ORM\Column(name="price", type="integer", nullable=true)
      */
     private $price;
+    
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="original_price", type="integer", nullable=true)
+     */
+    private $originalPrice;
     
     /**
      * @ORM\Column(name="available", type="boolean", options={"default"= 1})
@@ -129,6 +143,29 @@ class Product extends BaseEntity
     {
         return $this->title;
     }
+    
+    /**
+     * Set content
+     *
+     * @param string $content
+     * @return Order
+     */
+    public function setContent($content)
+    {
+        $this->content = $content;
+
+        return $this;
+    }
+
+    /**
+     * Get content
+     *
+     * @return string 
+     */
+    public function getContent()
+    {
+        return $this->content;
+    }
 
     /**
      * Set description
@@ -174,6 +211,29 @@ class Product extends BaseEntity
     public function getPrice()
     {
         return $this->price;
+    }
+    
+    /**
+     * Set originalPrice
+     *
+     * @param integer $originalPrice
+     * @return Product
+     */
+    public function setOriginalPrice($originalPrice)
+    {
+        $this->originalPrice = $originalPrice;
+
+        return $this;
+    }
+
+    /**
+     * Get originalPrice
+     *
+     * @return integer 
+     */
+    public function getOriginalPrice()
+    {
+        return $this->originalPrice;
     }
 
     /**

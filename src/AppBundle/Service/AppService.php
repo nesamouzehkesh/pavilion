@@ -19,6 +19,7 @@ use ConfigBundle\Service\ConfigService;
 use MediaBundle\Form\Type\MultipleType;
 use MediaBundle\Service\MediaService;
 use Library\Exception\VisibleHttpException;
+use AppBundle\Entity\SystemConfig;
 
 class AppService 
 {
@@ -109,6 +110,12 @@ class AppService
      */
     protected $configService = null;
     
+    /**
+     *
+     * @var type
+     */
+    protected $systemConfigs = array();
+
     /**
      * 
      * @param Translator $translator
@@ -242,6 +249,63 @@ class AppService
         return $this->configService->getUserConfigOptions($user);
     }
     
+    /**
+     * 
+     * @param type $key
+     */
+    public function getSystemConfigOptions($key, $reload = false)
+    {
+        // 1- Load config options from memory
+        if (isset($this->systemConfigs[$key]) and $reload) {
+            return $this->systemConfigs[$key];
+        }
+        
+        // 2- Load config options from DB
+        $options = SystemConfig::getRepository($this->getEntityManager())
+            ->getConfigOptions($key);
+        
+        return $this->systemConfigs[$key] = unserialize($options);
+    }
+    
+    /**
+     * 
+     * @param type $key
+     * @param type $reload
+     * @return SystemConfig
+     */
+    public function getSystemConfig($key)
+    {
+        if (!array_key_exists($key, SystemConfig::$configKeys)) {
+            throw new \Exception('Not valid config key is defined');
+        }
+        
+        $config = SystemConfig::getRepository($this->getEntityManager())
+            ->getConfig($key);
+        if (!$config instanceof SystemConfig) {
+            $config = new SystemConfig($key);
+        }
+        
+        return $config;
+    }
+    
+    /**
+     * 
+     * @param type $key
+     * @param type $options
+     * @return type
+     */
+    public function setSystemConfig($key, $options)
+    {
+        $config = SystemConfig::getRepository($this->getEntityManager())
+            ->getConfig($key);
+        if (!$config instanceof SystemConfig) {
+            $config = new SystemConfig($key);
+        }
+        $config->setOptions($options);
+        
+        return $config;
+    }
+
     /**
      * Get a user from the Security Context
      *

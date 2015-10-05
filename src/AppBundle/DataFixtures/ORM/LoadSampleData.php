@@ -12,6 +12,7 @@ use UserBundle\Entity\User;
 use UserBundle\Entity\Role;
 use ProductBundle\Entity\Product;
 use ProductBundle\Entity\Category as ProductCategory;
+use AppBundle\Entity\SystemConfig;
 
 /**
  * LoadSystemData:
@@ -159,8 +160,8 @@ class LoadSampleData implements FixtureInterface
                     '
             ),
         ),
-        'productCategories' => 10,
-        'products' => 20,
+        'productCategories' => 5,
+        'products' => 10,
         'roles' => array(
             array('name' => 'User', 'role' => Role::ROLE_USER),
             array('name' => 'Admin', 'role' => Role::ROLE_ADMIN),
@@ -218,6 +219,44 @@ class LoadSampleData implements FixtureInterface
                 )
             ),
         ),
+        'systemConfigs' => array(
+            SystemConfig::KEY_PRODUCT_CUSTOM_FORM => array(
+                'origin' => array(
+                    'type' => 'choice',
+                    'choices' => array(
+                        '1' => '100',
+                        '2' => '200',
+                        '3' => '300',
+                        '4' => '400',
+                        ),
+                    'label' => 'DPI (Raj)',
+                    'default' => '1',
+                    'required' => true
+                ),
+                'colors' => array(
+                    'type' => 'choice',
+                    'choices' => array(
+                        '1' => 'Black & With',
+                        '2' => 'Rust',
+                        '3' => 'Colorful',
+                        ),
+                    'label' => 'Color',
+                    'default' => '1',
+                    'required' => true
+                ),
+                'numberOfColors' => array(
+                    'type' => 'choice',
+                    'choices' => array(
+                        '1' => '10',
+                        '2' => '20',
+                        '3' => '30',
+                        ),
+                    'label' => 'Number Of Colors',
+                    'default' => '1',
+                    'required' => true
+                ),
+            ),
+        ),
         'labels' => array(
             'A', 
             'B', 
@@ -239,11 +278,29 @@ class LoadSampleData implements FixtureInterface
      */
     public function load(ObjectManager $manager)
     {
+        $this->loadSystemConfigs($manager);
         $this->loadUserRoles($manager);
         $this->loadUsers($manager);
         $this->loadLabels($manager);
         $this->loadPages($manager);
         $this->loadProducts($manager);
+    }
+    
+    /**
+     * 
+     * @param \AppBundle\DataFixtures\ORM\bjectManager $manager
+     */
+    private function loadSystemConfigs(ObjectManager $manager)
+    {
+        foreach ($this->data['systemConfigs'] as $key => $options) {
+            $sysConf = new SystemConfig();
+            $sysConf->setKey($key);
+            $sysConf->setOptions($options);
+            
+            $manager->persist($sysConf);
+        }
+        
+        $manager->flush();
     }
     
     /**
@@ -405,7 +462,10 @@ class LoadSampleData implements FixtureInterface
             $product = new Product();
             $product->setTitle($loremIpsum->getTitle());
             $product->setDescription($loremIpsum->getDescription());
-            $product->setPrice(rand(10, 10000));
+            
+            $price = rand(100, 10000);
+            $product->setPrice($price);
+            $product->setOriginalPrice($price - rand(10, 99));
             
             shuffle($productCategories);
             for ($j = 0; $j < rand(1 , 3); $j++) {

@@ -1,12 +1,26 @@
 {% extends "::twig/form.html.twig" %}
 
 {% block body %}
+    <ul class="nav nav-tabs margin-bottom-20" role="tablist">
+        <li role="presentation" class="active"><a href="#productGeneralInfoTab" aria-controls="productGeneralInfoTab" role="tab" data-toggle="tab">{{ 'product.addProduct.productGeneralInfoTab'|trans }}</a></li>
+       <li role="presentation"><a href="#productCustomInfoTab" aria-controls="productCustomInfoTab" role="tab" data-toggle="tab">{{ 'product.addProduct.productCustomInfoTab'|trans }}</a></li>
+    </ul>
+
     {{ form_errors(form) }}
-    {{ form_row(form.title) }}
-    {{ form_row(form.categories) }}
-    {{ form_row(form.price) }}
-    {{ form_row(form.image) }}
-    {{ form_row(form.available) }}
-    {{ form_row(form.description) }}
-    {{ form_row(form.images) }}
+    <div class="tab-content">
+        <div role="tabpanel" class="tab-pane active" id="productGeneralInfoTab">
+            {{ form_row(form.title) }}
+            {{ form_row(form.categories) }}
+            {{ form_row(form.price) }}
+            {{ form_row(form.originalPrice) }}
+            
+            {{ form_row(form.image) }}
+            {{ form_row(form.available) }}
+            {{ form_row(form.description) }}
+            {{ form_row(form.images) }}
+        </div>
+        <div role="tabpanel" class="tab-pane" id="productCustomInfoTab">
+            {{ form_row(form.content) }}
+        </div>
+    </div>    
 {% endblock %}

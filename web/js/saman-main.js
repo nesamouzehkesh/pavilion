@@ -16683,12 +16683,24 @@ function getFlashBag()
 function displayItem(button, cont_item)
 {
     var url = button.attr('data-url');
+    var modal = $(button.attr('data-target'));
+    if (modal !== undefined) {
+        showModal(modal);
+    }
+    
     $.get(url, function(response) {
         if (response.success === true) {
-            cont_item.html(response.content);
-            cont_item.show();
+            if (modal !== undefined) {
+                modal.html(response.content);
+            } else {
+                cont_item.html(response.content);
+                cont_item.show();
+            }
         } else {
-            cont_item.modal('toggle');
+            if (modal !== undefined) {
+                cont_item.modal('hide');
+            }
+            
             bootbox.alert(response.message);
         }
     }, 'json'); 
@@ -16738,6 +16750,12 @@ function sortAble(sortContainer, callback) {
     });
 }
 
+function showModal(modal)
+{
+    modal.modal('show');
+    modal.html('<div class="modal-dialog"><div class="modal-content"><div class="modal-body"><p>Loading ...</p></div></div></div>'); 
+}
+
 /*
 Display add/edit module form and returns the form as callback parameter if 
 form display correctly, prepare and handle the post action.
@@ -16745,16 +16763,19 @@ form display correctly, prepare and handle the post action.
 function handleForm(button, currentUrl, cont_items, currentPage, callback)
 {
     var url = button.attr('data-url');
-    var formContainer = $(button.attr('data-target'));
+    var formModal = $(button.attr('data-target'));
+    showModal(formModal);
+    
     $.get(url, function(response) {
         if (response.success === true) {
-            postForm(response, formContainer, currentUrl, cont_items, currentPage);
+            postForm(response, formModal, currentUrl, cont_items, currentPage);
             if (callback !== undefined) {
                 setTimeout(function() {      
-                    callback(formContainer);
+                    callback(formModal);
                 }, 300);
             }                 
         } else {
+            formModal.modal('hide');
             bootbox.alert(response.message);
         }
     }, 'json');
@@ -16792,7 +16813,6 @@ function loadingMessage(status, cont_items)
 function postForm(response, formContainer, currentUrl, cont_items, currentPage)
 {
     formContainer.html(response.content); 
-    formContainer.show();
     var form = formContainer.find('form');
     form.submit(function(e){
         e.preventDefault();

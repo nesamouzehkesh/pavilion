@@ -6,7 +6,7 @@
             <div class="col-md-6 col-xs-12 col-sm-12">
                 <form class="form-inline">
                     <div class="form-group">
-                        <button data-url="{{ path('saman_admin_product_add') }}" id="action-add-product" type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#product-form-container">{{ 'icon.add'|icon }} {{ 'action.addNewItem'|trans }}</button>
+                        <button data-url="{{ path('saman_admin_product_add') }}" id="action-add-product" type="button" class="btn btn-primary btn-sm" data-target="#product-form-container">{{ 'icon.add'|icon }} {{ 'action.addNewItem'|trans }}</button>
                     </div>
                     {% if categories|length > 0 %}
                         <div class="form-group">
@@ -62,7 +62,6 @@
     <div id="products-list-container">
         {{ productsView|raw }}
     </div>    
-
 {% endblock %}
     
 {% block script %}

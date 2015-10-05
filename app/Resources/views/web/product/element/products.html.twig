@@ -1,0 +1,27 @@
+
+{% for product in productsPagination %}
+    {% %}
+    <div class="view-product">
+        <div class="view-product-image">
+            {% set image = product.image|getMedia %}
+            {% if image is not null %}
+                {#<a href="{{ asset(image.path|imagine_filter('o')) }}" target="_blank">#}
+                    <img src="{{ asset(image.path|imagine_filter('s')) }}" class="img-thumbnail" />
+                {#</a>#}
+            {% endif %}
+        </div>
+        
+        <div class="view-product-price">
+            <span class="originalPrice">${{ product.originalPrice|number_format(2, '.', ',') }}</span>
+            <span class="price">${{ product.price|number_format(2, '.', ',') }}</span>
+        </div>        
+        
+        <div class="view-product-title">
+            {{ product.title }}
+        </div>        
+    </div>
+{% endfor %}
+
+<div class="navigation margin-top-20">
+    {{ knp_pagination_render(productsPagination) }}
+</div>

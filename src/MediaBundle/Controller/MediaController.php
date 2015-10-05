@@ -4,6 +4,7 @@ namespace MediaBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
 use Library\Base\BaseController;
+use UserBundle\Entity\User;
 
 class MediaController extends BaseController
 {
@@ -14,7 +15,7 @@ class MediaController extends BaseController
      * @param \Symfony\Component\HttpFoundation\Request $request
      * @return type
      */
-    public function uploadMediaAction(Request $request, $isPermanent)
+    public function uploadMediaAction(Request $request, $isPermanent, $isAdmin)
     {
         try {
             $files = $request->files->get('files');
@@ -34,7 +35,7 @@ class MediaController extends BaseController
      * @param \Symfony\Component\HttpFoundation\Request $request
      * @return type
      */
-    public function downloadMediaAction(Request $request)
+    public function downloadMediaAction(Request $request, $isAdmin)
     {
         try {
             $id = intval($request->get('id'));
@@ -54,7 +55,7 @@ class MediaController extends BaseController
      * @param \Symfony\Component\HttpFoundation\Request $request
      * @return type
      */
-    public function deleteMediaAction(Request $request)
+    public function deleteMediaAction(Request $request, $isAdmin)
     {
         try {
             $id = intval($request->get('id'));
@@ -74,7 +75,11 @@ class MediaController extends BaseController
      */
     protected function getMediaService()
     {
-        return $this->get('saman_media.media')
-            ->setUser($this->getUser());
+        $mediaService = $this->get('saman_media.media');
+        if ($this->getUser() instanceof User) {
+            $mediaService->setUser($this->getUser());
+        }
+        
+        return $mediaService;
     }    
 }

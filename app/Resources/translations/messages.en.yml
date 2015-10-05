@@ -170,8 +170,13 @@ product:
     products: Products
     configs: Configs
     categories: Product Categories
+    customFields: Custom Fields
+    addProduct:
+        productGeneralInfoTab: General Info
+        productCustomInfoTab: Custom Info
     action:
         addNewCategory: Add Category
+        addNewCustomField: Add Custom Field
 
 order:
     myOrders: My Orders

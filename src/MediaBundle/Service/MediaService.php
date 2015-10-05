@@ -439,7 +439,7 @@ class MediaService
         
         switch ($action) {
             case 'download':
-                if (Media::VISIBILITY_PUBLIC === $media['visibility']) {
+                if (Media::VISIBILITY_PUBLIC === intval($media['visibility'])) {
                     return true;
                 }
                 

@@ -3,7 +3,6 @@
 namespace ProductBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\Common\Collections\ArrayCollection;
 use Library\Base\BaseEntity;
 
 /**

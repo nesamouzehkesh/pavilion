@@ -1,14 +1,14 @@
 <script type="text/javascript">
 $(function(){
-    $('#action-add-category').click(function(e){
+    $('#action-add-category, #action-add-form-filed').click(function(e){
         handleForm($(this));       
     });
     
-    $('.action-edit-category').click(function(e){
+    $('.action-edit-category, .action-edit-form-filed').click(function(e){
         handleForm($(this));
     });    
     
-    $('.action-delete-category').click(function(e){
+    $('.action-delete-category, .action-delete-form-filed').click(function(e){
         deleteItem($(this));
     });
 });

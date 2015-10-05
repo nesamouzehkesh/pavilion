@@ -1,14 +1,28 @@
-saman_media_upload_temp_media:
-    path:     /media/upload-media
-    defaults: { _controller: MediaBundle:Media:uploadMedia, isPermanent: false }
-
 saman_media_download_media:
     path:     /media/download-media
-    defaults: { _controller: MediaBundle:Media:downloadMedia }
+    defaults: { _controller: MediaBundle:Media:downloadMedia, isAdmin: false }
     
+saman_media_upload_temp_media:
+    path:     /shopping/media/upload-media
+    defaults: { _controller: MediaBundle:Media:uploadMedia, isPermanent: false, isAdmin: false }
+
 saman_media_delete_media:
-    path:     /media/delete-media
-    defaults: { _controller: MediaBundle:Media:deleteMedia }
+    path:     /shopping/media/delete-media
+    defaults: { _controller: MediaBundle:Media:deleteMedia, isAdmin: false }
+
+saman_admin_media_download_media:
+    path:     /admin/media/download-media
+    defaults: { _controller: MediaBundle:Media:downloadMedia, isAdmin: true }
+
+saman_admin_media_upload_temp_media:
+    path:     /admin/media/upload-media
+    defaults: { _controller: MediaBundle:Media:uploadMedia, isPermanent: false, isAdmin: true }
+    
+saman_admin_media_delete_media:
+    path:     /admin/media/delete-media
+    defaults: { _controller: MediaBundle:Media:deleteMedia, isAdmin: true }
+
+
 
 #TODO: this rout should use /admin/    
 saman_selec2_data_url:

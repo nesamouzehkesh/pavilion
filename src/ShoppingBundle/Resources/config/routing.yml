@@ -1,9 +1,9 @@
 saman_shopping_customer_joinus:
-    path:     /shopp/joinus
+    path:     /shop/joinus
     defaults: { _controller: ShoppingBundle:Customer:register }
     
 saman_shopping_customer_joinus_confirmation:
-    path:     /shopp/joinus/confirmation/{userId}
+    path:     /shop/joinus/confirmation/{userId}
     defaults: { _controller: ShoppingBundle:Customer:registerConfirmation }
 
 saman_shopping_customer_profile:

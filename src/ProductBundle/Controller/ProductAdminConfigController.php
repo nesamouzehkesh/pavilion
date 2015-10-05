@@ -2,8 +2,11 @@
 
 namespace ProductBundle\Controller;
 
+use Library\Components\FormField;
 use Library\Base\BaseController;
+use Library\Form\FormFieldType;
 use Symfony\Component\HttpFoundation\Request;
+use AppBundle\Entity\SystemConfig;
 use ProductBundle\Entity\Product;
 use ProductBundle\Entity\Category;
 use ProductBundle\Form\CategoryType;
@@ -17,11 +20,14 @@ class ProductAdminConfigController extends BaseController
         
         // Get all Products
         $categories = Category::getRepository($em)->getCategories();
+        $customFormConfig = $this->getAppService()
+            ->getSystemConfig(SystemConfig::KEY_PRODUCT_CUSTOM_FORM);
         
         // Render and return the view
         return $this->render(
             'ProductBundle:Product:configs.html.twig',
             array(
+                'customFormConfig' => $customFormConfig,
                 'categories' => $categories
                 )
             );
@@ -98,6 +104,85 @@ class ProductAdminConfigController extends BaseController
                 );
         }        
     }
+    
+    /**
+     * Unset custom form field
+     * 
+     * @param int $fieldKey
+     * @return type
+     */
+    public function deleteCustomFieldAction($fieldKey)
+    {
+        try {
+            $customFormConfig = $this->getAppService()
+                ->getSystemConfig(SystemConfig::KEY_PRODUCT_CUSTOM_FORM);
+
+            $customFormConfig->unSetOptions($fieldKey);
+            $this->getAppService()->saveEntity($customFormConfig);
+            
+            return $this->getJsonResponse(true);
+        } catch (\Exception $ex) {
+            return $this->getExceptionResponse(
+                'alert.error.canNotDeleteItem', 
+                $ex
+                );
+        }        
+    }
+
+    /**
+     * Add or edit a Category
+     * 
+     * @param Request $request
+     * @param type $fieldKey
+     * @return type
+     */
+    public function addEditCustomFieldAction(Request $request, $fieldKey = null)
+    {
+        try {
+            $customFormConfig = $this->getAppService()
+                ->getSystemConfig(SystemConfig::KEY_PRODUCT_CUSTOM_FORM);
+            
+            // Create form field object 
+            $formField = new FormField(
+                $fieldKey, 
+                $customFormConfig->getOption($fieldKey)
+                );
+            
+            // Generate Product Form
+            $formFieldForm = $this->createForm(
+                new FormFieldType(), 
+                $formField,
+                array(
+                    'action' => $request->getUri(),
+                    'method' => 'post'
+                    )
+                );
+
+            $formFieldForm->handleRequest($request);
+            // If form is submited and it is valid then add or update this $product
+            if ($formFieldForm->isValid()) {
+                
+                $customFormConfig->unSetOptions($fieldKey);
+                $customFormConfig->setOption(
+                    $formField->getKey(), 
+                    $formField->getData()
+                    );
+                
+                $this->getAppService()->saveEntity($customFormConfig);
+                
+                return $this->getJsonResponse(true);
+            }
+
+            $view = $this->renderView(
+                'AppBundle:Components:/form/forField.html.twig', 
+                array('form' => $formFieldForm->createView())
+                );
+            
+            return $this->getJsonResponse(true, null, $view);
+        } catch (\Exception $ex) {
+            return $this->getExceptionResponse('Can not add or edit category', $ex);
+        }         
+    }    
     
     /**
      * Get a product based on $productId or create a new one if $productId is null

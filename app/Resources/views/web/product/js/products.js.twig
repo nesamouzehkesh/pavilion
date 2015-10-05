@@ -16,22 +16,6 @@ $(function(){
         var url = $(this).attr('href');
         displayItems(url, cont_products, '1');
     });
-    
-    $('#action-add-product').click(function(e){
-        handleForm($(this), '{{ twig_url_items }}', cont_products, currentPage);       
-    });
-    
-    cont_products.on('click', '.action-edit-product', function(e){       
-        handleForm($(this), '{{ twig_url_items }}', cont_products, currentPage);
-    });    
-   
-    cont_products.on('click', '.action-display-product', function(e){
-        displayItem($(this));
-    });    
-    
-    cont_products.on('click', '.action-delete-product', function(e){   
-        deleteItem($(this), '{{ twig_url_items }}', cont_products, currentPage);
-    });
 
     $("#input-search").keyup(function(e) {
         searchItems($(this), '{{ twig_url_items }}', cont_products, currentPage);

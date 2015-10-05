@@ -4,12 +4,10 @@ namespace ProductBundle\Controller;
 
 use Library\Base\BaseController;
 use Symfony\Component\HttpFoundation\Request;
-use AppBundle\Entity\SystemConfig;
 use ProductBundle\Entity\Product;
 use ProductBundle\Entity\Category;
-use ProductBundle\Form\ProductType;
 
-class ProductAdminController extends BaseController
+class ProductController extends BaseController
 {
     /**
      * Display all Products in the Product main page
@@ -35,7 +33,7 @@ class ProductAdminController extends BaseController
 
             // Render and return the view
             $productsView = $this->renderView(
-                'ProductBundle:Product:element/products.html.twig',
+                '::web/product/element/products.html.twig',
                 array(
                     'productsPagination' => $productsPagination
                     )
@@ -44,14 +42,15 @@ class ProductAdminController extends BaseController
             // If user use the pagination to view other pages then we just return the 
             // $pagesView as a jason response array
             if ($request->get('headless')) {
-                return $this->getAppService()->getJsonResponse(true, null, $productsView);
+                return $this->getAppService()
+                    ->getJsonResponse(true, null, $productsView);
             } 
             
             // Get all Categories
             $categories = Category::getRepository($em)->getCategories();
             
             return $this->render(
-                'ProductBundle:Product:index.html.twig',
+                '::web/product/index.html.twig',
                 array(
                     'productsView' => $productsView,
                     'categories' => $categories,
@@ -92,77 +91,6 @@ class ProductAdminController extends BaseController
                 );
         }
     }       
-    
-    /**
-     * Display and handel add edit product action
-     * 
-     * @param \Symfony\Component\HttpFoundation\Request $request
-     * @return type
-     */
-    public function addEditProductAction(Request $request, $productId = null)
-    {
-        try {
-            // Get product object
-            $product = $this->getProductEntity($productId);
-            $productCustomFormFields = $this->getAppService()
-                ->getSystemConfigOptions(SystemConfig::KEY_PRODUCT_CUSTOM_FORM);
-            
-            // Generate Product Form
-            $productForm = $this->createForm(
-                new ProductType($productCustomFormFields), 
-                $product,
-                array(
-                    'action' => $request->getUri(),
-                    'method' => 'post'
-                    )
-                );
-
-            $productForm->handleRequest($request);
-            // If form is submited and it is valid then add or update this $product
-            if ($productForm->isValid()) {
-                
-                $mediaService = $this->getService('saman_media.media');
-                $this->getAppService()
-                    ->setMediaService($mediaService)
-                    ->saveMedia($product);
-                
-                return $this->getJsonResponse(true);
-            }
-
-            $view = $this->renderView(
-                'ProductBundle:Product:/form/product.html.twig', 
-                array('form' => $productForm->createView())
-                );
-            
-            return $this->getJsonResponse(true, null, $view);
-        } catch (\Exception $ex) {
-            return $this->getExceptionResponse('Can not add or edit product', $ex);
-        }         
-    }
-    
-    /**
-     * Delete a product
-     * 
-     * @param type $productId
-     * @return type
-     */
-    public function deleteProductAction($productId)
-    {
-        try {
-            // Get Product
-            $product = $this->getProductEntity($productId);
-            
-            // Soft-deleting an entity
-            $this->getAppService()->deleteEntity($product);
-
-            return $this->getJsonResponse(true);
-        } catch (\Exception $ex) {
-            return $this->getExceptionResponse(
-                'alert.error.canNotDeleteItem', 
-                $ex
-                );
-        }        
-    }
     
     /**
      * Get a product based on $productId or create a new one if $productId is null

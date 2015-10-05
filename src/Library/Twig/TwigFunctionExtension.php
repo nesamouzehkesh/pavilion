@@ -301,7 +301,9 @@ class TwigFunctionExtension extends Twig_Extension
         $toggleModalContent = '';
         if (null !== $parameters['toggleModal']) {
             $toggleModalContent = sprintf(
-                'data-toggle="modal" data-target="#%s"', 
+                'data-target="#%s"', 
+                // We dont use this any more. We toggle modal in js manually
+                //'data-toggle="modal" data-target="#%s"', 
                 $parameters['toggleModal']
                 );
         }

@@ -15,30 +15,26 @@
 {% endblock %}
 
 {% block body %}
+    <div class="modal fade" id="config-form-container" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"></div>
+
     <h4>{{ 'product.categories'|trans }}</h4>
-    <div class="modal fade" id="category-form-container" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"></div>
-    
-    <button data-url="{{ path('saman_admin_product_category_add') }}" id="action-add-category" type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#category-form-container">
-            {{ 'icon.add'|icon }} {{ 'product.action.addNewCategory'|trans }}
+    <button data-url="{{ path('saman_admin_product_category_addedit') }}" id="action-add-category" type="button" class="btn btn-primary btn-sm" data-target="#config-form-container">
+        {{ 'icon.add'|icon }} {{ 'product.action.addNewCategory'|trans }}
     </button>
     
-    <div class="row margin-top-10">
+    <div class="row margin-top-10 margin-bottom-30">
         <div class="col-md-12">
             {% for category in categories %}
                 {% set id = 'category-' ~ category.id %}
                 <span class="btn btn-default margin-top-2" id="{{ id }}" name="{{ id }}">
                     {{ category.title }}
-                    {#
-                    <a style="margin: 5px;" rel="tooltip" href="#">
-                        <span data-placement="right" data-toggle="tooltip" title="" class="glyphicon glyphicon glyphicon-info-sign" id="5" onmouseover="fireTooltip('{{ id }}')" data-original-title="....."></span>
-                    </a>
-                    #}
+                    {#<a style="margin: 5px;" rel="tooltip" href="#"><span data-placement="right" data-toggle="tooltip" title="" class="glyphicon glyphicon glyphicon-info-sign" id="5" onmouseover="fireTooltip('{{ id }}')" data-original-title="....."></span></a>#}
                     {{ button(
                         null, 
                         {
-                            url: path('saman_admin_product_category_edit', {'categoryId': category.id}),
+                            url: path('saman_admin_product_category_addedit', {'categoryId': category.id}),
                             icon: 'icon.edit', 
-                            toggleModal: 'category-form-container', 
+                            toggleModal: 'config-form-container', 
                             action: 'action-edit-category'
                         }) }}
                     {{ button(
@@ -47,6 +43,39 @@
                             url: path('saman_admin_product_category_delete', {'categoryId': category.id }),
                             icon: 'icon.delete', 
                             action: 'action-delete-category',
+                        }) }}            
+                </span>
+            {% endfor %}        
+        </div>
+    </div>
+
+            
+    <h4>{{ 'product.customFields'|trans }}</h4>
+    <button data-url="{{ path('saman_admin_product_custom_field_addedit') }}" id="action-add-form-filed" type="button" class="btn btn-primary btn-sm" data-target="#config-form-container">
+        {{ 'icon.add'|icon }} {{ 'product.action.addNewCustomField'|trans }}
+    </button>
+    
+    <div class="row margin-top-10 margin-bottom-30">
+        <div class="col-md-12">
+            {% for key, option in customFormConfig.options %}
+                {% set id = 'form-option-' ~ key %}
+                <span class="btn btn-default margin-top-2" id="{{ id }}" name="{{ id }}">
+                    {{ option.label }}
+                    {#<a style="margin: 5px;" rel="tooltip" href="#"><span data-placement="right" data-toggle="tooltip" title="" class="glyphicon glyphicon glyphicon-info-sign" id="5" onmouseover="fireTooltip('{{ id }}')" data-original-title="....."></span></a>#}
+                    {{ button(
+                        null, 
+                        {
+                            url: path('saman_admin_product_custom_field_addedit', {'fieldKey': key}),
+                            icon: 'icon.edit', 
+                            toggleModal: 'config-form-container', 
+                            action: 'action-edit-form-filed'
+                        }) }}
+                    {{ button(
+                        null, 
+                        {
+                            url: path('saman_admin_product_custom_field_delete', {'fieldKey': key }),
+                            icon: 'icon.delete', 
+                            action: 'action-delete-form-filed',
                         }) }}            
                 </span>
             {% endfor %}        

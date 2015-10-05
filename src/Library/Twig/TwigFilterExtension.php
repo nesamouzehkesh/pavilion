@@ -39,6 +39,10 @@ class TwigFilterExtension extends Twig_Extension
     {
         return array(
             new \Twig_SimpleFilter(
+                'getBaseUri', 
+                array($this, 'getBaseUri')
+                ),
+            new \Twig_SimpleFilter(
                 'style', 
                 array($this, 'style'), 
                 array('is_safe' => array('html'))
@@ -79,6 +83,18 @@ class TwigFilterExtension extends Twig_Extension
                 array('is_safe' => array('html'))
                 ),
             );
+    }
+    
+    /**
+     * 
+     * @param type $uri
+     * @return type
+     */
+    public function getBaseUri($uri)
+    {
+        $uriArray = explode("/", $uri);
+        
+        return isset($uriArray[1])? $uriArray[1] : null;
     }
     
     /**

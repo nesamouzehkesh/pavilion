@@ -12,6 +12,28 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
  */
 class ProductType extends AbstractType
 {
+    private $param = array(
+        'contentStructure' => array(
+            'content' => array(
+                'type' => 'text',
+                'label' => 'Content',
+                'default' => '',
+                'required' => true
+                )
+        )
+    );
+    
+    /**
+     * 
+     * @param array $param
+     */
+    public function __construct(array $param = null)
+    {
+        if (null !== $param) {
+            $this->param['contentStructure'] = $param;
+        }
+    }
+    
     /**
      * 
      * @param \Symfony\Component\Form\FormBuilderInterface $builder
@@ -21,12 +43,16 @@ class ProductType extends AbstractType
     {
         $builder
             ->add('title', 'text')
+            ->add('content', 'saman_collection', array(
+                'fields' => $this->param['contentStructure'],
+                ))
             ->add('image', 'saman_media', array(
                 'attr'  => array('isMultiple' => false, 'dragover' => false)
                 ))
             ->add('images', 'saman_media')
             ->add('description', 'textarea')
             ->add('price', 'number')
+            ->add('originalPrice', 'number')
             ->add('available', 'choice', array(
                 'choices'  => array('1' => 'Active', '0' => 'Inactive')
                 ));
