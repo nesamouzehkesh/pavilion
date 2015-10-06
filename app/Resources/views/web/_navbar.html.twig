@@ -56,6 +56,7 @@
                         <li><a href="{{ path('saman_login_web') }}">{{ 'icon.logIn'|icon }} {{ 'word.logIn'|trans }}</a></li>
                         {#<li><a href="{{ path('saman_shopping_customer_joinus') }}">{{ 'icon.createAccount'|icon }} {{ 'word.createAccount'|trans }}</a></li>#}
                     {% endif %}                
+                    <li><a href="{{ path('saman_shopping_display_shopping_cart') }}" title="{{ 'shopping.shoppingCart'|trans }}">{{ 'icon.shoppingCart'|icon }}</a></li>
                 </ul>
             </div>
         </div>
@@ -77,6 +78,7 @@
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
                     <li><a href="{{ path('saman_cms_page_index') }}">{{ 'icon.home'|icon }} CMS Home</a></li>
+                    <li><a href="{{ path('saman_shopping_product_home') }}">Gallery</a></li>
                     <li><a href="{{ app.request.getSchemeAndHttpHost() }}/front">AngularJS & Symfony</a></li>
                     <li><a href="{{ app.request.getSchemeAndHttpHost() }}/api/doc">Symfony API Doc</a></li>
                 </ul>
@@ -103,6 +105,7 @@
                         <li><a href="{{ path('saman_login_web') }}">{{ 'icon.logIn'|icon }} {{ 'word.logIn'|trans }}</a></li>
                         {#<li><a href="{{ path('saman_shopping_customer_joinus') }}">{{ 'icon.createAccount'|icon }} {{ 'word.createAccount'|trans }}</a></li>#}
                     {% endif %}                     
+                    <li><a href="{{ path('saman_shopping_display_shopping_cart') }}" title="{{ 'shopping.shoppingCart'|trans }}">{{ 'icon.shoppingCart'|icon }}</a></li>
                     <li><a href='{{ path('saman_app_display_dashboard') }}'>{{ 'icon.setting'|icon }} Admin</a></li>
                 </ul>
             </div>

@@ -2,12 +2,13 @@
 
 namespace ShoppingBundle\Service;
 
-use AppBundle\Entity\Event;
 use AppBundle\Service\AppService;
 use AppBundle\Service\EventHandler;
+use AppBundle\Entity\Event;
+use ShoppingBundle\Service\ShoppingService;
 use ShoppingBundle\Service\OrderProgressHandler;
-use ShoppingBundle\Entity\OrderPayment;
 use ShoppingBundle\Entity\Progress;
+use ShoppingBundle\Entity\OrderPayment;
 use ShoppingBundle\Entity\Order;
 use UserBundle\Entity\User;
 
@@ -18,6 +19,12 @@ class PaymentService
      */
     protected $appService;
     
+    /**
+     *
+     * @var ShoppingService $shoppingService
+     */
+    protected $shoppingService;
+
     /**
      * @var EventHandler $eventHandler
      */
@@ -37,12 +44,14 @@ class PaymentService
      */
     public function __construct(
         AppService $appService, 
+        ShoppingService $shoppingService,
         EventHandler $eventHandler,
         OrderProgressHandler $progressHandler,
         $parameters
         ) 
     {
         $this->appService = $appService;
+        $this->shoppingService = $shoppingService;
         $this->eventHandler = $eventHandler;
         $this->progressHandler = $progressHandler;
         $this->appService->setParametrs($parameters);
@@ -60,30 +69,43 @@ class PaymentService
         $this->appService->transactionBegin();
         
         try {
+            $date = new \DateTime();
+            $paymentDate = $date->getTimestamp();
+            $paymentName = 'saman';
+            $paymentType = 1;
+            
+            $paymentValue = 2342;
+            if ($order->isProductOrder()) {
+                $paymentValue = $this->shoppingService->finalizeOrderShoppingCartList($order);
+            }
+
             //TODO: do payment
             $paymentParams = array(
-                'date' => '12/4/2015', 
-                'value' => '39405', 
-                'name' => 'saman shafigh',
-                'type' => 1
+                'date' => $paymentDate, 
+                'value' => $paymentValue, 
+                'name' => $paymentName,
+                'type' => $paymentType
                 );
 
-            $date = new \DateTime();
             $payment = $this->getPayment();
-            $payment->setDate($date->getTimestamp());
+            $payment->setDate($paymentDate);
             $payment->setOrder($order);
             $payment->setUser($user);
             $payment->setType(1);
+            $payment->setName($paymentName);
             $payment->setContent(json_encode($paymentParams));
+            $payment->setValue($paymentValue);
             $order->addPayment($payment);
-            $this->appService->saveEntity($payment);
             
+            $this->appService->persistEntity($order);
+            $this->appService->persistEntity($payment);
+            $this->appService->flushEntityManager();
+            $this->appService->transactionCommit();
+
             // Handle the order progress
             $this->progressHandler->handleProgress($order, Progress::PROGRESS_PAID);
             // Handle the event related to this action
-            $this->eventHandler->handleEvent($order, Event::TR_PAYMENT_ORDER);
-            
-            $this->appService->transactionCommit();
+            $this->eventHandler->handleEvent($order, Event::TR_PAYMENT_ORDER);            
 
             return $payment;
         } catch (\Exception $ex) {

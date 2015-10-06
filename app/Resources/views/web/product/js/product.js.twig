@@ -5,31 +5,18 @@ $(function(){
     var currentPage = '1';
     var cont_products = $('#products-list-container');
     
-    {# If we want to have ajax for loading pages
     cont_products.on('click', '.action-pagination', function(e){      
         e.preventDefault();
         currentPage = $(this).attr('data-page');
         displayItems('{{ twig_url_items }}', cont_products, currentPage);
     });
-    #}
 
     $('.action-filter-progress-order').click(function(e){
         e.preventDefault();
         var url = $(this).attr('href');
         displayItems(url, cont_products, '1');
     });
-    
-    cont_products.on('click', '.action-product-add-to-cart', function(e){       
-        var url = $(this).attr('data-url');
-        $.get(url, function(response) {
-            if (response.success === true) {
-                console.log('add to cart');
-            } else{
-                bootbox.alert(response.message);
-            }
-        }, 'json');
-    });
-   
+
     $("#input-search").keyup(function(e) {
         searchItems($(this), '{{ twig_url_items }}', cont_products, currentPage);
     });    

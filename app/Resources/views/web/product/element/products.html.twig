@@ -1,13 +1,14 @@
 
 {% for product in productsPagination %}
-    {% %}
+    {% set viewProductUrl = path('saman_shopping_product_display', {'productId': product.id}) %}
     <div class="view-product">
         <div class="view-product-image">
             {% set image = product.image|getMedia %}
             {% if image is not null %}
                 {#<a href="{{ asset(image.path|imagine_filter('o')) }}" target="_blank">#}
-                    <img src="{{ asset(image.path|imagine_filter('s')) }}" class="img-thumbnail" />
-                {#</a>#}
+                <a href="{{ viewProductUrl }}">
+                    <img src="{{ asset(image.path|imagine_filter('si')) }}" class="img-thumbnail" />
+                </a>
             {% endif %}
         </div>
         
@@ -17,7 +18,8 @@
         </div>        
         
         <div class="view-product-title">
-            {{ product.title }}
+            <a href="{{ viewProductUrl }}">{{ product.title }}</a>
+            <button type="button" class="btn btn-default action-product-add-to-cart" data-url="{{ path('saman_shopping_modify_shopping_cart', {'action': 'add', 'productId': product.id}) }}">{{ 'shopping.action.addToCart'|trans }}</button>
         </div>        
     </div>
 {% endfor %}

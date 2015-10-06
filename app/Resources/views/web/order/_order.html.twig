@@ -1,24 +1,55 @@
-<h5>Order ID: #{{ order.id }}</h5>
-{% set content = order.content %}
-<h5>Order Content:</h5>
-<ul>
-{% for key, structure in orderConfig.orderStructure %}
-    {% if content[key] is defined %}
-        <li><strong>{{ ('order.contentItems.' ~ key)|trans }}:</strong> {{ content[key] }}</li>
-    {% endif %}
-{% endfor %}
-</ul>
+{% if order.isProductOrder %}
+    <h5>Order ID: #{{ order.id }}</h5>
+    
+    <h5>Order Content:</h5>
+    {% for orderItem in order.content %}
+        {% set viewProductUrl = path('saman_shopping_product_display', {'productId': orderItem.id}) %}
+        
+        {% if orderItem.title is defined %}
+            <a href="{{ viewProductUrl }}">{{ orderItem.title }}</a><br>
+        {% else %}
+            {% if orderItem.product is defined %}
+                <a href="{{ viewProductUrl }}">{{ orderItem.product.title }}</a><br>
+            {% endif %}
+        {% endif %}
+        
+        {#Item added on: {{ orderItem.date|date(date_format) }}<br>#}
+        Qty: {{ orderItem.qty }}<br>
+        Price: <br>
+        {% if orderItem.price is defined %}
+            <span class="originalPrice">${{ orderItem.originalPrice|number_format(2, '.', ',') }}</span><br>
+            <span class="price">${{ orderItem.price|number_format(2, '.', ',') }}</span><br><br>
+        {% else %}
+            {% if orderItem.product is defined %}
+                <span class="originalPrice">${{ orderItem.product.originalPrice|number_format(2, '.', ',') }}</span><br>
+                <span class="price">${{ orderItem.product.price|number_format(2, '.', ',') }}</span><br><br>
+            {% endif %}
+        {% endif %}
+        ..................................................<br>
+    {% endfor %}
+{% elseif order.isCustomOrder %}
+    <h5>Order ID: #{{ order.id }}</h5>
+    {% set content = order.content %}
+    <h5>Order Content:</h5>
+    <ul>
+    {% for key, structure in orderConfig.orderStructure %}
+        {% if content[key] is defined %}
+            <li><strong>{{ ('order.contentItems.' ~ key)|trans }}:</strong> {{ content[key] }}</li>
+        {% endif %}
+    {% endfor %}
+    </ul>
 
-{% if noImage is not defined or noImage == false %}
-    <div class="row margin-top-10">
-        <div class="col-md-12">
-            {% for image in order.attachments|getMedias %}
-                <a href="{{ asset(image.path|imagine_filter('o')) }}" target="_blank">
-                    <img src="{{ asset(image.path|imagine_filter('t')) }}" class="img-thumbnail" />
-                </a>
-            {% endfor %}
+    {% if noImage is not defined or noImage == false %}
+        <div class="row margin-top-10">
+            <div class="col-md-12">
+                {% for image in order.attachments|getMedias %}
+                    <a href="{{ asset(image.path|imagine_filter('o')) }}" target="_blank">
+                        <img src="{{ asset(image.path|imagine_filter('t')) }}" class="img-thumbnail" />
+                    </a>
+                {% endfor %}
+            </div>
         </div>
-    </div>
+    {% endif %}
 {% endif %}
 
 <div class="row margin-top-10">

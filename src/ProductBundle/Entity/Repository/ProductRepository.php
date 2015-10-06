@@ -90,6 +90,24 @@ class ProductRepository extends BaseEntityRepository
             ->setParameter($key, $value);
 
         return $qb->getQuery()->getOneOrNullResult();
+    }
+    
+    /**
+     * Get products by IDs
+     * 
+     * @param type $order
+     * @param type $readOnly
+     * @return type
+     */
+    public function getProductsById($ids)
+    {
+        $qb = $this->getQueryBuilder()
+            ->select('product')
+            ->from('ProductBundle:Product', 'product')
+            ->where('product.deleted = 0 AND product.id IN (:ids)')
+            ->setParameter('ids', $ids);
+        
+        return $qb->getQuery()->getResult();
     }    
     
     /**

@@ -1,0 +1,44 @@
+{% extends "::web/content.html.twig" %}
+
+{% set title = product.title %}
+{% set pageIcon = '' %}
+
+{% block pageBody %}
+    <div class="row">
+        <div class="col-md-12"><strong>Price:</strong> {{ product.price }}</div>
+    </div>    
+    <div class="row">
+        <div class="col-md-12">{{ product.description|raw }}</div>
+    </div>
+
+    <div class="view-product-price">
+        <span class="originalPrice">${{ product.originalPrice|number_format(2, '.', ',') }}</span>
+        <span class="price">${{ product.price|number_format(2, '.', ',') }}</span>
+    </div>      
+    
+    {% set image = product.image|getMedia %}
+    {% if image is not null %}
+        <div class="row margin-top-10">
+            <div class="col-md-12">
+                <a href="{{ asset(image.path|imagine_filter('o')) }}" target="_blank">
+                    <img src="{{ asset(image.path|imagine_filter('s')) }}" class="img-thumbnail" />
+                </a>
+            </div>
+        </div>
+    {% endif %}
+    
+    <div class="row margin-top-10">
+        <div class="col-md-12">
+            {% for image in product.images|getMedias %}
+                <a href="{{ asset(image.path|imagine_filter('o')) }}" target="_blank">
+                    <img src="{{ asset(image.path|imagine_filter('t')) }}" class="img-thumbnail" />
+                </a>
+            {% endfor %}
+        </div>
+    </div>
+        
+{% endblock %}
+
+{% block script %}
+    {% include '::web/product/js/product.js.twig' %}
+{% endblock %}

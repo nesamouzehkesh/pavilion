@@ -144,6 +144,24 @@ class Order extends BaseEntity
     {
         return $this->type;
     }
+    
+    /**
+     * 
+     * @return type
+     */
+    public function isCustomOrder()
+    {
+        return $this->getType() === self::ORDER_TYPE_CUSTOM;
+    }
+    
+    /**
+     * 
+     * @return type
+     */
+    public function isProductOrder()
+    {
+        return $this->getType() === self::ORDER_TYPE_PRODUCT;
+    }
 
     /**
      * Set content

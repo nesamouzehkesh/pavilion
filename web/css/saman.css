@@ -312,3 +312,7 @@ button:active,
 .btn-loading:after {
     content: " ...";// url(../img/loading.gif);
 }
+
+.form-qty-small {
+    width: 65px !important;
+}

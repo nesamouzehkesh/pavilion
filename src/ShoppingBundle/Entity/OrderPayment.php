@@ -23,6 +23,13 @@ class OrderPayment extends BaseEntity
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="name", type="string", length=255)
+     */
+    private $name;
     
     /**
      * @var integer
@@ -44,6 +51,13 @@ class OrderPayment extends BaseEntity
      * @ORM\Column(name="content", type="array", nullable=true)
      */
     private $content;
+    
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="value", type="decimal")
+     */
+    private $value;
     
     /**
      * @ORM\ManyToOne(targetEntity="\UserBundle\Entity\User")
@@ -83,6 +97,30 @@ class OrderPayment extends BaseEntity
     public function getId()
     {
         return $this->id;
+    }
+    
+    
+    /**
+     * Set name
+     *
+     * @param integer $name
+     * @return Payment
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    /**
+     * Get date
+     *
+     * @return integer 
+     */
+    public function getName()
+    {
+        return $this->name;
     }
 
     /**
@@ -152,6 +190,29 @@ class OrderPayment extends BaseEntity
     public function getContent()
     {
         return $this->content;
+    }
+
+    /**
+     * Set value
+     *
+     * @param array $value
+     * @return Payment
+     */
+    public function setValue($value)
+    {
+        $this->value = $value;
+
+        return $this;
+    }
+
+    /**
+     * Get value
+     *
+     * @return array 
+     */
+    public function getValue()
+    {
+        return $this->value;
     }
 
     /**

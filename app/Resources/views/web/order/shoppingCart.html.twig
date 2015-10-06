@@ -1,0 +1,77 @@
+{% extends "::web/content.html.twig" %}
+
+{% set title = 'Gallery'|trans %}
+{% set pageIcon = 'order.icon.myOrders' %}
+
+{% block pageBody %}
+    {% if shoppingCartList|length > 0 %}
+        <div class="panel panel-default">
+            <div class="panel-body">    
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th class="hidden-xs"></th>
+                            <th>Title</th>
+                            <th>Price</th>
+                            <th>Qty</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for shoppingCartOrder in shoppingCartList %}
+                            {% set product = shoppingCartOrder.product %}
+                            {% set viewProductUrl = path('saman_shopping_product_display', {'productId': product.id}) %}
+                            <tr>
+                                <th class="hidden-xs">#{{ (loop.index) }} </th>
+                                <td>
+                                    <a href="{{ viewProductUrl }}">{{ product.title }}</a><br>
+                                    Item added on: {{ shoppingCartOrder.date|date(date_format) }}<br>
+                                    {% set image = product.image|getMedia %}
+                                    {% if image is not null %}
+                                        <a href="{{ viewProductUrl }}">
+                                            <img src="{{ asset(image.path|imagine_filter('ti')) }}" class="img-thumbnail" />
+                                        </a>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <span class="originalPrice">${{ product.originalPrice|number_format(2, '.', ',') }}</span>
+                                    <span class="price">${{ product.price|number_format(2, '.', ',') }}</span>
+                                </td>
+                                <td>
+                                    <select class="form-control form-qty-small action-update-from-cart" data-url="{{ path('saman_shopping_modify_shopping_cart', {'action': 'update', 'productId': product.id}) }}">
+                                        {% for i in 1..10 %}
+                                            <option value="{{ i }}" {{ shoppingCartOrder.qty == i? 'selected="selected"' : '' }}>{{ i }}</option>
+                                        {% endfor %}    
+                                    </select>                                    
+                                </td>
+                                <td>
+                                    <button type="button" class="btn btn-primary action-delete-from-cart" data-url="{{ path('saman_shopping_modify_shopping_cart', {'action': 'remove', 'productId': product.id}) }}" title="{{ 'shopping.action.removeFromCart'|trans }}">
+                                        {{ 'icon.delete'|icon }}
+                                    </button>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>    
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12 col-sm-6 col-md-6">
+                <a type="button" class="btn btn-primary" href="{{ path('saman_shopping_submit_shopping_cart') }}">{{ 'shopping.action.submitCart'|trans }}</a>                
+            </div>
+            <div class="col-xs-12 col-sm-6 col-md-6"
+                <div class="pull-right">
+                    <button type="button" class="btn btn-link action-delete-from-cart" data-url="{{ path('saman_shopping_modify_shopping_cart', {'action': 'remove-all'}) }}">{{ 'shopping.action.removeAllCart'|trans }}</button>
+                </div>
+            </div>
+        </div>                    
+    {% else %}
+        <div>
+            {{ 'shopping.shoppingCartIsEmpty'|trans }}
+        </div>
+    {% endif %}
+{% endblock %}
+
+{% block script %}
+    {% include '::web/order/js/shoppingCart.js.twig' %}
+{% endblock %}

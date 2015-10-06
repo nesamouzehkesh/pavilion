@@ -12,11 +12,16 @@
         <div class="container section-continer-other">
             <div class="row margin-top-50">
                 <div class="col-md-10 col-md-offset-1">
-                    <h3>
-                        {% block pageTitle %}
-                            {% if pageIcon is defined %}{{ pageIcon|icon }}{% endif %} {{ title }}
-                        {% endblock %}
-                    </h3>
+                    {% if saman_displayFullView %}
+                        <h3>
+                            {% block pageTitle %}
+                                {% if pageIcon is defined %}{{ pageIcon|icon }}{% endif %} {{ title }}
+                            {% endblock %}
+                        </h3>
+                    {% else %}
+                        <b>{{ title }}</b>
+                    {% endif %}
+                    
                     {% block pageBody %}
                         <p>
                         {% if content is defined %}
@@ -33,5 +38,6 @@
     </section>
     {% include "::web/_footer.html.twig" %}
     {% include "::web/_js.html.twig" %}
+    {% block script %}{% endblock %}
     </body>
 </html>

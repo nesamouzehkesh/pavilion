@@ -3,7 +3,6 @@
 namespace ShoppingBundle\Controller;
 
 use Library\Base\BaseController;
-use Symfony\Component\HttpFoundation\Request;
 
 class PaymentController extends BaseController
 {
@@ -15,7 +14,7 @@ class PaymentController extends BaseController
     public function orderPaymentAction($orderId)
     {
         $user = $this->getUser();
-        $order = $this->getOrderService()->getUserOrder($user, $orderId);
+        $order = $this->getShoppingService()->getUserOrder($user, $orderId);
         $payment = $this->getPaymentService()->handleUserPayment($user, $order);
         
         return $this->redirectToRoute(
@@ -57,10 +56,10 @@ class PaymentController extends BaseController
     /**
      * Get Order service
      * 
-     * @return \ShoppingBundle\Service\OrderService
+     * @return \ShoppingBundle\Service\ShoppingService
      */
-    private function getOrderService()
+    private function getShoppingService()
     {
-        return $this->getService('saman_shopping.order');
+        return $this->getService('saman_shopping.shopping');
     }
 }

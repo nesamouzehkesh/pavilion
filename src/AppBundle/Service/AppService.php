@@ -19,6 +19,7 @@ use ConfigBundle\Service\ConfigService;
 use MediaBundle\Form\Type\MultipleType;
 use MediaBundle\Service\MediaService;
 use Library\Exception\VisibleHttpException;
+use Library\Service\Session as SessionService;
 use AppBundle\Entity\SystemConfig;
 
 class AppService 
@@ -103,6 +104,12 @@ class AppService
      * @var MediaService $mediaService
      */
     protected $mediaService = null;
+    
+    /**
+     *
+     * @var SessionService $sessionService
+     */
+    protected $sessionService;
 
     /**
      *
@@ -126,6 +133,7 @@ class AppService
      * @param EntityManager $em
      * @param Paginator $paginator
      * @param ValidatorInterface $validator
+     * @param SessionService $sessionService
      * @param type $helperParameters
      */
     public function __construct(
@@ -136,7 +144,8 @@ class AppService
         TwigEngine $templating,
         EntityManager $em,
         Paginator $paginator,
-        ValidatorInterface $validator,    
+        ValidatorInterface $validator,
+        SessionService $sessionService,
         $helperParameters
         ) 
     {
@@ -148,6 +157,7 @@ class AppService
         $this->em = $em;
         $this->paginator = $paginator;
         $this->validator = $validator;
+        $this->sessionService = $sessionService;
         $this->helperParameters = $helperParameters;
     }   
     
@@ -216,6 +226,15 @@ class AppService
         return $this;
     }
     
+    /**
+     * 
+     * @return SessionService
+     */
+    public function getSession()
+    {
+        return $this->sessionService;
+    }
+
     /**
      * Get a config parameter from config service
      * 

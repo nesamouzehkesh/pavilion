@@ -11,6 +11,7 @@ services:
             - @doctrine.orm.default_entity_manager
             - @knp_paginator
             - @validator
+            - @saman.session
             - %saman.helper.param%
             
     saman.eventHandler:

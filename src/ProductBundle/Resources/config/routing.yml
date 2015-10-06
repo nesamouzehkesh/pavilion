@@ -44,4 +44,7 @@ saman_admin_product_custom_field_addedit:
 saman_shopping_product_home:
     path:     /shop/gallery
     defaults: { _controller: ProductBundle:Product:displayProducts }
-    
+
+saman_shopping_product_display:
+    path:     /shop/gallery/show/{productId}
+    defaults: { _controller: ProductBundle:Product:displayProduct }

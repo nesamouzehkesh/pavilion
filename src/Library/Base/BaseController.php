@@ -9,6 +9,23 @@ use Symfony\Component\HttpKernel\Exception\GoneHttpException;
 class BaseController extends Controller
 {
     /**
+     * Generate Csrf Token and put it in a session parameter with this name $tokenName
+     * 
+     * @param String $intention The intention used when generating the CSRF token
+     * @param String $tokenName The name of session parameter 
+     * @return String
+     */
+    public function generateAccessToken($intention = 'form', $tokenName = 'access_token') 
+    {
+        // Generate a CSRF token
+        $token = $this->get('form.csrf_provider')->generateCsrfToken($intention);
+
+        $this->getSession()->set($tokenName, $token);
+        
+        return $token;
+    }
+    
+    /**
      * Set flash bag
      *
      * @param $messageType
@@ -17,7 +34,7 @@ class BaseController extends Controller
      */
     public function setFlashBag($messageType, $message)
     {
-        $flashBag = $this->getService('session')->getFlashBag();
+        $flashBag = $this->getSession()->getFlashBag();
         
         $flashBag->clear();
         $this->addFlashBag($messageType, $message);
@@ -30,7 +47,7 @@ class BaseController extends Controller
      */
     public function addFlashBag($messageType, $message)
     {
-        $flashBag = $this->getService('session')->getFlashBag();
+        $flashBag = $this->getSession()->getFlashBag();
         $transedMessage = $this->transMessage($message);
         
         $flashBag->add($messageType, $transedMessage);
@@ -185,6 +202,15 @@ class BaseController extends Controller
     public function getDispatcher()
     {
         return $this->getService('event_dispatcher');
+    }
+    
+    /**
+     * 
+     * @return \Library\Service\Session
+     */
+    public function getSession()
+    {
+        return $this->getService('saman.session');
     }
     
     /**

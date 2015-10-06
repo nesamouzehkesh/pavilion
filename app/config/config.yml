@@ -64,7 +64,10 @@ services:
         class: Library\Twig\TwigFilterExtension
         arguments: [@translator.default]
         tags:
-             - { name: twig.extension }  
+             - { name: twig.extension }
+             
+    saman.session:
+        class: Library\Service\Session
              
     saman.md5encoder:
         class: %saman.md5encoder.class%
@@ -191,6 +194,10 @@ liip_imagine:
          quality: 100
          filters:
             thumbnail: { size: [200, 200], mode: outbound }
+      si:
+         quality: 100
+         filters:
+            thumbnail: { size: [200, 200], mode: inset }
       t:
          quality: 90
          filters:

@@ -1,0 +1,27 @@
+<script type="text/javascript">
+$(function(){
+    
+    $('.action-update-from-cart').change(function() {
+        var quntity = $(this).val();
+        var url = $(this).attr('data-url');
+        $.get(url, {quntity: quntity}, function(response) {
+            if (response.success === true) {
+                //location.reload();
+            } else{
+                bootbox.alert(response.message);
+            }
+        }, 'json');    
+    });
+    
+    $('.action-delete-from-cart').click(function(e){
+        var url = $(this).attr('data-url');
+        $.get(url, function(response) {
+            if (response.success === true) {
+                location.reload();
+            } else{
+                bootbox.alert(response.message);
+            }
+        }, 'json');
+    });
+});
+</script>

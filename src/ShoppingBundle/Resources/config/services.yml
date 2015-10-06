@@ -1,16 +1,12 @@
 services:
     saman_shopping.shopping:
         class: ShoppingBundle\Service\ShoppingService
-        arguments: [@saman.appService, %saman_shopping_shopping%]
+        arguments: [@saman.appService, @saman.eventHandler, @saman_shopping.orderProgressHandler, %saman_shopping_order%]
         
     saman_shopping.payment:
         class: ShoppingBundle\Service\PaymentService
-        arguments: [@saman.appService, @saman.eventHandler, @saman_shopping.orderProgressHandler, %saman_shopping_order%]
-        
-    saman_shopping.order:
-        class: ShoppingBundle\Service\OrderService
-        arguments: [@saman.appService, @saman.eventHandler, @saman_shopping.orderProgressHandler, %saman_shopping_order%]
-        
+        arguments: [@saman.appService, @saman_shopping.shopping, @saman.eventHandler, @saman_shopping.orderProgressHandler, %saman_shopping_order%]
+  
     saman_shopping.orderProgressHandler:
         class: ShoppingBundle\Service\OrderProgressHandler
         arguments: [@saman.appService, %saman_shopping_order%]        

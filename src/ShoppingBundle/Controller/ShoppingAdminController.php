@@ -24,7 +24,7 @@ class ShoppingAdminController extends BaseController
             $searchParam['progressFilter'] = $request->get('progressFilter', null);
                 
             // Get all Orders
-            $orders = $this->getOrderService()->getOrders($searchParam);
+            $orders = $this->getShoppingService()->getOrders($searchParam);
 
             // Get pagination
             $ordersPagination = $this->getAppService()
@@ -64,7 +64,7 @@ class ShoppingAdminController extends BaseController
     {
         try {
             // Get all Products
-            $order = $this->getOrderService()->getOrder($orderId);
+            $order = $this->getShoppingService()->getOrder($orderId);
             
             // Render and return the view
             return $this->render(
@@ -93,7 +93,7 @@ class ShoppingAdminController extends BaseController
     {
         try {
             // Get Product
-            $order = $this->getOrderService()->getOrder($orderId);
+            $order = $this->getShoppingService()->getOrder($orderId);
             
             // Soft-deleting an entity
             $this->getAppService()->deleteEntity($order);
@@ -140,7 +140,7 @@ class ShoppingAdminController extends BaseController
     {
         try {
             // Get product object
-            $order = $this->getOrderService()->getOrder($orderId);
+            $order = $this->getShoppingService()->getOrder($orderId);
             $orderProgress = $this->getOrderProgressHandler()
                 ->getOrderProgress($progressId, $order);
 
@@ -203,11 +203,11 @@ class ShoppingAdminController extends BaseController
     /**
      * Get Order service
      * 
-     * @return \ShoppingBundle\Service\OrderService
+     * @return \ShoppingBundle\Service\ShoppingService
      */
-    private function getOrderService()
+    private function getShoppingService()
     {
-        return $this->getService('saman_shopping.order');
+        return $this->getService('saman_shopping.shopping');
     }
     
     /**

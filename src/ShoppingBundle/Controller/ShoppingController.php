@@ -4,25 +4,13 @@ namespace ShoppingBundle\Controller;
 
 use Library\Base\BaseController;
 use Symfony\Component\HttpFoundation\Request;
+use UserBundle\Entity\Address;
 use ShoppingBundle\Form\OrderType;
 use ShoppingBundle\Form\ShippingAddressType;
-use UserBundle\Entity\Address;
+use ShoppingBundle\Entity\Order;
 
 class ShoppingController extends BaseController
 {
-    /**
-     * 
-     * @return type
-     */
-    public function displayShoppingListAction()
-    {
-        try {
-            return $this->getOrderService()->displayShoppingList();
-        } catch (Exception $ex) {
-            return $this->getExceptionResponse('There is a problem in displaying your orders', $ex);
-        }    
-    }
-    
     /**
      * 
      * @return type
@@ -31,7 +19,7 @@ class ShoppingController extends BaseController
     {
         try {
             $user = $this->getUser();
-            $orders = $this->getOrderService()->getUserOrders($user);
+            $orders = $this->getShoppingService()->getUserOrders($user);
 
             return $this->render(
                 '::web/order/orders.html.twig',
@@ -51,7 +39,7 @@ class ShoppingController extends BaseController
     {
         try {
             $user = $this->getUser();
-            $order = $this->getOrderService()->getUserOrder($user, $orderId);
+            $order = $this->getShoppingService()->getUserOrder($user, $orderId);
 
             return $this->render(
                 '::web/order/order.html.twig',
@@ -64,16 +52,100 @@ class ShoppingController extends BaseController
             return $this->getExceptionResponse('There is a problem in displaying your order', $ex);
         }    
     }
+
+    /**
+     * Display Shopping Cart
+     * 
+     * @param type $action
+     * @param type $productId
+     * @param type $quntity
+     * @return type
+     */
+    public function displayShoppingCartAction()
+    {
+        try {
+            $shoppingCartList = $this->getShoppingService()->getShoppingCartList();
+            
+            return $this->render(
+                '::web/order/shoppingCart.html.twig',
+                array(
+                    'shoppingCartList' => $shoppingCartList
+                    )
+                );            
+        } catch (\Exception $ex) {
+            throw $this->getException(
+                'You can not view your shopping cart right now, please contact admin', 
+                $ex
+                );
+        }
+    }
+    
+    /**
+     * Submit shopping cart, create an order request for this shopping cart.
+     * clear the shopping cart session
+     * 
+     * @return type
+     * @throws type
+     */
+    public function submitShoppingCartAction()
+    {
+        try {
+            $shoppingCartList = $this->getShoppingService()
+                ->getShoppingCartList(false);
+            if (count($shoppingCartList) === 0) {
+                throw new \Exception('Shopping list is empty');
+            }
+            
+            $order = new Order();
+            $order->setContent($shoppingCartList);
+            $this->getShoppingService()->addEditOrder($order, Order::ORDER_TYPE_PRODUCT);
+            $this->getShoppingService()->modifyShoppingCart('remove-all');
+            
+            return $this->redirectToRoute(
+                'saman_shopping_order_add_confirmation', 
+                array('orderId' => $order->getId())
+                );
+        } catch (\Exception $ex) {
+            throw $this->getException(
+                'You can not submit your shopping cart right now, please contact admin', 
+                $ex
+                );
+        }
+    }
+    
+    /**
+     * Modifying shopping cart [add, update, remove, removeAll]
+     * 
+     * @param Request $request
+     * @param type $action
+     * @param type $productId
+     * @return type
+     */
+    public function modifyShoppingCartAction(Request $request, $action, $productId)
+    {
+        try {
+            $quntity = intval($request->query->get('quntity', 1));
+            $this->getShoppingService()
+                ->modifyShoppingCart($action, $productId, $quntity);
+            
+            return $this->getJsonResponse(true);
+        } catch (\Exception $ex) {
+            return $this->getExceptionResponse(
+                'You can not add this product to your shopping cart right now, please contact admin', 
+                $ex
+                );
+        }
+    }     
     
     /**
      * 
      * @param Request $request
      * @return type
      */
-    public function addEditOrderAction(Request $request, $orderId)
+    public function addEditCustomOrderAction(Request $request, $orderId)
     {
         $user = $this->getUser();
-        $order = $this->getOrderService()->getUserOrder($user, $orderId);
+        $order = $this->getShoppingService()->getUserOrder($user, $orderId);
         $orderConfig = $this->getParameter('saman_shopping_order');
         // Generate Product Form
         $orderForm = $this->createForm(new OrderType($orderConfig), $order);        
@@ -82,7 +154,11 @@ class ShoppingController extends BaseController
         if ($orderForm->isValid()) {
             
             $mediaService = $this->getService('saman_media.media');
-            $this->getOrderService()->updateCustomOrder($order, $mediaService);
+            $this->getShoppingService()->addEditOrder(
+                $order, 
+                Order::ORDER_TYPE_CUSTOM,
+                $mediaService
+                );
             
             return $this->redirectToRoute(
                 'saman_shopping_order_add_confirmation', 
@@ -105,7 +181,7 @@ class ShoppingController extends BaseController
     {
         try {
             $user = $this->getUser();
-            $order = $this->getOrderService()->getUserOrder($user, $orderId);
+            $order = $this->getShoppingService()->getUserOrder($user, $orderId);
         
             if ($order->isSubmitted()) {
                 // Soft-deleting an entity
@@ -132,8 +208,8 @@ class ShoppingController extends BaseController
     public function orderConfirmationAction($orderId)
     {
         $user = $this->getUser();
-        $order = $this->getOrderService()->getUserOrder($user, $orderId);
-        
+        $order = $this->getShoppingService()->getUserOrder($user, $orderId);
+
         return $this->render(
             '::web/order/orderConfirmation.html.twig',
             array(
@@ -152,7 +228,7 @@ class ShoppingController extends BaseController
     {
         $em = $this->getDoctrine()->getManager();
         $user = $this->getUser();
-        $order = $this->getOrderService()->getUserOrder($user, $orderId);
+        $order = $this->getShoppingService()->getUserOrder($user, $orderId);
         
         $orderShippingAddress = null;
         $orderBillingAddress = null;
@@ -250,10 +326,10 @@ class ShoppingController extends BaseController
     /**
      * Get Order service
      * 
-     * @return \ShoppingBundle\Service\OrderService
+     * @return \ShoppingBundle\Service\ShoppingService
      */
-    private function getOrderService()
+    private function getShoppingService()
     {
-        return $this->getService('saman_shopping.order');
-    }
+        return $this->getService('saman_shopping.shopping');
+    }   
 }

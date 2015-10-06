@@ -1,3 +1,19 @@
+# Modifying shopping cart               
+# action: [add, update, remove, removeAll]
+saman_shopping_modify_shopping_cart:
+    path:     /shop/shopping-cart/{action}/{productId}
+    defaults: { _controller: ShoppingBundle:Shopping:modifyShoppingCart, productId: null }
+    
+saman_shopping_display_shopping_cart:
+    path:     /shop/shopping-cart
+    defaults: { _controller: ShoppingBundle:Shopping:displayShoppingCart }
+    
+saman_shopping_submit_shopping_cart:
+    path:     /shopping/shopping-cart/submit
+    defaults: { _controller: ShoppingBundle:Shopping:submitShoppingCart }
+    
+
+
 saman_shopping_customer_joinus:
     path:     /shop/joinus
     defaults: { _controller: ShoppingBundle:Customer:register }
@@ -40,7 +56,7 @@ saman_shopping_order_display:
     
 saman_shopping_order_add:
     path:     /shopping/order/create
-    defaults: { _controller: ShoppingBundle:Shopping:addEditOrder, orderId: null }
+    defaults: { _controller: ShoppingBundle:Shopping:addEditCustomOrder, orderId: null }
 
 saman_shopping_order_add_confirmation:
     path:     /shopping/order/confirm/{orderId}
@@ -52,7 +68,7 @@ saman_shopping_order_set_shipping_address:
 
 saman_shopping_order_edit:
     path:     /shopping/order/update/{orderId}
-    defaults: { _controller: ShoppingBundle:Shopping:addEditOrder }
+    defaults: { _controller: ShoppingBundle:Shopping:addEditCustomOrder }
    
 saman_shopping_order_delete:
     path:     /shopping/order/delete/{orderId}
