@@ -29,7 +29,7 @@ security:
                 
         secured_area_web:
             #pattern:   ^/shopping|/media|/
-            pattern:   ^/shopping
+            pattern:   ^/shopping|/
             anonymous: ~
             provider: administrators
             form_login:
