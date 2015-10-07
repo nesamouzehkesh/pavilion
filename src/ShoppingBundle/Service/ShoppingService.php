@@ -157,6 +157,33 @@ class ShoppingService
     
     /**
      * 
+     * @param Order $order
+     * @return type
+     */
+    public function getShoppingCartListIds(Order $order = null)
+    {
+        if (null !== $order) {
+            $shoppingCartList = $order->getContent();
+        } else {
+            $session = $this->appService->getSession();
+            if (!$session->has(self::SHOPPING_CART_NAME)) {
+                return array();
+            }
+            $shoppingCartList = $session->get(self::SHOPPING_CART_NAME);
+        }
+        if (!is_array($shoppingCartList)) {
+            return array();
+        }
+        
+        return array_map(function($item) {
+            if (isset($item['id'])) {
+                return $item['id'];
+            }
+        }, $shoppingCartList);
+    }
+    
+    /**
+     * 
      * @param type $setProduct
      * @return type
      */

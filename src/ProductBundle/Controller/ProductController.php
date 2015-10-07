@@ -35,6 +35,7 @@ class ProductController extends BaseController
             $productsView = $this->renderView(
                 '::web/product/element/products.html.twig',
                 array(
+                    'shoppingCartProductIds' => $this->getShoppingService()->getShoppingCartListIds(),
                     'productsPagination' => $productsPagination
                     )
                 );
@@ -125,4 +126,14 @@ class ProductController extends BaseController
         // Return product object
         return $product;
     }
+    
+    /**
+     * Get Order service
+     * 
+     * @return \ShoppingBundle\Service\ShoppingService
+     */
+    private function getShoppingService()
+    {
+        return $this->getService('saman_shopping.shopping');
+    }      
 }

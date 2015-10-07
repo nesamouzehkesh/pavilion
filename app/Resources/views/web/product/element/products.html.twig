@@ -19,7 +19,18 @@
         
         <div class="view-product-title">
             <a href="{{ viewProductUrl }}">{{ product.title }}</a>
-            <button type="button" class="btn btn-default action-product-add-to-cart" data-url="{{ path('saman_shopping_modify_shopping_cart', {'action': 'add', 'productId': product.id}) }}">{{ 'shopping.action.addToCart'|trans }}</button>
+            {% set isOrdered = (product.id in shoppingCartProductIds) %}
+            
+            <span id="button-add-cart-{{ product.id }}" {{ isOrdered? 'style="display: none;"' : '' }}>
+                <button type="button" data-activate-target="#button-remove-cart-{{ product.id }}" class="btn btn-default action-product-add-to-cart" data-url="{{ path('saman_shopping_modify_shopping_cart', {'action': 'add', 'productId': product.id}) }}">
+                    {{ 'shopping.action.addToCart'|trans }}
+                </button>
+            </span>
+            <span id="button-remove-cart-{{ product.id }}" {{ isOrdered? '' : 'style="display: none;"' }}>
+                <button type="button" data-activate-target="#button-add-cart-{{ product.id }}" class="btn btn-default action-product-remove-from-cart" data-url="{{ path('saman_shopping_modify_shopping_cart', {'action': 'remove', 'productId': product.id}) }}">
+                    {{ 'shopping.action.removeFromCart'|trans }}
+                </button>
+            </span>                
         </div>        
     </div>
 {% endfor %}
