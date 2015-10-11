@@ -102,7 +102,7 @@ class ShoppingController extends BaseController
             $this->getShoppingService()->modifyShoppingCart('remove-all');
             
             return $this->redirectToRoute(
-                'saman_shopping_order_add_confirmation', 
+                'saman_shopping_order_set_shipping_address', 
                 array('orderId' => $order->getId())
                 );
         } catch (\Exception $ex) {

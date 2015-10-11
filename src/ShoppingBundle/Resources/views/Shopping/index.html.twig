@@ -4,22 +4,40 @@
 {% block headerContainer %}
     <div class="block" id="headerContainer">
         <div class="row">
-            <div class="col-md-4">
-                <div class="dropdown">
-                    <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                        Show All
-                        <span class="caret"></span>
-                    </button>
-                    <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                        {% for key, staticProgress in staticProgresses %}
-                            <li><a class="action-filter-progress-order" href="{{ path('saman_admin_shopping_order_home', {'progressFilter': key, 'headless': true}) }}">{{ staticProgress }}</a></li>
-                        {% endfor %}
-                        <li role="separator" class="divider"></li>
-                        <li><a class="action-filter-progress-order" href="{{ path('saman_admin_shopping_order_home', {'headless': true}) }}">Show All</a></li>
-                    </ul>
-                </div>
+            <div class="col-md-5">
+                <form class="form-inline">
+                    <div class="form-group">
+                        <div class="dropdown">
+                            <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                Show All
+                                <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                                {% for key, staticProgress in staticProgresses %}
+                                    <li><a class="action-filter-progress" data-val="{{ key }}" data-filter="progressFilter" href="#">{{ staticProgress }}</a></li>
+                                {% endfor %}
+                                <li role="separator" class="divider"></li>
+                                <li><a class="action-filter-progress" data-filter="progressFilter" href="#">Show All</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="dropdown">
+                            <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                Show All
+                                <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                                <li><a class="action-filter-type" data-val="1" data-filter="typeFilter" href="#">Product Order</a></li>
+                                <li><a class="action-filter-type" data-val="2" data-filter="typeFilter" href="#">Custom Order</a></li>
+                                <li role="separator" class="divider"></li>
+                                <li><a class="action-filter-type" data-filter="typeFilter" href="#">Show All</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </form>
             </div>
-            <div class="col-md-8">
+            <div class="col-md-7">
                 <div class="pull-right">
                     <form class="form-inline">
                         <div class="form-group">

@@ -79,6 +79,7 @@ icon:
     publish: glyphicon glyphicon-send
     shoppingCart: glyphicon glyphicon-shopping-cart
     square: glyphicon glyphicon-stop
+    star: glyphicon glyphicon-star
     startDate: glyphicon glyphicon-calendar
     setting: glyphicon glyphicon-cog
     automatic: glyphicon glyphicon-cog
