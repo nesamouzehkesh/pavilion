@@ -16,6 +16,8 @@ use FOS\RestBundle\View\View;
  * http://williamdurand.fr/2013/08/07/ddd-with-symfony2-folder-structure-and-code-first/
  * http://obtao.com/blog/2013/05/create-rest-api-in-a-symfony-application/
  * 
+ * http://welcometothebundle.com/web-api-rest-with-symfony2-the-best-way-the-post-method/
+ * https://github.com/liuggio/symfony2-rest-api-the-best-2013-way
  * 
  * curl -v -H "Accept: application/json" -H "Content-type: application/json" -X POST -d '{"user":{"username":"foo", "email": "foo@example.org", "password":"hahaha"}}' http://symfony-basic.dev/api/product
  * 
