@@ -88,6 +88,10 @@ class OrderRepository extends BaseEntityRepository
             $qb->andWhere('o.progressesStatus = :status');
             $qb->setParameter('status', $params['progressFilter']);
         }
+        if (isset($params['typeFilter'])) {
+            $qb->andWhere('o.type = :type');
+            $qb->setParameter('type', intval($params['typeFilter']));
+        }
         
         if ($justQuery) {
             return $qb->getQuery();

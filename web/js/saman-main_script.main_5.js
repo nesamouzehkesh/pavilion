@@ -63,6 +63,17 @@ $.fn.isValid = function(){
     return this[0].checkValidity();
 };
 
+function getPaht(url, param)
+{
+    var queryString = '';
+    $.each(param, function( key, value ) {
+        if (value !== undefined) {
+            queryString = queryString + '&' + key + '=' + value;
+        }
+    });
+    return url + queryString;
+}
+
 // activate the tooltip    
 function fireTooltip(itemId)
 {

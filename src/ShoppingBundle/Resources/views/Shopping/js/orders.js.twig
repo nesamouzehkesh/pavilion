@@ -1,4 +1,4 @@
-{% set twig_url_items = path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')|merge({'headless': true})) %}
+{% set url_items = path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')|merge({'headless': true})) %}
 
 <script type="text/javascript">
 $(function(){
@@ -9,12 +9,30 @@ $(function(){
     cont_orders.on('click', '.action-pagination', function(e){      
         e.preventDefault();
         currentPage = $(this).attr('data-page');
-        displayItems('{{ twig_url_items }}', cont_orders, currentPage);
+        displayItems('{{ url_items }}', cont_orders, currentPage);
     });
-
-    $('.action-filter-progress-order').click(function(e){
+    
+    var progressFilter;
+    var typeFilter;
+    $('.action-filter-progress').click(function(e){
         e.preventDefault();
-        var url = $(this).attr('href');
+        progressFilter = $(this).attr('data-val');
+        var url = getPaht('{{ url_items }}', {
+            'progressFilter': progressFilter, 
+            'typeFilter': typeFilter
+        });
+        
+        displayItems(url, cont_orders, '1');
+    });   
+    
+    $('.action-filter-type').click(function(e){
+        e.preventDefault();
+        typeFilter = $(this).attr('data-val');
+        var url = getPaht('{{ url_items }}', {
+            'progressFilter': progressFilter, 
+            'typeFilter': typeFilter
+        });
+        
         displayItems(url, cont_orders, '1');
     });   
     
@@ -23,11 +41,11 @@ $(function(){
     });
     
     cont_orders.on('click', '.action-delete-order', function(e){   
-        deleteItem($(this), '{{ twig_url_items }}', cont_orders, currentPage);
+        deleteItem($(this), '{{ url_items }}', cont_orders, currentPage);
     });
 
     $("#input-search").keyup(function(e) {
-        searchItems($(this), '{{ twig_url_items }}', cont_orders, currentPage);
+        searchItems($(this), '{{ url_items }}', cont_orders, currentPage);
     });
 });
 </script>

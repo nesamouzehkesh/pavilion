@@ -13,7 +13,12 @@
     {% for order in ordersPagination %}
         {% set orderProgress = order.getActiveProgress %}
         <tr>
-            <th>{{ order.id }}</th>
+            <th>
+                {% if order.isCustomOrder %}
+                    {{ 'icon.star'|icon }}
+                {% endif %}
+                {{ order.id }}
+            </th>
             <td>{{ order.user.email }}</td>
             <td>{{ orderProgress.progress.title }}</td> 
             <td>{{ orderProgress.startDate|date(date_format) }}</td>

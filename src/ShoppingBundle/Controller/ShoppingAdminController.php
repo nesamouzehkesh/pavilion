@@ -22,6 +22,7 @@ class ShoppingAdminController extends BaseController
             $searchParam = $this->getAppService()
                 ->getSearchParam($request);
             $searchParam['progressFilter'] = $request->get('progressFilter', null);
+            $searchParam['typeFilter'] = $request->get('typeFilter', null);
                 
             // Get all Orders
             $orders = $this->getShoppingService()->getOrders($searchParam);
