@@ -3,6 +3,7 @@
 namespace ShoppingBundle\Controller;
 
 use Library\Base\BaseController;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class PaymentController extends BaseController
 {
@@ -13,15 +14,60 @@ class PaymentController extends BaseController
      */
     public function orderPaymentAction($orderId)
     {
+        $order = $this->getShoppingService()->getUserOrder(
+            $this->getUser(), 
+            $orderId
+            );
+        
+        $returnUrl = $this->generateUrl(
+            'saman_shopping_order_payment_finalization', 
+            array('orderId' => $orderId),
+            UrlGeneratorInterface::ABSOLUTE_URL
+            );
+        $cancelUrl = $this->generateUrl(
+            'saman_shopping_order_set_shipping_address',
+            array('orderId' => $orderId),
+            UrlGeneratorInterface::ABSOLUTE_URL
+            );
+        
+        $paymentResponse = $this->getPaymentService()->submitPayment(
+            $order,
+            $returnUrl,
+            $cancelUrl
+            );
+        $this->getSession()->set('paymentData', $paymentResponse->getPaypalData());
+        
+        return $this->redirect($paymentResponse->getApprovalUrl());
+    }
+    
+    /**
+     * 
+     * @param type $orderId
+     * @return type
+     */
+    public function orderPaymentFinalizationAction($orderId)
+    {
         $user = $this->getUser();
-        $order = $this->getShoppingService()->getUserOrder($user, $orderId);
-        $payment = $this->getPaymentService()->handleUserPayment($user, $order);
+        $paymentData = $this->getSession()->get('paymentData');
+        $payerId = $this->getGET('PayerID');
+
+        $order = $this->getShoppingService()->getUserOrder(
+            $this->getUser(), 
+            $orderId
+            );
+        
+        $payment = $this->getPaymentService()->finalizePayment(
+            $user, 
+            $order,
+            $payerId,
+            $paymentData
+            );
         
         return $this->redirectToRoute(
             'saman_shopping_order_payment_confirmation', 
-            array('paymentId' => $payment->getId())
+            array('payerId' => $payment->getId())
             );
-    }
+    }    
     
     /**
      * 
@@ -32,7 +78,8 @@ class PaymentController extends BaseController
     public function orderPaymentConfirmationAction($paymentId)
     {
         $user = $this->getUser();
-        $payment = $this->getPaymentService()->getUserPayment($user, $paymentId);
+        $payment = $this->getPaymentService()
+            ->getUserPayment($user, $paymentId);
         
         return $this->render(
             '::web/order/orderPaymentConfirmation.html.twig',

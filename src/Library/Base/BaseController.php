@@ -5,6 +5,7 @@ namespace Library\Base;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpKernel\Exception\GoneHttpException;
+use Symfony\Component\HttpFoundation\Request;
 
 class BaseController extends Controller
 {
@@ -249,4 +250,34 @@ class BaseController extends Controller
         $form->addError(new FormError($this->transMessage($message)));
     }
     
+    /**
+     * 
+     * @return type
+     */
+    public function getRequest()
+    {
+        return Request::createFromGlobals();
+    }
+    
+    /**
+     * 
+     * @param type $path
+     * @param type $default
+     * @param type $deep
+     */
+    public function getGET($path, $default = null, $deep = false)
+    {
+        return $this->getRequest()->query->get($path, $default, $deep);
+    }
+    
+    /**
+     * 
+     * @param type $path
+     * @param type $default
+     * @param type $deep
+     */
+    public function getPOST($path, $default = null, $deep = false)
+    {
+        return $this->getRequest()->request->get($path, $default, $deep);
+    }
 }

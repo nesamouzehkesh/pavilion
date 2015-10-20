@@ -2,6 +2,15 @@
 
 namespace ShoppingBundle\Service;
 
+use Guzzle\Http\Client;
+use PayPalRestApiClient\Repository\AccessTokenRepository;
+use PayPalRestApiClient\Service\PaymentService as PayPalPaymentService;
+use PayPalRestApiClient\Builder\PaymentRequestBodyBuilder;
+use PayPalRestApiClient\Builder\PaymentBuilder;
+use PayPalRestApiClient\Model\Amount;
+use PayPalRestApiClient\Model\Transaction;
+use PayPalRestApiClient\Model\Payer;
+
 use AppBundle\Service\AppService;
 use AppBundle\Service\EventHandler;
 use AppBundle\Entity\Event;
@@ -34,7 +43,7 @@ class PaymentService
      * @var OrderProgressHandler $progressHandler
      */
     protected $progressHandler;
-
+    
     /**
      * 
      * @param AppService $appService
@@ -59,33 +68,106 @@ class PaymentService
     
     /**
      * 
-     * @param User $user
      * @param Order $order
+     * @param type $returnUrl
+     * @param type $cancelUrl
      * @return type
      * @throws \Exception
      */
-    public function handleUserPayment(User $user, Order $order)
+    public function submitPayment(
+        Order $order,
+        $returnUrl,
+        $cancelUrl
+        )
+    {
+        /*
+        $clientId = "AZIeWZv0pYj94Cffavh8itLs9sFrH0FRXmtpnWACDRObvPhSJkIgK4geRrTDTECGNA8-62I0t2Samh1M";
+        $secret = "EDkbWqSYDtdUsc22PoHW-ebz7TkjTHRqpfB65T2Z6c6-AtyPjh7Lfc_I7h_lSPsUX0T3h95SCW4azwK9";
+        $baseUrl = 'https://api.sandbox.paypal.com';
+        */
+        
+        $clientId = "AadfWPDafi8zBcUyr3bGMWZtUJl5A6a-UjX0dg4HsE9uUD33Veydu6ozpS9ZyTnrJ8vmLRVMu5AW3Q6c";
+        $secret = "ECek7G5nFmbFVIbE5SkKgkW0SaD1dU3sxmPKAMWTpPdS8vbvGlyhQTej9gXaP8K6k0Ny1xEKkkW-7pCR";
+        $baseUrl = 'https://api.paypal.com';
+        
+        $client = new Client();
+        $repo = new AccessTokenRepository($client, $baseUrl);        
+        $accessToken = $repo->getAccessToken($clientId, $secret);
+
+        $paymentService = new PayPalPaymentService(
+            $client,
+            new PaymentRequestBodyBuilder(),
+            $baseUrl
+        );        
+
+        $itemList = array(
+            'items' => array(
+                array(
+                    'quantity' => '1',
+                    'name' => 'product name',
+                    'price' => '1.01',
+                    'currency' => 'USD',
+                    'sku' => '1233456789',
+                ),
+            )
+        );
+        
+        $amount = new Amount('USD', '1.01');
+        $transaction = new Transaction(
+            $amount, 
+            'my transaction', 
+            $itemList
+            );
+        $payer = new Payer('paypal');
+        
+        $payment = $paymentService->create(
+            $accessToken,
+            $payer,
+            array(
+                'return_url' => $returnUrl,
+                'cancel_url' => $cancelUrl
+            ),
+            array($transaction)
+        );
+        
+        return $payment;
+    }
+    
+    public function finalizePayment(User $user, Order $order, $payerId, $paymentData)
     {
         $this->appService->transactionBegin();
         
+        $clientId = "AadfWPDafi8zBcUyr3bGMWZtUJl5A6a-UjX0dg4HsE9uUD33Veydu6ozpS9ZyTnrJ8vmLRVMu5AW3Q6c";
+        $secret = "ECek7G5nFmbFVIbE5SkKgkW0SaD1dU3sxmPKAMWTpPdS8vbvGlyhQTej9gXaP8K6k0Ny1xEKkkW-7pCR";
+        $baseUrl = 'https://api.paypal.com';
+        
         try {
+            $client = new Client();
+            $paymentService = new PayPalPaymentService(
+                $client,
+                new PaymentRequestBodyBuilder(),
+                $baseUrl
+            );
+
+            $repo = new AccessTokenRepository($client, $baseUrl);        
+            $accessToken = $repo->getAccessToken($clientId, $secret);
+            
+            $paymentBuilder = new PaymentBuilder();
+            $originalPayment = $paymentBuilder->build($paymentData);
+            $payment = $paymentService->execute($accessToken, $originalPayment, $payerId);
+            if ('approved' !== $payment->getState()) {
+                throw new \Exception('Payment failed');
+            }
+            
             $date = new \DateTime();
             $paymentDate = $date->getTimestamp();
+            
             $paymentName = 'saman';
             $paymentType = 1;
-            
             $paymentValue = 2342;
             if ($order->isProductOrder()) {
                 $paymentValue = $this->shoppingService->finalizeOrderShoppingCartList($order);
             }
-
-            //TODO: do payment
-            $paymentParams = array(
-                'date' => $paymentDate, 
-                'value' => $paymentValue, 
-                'name' => $paymentName,
-                'type' => $paymentType
-                );
 
             $payment = $this->getPayment();
             $payment->setDate($paymentDate);
