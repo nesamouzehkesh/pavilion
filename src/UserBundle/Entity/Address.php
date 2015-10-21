@@ -20,6 +20,10 @@ class Address extends BaseEntity
     const TYPE_PRIMARY = 1;
     const TYPE_SECONDARY = 2;
     
+    const LOCATION_TYPE_RESIDENTIAL = 1;
+    const LOCATION_TYPE_BUSINESS = 2;
+    const LOCATION_TYPE_MAILBOX = 3;
+    
     /**
      * @ORM\Column(type="integer")
      * @ORM\Id
@@ -83,7 +87,14 @@ class Address extends BaseEntity
      *
      * @ORM\Column(name="type", type="integer")
      */
-    private $type;    
+    private $type;
+    
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="location_type", type="integer")
+     */
+    private $locationType;
     
     /**
      * @ORM\ManyToOne(targetEntity="User", inversedBy="addresses")
@@ -98,7 +109,7 @@ class Address extends BaseEntity
     {
         parent::__construct();
     }
-    
+
     /**
      * 
      * @param \Doctrine\ORM\EntityManagerInterface $em
@@ -406,4 +417,41 @@ class Address extends BaseEntity
     {
         return $this->user;
     }
+
+    /**
+     * Set locationType
+     *
+     * @param integer $locationType
+     * @return Address
+     */
+    public function setLocationType($locationType)
+    {
+        $this->locationType = $locationType;
+
+        return $this;
+    }
+
+    /**
+     * Get locationType
+     *
+     * @return integer 
+     */
+    public function getLocationType()
+    {
+        return $this->locationType;
+    }
+    
+    /**
+     * Get locationType
+     *
+     * @return integer 
+     */
+    public function getLocationTypeLabel(array $labelArray)
+    {
+        if (!isset($labelArray[$this->locationType - 1])) {
+            throw new \Exception('Invalid label array is provided');
+        }
+        
+        return $labelArray[$this->locationType - 1];
+    }    
 }

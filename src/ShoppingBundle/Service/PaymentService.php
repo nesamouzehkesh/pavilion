@@ -80,15 +80,13 @@ class PaymentService
         $cancelUrl
         )
     {
-        /*
         $clientId = "AZIeWZv0pYj94Cffavh8itLs9sFrH0FRXmtpnWACDRObvPhSJkIgK4geRrTDTECGNA8-62I0t2Samh1M";
         $secret = "EDkbWqSYDtdUsc22PoHW-ebz7TkjTHRqpfB65T2Z6c6-AtyPjh7Lfc_I7h_lSPsUX0T3h95SCW4azwK9";
         $baseUrl = 'https://api.sandbox.paypal.com';
-        */
         
-        $clientId = "AadfWPDafi8zBcUyr3bGMWZtUJl5A6a-UjX0dg4HsE9uUD33Veydu6ozpS9ZyTnrJ8vmLRVMu5AW3Q6c";
-        $secret = "ECek7G5nFmbFVIbE5SkKgkW0SaD1dU3sxmPKAMWTpPdS8vbvGlyhQTej9gXaP8K6k0Ny1xEKkkW-7pCR";
-        $baseUrl = 'https://api.paypal.com';
+        //$clientId = "AadfWPDafi8zBcUyr3bGMWZtUJl5A6a-UjX0dg4HsE9uUD33Veydu6ozpS9ZyTnrJ8vmLRVMu5AW3Q6c";
+        //$secret = "ECek7G5nFmbFVIbE5SkKgkW0SaD1dU3sxmPKAMWTpPdS8vbvGlyhQTej9gXaP8K6k0Ny1xEKkkW-7pCR";
+        //$baseUrl = 'https://api.paypal.com';
         
         $client = new Client();
         $repo = new AccessTokenRepository($client, $baseUrl);        
@@ -137,9 +135,9 @@ class PaymentService
     {
         $this->appService->transactionBegin();
         
-        $clientId = "AadfWPDafi8zBcUyr3bGMWZtUJl5A6a-UjX0dg4HsE9uUD33Veydu6ozpS9ZyTnrJ8vmLRVMu5AW3Q6c";
-        $secret = "ECek7G5nFmbFVIbE5SkKgkW0SaD1dU3sxmPKAMWTpPdS8vbvGlyhQTej9gXaP8K6k0Ny1xEKkkW-7pCR";
-        $baseUrl = 'https://api.paypal.com';
+        $clientId = "AZIeWZv0pYj94Cffavh8itLs9sFrH0FRXmtpnWACDRObvPhSJkIgK4geRrTDTECGNA8-62I0t2Samh1M";
+        $secret = "EDkbWqSYDtdUsc22PoHW-ebz7TkjTHRqpfB65T2Z6c6-AtyPjh7Lfc_I7h_lSPsUX0T3h95SCW4azwK9";
+        $baseUrl = 'https://api.sandbox.paypal.com';
         
         try {
             $client = new Client();
@@ -175,7 +173,7 @@ class PaymentService
             $payment->setUser($user);
             $payment->setType(1);
             $payment->setName($paymentName);
-            $payment->setContent(json_encode($paymentParams));
+            $payment->setContent(json_encode($paymentData));
             $payment->setValue($paymentValue);
             $order->addPayment($payment);
             
