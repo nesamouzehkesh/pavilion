@@ -24,6 +24,12 @@ class Address extends BaseEntity
     const LOCATION_TYPE_BUSINESS = 2;
     const LOCATION_TYPE_MAILBOX = 3;
     
+    public static $locationTypes = array(
+        self::LOCATION_TYPE_RESIDENTIAL => 'address.locationTypes.residential',
+        self::LOCATION_TYPE_BUSINESS => 'address.locationTypes.business',
+        self::LOCATION_TYPE_MAILBOX => 'address.locationTypes.mailbox'
+    );
+
     /**
      * @ORM\Column(type="integer")
      * @ORM\Id
@@ -167,11 +173,16 @@ class Address extends BaseEntity
 
     /**
      * Get firstAddressLine
-     *
-     * @return string 
+     * 
+     * @param type $forceToString
+     * @return string
      */
-    public function getFirstAddressLine()
+    public function getFirstAddressLine($forceToString = false)
     {
+        if ($forceToString and null === $this->firstAddressLine) {
+            return '';
+        }
+        
         return $this->firstAddressLine;
     }
 
@@ -191,10 +202,15 @@ class Address extends BaseEntity
     /**
      * Get secondAddressLine
      *
+     * @param type $forceToString
      * @return string 
      */
-    public function getSecondAddressLine()
+    public function getSecondAddressLine($forceToString = false)
     {
+        if ($forceToString and null === $this->secondAddressLine) {
+            return '';
+        }
+        
         return $this->secondAddressLine;
     }
 
@@ -426,6 +442,10 @@ class Address extends BaseEntity
      */
     public function setLocationType($locationType)
     {
+        if (!isset(self::$locationTypes[$locationType])) {
+            throw new \Exception('Invalid location type is set to this address');
+        }
+        
         $this->locationType = $locationType;
 
         return $this;
@@ -442,16 +462,22 @@ class Address extends BaseEntity
     }
     
     /**
-     * Get locationType
-     *
-     * @return integer 
+     * Get locationType label. If $labelArray is provided it returns the label 
+     * based on this $labelArray array, otherwise it will use self::$locationTypes
+     * 
+     * @param array $labelArray
+     * @return string|array
      */
-    public function getLocationTypeLabel(array $labelArray)
+    public function getLocationTypeLabel(array $labelArray = array())
     {
-        if (!isset($labelArray[$this->locationType - 1])) {
-            throw new \Exception('Invalid label array is provided');
+        if (count($labelArray)) {
+            if (!isset($labelArray[$this->locationType])) {
+                return '';
+            }
+
+            return $labelArray[$this->locationType];
+        } else {
+            return self::$locationTypes[$this->locationType];
         }
-        
-        return $labelArray[$this->locationType - 1];
     }    
 }

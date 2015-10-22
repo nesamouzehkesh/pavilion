@@ -15,7 +15,7 @@ use Library\Base\BaseEntity;
 class Order extends BaseEntity
 {
     const ITEM_LOGO = 'icon.order';
-    
+    const DEFAULT_CURRENCY = 'USD';
     const ORDER_TYPE_PRODUCT = 1;
     const ORDER_TYPE_CUSTOM = 2;
     
@@ -27,6 +27,20 @@ class Order extends BaseEntity
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
+    
+    /**
+     * @var decimal
+     *
+     * @ORM\Column(name="totalPrice", type="decimal", nullable=true)
+     */
+    private $totalPrice;    
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="currency", type="string", length=255)
+     */
+    private $currency;
     
     /**
      * @var integer
@@ -88,7 +102,13 @@ class Order extends BaseEntity
      * @ORM\ManyToOne(targetEntity="\UserBundle\Entity\Address")
      * @ORM\JoinColumn(name="shipping_address_id", referencedColumnName="id")
      **/
-    private $shippingAddress;    
+    private $shippingAddress;
+    
+    /**
+     *
+     * @var type 
+     */
+    private $loadedContent = array();
     
     /**
      * 
@@ -96,6 +116,7 @@ class Order extends BaseEntity
     public function __construct()
     {
         parent::__construct();
+        $this->currency = self::DEFAULT_CURRENCY;
         $this->products = new ArrayCollection();
         $this->progresses = new ArrayCollection();
         $this->payments = new ArrayCollection();        
@@ -111,7 +132,7 @@ class Order extends BaseEntity
     {
         return $em->getRepository(__CLASS__);
     }
-    
+
     /**
      * Get id
      *
@@ -184,6 +205,27 @@ class Order extends BaseEntity
     public function getContent()
     {
         return $this->content;
+    }
+    
+    /**
+     * 
+     * @param type $loadedContent
+     * @return \ShoppingBundle\Entity\Order
+     */
+    public function setLoadedContent($loadedContent)
+    {
+        $this->loadedContent = $loadedContent;
+
+        return $this;
+    }
+    
+    /**
+     * 
+     * @return type
+     */
+    public function getLoadedContent()
+    {
+        return $this->loadedContent;
     }
 
     /**
@@ -462,4 +504,73 @@ class Order extends BaseEntity
     {
         return $this->progressesStatus;
     }
+
+    /**
+     * Set currency
+     *
+     * @param string $currency
+     * @return Order
+     */
+    public function setCurrency($currency)
+    {
+        $this->currency = $currency;
+
+        return $this;
+    }
+
+    /**
+     * Get currency
+     *
+     * @return string 
+     */
+    public function getCurrency()
+    {
+        if (null === $this->currency) {
+            return self::DEFAULT_CURRENCY;
+        }
+        
+        return $this->currency;
+    }
+
+    /**
+     * Set totalPrice
+     *
+     * @param string $totalPrice
+     * @return Order
+     */
+    public function setTotalPrice($totalPrice)
+    {
+        $this->totalPrice = $totalPrice;
+
+        return $this;
+    }
+
+    /**
+     * Get totalPrice
+     *
+     * @return string 
+     */
+    public function getTotalPrice()
+    {
+        return $this->totalPrice;
+    }
+    
+    /**
+     * Get totalPrice
+     *
+     * @return string 
+     */
+    public function callTotalPrice()
+    {
+        if ($this->isCustomOrder()) {
+            return $this->totalPrice;
+        }
+        
+        $totalPrice = 0;
+        foreach ($this->getLoadedContent() as $item) {
+            $totalPrice = intval($item['qty']) * $item['product']->getPrice();
+        }
+        
+        return $this->totalPrice = $totalPrice;
+    }    
 }

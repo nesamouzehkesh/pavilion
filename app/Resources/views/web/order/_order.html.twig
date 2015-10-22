@@ -2,8 +2,8 @@
     <h5>Order ID: #{{ order.id }}</h5>
     
     <h5>Order Content:</h5>
-    {% for orderItem in order.content %}
-        {% set viewProductUrl = path('saman_shopping_product_display', {'productId': orderItem.id}) %}
+    {% for orderItemId, orderItem in order.loadedContent %}
+        {% set viewProductUrl = path('saman_shopping_product_display', {'productId': orderItemId}) %}
         
         {% if orderItem.title is defined %}
             <a href="{{ viewProductUrl }}">{{ orderItem.title }}</a><br>

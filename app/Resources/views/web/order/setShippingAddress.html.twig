@@ -26,14 +26,7 @@
                         <div class="margin-bottom-10">
                             <strong>{{ shippingTitle|default('Shipping address')|trans }}</strong><br>
                         </div>                    
-                        {{ form_row(form.shipping.fullName) }}
-                        {{ form_row(form.shipping.firstAddressLine) }}
-                        {{ form_row(form.shipping.secondAddressLine) }}
-                        {{ form_row(form.shipping.city) }}
-                        {{ form_row(form.shipping.state) }}
-                        {{ form_row(form.shipping.postCode) }}
-                        {{ form_row(form.shipping.country) }}
-                        {{ form_row(form.shipping.phoneNumber) }}
+                        {% include '::web/customer/form/_address.html.twig' with {'form': form.shipping} only %}
                         {% if form.setShippingPrimary is defined %}
                             {{ form_row(form.setShippingPrimary) }}
                         {% endif %}
@@ -53,14 +46,7 @@
                         <div class="margin-bottom-10">
                             <strong>{{ billingTitle|default('Billing address')|trans }}</strong><br>
                         </div>
-                        {{ form_row(form.billing.fullName) }}
-                        {{ form_row(form.billing.firstAddressLine) }}
-                        {{ form_row(form.billing.secondAddressLine) }}
-                        {{ form_row(form.billing.city) }}
-                        {{ form_row(form.billing.state) }}
-                        {{ form_row(form.billing.postCode) }}
-                        {{ form_row(form.billing.country) }}
-                        {{ form_row(form.billing.phoneNumber) }}
+                        {% include '::web/customer/form/_address.html.twig' with {'form': form.billing} only %}
                         {% if form.setShippingPrimary is defined %}
                             {{ form_row(form.setBillingPrimary) }}
                         {% endif %}

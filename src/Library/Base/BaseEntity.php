@@ -66,6 +66,18 @@ class BaseEntity
     {
         return null === $this->getId();
     }
+
+    /**
+     * Set createdTime
+     *
+     * @param integer $createdTime
+     * @return Order
+     */
+    public function setCreatedTime($createdTime)
+    {
+        //$this->createdTime = $createdTime;
+        return $this;
+    }    
     
     /**
      * Get modified time
@@ -275,5 +287,21 @@ class BaseEntity
     public static function getMedias($jsonMedias, $convert)
     {
         return MediaHandler::getMedias($jsonMedias, $convert);
-    }    
+    }
+    
+    /**
+     * 
+     * @param type $string
+     * @param type $length
+     * @param type $dots
+     * @return type
+     */
+    protected function truncate($string, $length = null, $dots = '...') 
+    {
+        if (null === $length) {
+            return $string;
+        }
+        
+        return (strlen($string) > $length) ? substr($string, 0, $length - strlen($dots)) . $dots : $string;
+    }
 }

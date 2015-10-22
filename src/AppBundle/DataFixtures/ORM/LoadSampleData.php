@@ -178,6 +178,7 @@ class LoadSampleData implements FixtureInterface
                 'addresses' => array(
                     array(
                         'type' => Address::ADDRESS_TYPE_BILLING,
+                        'locationType' => Address::LOCATION_TYPE_RESIDENTIAL,
                         'city' => 'Sydney',
                         'country' => 'AU',
                         'fullName' => 'Admin User',
@@ -188,6 +189,7 @@ class LoadSampleData implements FixtureInterface
                     ),
                     array(
                         'type' => Address::ADDRESS_TYPE_SHIPPING,
+                        'locationType' => Address::LOCATION_TYPE_RESIDENTIAL,
                         'city' => 'Sydney',
                         'country' => 'AU',
                         'fullName' => 'Admin User',
@@ -208,6 +210,7 @@ class LoadSampleData implements FixtureInterface
                 'addresses' => array(
                     array(
                         'type' => Address::ADDRESS_TYPE_BILLING_SHIPPING,
+                        'locationType' => Address::LOCATION_TYPE_RESIDENTIAL,
                         'city' => 'Sydney',
                         'country' => 'AU',
                         'fullName' => 'User',
@@ -363,6 +366,7 @@ class LoadSampleData implements FixtureInterface
                     $address->setCountry($addressData['country']);
                     $address->setFullName($addressData['fullName']);
                     $address->setState($addressData['state']);
+                    $address->setLocationType($addressData['locationType']);
                     $address->setFirstAddressLine($addressData['firstAddressLine']);
                     $address->setPhoneNumber($addressData['phoneNumber']);
                     $address->setPostCode($addressData['postCode']);
@@ -372,7 +376,6 @@ class LoadSampleData implements FixtureInterface
                         
                     $manager->persist($address);
                 }
-                
             }
             
             $manager->persist($user);
@@ -463,9 +466,8 @@ class LoadSampleData implements FixtureInterface
             $product->setTitle($loremIpsum->getTitle());
             $product->setDescription($loremIpsum->getDescription());
             
-            $price = rand(100, 10000);
-            $product->setPrice($price);
-            $product->setOriginalPrice($price - rand(10, 99));
+            $product->setPrice(1);
+            $product->setOriginalPrice(1.99);
             
             shuffle($productCategories);
             for ($j = 0; $j < rand(1 , 3); $j++) {

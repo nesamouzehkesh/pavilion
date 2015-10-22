@@ -12,13 +12,14 @@ class PaymentController extends BaseController
      * @param type $orderId
      * @return type
      */
-    public function orderPaymentAction($orderId)
+    public function paymentAction($orderId)
     {
         $order = $this->getShoppingService()->getUserOrder(
             $this->getUser(), 
-            $orderId
+            $orderId,
+            true
             );
-        
+
         $returnUrl = $this->generateUrl(
             'saman_shopping_order_payment_finalization', 
             array('orderId' => $orderId),
@@ -30,7 +31,7 @@ class PaymentController extends BaseController
             UrlGeneratorInterface::ABSOLUTE_URL
             );
         
-        $paymentResponse = $this->getPaymentService()->submitPayment(
+        $paymentResponse = $this->getPaymentService()->paymentSubmission(
             $order,
             $returnUrl,
             $cancelUrl
@@ -45,7 +46,7 @@ class PaymentController extends BaseController
      * @param type $orderId
      * @return type
      */
-    public function orderPaymentFinalizationAction($orderId)
+    public function paymentFinalizationAction($orderId)
     {
         $user = $this->getUser();
         $paymentData = $this->getSession()->get('paymentData');
@@ -56,7 +57,7 @@ class PaymentController extends BaseController
             $orderId
             );
         
-        $payment = $this->getPaymentService()->finalizePayment(
+        $payment = $this->getPaymentService()->paymentFinalization(
             $user, 
             $order,
             $payerId,
@@ -75,7 +76,7 @@ class PaymentController extends BaseController
      * @return type
      * @throws \Exception
      */
-    public function orderPaymentConfirmationAction($paymentId)
+    public function paymentConfirmationAction($paymentId)
     {
         $user = $this->getUser();
         $payment = $this->getPaymentService()

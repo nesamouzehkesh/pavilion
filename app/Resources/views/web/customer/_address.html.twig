@@ -9,11 +9,11 @@
         <strong>{{ (addressTitle|default(addressDefultTitle))|trans }}</strong> 
         {% if editAble is defined and editAble == true %}
             <button class="btn btn-primary btn-xs btn-fade action-edit-profile-item" data-target="{{ editContainer }}" data-url="{{ path('saman_shopping_customer_edit_address', {'addressId': address.id }) }}">{{ 'icon.edit'|icon }}</button> 
-        {% endif %}    
+        {% endif %}
         <br>
         
         {{ address.fullName }}<br>
-        {{ address.firstAddressLine }} {{ address.secondAddressLine }}<br>
+        {{ address.firstAddressLine }} {{ address.secondAddressLine }} [{{ address.locationTypeLabel|trans }}]<br>
         {{ address.city }}, {{ address.state }}, {{ address.country }}<br>
         <abbr title="ZIP code, ZIP, postcode, postal code">Postcode:</abbr> {{ address.postCode }}<br>
         <abbr title="Phone">P:</abbr> {{ address.phoneNumber }}

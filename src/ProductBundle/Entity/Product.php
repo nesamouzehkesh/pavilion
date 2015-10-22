@@ -47,14 +47,14 @@ class Product extends BaseEntity
     /**
      * @var integer
      *
-     * @ORM\Column(name="price", type="integer", nullable=true)
+     * @ORM\Column(name="price", type="decimal", nullable=true)
      */
     private $price;
     
     /**
      * @var integer
      *
-     * @ORM\Column(name="original_price", type="integer", nullable=true)
+     * @ORM\Column(name="original_price", type="decimal", nullable=true)
      */
     private $originalPrice;
     
@@ -109,6 +109,19 @@ class Product extends BaseEntity
     public static function getRepository(\Doctrine\ORM\EntityManagerInterface $em)
     {
         return $em->getRepository(__CLASS__);
+    }
+    
+    /**
+     * Stock keeping unit
+     * 
+     * @return type
+     */
+    public function getSKU()
+    {
+        return sprintf(
+            '%d',
+            $this->getId()
+            );
     }
 
     /**
@@ -185,9 +198,9 @@ class Product extends BaseEntity
      *
      * @return string 
      */
-    public function getDescription()
+    public function getDescription($truncateLength = null)
     {
-        return $this->description;
+        return $this->truncate($this->description, $truncateLength);
     }
 
     /**

@@ -77,6 +77,9 @@ class OrderPayment extends BaseEntity
     public function __construct()
     {
         parent::__construct();
+        
+        $date = new \DateTime();
+        $this->setDate($date->getTimestamp());
     }
     
     /**

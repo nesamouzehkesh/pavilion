@@ -6,6 +6,7 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use UserBundle\Entity\User;
+use UserBundle\Entity\Address;
 
 /**
  * 
@@ -37,6 +38,10 @@ class AddressType extends AbstractType
         }
         
         $builder
+            ->add('locationType', 'choice', array(
+                'choices' => Address::$locationTypes, 
+                'required' => false
+                ))
             ->add('firstAddressLine', 'text', array('required' => false))
             ->add('secondAddressLine', 'text', array('required' => false))
             ->add('city', 'text', array('required' => false))

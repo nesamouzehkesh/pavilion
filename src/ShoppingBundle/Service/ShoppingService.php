@@ -11,11 +11,17 @@ use ProductBundle\Entity\Product;
 use ShoppingBundle\Entity\Order;
 use ShoppingBundle\Entity\Progress;
 use ShoppingBundle\Service\OrderProgressHandler;
+use ShoppingBundle\Library\Component\ShoppingCart;
+use ShoppingBundle\Library\Component\ShoppingSessionCartModifier;
 
 class ShoppingService
 {
-    const SHOPPING_CART_NAME = "shopping-cart";
-    
+    /**
+     *
+     * @var type
+     */
+    protected $em;
+
     /**
      * @var AppService $appService
      */
@@ -49,6 +55,7 @@ class ShoppingService
         $this->eventHandler = $eventHandler;
         $this->progressHandler = $progressHandler;
         $this->appService->setParametrs($parameters);
+        $this->em = $appService->getEntityManager();
     }
     
     /**
@@ -100,8 +107,7 @@ class ShoppingService
      */
     public function getUserOrders(User $user, $params = array())
     {
-        return Order::getRepository($this->appService->getEntityManager())
-            ->getUserOrders($user, $params);        
+        return Order::getRepository($this->em)->getUserOrders($user, $params);        
     }
     
     /**
@@ -112,8 +118,7 @@ class ShoppingService
      */
     public function getOrders($params = array(), $justQuery = true)
     {
-        return Order::getRepository($this->appService->getEntityManager())
-            ->getOrders($params, $justQuery);
+        return Order::getRepository($this->em)->getOrders($params, $justQuery);
     }
     
     /**
@@ -122,35 +127,38 @@ class ShoppingService
      * @param type $orderId
      * @return type
      */
-    public function getUserOrder(User $user, $orderId = null, $loadContentInfo = true)
+    public function getUserOrder(User $user, $orderId = null, $loadOrderContent = false)
     {
-        $order = $this->getOrder($orderId, $user);
-        if ($loadContentInfo and $order->isProductOrder()) {
-            $shoppingCartList = $this->getShoppingCartList(true, $order);
-            $order->setContent($shoppingCartList);
-        }
-        
-        return $order;
+        return $this->getOrder($orderId, $user, $loadOrderContent);
     }
     
     /**
-     * Get an order
+     * Get an order or create a new one
      * 
      * @param type $orderId
+     * @param User $user
+     * @param type $loadOrderContent
      * @return Order
-     * @throws \Exception
+     * @throws type
      */
-    public function getOrder($orderId = null, User $user = null)
+    public function getOrder($orderId = null, User $user = null, $loadOrderContent = false)
     {
         if (null === $orderId) {
             return new Order();
         }
         
-        $order = Order::getRepository($this->appService->getEntityManager())
-            ->getOrder($orderId, $user);
+        $order = Order::getRepository($this->em)->getOrder($orderId, $user);
         if (!$order instanceof Order) {
             throw $this->appService->createVisibleHttpException('No order has been found');
-        }            
+        }
+        
+        if ($loadOrderContent) {
+            if ($order->isProductOrder()) {
+                $order->setLoadedContent($this->getShoppingCartList($order, true));
+            } else {
+                $order->setLoadedContent($order->getContent());
+            }
+        }
         
         return $order;
     }
@@ -162,73 +170,43 @@ class ShoppingService
      */
     public function getShoppingCartListIds(Order $order = null)
     {
-        if (null !== $order) {
-            $shoppingCartList = $order->getContent();
-        } else {
-            $session = $this->appService->getSession();
-            if (!$session->has(self::SHOPPING_CART_NAME)) {
-                return array();
-            }
-            $shoppingCartList = $session->get(self::SHOPPING_CART_NAME);
-        }
-        if (!is_array($shoppingCartList)) {
+        $shoppingList = $this->loadShoppingCartList($order);
+        if (!is_array($shoppingList)) {
             return array();
         }
         
-        return array_map(function($item) {
-            if (isset($item['id'])) {
-                return $item['id'];
-            }
-        }, $shoppingCartList);
+        return array_keys($shoppingList);
     }
     
     /**
+     * Get a valid shopping cart list and load it with product objects
      * 
+     * @param Order $order
      * @param type $setProduct
      * @return type
      */
-    public function getShoppingCartList($setProduct = true, Order $order = null)
+    public function getShoppingCartList(Order $order = null, $setProduct = false)
     {
-        // Get shopping list from order object if it is provided. Otherwise try 
-        // to get it from session
-        if (null !== $order) {
-            $shoppingCartList = $order->getContent();
-        } else {
-            $session = $this->appService->getSession();
-            if (!$session->has(self::SHOPPING_CART_NAME)) {
-                return array();
-            }
-            $shoppingCartList = $session->get(self::SHOPPING_CART_NAME);
-        }
-        
-        if (!is_array($shoppingCartList)) {
-            return array();
-        }
-        $productIds = array();
-        foreach ($shoppingCartList as $productOrder) {
-            if (isset($productOrder['id'])) {
-                $productIds[] = $productOrder['id'];
-            }
-        }
-        if (count($productIds) === 0) {
+        $shoppingList = $this->loadShoppingCartList($order);
+        if (!is_array($shoppingList)) {
             return array();
         }
         
-        $validShoppingCartList = array();
+        $validShoppingList = array();
         // Get products based on $productIds
-        $products = Product::getRepository($this->appService->getEntityManager())
-            ->getProductsById($productIds);
+        $products = Product::getRepository($this->em)
+            ->getProductsById(array_keys($shoppingList));
         foreach ($products as $product) {
             $productId = $product->getId();
-            if (isset($shoppingCartList[$productId])) {
-                $validShoppingCartList[$productId] = $shoppingCartList[$productId];
+            if (isset($shoppingList[$productId])) {
+                $validShoppingList[$productId] = $shoppingList[$productId];
                 if ($setProduct) {
-                    $validShoppingCartList[$productId]['product'] = $product;
+                    $validShoppingList[$productId]['product'] = $product;
                 }
             }
         }
         
-        return $validShoppingCartList;
+        return $validShoppingList;
     }
     
     /**
@@ -237,9 +215,8 @@ class ShoppingService
      */
     public function finalizeOrderShoppingCartList($order)
     {
-        $totalPrice = 0;
         $orderItems = array();
-        foreach ($this->getShoppingCartList(true, $order) as $orderItem) {
+        foreach ($this->loadShoppingCartList($order, true) as $orderItem) {
             $product = $orderItem['product'];
             $productId = $product->getId();
             $quntity = intval($orderItem['qty']);
@@ -247,15 +224,10 @@ class ShoppingService
                 throw new \Exception('Your order quantity can not be zero');
             }
             
-            $itemPrice = $product->getPrice() * $quntity;
-            $totalPrice = $totalPrice + $itemPrice;
-            
             $orderItems[$productId] = array(
-                'id' => $productId,
                 'title' => $product->getTitle(),
                 'price' => $product->getPrice(),
                 'originalPrice' => $product->getOriginalPrice(),
-                'totalPrice' => $itemPrice,
                 'type' => Order::ORDER_TYPE_PRODUCT,
                 'date' => $orderItem['date'],
                 'qty' => $quntity
@@ -263,8 +235,6 @@ class ShoppingService
         }
 
         $order->setContent($orderItems);
-        
-        return $totalPrice;
     }
 
     /**
@@ -278,73 +248,32 @@ class ShoppingService
      */
     public function modifyShoppingCart($action, $productId = null, $quntity = 1)
     {
-        if ($quntity === 0) {
-            throw new \Exception('Your order quantity can not be zero');
-        }
-            
-        $session = $this->appService->getSession();
-        switch ($action) {
-            case 'add':
-                if (null === $productId) {
-                    throw new \Exception('No product ID is provide for set shopping cart action');
-                }
-                
-                $productOrderList = array();
-                if ($session->has(self::SHOPPING_CART_NAME)) {
-                    $productOrderList = $session->get(self::SHOPPING_CART_NAME);
-                    if (!is_array($productOrderList)) {
-                        $productOrderList = array();
-                    }
-                }
-                
-                $productOrderList[$productId] = array(
-                    'id' => $productId,
-                    'type' => Order::ORDER_TYPE_PRODUCT,
-                    'date' => $this->appService->getTimestamp(),
-                    'qty' => $quntity
-                );
-                $session->set(self::SHOPPING_CART_NAME, $productOrderList);
-                break;
-            case 'update':
-                    if (null === $productId) {
-                        throw new \Exception('No product ID is provide for update shopping cart action');
-                    }
-                    
-                    if ($session->has(self::SHOPPING_CART_NAME)) {
-                        $productOrderList = $session->get(self::SHOPPING_CART_NAME);
-                        if (isset($productOrderList[$productId])) {
-                            $productOrderList[$productId] = array(
-                                'id' => $productId,
-                                'type' => Order::ORDER_TYPE_PRODUCT,
-                                'date' => $this->appService->getTimestamp(),
-                                'qty' => $quntity
-                            );
-                            $session->set(self::SHOPPING_CART_NAME, $productOrderList);
-                        }
-                    }                
-                break;
-            case 'remove':
-                    if (null === $productId) {
-                        throw new \Exception('No product ID is provide for delete shopping cart action');
-                    }
-                    
-                    if ($session->has(self::SHOPPING_CART_NAME)) {
-                        $productOrderList = $session->get(self::SHOPPING_CART_NAME);
-                        if (isset($productOrderList[$productId])) {
-                            unset($productOrderList[$productId]);
-                            $session->set(self::SHOPPING_CART_NAME, $productOrderList);
-                        }
-                    }                
-                break;
-            case 'remove-all':
-                    if ($session->has(self::SHOPPING_CART_NAME)) {
-                        $session->remove(self::SHOPPING_CART_NAME);
-                    }
-                break;
-            default :
-                throw new \Exception('Invalid action is defined for modifying shopping cart');
+        $shoppingCart = new ShoppingCart(
+            new ShoppingSessionCartModifier(),
+            $this->appService->getSession()
+            );
+        
+        $shoppingCart->modify($action, $productId, $quntity);
+    }
+    
+    /**
+     * Get shopping list from order object if it is provided. Otherwise try to 
+     * get it from session
+     * 
+     * @param Order $order
+     * @return type
+     */
+    private function loadShoppingCartList(Order $order = null)
+    {
+        if (null !== $order) {
+            return $order->getContent();
         }
         
-        return true;
-    }    
+        $shoppingCart = new ShoppingCart(
+            new ShoppingSessionCartModifier(),
+            $this->appService->getSession()
+            );
+        
+        return $shoppingCart->getContent();
+    }
 }

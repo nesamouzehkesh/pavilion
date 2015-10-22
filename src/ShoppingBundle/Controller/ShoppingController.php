@@ -39,8 +39,8 @@ class ShoppingController extends BaseController
     {
         try {
             $user = $this->getUser();
-            $order = $this->getShoppingService()->getUserOrder($user, $orderId);
-
+            $order = $this->getShoppingService()->getUserOrder($user, $orderId, true);
+            
             return $this->render(
                 '::web/order/order.html.twig',
                 array(
@@ -64,7 +64,8 @@ class ShoppingController extends BaseController
     public function displayShoppingCartAction()
     {
         try {
-            $shoppingCartList = $this->getShoppingService()->getShoppingCartList();
+            $shoppingCartList = $this->getShoppingService()
+                ->getShoppingCartList(null, true);
             
             return $this->render(
                 '::web/order/shoppingCart.html.twig',
@@ -91,7 +92,7 @@ class ShoppingController extends BaseController
     {
         try {
             $shoppingCartList = $this->getShoppingService()
-                ->getShoppingCartList(false);
+                ->getShoppingCartList();
             if (count($shoppingCartList) === 0) {
                 throw new \Exception('Shopping list is empty');
             }
@@ -208,7 +209,7 @@ class ShoppingController extends BaseController
     public function orderConfirmationAction($orderId)
     {
         $user = $this->getUser();
-        $order = $this->getShoppingService()->getUserOrder($user, $orderId);
+        $order = $this->getShoppingService()->getUserOrder($user, $orderId, true);
 
         return $this->render(
             '::web/order/orderConfirmation.html.twig',
@@ -228,7 +229,7 @@ class ShoppingController extends BaseController
     {
         $em = $this->getDoctrine()->getManager();
         $user = $this->getUser();
-        $order = $this->getShoppingService()->getUserOrder($user, $orderId);
+        $order = $this->getShoppingService()->getUserOrder($user, $orderId, true);
         
         $orderShippingAddress = null;
         $orderBillingAddress = null;

@@ -222,7 +222,13 @@ order:
         myOrders: glyphicon glyphicon-shopping_bag
         submitOrder: glyphicon glyphicon-send
         order: glyphicon glyphicon-shopping_bag
-    
+        
+address:
+    locationTypes:
+        residential: Residential
+        business: Business
+        mailbox: Mailbox
+            
 customer:
     register: 
     registerConfirmation: Confirmation
