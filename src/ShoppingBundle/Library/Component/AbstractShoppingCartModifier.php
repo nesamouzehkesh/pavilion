@@ -7,8 +7,6 @@ namespace ShoppingBundle\Library\Component;
  */
 abstract class AbstractShoppingCartModifier
 {
-    const SHOPPING_CART_NAME = "shopping-cart";
-    
     /**
      * shopping cart continer
      * 
@@ -77,4 +75,9 @@ abstract class AbstractShoppingCartModifier
      * Load shopping cart content
      */
     abstract public function getContent();
+    
+    /**
+     * Finalize shopping cart content
+     */ 
+    abstract public function finalize($shoppingCartList);
 }

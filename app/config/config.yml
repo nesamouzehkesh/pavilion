@@ -35,6 +35,19 @@ framework:
 # System Parameters        
 parameters:
     # General parameters
+    saman_payment:
+        sandbox:
+            paypal:
+                baseUrl: "https://api.sandbox.paypal.com"
+                clientId: %base_paypal_sandbox_clientId%
+                secret: %base_paypal_sandbox_secret%
+        production:        
+            paypal:
+                baseUrl: "https://api.paypal.com"
+                clientId: %base_paypal_clientId%
+                secret: %base_paypal_secret%
+
+                
     generalParam1: 12483920
     saman.saltmain: 26eyhtri    
     saman.md5encoder.class: Library\Service\Md5Encoder

@@ -30,7 +30,21 @@ class ShoppingCart
      */
     public function getContent()
     {
-        return $this->modifier->getContent();
+        $content = $this->modifier->getContent();
+        if (!is_array($content)) {
+            return array();
+        }
+        
+        return $content;
+    }
+    
+    /**
+     * 
+     * @param type $shoppingCartList
+     */
+    public function finalize($shoppingCartList)
+    {
+        return $this->modifier->finalize($shoppingCartList);
     }
 
     /**

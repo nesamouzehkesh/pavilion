@@ -38,15 +38,15 @@ saman_shopping_customer_edit_profile:
     
 saman_shopping_order_payment:
     path:     /shopping/order/payment/{orderId}
-    defaults: { _controller: ShoppingBundle:Payment:payment }
+    defaults: { _controller: ShoppingBundle:Payment:createPayment }
 
 saman_shopping_order_payment_finalization:
     path:     /shopping/order/payment/finalization/{orderId}
-    defaults: { _controller: ShoppingBundle:Payment:paymentFinalization }
+    defaults: { _controller: ShoppingBundle:Payment:executePayment }
 
 saman_shopping_order_payment_confirmation:
     path:     /shopping/order/payment/confirm/{paymentId}
-    defaults: { _controller: ShoppingBundle:Payment:paymentConfirmation }
+    defaults: { _controller: ShoppingBundle:Payment:confirmPayment }
         
     
 

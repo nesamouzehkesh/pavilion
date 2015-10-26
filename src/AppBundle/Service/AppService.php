@@ -358,18 +358,24 @@ class AppService
         
         return $this;
     }
-    
+
     /**
      * Get a parameter from $parameters array
+     * 
+     * @param string $key
+     * @param array $externalParam
+     * @return mix
+     * @throws \Exception
      */
-    public function getParameter($parameterKey, $defaultValue = null)
+    public function getParameter($key, $defaultValue = null, $externalParam = null)
     {
-        if (array_key_exists($parameterKey, $this->parameters)) {
-            return $this->parameters[$parameterKey];
+        $parameters = (null === $externalParam)? $this->parameters : $externalParam;
+        if (!array_key_exists($key, $parameters)) {
+            return $defaultValue;
         }
         
-        return $defaultValue;
-    }
+        return $parameters[$key];
+    }    
     
     /**
      * Get all parameters

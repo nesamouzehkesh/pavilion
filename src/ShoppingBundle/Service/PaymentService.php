@@ -5,14 +5,13 @@ namespace ShoppingBundle\Service;
 use AppBundle\Service\AppService;
 use AppBundle\Service\EventHandler;
 use AppBundle\Entity\Event;
+use ShoppingBundle\Library\Component\AbstractPaymentApi;
 use ShoppingBundle\Service\ShoppingService;
 use ShoppingBundle\Service\OrderProgressHandler;
 use ShoppingBundle\Entity\Progress;
 use ShoppingBundle\Entity\OrderPayment;
 use ShoppingBundle\Entity\Order;
 use UserBundle\Entity\User;
-use ShoppingBundle\Library\Component\PayPalPaymentApiHandler;
-use ShoppingBundle\Library\Component\PaymentApi;
 
 class PaymentService
 {
@@ -38,9 +37,9 @@ class PaymentService
     protected $progressHandler;
     
     /**
-     * @var AbstractPaymentApiHandler $paymentApiHandler
+     * @var AbstractPaymentApi $paymentApi
      */
-    protected $paymentApiHandler;
+    protected $paymentApi;
     
     /**
      * 
@@ -57,72 +56,77 @@ class PaymentService
         $parameters
         ) 
     {
-        $parameters_sandbox = array(
-            'clientId' => "AZIeWZv0pYj94Cffavh8itLs9sFrH0FRXmtpnWACDRObvPhSJkIgK4geRrTDTECGNA8-62I0t2Samh1M",
-            'secret' => "EDkbWqSYDtdUsc22PoHW-ebz7TkjTHRqpfB65T2Z6c6-AtyPjh7Lfc_I7h_lSPsUX0T3h95SCW4azwK9"
-        );
-        
-        $parameters = array(
-            'clientId' => "AadfWPDafi8zBcUyr3bGMWZtUJl5A6a-UjX0dg4HsE9uUD33Veydu6ozpS9ZyTnrJ8vmLRVMu5AW3Q6c",
-            'secret' => "ECek7G5nFmbFVIbE5SkKgkW0SaD1dU3sxmPKAMWTpPdS8vbvGlyhQTej9gXaP8K6k0Ny1xEKkkW-7pCR"
-        );
-
         $this->appService = $appService;
         $this->shoppingService = $shoppingService;
         $this->eventHandler = $eventHandler;
         $this->progressHandler = $progressHandler;
-        $this->appService->setParametrs($parameters_sandbox);
-        
-        $this->paymentApiHandler = new PayPalPaymentApiHandler(
-            $this->appService->getParameter('clientId'),
-            $this->appService->getParameter('secret')
-            );        
+        $this->appService->setParametrs($parameters);
     }
     
     /**
      * 
-     * @param Order $order
-     * @param type $returnUrl
-     * @param type $cancelUrl
-     * @return type
+     * @param AbstractPaymentApi $paymentApi
+     * @return \ShoppingBundle\Service\PaymentService
      */
-    public function paymentSubmission(Order $order, $returnUrl, $cancelUrl)
+    public function setPaymentApi(AbstractPaymentApi $paymentApi)
     {
-        $paymentApi = new PaymentApi($this->paymentApiHandler, $order);
-        $param = array('returnUrl' => $returnUrl, 'cancelUrl' => $cancelUrl);
+        $this->paymentApi = $paymentApi;
         
-        return $paymentApi->create($param);
+        return $this;
+    }
+    
+    /**
+     * 
+     * @return AbstractPaymentApiHandler
+     * @throws \Exception
+     */
+    public function getPaymentApi()
+    {
+        if (!$this->paymentApi instanceof AbstractPaymentApi) {
+            throw new \Exception('No payment api is set to this service');
+        }
+        
+        return $this->paymentApi;
+    }
+
+    /**
+     * 
+     * @param Order $order
+     * @param type $param
+     */
+    public function createPayment(Order $order, $param = array())
+    {
+        return $this->getPaymentApi()->setOrder($order)->create($param);
     }
     
     /**
      * 
      * @param User $user
      * @param Order $order
-     * @param type $payerId
-     * @param type $paymentData
+     * @param type $param
      * @return type
      * @throws \Exception
      */
-    public function paymentFinalization(User $user, Order $order, $payerId, $paymentData)
+    public function executePayment(User $user, Order $order, $param = array())
     {
         $this->appService->transactionBegin();
         
         try {
-            $paymentApi = new PaymentApi($this->paymentApiHandler, $order);
-            $param = array('paymentData' => $paymentData, 'payerId' => $payerId);
-            $paymentApi->execute($param);
+            //$this->getPaymentApi()->setOrder($order)->execute($param);
             
+            $order->setIsPaid(true);
             if ($order->isProductOrder()) {
+                $finalizedOrderItems = $this->shoppingService->finalizeShoppingCart($order);
+                $order->setContent($finalizedOrderItems);               
                 $order->setTotalPrice($order->callTotalPrice());
-                $this->shoppingService->finalizeOrderShoppingCartList($order);
             }
-
+            
             $payment = $this->getPayment();
             $payment->setOrder($order);
             $payment->setUser($user);
             $payment->setType(1);
             $payment->setName($user->getName());
-            $payment->setContent(json_encode($paymentData));
+            $payment->setContent(json_encode($param));
             $payment->setValue($order->getTotalPrice());
             $order->addPayment($payment);
             

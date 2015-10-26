@@ -59,6 +59,42 @@ class ShoppingService
     }
     
     /**
+     * Finalize shopping cart
+     * 
+     * @param Order $order
+     * @return type
+     */
+    public function finalizeShoppingCart(Order $order)
+    {
+        $shoppingCartList = $this->getShoppingCartList($order, true);
+        $shoppingCart = new ShoppingCart(
+            new ShoppingSessionCartModifier(),
+            $this->appService->getSession()
+            );
+        
+        return $shoppingCart->finalize($shoppingCartList);
+    }
+
+    /**
+     * Modifying shopping cart [add, update, remove, removeAll]
+     * 
+     * @param type $action
+     * @param type $productId
+     * @param type $quntity
+     * @return boolean
+     * @throws \Exception
+     */
+    public function modifyShoppingCart($action, $productId = null, $quntity = 1)
+    {
+        $shoppingCart = new ShoppingCart(
+            new ShoppingSessionCartModifier(),
+            $this->appService->getSession()
+            );
+        
+        $shoppingCart->modify($action, $productId, $quntity);
+    }
+    
+    /**
      * 
      * @param Order $order
      * @param type $mediaService
@@ -168,14 +204,9 @@ class ShoppingService
      * @param Order $order
      * @return type
      */
-    public function getShoppingCartListIds(Order $order = null)
+    public function getShoppingCartListIds(Order $order = null, $validate = false)
     {
-        $shoppingList = $this->loadShoppingCartList($order);
-        if (!is_array($shoppingList)) {
-            return array();
-        }
-        
-        return array_keys($shoppingList);
+        return array_keys($this->getShoppingCartList($order, false, $validate));
     }
     
     /**
@@ -185,95 +216,35 @@ class ShoppingService
      * @param type $setProduct
      * @return type
      */
-    public function getShoppingCartList(Order $order = null, $setProduct = false)
+    public function getShoppingCartList(Order $order = null, $setProduct = false, $validate = true)
     {
-        $shoppingList = $this->loadShoppingCartList($order);
-        if (!is_array($shoppingList)) {
-            return array();
-        }
+        if ($order instanceof Order) {
+            $shoppingList = $order->getContent();
+        } else {
+            $shoppingCart = new ShoppingCart(
+                new ShoppingSessionCartModifier(),
+                $this->appService->getSession()
+                );
+
+            $shoppingList = $shoppingCart->getContent();            
+        }            
         
+        if (!$validate) {
+            return $shoppingList;
+        }
+            
         $validShoppingList = array();
         // Get products based on $productIds
-        $products = Product::getRepository($this->em)
-            ->getProductsById(array_keys($shoppingList));
+        $products = Product::getRepository($this->em)->getProductsById(
+            array_keys($shoppingList));
         foreach ($products as $product) {
             $productId = $product->getId();
-            if (isset($shoppingList[$productId])) {
-                $validShoppingList[$productId] = $shoppingList[$productId];
-                if ($setProduct) {
-                    $validShoppingList[$productId]['product'] = $product;
-                }
+            $validShoppingList[$productId] = $shoppingList[$productId];
+            if ($setProduct) {
+                $validShoppingList[$productId]['product'] = $product;
             }
         }
         
         return $validShoppingList;
-    }
-    
-    /**
-     * 
-     * @param type $order
-     */
-    public function finalizeOrderShoppingCartList($order)
-    {
-        $orderItems = array();
-        foreach ($this->loadShoppingCartList($order, true) as $orderItem) {
-            $product = $orderItem['product'];
-            $productId = $product->getId();
-            $quntity = intval($orderItem['qty']);
-            if ($quntity === 0) {
-                throw new \Exception('Your order quantity can not be zero');
-            }
-            
-            $orderItems[$productId] = array(
-                'title' => $product->getTitle(),
-                'price' => $product->getPrice(),
-                'originalPrice' => $product->getOriginalPrice(),
-                'type' => Order::ORDER_TYPE_PRODUCT,
-                'date' => $orderItem['date'],
-                'qty' => $quntity
-            );
-        }
-
-        $order->setContent($orderItems);
-    }
-
-    /**
-     * Modifying shopping cart [add, update, remove, removeAll]
-     * 
-     * @param type $action
-     * @param type $productId
-     * @param type $quntity
-     * @return boolean
-     * @throws \Exception
-     */
-    public function modifyShoppingCart($action, $productId = null, $quntity = 1)
-    {
-        $shoppingCart = new ShoppingCart(
-            new ShoppingSessionCartModifier(),
-            $this->appService->getSession()
-            );
-        
-        $shoppingCart->modify($action, $productId, $quntity);
-    }
-    
-    /**
-     * Get shopping list from order object if it is provided. Otherwise try to 
-     * get it from session
-     * 
-     * @param Order $order
-     * @return type
-     */
-    private function loadShoppingCartList(Order $order = null)
-    {
-        if (null !== $order) {
-            return $order->getContent();
-        }
-        
-        $shoppingCart = new ShoppingCart(
-            new ShoppingSessionCartModifier(),
-            $this->appService->getSession()
-            );
-        
-        return $shoppingCart->getContent();
     }
 }

@@ -57,10 +57,21 @@ class BaseController extends Controller
     /**
      * 
      * @param type $parameter
+     * @param type $goDeep
      * @return type
      */
-    public function getParameter($parameter)
+    public function getParameter($parameter, $goDeep = false)
     {
+        if ($goDeep) {
+            $initialized = false;
+            foreach (explode('.', $parameter) as $step) {
+                $value = $initialized? $value[$step] : $this->container->getParameter($step);
+                $initialized = true;
+            }
+            
+            return $value;
+        }
+        
         return $this->container->getParameter($parameter);
     }
     

@@ -5,6 +5,7 @@ namespace ProductBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Library\Base\BaseEntity;
+use Library\Interfaces\ShoppingItemInterface;
 
 /**
  * User
@@ -12,7 +13,7 @@ use Library\Base\BaseEntity;
  * @ORM\Table(name="saman_product")
  * @ORM\Entity(repositoryClass="ProductBundle\Entity\Repository\ProductRepository")
  */
-class Product extends BaseEntity
+class Product extends BaseEntity implements ShoppingItemInterface
 {
     /**
      * @var integer

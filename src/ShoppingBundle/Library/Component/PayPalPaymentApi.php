@@ -15,11 +15,8 @@ use ShoppingBundle\Library\Serializer\PayPalOrderSerializer;
 /**
  * The PayPalPaymentApi class contains methods for paypal payment api
  */
-class PayPalPaymentApiHandler extends AbstractPaymentApiHandler
+class PayPalPaymentApi extends AbstractPaymentApi
 {
-    const BASE_URL = 'https://api.paypal.com';
-    const BASE_URL_SANDBOX = 'https://api.sandbox.paypal.com';
-    
     /**
      *
      * @var type 
@@ -43,17 +40,20 @@ class PayPalPaymentApiHandler extends AbstractPaymentApiHandler
      * @param type $clientId
      * @param type $secret
      */
-    public function __construct($clientId, $secret)
+    public function __construct($params)
     {
-        $this->clientId = $clientId;
-        $this->secret = $secret;
-        $this->baseUrl = self::BASE_URL_SANDBOX;
+        $this->clientId = $this->getParam('clientId', $params);
+        $this->secret = $this->getParam('secret', $params);
+        $this->baseUrl = $this->getParam('baseUrl', $params);
     }
 
     /**
      * Create Payment
+     * 
+     * @param type $param Action parameters
+     * @return type
      */
-    public function create()
+    public function create($param = array())
     {
         $client = new Client();
         $accessToken = $this->getAccessToken($client);
@@ -62,7 +62,7 @@ class PayPalPaymentApiHandler extends AbstractPaymentApiHandler
         $orderSerializer = new PayPalOrderSerializer();
         $amount = new Amount(
             $this->getOrder()->getCurrency(), 
-            $this->getOrder()->callTotalPrice()
+            (string) $this->getOrder()->callTotalPrice()
             );
         
         $payer = new Payer('paypal');
@@ -76,8 +76,8 @@ class PayPalPaymentApiHandler extends AbstractPaymentApiHandler
             $accessToken,
             $payer,
             array(
-                'return_url' => $this->getParam('returnUrl'),
-                'cancel_url' => $this->getParam('cancelUrl')
+                'return_url' => $this->getParam('returnUrl', $param),
+                'cancel_url' => $this->getParam('cancelUrl', $param)
             ),
             array($transaction)
         );
@@ -85,15 +85,20 @@ class PayPalPaymentApiHandler extends AbstractPaymentApiHandler
     
     /**
      * Execute the payment
+     * 
+     * @param type $param
+     * @return type
+     * @throws \Exception
      */
-    public function execute()
+    public function execute($param = array())
     {
         $client = new Client();
         $accessToken = $this->getAccessToken($client);
         $paymentService = $this->getPayPalPaymentService($client);
-
+        $paymentData = $this->getParam('paymentData', $param);
+        
         $paymentBuilder = new PaymentBuilder();
-        $originalPayment = $paymentBuilder->build($this->getParam('paymentData'));
+        $originalPayment = $paymentBuilder->build($paymentData);
         $paymentResponse = $paymentService->execute(
             $accessToken, 
             $originalPayment, 
@@ -103,6 +108,8 @@ class PayPalPaymentApiHandler extends AbstractPaymentApiHandler
         if ('approved' !== $paymentResponse->getState()) {
             throw new \Exception('Payment failed');
         }
+        
+        return $paymentResponse;
     }
     
     /**

@@ -5,9 +5,9 @@ namespace ShoppingBundle\Library\Component;
 use ShoppingBundle\Entity\Order;
 
 /**
- * The AbstractPaymentApiHandler class contains common methods for payment api
+ * The AbstractPaymentApi class contains common methods for payment api
  */
-abstract class AbstractPaymentApiHandler
+abstract class AbstractPaymentApi
 {
     /**
      * shopping cart continer
@@ -26,10 +26,13 @@ abstract class AbstractPaymentApiHandler
     /**
      * 
      * @param Order $order
+     * @return \ShoppingBundle\Library\Component\AbstractPaymentApi
      */
     public function setOrder(Order $order)
     {
         $this->order = $order;
+        
+        return $this;
     }
     
     /**
@@ -48,7 +51,7 @@ abstract class AbstractPaymentApiHandler
     /**
      * 
      * @param type $param
-     * @return \ShoppingBundle\Library\Component\AbstractPaymentApiHandler
+     * @return \ShoppingBundle\Library\Component\AbstractPaymentApi
      */
     public function setParam($param)
     {
@@ -59,26 +62,28 @@ abstract class AbstractPaymentApiHandler
     
     /**
      * 
-     * @param type $key
-     * @return type
+     * @param string $key
+     * @param array $externalParam
+     * @return mix
      * @throws \Exception
      */
-    public function getParam($key)
+    public function getParam($key, $externalParam = null)
     {
-        if (!array_key_exists($key, $this->param)) {
+        $param = (null === $externalParam)? $this->param : $externalParam;
+        if (!array_key_exists($key, $param)) {
             throw new \Exception(sprintf('Payment API handler needs [%s] parameter', $key));
         }
         
-        return $this->param[$key];
+        return $param[$key];
     }
     
     /**
      * Remove all products from shopping cart
      */
-    abstract public function create();
+    abstract public function create($param = array());
     
     /**
      * $paymentData
      */
-    abstract public function execute();
+    abstract public function execute($param = array());
 }

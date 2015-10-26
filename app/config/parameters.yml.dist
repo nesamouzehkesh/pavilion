@@ -21,3 +21,7 @@ parameters:
     saman_displayFullView: true
     base_urls: http://
     base_title: Site Name
+    base_paypal_sandbox_clientId: "AZIeWZv0pYj94Cffavh8itLs9sFrH0FRXmtpnWACDRObvPhSJkIgK4geRrTDTECGNA8-62I0t2Samh1M"
+    base_paypal_sandbox_secret: "EDkbWqSYDtdUsc22PoHW-ebz7TkjTHRqpfB65T2Z6c6-AtyPjh7Lfc_I7h_lSPsUX0T3h95SCW4azwK9"
+    base_paypal_clientId: "AadfWPDafi8zBcUyr3bGMWZtUJl5A6a-UjX0dg4HsE9uUD33Veydu6ozpS9ZyTnrJ8vmLRVMu5AW3Q6c"
+    base_paypal_secret: "ECek7G5nFmbFVIbE5SkKgkW0SaD1dU3sxmPKAMWTpPdS8vbvGlyhQTej9gXaP8K6k0Ny1xEKkkW-7pCR"

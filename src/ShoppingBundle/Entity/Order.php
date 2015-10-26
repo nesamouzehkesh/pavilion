@@ -105,10 +105,15 @@ class Order extends BaseEntity
     private $shippingAddress;
     
     /**
+     * @ORM\Column(name="is_paid", type="boolean", nullable=true, options={"default"= 0})
+     */
+    protected $isPaid;    
+    
+    /**
      *
      * @var type 
      */
-    private $loadedContent = array();
+    private $loadedContent = null;
     
     /**
      * 
@@ -225,6 +230,10 @@ class Order extends BaseEntity
      */
     public function getLoadedContent()
     {
+        if (null === $this->loadedContent) {
+            throw new \Exception('Items are not loaded in this order');
+        }
+            
         return $this->loadedContent;
     }
 
@@ -374,7 +383,7 @@ class Order extends BaseEntity
     /**
      * @return bool
      */
-    public function isPaid()
+    public function isOpen()
     {
         return $this->getProgressesStatus() === Progress::PROGRESS_PAID;
     }
@@ -525,7 +534,7 @@ class Order extends BaseEntity
      */
     public function getCurrency()
     {
-        if (null === $this->currency) {
+        if (null === $this->currency or "" === $this->currency) {
             return self::DEFAULT_CURRENCY;
         }
         
@@ -554,9 +563,32 @@ class Order extends BaseEntity
     {
         return $this->totalPrice;
     }
+
+    /**
+     * Set isPaid
+     *
+     * @param boolean $isPaid
+     * @return Order
+     */
+    public function setIsPaid($isPaid)
+    {
+        $this->isPaid = $isPaid;
+
+        return $this;
+    }
+
+    /**
+     * Get isPaid
+     *
+     * @return boolean 
+     */
+    public function isPaid()
+    {
+        return $this->isPaid;
+    }
     
     /**
-     * Get totalPrice
+     * Calculate totalPrice
      *
      * @return string 
      */
@@ -567,10 +599,18 @@ class Order extends BaseEntity
         }
         
         $totalPrice = 0;
-        foreach ($this->getLoadedContent() as $item) {
-            $totalPrice = intval($item['qty']) * $item['product']->getPrice();
+        // If the order is paid use order content to get total price
+        if ($this->isPaid()) {
+            foreach ($this->getContent() as $item) {
+                $totalPrice = $totalPrice + intval($item['qty']) * $item['price'];
+            }
+        // Else use the current price of product to get total price    
+        } else {
+            foreach ($this->getLoadedContent() as $item) {
+                $totalPrice = $totalPrice + intval($item['qty']) * $item['product']->getPrice();
+            }            
         }
         
-        return $this->totalPrice = $totalPrice;
+        return $totalPrice;
     }    
 }

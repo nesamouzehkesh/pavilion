@@ -2,6 +2,7 @@
 
 namespace ShoppingBundle\Library\Serializer;
 
+use Library\Interfaces\ShoppingItemInterface;
 use ShoppingBundle\Entity\Order;
 use UserBundle\Entity\Address;
 
@@ -27,13 +28,18 @@ class PayPalOrderSerializer extends AbstractOrderSerializer
     {
         $orderItems = array();
         foreach ($order->getLoadedContent() as $item) {
+            $product = $item['product'];
+            if (!$product instanceof ShoppingItemInterface) {
+                throw new \Exception('Shopping cart is not loaded properly with products');
+            }            
+            
             $orderItems[] = array(
                 'quantity' => (string) $item['qty'],
-                'name' => $item['product']->getTitle(),
-                'price' => $item['product']->getPrice(),
+                'name' => $product->getTitle(),
+                'price' => $product->getPrice(),
                 'currency' => $order->getCurrency(),
-                'sku' => $item['product']->getSKU(),
-                'description' => $item['product']->getDescription(127),
+                'sku' => $product->getSKU(),
+                'description' => $product->getDescription(127),
                 //'tax' => ,
             );
         }

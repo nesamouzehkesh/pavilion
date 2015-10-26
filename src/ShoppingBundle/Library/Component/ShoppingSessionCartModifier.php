@@ -2,6 +2,7 @@
 
 namespace ShoppingBundle\Library\Component;
 
+use Library\Interfaces\ShoppingItemInterface;
 use ShoppingBundle\Entity\Order;
 
 /**
@@ -9,6 +10,13 @@ use ShoppingBundle\Entity\Order;
  */
 class ShoppingSessionCartModifier extends AbstractShoppingCartModifier
 {
+    const SHOPPING_CART_NAME = "shopping-cart";
+    
+    /**
+     * Get shopping cart content
+     * 
+     * @return type
+     */
     public function getContent()
     {
         $shoppingCartSession = $this->getShoppingCart();
@@ -17,6 +25,33 @@ class ShoppingSessionCartModifier extends AbstractShoppingCartModifier
         }
         
         return $shoppingCartSession->get(self::SHOPPING_CART_NAME);
+    }
+    
+    /**
+     * Finalize shopping cart content
+     * 
+     * @param type $orderList
+     */
+    public function finalize($orderList)
+    {
+        $orderItems = array();
+        foreach ($orderList as $orderItem) {
+            $product = $orderItem['product'];
+            if (!$product instanceof ShoppingItemInterface) {
+                throw new \Exception('Shopping cart is not loaded properly with products');
+            }
+            
+            $orderItems[$product->getId()] = array(
+                'title' => $product->getTitle(),
+                'price' => $product->getPrice(),
+                'originalPrice' => $product->getOriginalPrice(),
+                'type' => Order::ORDER_TYPE_PRODUCT,
+                'date' => $orderItem['date'],
+                'qty' => intval($orderItem['qty'])
+            );
+        }
+        
+        return $orderItems;
     }
     
     /**
