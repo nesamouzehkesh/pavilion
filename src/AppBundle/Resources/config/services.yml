@@ -17,3 +17,9 @@ services:
     saman.eventHandler:
         class: AppBundle\Service\EventHandler
         arguments: [@saman.appService]
+        
+    saman.payment:
+        class: AppBundle\Service\PaymentService
+        arguments: 
+            - @saman.appService
+            - @saman.eventHandler           

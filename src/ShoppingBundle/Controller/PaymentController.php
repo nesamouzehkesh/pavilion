@@ -3,8 +3,8 @@
 namespace ShoppingBundle\Controller;
 
 use Library\Base\BaseController;
+use Library\Api\Payment\PayPalPaymentApi;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use ShoppingBundle\Library\Component\PayPalPaymentApi;
 
 class PaymentController extends BaseController
 {
@@ -15,25 +15,25 @@ class PaymentController extends BaseController
      */
     public function createPaymentAction($orderId)
     {
+        $user = $this->getUser();
+        $order = $this->getShoppingService()->getUserOrder($user, $orderId, true);
+        $payment = $this->getShoppingService()->createOrderPayment($order);
+
         return $this->redirectToRoute(
             'saman_shopping_order_payment_finalization', 
-            array('orderId' => $orderId)
+            array('paymentId' => $payment->getId())
             );
-        exit;
-
-        $order = $this->getShoppingService()
-            ->getUserOrder($this->getUser(), $orderId, true);
         
         // Initializing Action parametrs related to PayPalPaymentApi
         $actionParams = array(
             'returnUrl' => $this->generateUrl(
                 'saman_shopping_order_payment_finalization', 
-                array('orderId' => $orderId),
+                array('paymentId' => $payment->getId()),
                 UrlGeneratorInterface::ABSOLUTE_URL
                 ), 
             'cancelUrl' => $this->generateUrl(
                 'saman_shopping_order_set_shipping_address',
-                array('orderId' => $orderId),
+                array('paymentId' => $payment->getId()),
                 UrlGeneratorInterface::ABSOLUTE_URL
                 )
             );
@@ -46,7 +46,7 @@ class PaymentController extends BaseController
         // Creating a payment based on this PayPalPaymentApi
         $paymentResponse = $this->getPaymentService()
             ->setPaymentApi($paymentApi)
-            ->createPayment(
+            ->createPaymentRequest(
                 $order,
                 $actionParams
             );
@@ -58,17 +58,18 @@ class PaymentController extends BaseController
     
     /**
      * 
-     * @param type $orderId
+     * @param type $paymentId
      * @return type
      */
-    public function executePaymentAction($orderId)
+    public function executePaymentAction($paymentId)
     {
         $user = $this->getUser();
         $paymentData = $this->getSession()->get('paymentData');
         $payerId = $this->getGET('PayerID');
 
-        $order = $this->getShoppingService()
-            ->getUserOrder($user, $orderId, true);
+        $payment = $this->getPaymentService()->getPayment($paymentId);
+        $order = $payment->getOrder();
+        $this->getShoppingService()->loadOrder($order);
         
         $payPalParams = $this->getParameter('saman_payment.sandbox.paypal', true);
         $paymentApi = new PayPalPaymentApi($payPalParams);   
@@ -84,12 +85,17 @@ class PaymentController extends BaseController
         
         $payment = $this->getPaymentService()
             ->setPaymentApi($paymentApi)
-            ->executePayment(
+            ->executePaymentRequest(
                 $user, 
                 $order,
                 array('paymentData' => $paymentData, 'payerId' => $payerId)
             );
         
+        $this->getShoppingService()->finalizeOrderPayment(
+            $order, 
+            $payment
+            );
+            
         return $this->redirectToRoute(
             'saman_shopping_order_payment_confirmation', 
             array('paymentId' => $payment->getId())
@@ -120,11 +126,11 @@ class PaymentController extends BaseController
     /**
      * Get Order service
      * 
-     * @return \ShoppingBundle\Service\PaymentService
+     * @return \AppBundle\Service\PaymentService
      */
     private function getPaymentService()
     {
-        return $this->getService('saman_shopping.payment');
+        return $this->getService('saman.payment');
     }
     
     /**

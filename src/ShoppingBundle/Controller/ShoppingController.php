@@ -92,7 +92,7 @@ class ShoppingController extends BaseController
     {
         try {
             $shoppingCartList = $this->getShoppingService()
-                ->loadShoppingCartList();
+                ->getShoppingCartList();
             if (count($shoppingCartList) === 0) {
                 throw new \Exception('Shopping list is empty');
             }

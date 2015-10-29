@@ -1,30 +1,24 @@
 {% if order.isProductOrder %}
     <h5>Order ID: #{{ order.id }}</h5>
-    
     <h5>Order Content:</h5>
-    {% for orderItemId, orderItem in order.loadedContent %}
-        {% set viewProductUrl = path('saman_shopping_product_display', {'productId': orderItemId}) %}
-        
-        {% if orderItem.title is defined %}
-            <a href="{{ viewProductUrl }}">{{ orderItem.title }}</a><br>
+    
+    {% set orderItems = order.isPaid? order.content : order.loadedContent %}
+    {% for orderItemId, orderItem in orderItems %}
+        {% if order.isPaid and orderItem.product is defined %}
+            {% set productTitle = orderItem.product.title %}
+            {% set productOriginalPrice = orderItem.product.originalPrice %}
+            {% set productPrice = orderItem.product.price %}
         {% else %}
-            {% if orderItem.product is defined %}
-                <a href="{{ viewProductUrl }}">{{ orderItem.product.title }}</a><br>
-            {% endif %}
+            {% set productTitle = orderItem.title %}
+            {% set productOriginalPrice = orderItem.originalPrice %}
+            {% set productPrice = orderItem.price %}
         {% endif %}
-        
+        <a href="{{ path('saman_shopping_product_display', {'productId': orderItemId}) }}">{{ productTitle }}</a><br>
         {#Item added on: {{ orderItem.date|date(date_format) }}<br>#}
         Qty: {{ orderItem.qty }}<br>
         Price: <br>
-        {% if orderItem.price is defined %}
-            <span class="originalPrice">${{ orderItem.originalPrice|number_format(2, '.', ',') }}</span><br>
-            <span class="price">${{ orderItem.price|number_format(2, '.', ',') }}</span><br><br>
-        {% else %}
-            {% if orderItem.product is defined %}
-                <span class="originalPrice">${{ orderItem.product.originalPrice|number_format(2, '.', ',') }}</span><br>
-                <span class="price">${{ orderItem.product.price|number_format(2, '.', ',') }}</span><br><br>
-            {% endif %}
-        {% endif %}
+        <span class="originalPrice">${{ productOriginalPrice|number_format(2, '.', ',') }}</span><br>
+        <span class="price">${{ productPrice|number_format(2, '.', ',') }}</span><br>
         ..................................................<br>
     {% endfor %}
 {% elseif order.isCustomOrder %}

@@ -1,6 +1,6 @@
 <?php
 
-namespace ShoppingBundle\Library\Component;
+namespace Library\Api\Payment;
 
 use Guzzle\Http\Client;
 use PayPalRestApiClient\Repository\AccessTokenRepository;
@@ -10,7 +10,6 @@ use PayPalRestApiClient\Builder\PaymentBuilder;
 use PayPalRestApiClient\Model\Amount;
 use PayPalRestApiClient\Model\Transaction;
 use PayPalRestApiClient\Model\Payer;
-use ShoppingBundle\Library\Serializer\PayPalOrderSerializer;
 
 /**
  * The PayPalPaymentApi class contains methods for paypal payment api
@@ -60,6 +59,7 @@ class PayPalPaymentApi extends AbstractPaymentApi
         $paymentService = $this->getPayPalPaymentService($client);
             
         $orderSerializer = new PayPalOrderSerializer();
+        
         $amount = new Amount(
             $this->getOrder()->getCurrency(), 
             (string) $this->getOrder()->callTotalPrice()

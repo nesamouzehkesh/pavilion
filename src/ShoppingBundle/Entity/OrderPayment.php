@@ -13,7 +13,16 @@ use Library\Base\BaseEntity;
  */
 class OrderPayment extends BaseEntity
 {
-    const ITEM_LOGO = 'icon.order';
+    const ITEM_LOGO = 'icon.orderPayment';
+    
+    // Payment status
+    const STATUS_CREATED = 1;
+    const STATUS_REJECT = 2;
+    const STATUS_FINALIZED = 3;
+    
+    // Payment types
+    const TYPE_PAY_PAL = 1;
+    const TYPE_CREDIT_CARD = 2;
     
     /**
      * @var integer
@@ -23,13 +32,6 @@ class OrderPayment extends BaseEntity
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="name", type="string", length=255)
-     */
-    private $name;
     
     /**
      * @var integer
@@ -37,6 +39,13 @@ class OrderPayment extends BaseEntity
      * @ORM\Column(name="date", type="integer")
      */
     protected $date;
+    
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="status", type="integer")
+     */
+    private $status;
     
     /**
      * @var integer
@@ -51,6 +60,20 @@ class OrderPayment extends BaseEntity
      * @ORM\Column(name="content", type="array", nullable=true)
      */
     private $content;
+    
+    /**
+     * @var array
+     *
+     * @ORM\Column(name="item_list", type="array", nullable=true)
+     */
+    private $itemList;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="currency", type="string", length=255)
+     */
+    private $currency;    
     
     /**
      * @var integer
@@ -78,7 +101,7 @@ class OrderPayment extends BaseEntity
     {
         parent::__construct();
         
-        $date = new \DateTime();
+        $date = new \DateTime();       
         $this->setDate($date->getTimestamp());
     }
     
@@ -100,30 +123,6 @@ class OrderPayment extends BaseEntity
     public function getId()
     {
         return $this->id;
-    }
-    
-    
-    /**
-     * Set name
-     *
-     * @param integer $name
-     * @return Payment
-     */
-    public function setName($name)
-    {
-        $this->name = $name;
-
-        return $this;
-    }
-
-    /**
-     * Get date
-     *
-     * @return integer 
-     */
-    public function getName()
-    {
-        return $this->name;
     }
 
     /**
@@ -262,5 +261,74 @@ class OrderPayment extends BaseEntity
     public function getOrder()
     {
         return $this->order;
+    }
+
+    /**
+     * Set status
+     *
+     * @param integer $status
+     * @return OrderPayment
+     */
+    public function setStatus($status)
+    {
+        $this->status = $status;
+
+        return $this;
+    }
+
+    /**
+     * Get status
+     *
+     * @return integer 
+     */
+    public function getStatus()
+    {
+        return $this->status;
+    }
+
+    /**
+     * Set currency
+     *
+     * @param string $currency
+     * @return OrderPayment
+     */
+    public function setCurrency($currency)
+    {
+        $this->currency = $currency;
+
+        return $this;
+    }
+
+    /**
+     * Get currency
+     *
+     * @return string 
+     */
+    public function getCurrency()
+    {
+        return $this->currency;
+    }
+
+    /**
+     * Set itemList
+     *
+     * @param array $itemList
+     * @return OrderPayment
+     */
+    public function setItemList($itemList)
+    {
+        $this->itemList = $itemList;
+
+        return $this;
+    }
+
+    /**
+     * Get itemList
+     *
+     * @return array 
+     */
+    public function getItemList()
+    {
+        return $this->itemList;
     }
 }

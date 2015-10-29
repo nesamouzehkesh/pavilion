@@ -1,14 +1,10 @@
 <?php
 
-namespace ShoppingBundle\Service;
+namespace AppBundle\Service;
 
+use Library\Api\Payment\AbstractPaymentApi;
 use AppBundle\Service\AppService;
 use AppBundle\Service\EventHandler;
-use AppBundle\Entity\Event;
-use ShoppingBundle\Library\Component\AbstractPaymentApi;
-use ShoppingBundle\Service\ShoppingService;
-use ShoppingBundle\Service\OrderProgressHandler;
-use ShoppingBundle\Entity\Progress;
 use ShoppingBundle\Entity\OrderPayment;
 use ShoppingBundle\Entity\Order;
 use UserBundle\Entity\User;
@@ -19,23 +15,12 @@ class PaymentService
      * @var AppService $appService
      */
     protected $appService;
-    
-    /**
-     *
-     * @var ShoppingService $shoppingService
-     */
-    protected $shoppingService;
 
     /**
      * @var EventHandler $eventHandler
      */
     protected $eventHandler;
-    
-    /**
-     * @var OrderProgressHandler $progressHandler
-     */
-    protected $progressHandler;
-    
+
     /**
      * @var AbstractPaymentApi $paymentApi
      */
@@ -45,21 +30,16 @@ class PaymentService
      * 
      * @param AppService $appService
      * @param EventHandler $eventHandler
-     * @param OrderProgressHandler $progressHandler
      * @param type $parameters
      */
     public function __construct(
         AppService $appService, 
-        ShoppingService $shoppingService,
         EventHandler $eventHandler,
-        OrderProgressHandler $progressHandler,
-        $parameters
+        $parameters = array()
         ) 
     {
         $this->appService = $appService;
-        $this->shoppingService = $shoppingService;
         $this->eventHandler = $eventHandler;
-        $this->progressHandler = $progressHandler;
         $this->appService->setParametrs($parameters);
     }
     
@@ -94,7 +74,7 @@ class PaymentService
      * @param Order $order
      * @param type $param
      */
-    public function createPayment(Order $order, $param = array())
+    public function createPaymentRequest(Order $order, $param = array())
     {
         return $this->getPaymentApi()->setOrder($order)->create($param);
     }
@@ -107,19 +87,12 @@ class PaymentService
      * @return type
      * @throws \Exception
      */
-    public function executePayment(User $user, Order $order, $param = array())
+    public function executePaymentRequest(User $user, Order $order, $param = array())
     {
         $this->appService->transactionBegin();
         
         try {
             //$this->getPaymentApi()->setOrder($order)->execute($param);
-            
-            $order->setIsPaid(true);
-            if ($order->isProductOrder()) {
-                $finalizedOrderItems = $this->shoppingService->finalizeShoppingCart($order);
-                $order->setContent($finalizedOrderItems);               
-                $order->setTotalPrice($order->callTotalPrice());
-            }
             
             $payment = $this->getPayment();
             $payment->setOrder($order);
@@ -128,17 +101,10 @@ class PaymentService
             $payment->setName($user->getName());
             $payment->setContent(json_encode($param));
             $payment->setValue($order->getTotalPrice());
-            $order->addPayment($payment);
             
-            $this->appService->persistEntity($order);
             $this->appService->persistEntity($payment);
             $this->appService->flushEntityManager();
             $this->appService->transactionCommit();
-
-            // Handle the order progress
-            $this->progressHandler->handleProgress($order, Progress::PROGRESS_PAID);
-            // Handle the event related to this action
-            $this->eventHandler->handleEvent($order, Event::TR_PAYMENT_ORDER);            
 
             return $payment;
         } catch (\Exception $ex) {
@@ -172,13 +138,14 @@ class PaymentService
     public function getPayment($paymentId = null, User $user = null)
     {
         if (null === $paymentId) {
-            return new OrderPayment();
-        }
-        
-        $payment = OrderPayment::getRepository($this->appService->getEntityManager())
-            ->getPayment($paymentId, $user);
-        if (!$payment instanceof OrderPayment) {
-            throw $this->appService->createVisibleHttpException('No payment has been found');
+            $payment = new OrderPayment();
+            $payment->setStatus(OrderPayment::STATUS_CREATED);
+        } else {
+            $payment = OrderPayment::getRepository($this->appService->getEntityManager())
+                ->getPayment($paymentId, $user);
+            if (!$payment instanceof OrderPayment) {
+                throw $this->appService->createVisibleHttpException('No payment has been found');
+            }
         }
         
         return $payment;

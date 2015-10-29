@@ -5,14 +5,17 @@ namespace ShoppingBundle\Service;
 use AppBundle\Entity\Event;
 use AppBundle\Service\AppService;
 use AppBundle\Service\EventHandler;
+use AppBundle\Service\PaymentService;
 use MediaBundle\Service\MediaService;
 use UserBundle\Entity\User;
 use ProductBundle\Entity\Product;
 use ShoppingBundle\Entity\Order;
 use ShoppingBundle\Entity\Progress;
+use ShoppingBundle\Entity\OrderPayment;
 use ShoppingBundle\Service\OrderProgressHandler;
 use ShoppingBundle\Library\Component\ShoppingCart;
 use ShoppingBundle\Library\Component\ShoppingSessionCartModifier;
+use ShoppingBundle\Library\Serializer\PayPalOrderSerializer;
 
 class ShoppingService
 {
@@ -36,24 +39,33 @@ class ShoppingService
      * @var OrderProgressHandler $progressHandler
      */
     protected $progressHandler;
+    
+    /**
+     *
+     * @var PaymentService $paymentService
+     */
+    protected $paymentService;
 
     /**
      * 
      * @param AppService $appService
      * @param EventHandler $eventHandler
      * @param OrderProgressHandler $progressHandler
+     * @param PaymentService $paymentService
      * @param type $parameters
      */
     public function __construct(
         AppService $appService, 
         EventHandler $eventHandler,
         OrderProgressHandler $progressHandler,
+        PaymentService $paymentService,
         $parameters
         ) 
     {
         $this->appService = $appService;
         $this->eventHandler = $eventHandler;
         $this->progressHandler = $progressHandler;
+        $this->paymentService = $paymentService;
         $this->appService->setParametrs($parameters);
         $this->em = $appService->getEntityManager();
     }
@@ -64,15 +76,53 @@ class ShoppingService
      * @param Order $order
      * @return type
      */
-    public function finalizeShoppingCart(Order $order)
+    public function createOrderPayment(Order $order, $paymentType = OrderPayment::TYPE_PAY_PAL)
     {
-        $shoppingCartList = $this->getShoppingCartList($order, true);
-        $shoppingCart = new ShoppingCart(
-            new ShoppingSessionCartModifier(),
-            $this->appService->getSession()
-            );
+        $payment = $this->paymentService->getPayment();
+        $payment->setOrder($order);
+        $payment->setCurrency($order->getCurrency());
+        $payment->setUser($order->getUser());
+        $payment->setType($paymentType);
+        $payment->setContent(array());
+        $payment->setValue($order->callTotalPrice());
+        $payment->setItemList($order->getPaymentSerializer($paymentType)->serialize($order));
+
+        $this->appService->persistEntity($payment);
+            
+        return $payment;
+    }
+    
+    /**
+     * Finalize shopping cart
+     * 
+     * @param Order $order
+     * @return type
+     */
+    public function finalizeOrderPayment(Order $order, OrderPayment $payment)
+    {
+        $payment = $this->paymentService->getPayment();
         
-        return $shoppingCart->finalize($shoppingCartList);
+        $order->addPayment($payment);
+        $order->setIsPaid(true);
+        if ($order->isProductOrder()) {
+            $shoppingCartList = $this->getShoppingCartList($order, true);
+            $shoppingCart = new ShoppingCart(
+                new ShoppingSessionCartModifier(),
+                $this->appService->getSession()
+                );
+            
+            $finalizedOrderItems = $shoppingCart->finalize($shoppingCartList);
+            $order->setContent($finalizedOrderItems);               
+            $order->setTotalPrice($order->callTotalPrice());
+        }
+        
+        $this->appService->persistEntity($order);
+        // Handle the order progress
+        $this->progressHandler->handleProgress($order, Progress::PROGRESS_PAID);
+        // Handle the event related to this action
+        $this->eventHandler->handleEvent($order, Event::TR_PAYMENT_ORDER);     
+            
+        return true;
     }
 
     /**
@@ -189,14 +239,25 @@ class ShoppingService
         }
         
         if ($loadOrderContent) {
-            if ($order->isProductOrder()) {
-                $order->setLoadedContent($this->getShoppingCartList($order, true));
-            } else {
-                $order->setLoadedContent($order->getContent());
-            }
+            $this->loadOrder($order);
         }
         
         return $order;
+    }
+    
+    /**
+     * Load order content
+     * 
+     * @param Order $order
+     */
+    public function loadOrder(Order $order)
+    {
+        if ($order->isProductOrder()) {
+            $shoppingList = $this->getShoppingCartList($order, true);
+            $order->setLoadedContent($shoppingList);
+        } else {
+            $order->setLoadedContent($order->getContent());
+        }
     }
     
     /**
@@ -218,6 +279,7 @@ class ShoppingService
      */
     public function getShoppingCartList(Order $order = null, $setProduct = false, $validate = true)
     {
+        // Get the content of shopping list
         if ($order instanceof Order) {
             $shoppingList = $order->getContent();
         } else {
@@ -229,10 +291,13 @@ class ShoppingService
             $shoppingList = $shoppingCart->getContent();            
         }            
         
+        // If $validate is set to true then validate the content of shopping list 
+        // with current products in DB
         if (!$validate) {
             return $shoppingList;
         }
-            
+        
+        // Validate the content of shopping list
         $validShoppingList = array();
         // Get products based on $productIds
         $products = Product::getRepository($this->em)->getProductsById(
