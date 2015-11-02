@@ -22,4 +22,5 @@ services:
         class: AppBundle\Service\PaymentService
         arguments: 
             - @saman.appService
-            - @saman.eventHandler           
+            - @saman.eventHandler
+            - %saman.payment%

@@ -3,7 +3,6 @@
 namespace Library\Api\Payment;
 
 use Library\Base\BaseApi;
-use ShoppingBundle\Entity\Order;
 
 /**
  * The AbstractPaymentApi class contains common methods for payment api
@@ -11,35 +10,36 @@ use ShoppingBundle\Entity\Order;
 abstract class AbstractPaymentApi extends BaseApi
 {
     /**
-     * shopping cart continer
+     * User payment
      * 
-     * @var type 
+     * @var PaymentEntityInterface  $payment
      */
-    private $order = null;
+    private $payment = null;
     
     /**
      * 
-     * @param Order $order
+     * @param \Library\Api\Payment\PaymentEntityInterface $payment
      * @return \Library\Api\Payment\AbstractPaymentApi
      */
-    public function setOrder(Order $order)
+    public function setPayment(PaymentEntityInterface $payment)
     {
-        $this->order = $order;
+        $this->payment = $payment;
         
         return $this;
     }
     
     /**
      * 
-     * @return Order
+     * @return PaymentEntityInterface
+     * @throws \Exception
      */
-    public function getOrder()
+    public function getPayment()
     {
-        if (null === $this->order) {
-            throw new \Exception('No order is set');
+        if (null === $this->payment) {
+            throw new \Exception('No payment is set');
         }
         
-        return $this->order;
+        return $this->payment;
     } 
     
     /**

@@ -36,6 +36,10 @@
 .margin-top-30 {margin-top:30px;}
 .margin-top-40 {margin-top:40px;}
 
+.label {
+    padding-top: 5px !important;
+    padding-bottom: 5px !important;
+}
 
 body {
     background-color: #eeeeee;

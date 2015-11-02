@@ -13,8 +13,8 @@
     {% set order = payment.order %}
     <div class="panel panel-default">
         <div class="panel-body">
-            {{ payment.date|date(date_format) }}
-            {{ payment.content }}
+            {{ payment.date|date(date_format) }}<br>
+            {{ payment.value|number_format(2, '.', ',') }}
         </div>
     </div>
     

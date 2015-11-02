@@ -35,7 +35,7 @@ framework:
 # System Parameters        
 parameters:
     # General parameters
-    saman_payment:
+    saman.payment:
         sandbox:
             paypal:
                 baseUrl: "https://api.sandbox.paypal.com"
@@ -46,7 +46,6 @@ parameters:
                 baseUrl: "https://api.paypal.com"
                 clientId: %base_paypal_clientId%
                 secret: %base_paypal_secret%
-
                 
     generalParam1: 12483920
     saman.saltmain: 26eyhtri    

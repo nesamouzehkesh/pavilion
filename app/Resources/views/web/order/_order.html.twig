@@ -4,14 +4,14 @@
     
     {% set orderItems = order.isPaid? order.content : order.loadedContent %}
     {% for orderItemId, orderItem in orderItems %}
-        {% if order.isPaid and orderItem.product is defined %}
-            {% set productTitle = orderItem.product.title %}
-            {% set productOriginalPrice = orderItem.product.originalPrice %}
-            {% set productPrice = orderItem.product.price %}
-        {% else %}
+        {% if order.isPaid %}
             {% set productTitle = orderItem.title %}
             {% set productOriginalPrice = orderItem.originalPrice %}
             {% set productPrice = orderItem.price %}
+        {% else %}
+            {% set productTitle = orderItem.product.title %}
+            {% set productOriginalPrice = orderItem.product.originalPrice %}
+            {% set productPrice = orderItem.product.price %}
         {% endif %}
         <a href="{{ path('saman_shopping_product_display', {'productId': orderItemId}) }}">{{ productTitle }}</a><br>
         {#Item added on: {{ orderItem.date|date(date_format) }}<br>#}

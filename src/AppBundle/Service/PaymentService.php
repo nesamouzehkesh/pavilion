@@ -2,12 +2,11 @@
 
 namespace AppBundle\Service;
 
+use Library\Api\Payment\PaymentEntityInterface;
 use Library\Api\Payment\AbstractPaymentApi;
+use Library\Api\Payment\PayPalPaymentApi;
 use AppBundle\Service\AppService;
 use AppBundle\Service\EventHandler;
-use ShoppingBundle\Entity\OrderPayment;
-use ShoppingBundle\Entity\Order;
-use UserBundle\Entity\User;
 
 class PaymentService
 {
@@ -25,6 +24,11 @@ class PaymentService
      * @var AbstractPaymentApi $paymentApi
      */
     protected $paymentApi;
+
+    /**
+     * @var PaymentEntityInterface $payment
+     */
+    protected $payment;
     
     /**
      * 
@@ -35,12 +39,24 @@ class PaymentService
     public function __construct(
         AppService $appService, 
         EventHandler $eventHandler,
-        $parameters = array()
+        $parameters
         ) 
     {
         $this->appService = $appService;
         $this->eventHandler = $eventHandler;
         $this->appService->setParametrs($parameters);
+    }
+    
+    /**
+     * 
+     * @param PaymentEntityInterface $payment
+     * @return \AppBundle\Service\PaymentService
+     */
+    public function setPayment(PaymentEntityInterface $payment)
+    {
+        $this->payment = $payment;
+        
+        return $this;
     }
     
     /**
@@ -63,91 +79,36 @@ class PaymentService
     public function getPaymentApi()
     {
         if (!$this->paymentApi instanceof AbstractPaymentApi) {
-            throw new \Exception('No payment api is set to this service');
+            // Initializing default PayPalPaymentApi
+            $this->paymentApi = new PayPalPaymentApi(
+                $this->appService->getParameter('sandbox')['paypal']
+                );            
         }
         
-        return $this->paymentApi;
+        if (!$this->payment instanceof PaymentEntityInterface) {
+            throw new \Exception('You should set user payment to this service');
+        }
+        
+        return $this->paymentApi->setPayment($this->payment);
     }
 
     /**
      * 
-     * @param Order $order
-     * @param type $param
-     */
-    public function createPaymentRequest(Order $order, $param = array())
-    {
-        return $this->getPaymentApi()->setOrder($order)->create($param);
-    }
-    
-    /**
-     * 
-     * @param User $user
-     * @param Order $order
      * @param type $param
      * @return type
-     * @throws \Exception
      */
-    public function executePaymentRequest(User $user, Order $order, $param = array())
+    public function createPaymentRequest($param = array())
     {
-        $this->appService->transactionBegin();
-        
-        try {
-            //$this->getPaymentApi()->setOrder($order)->execute($param);
-            
-            $payment = $this->getPayment();
-            $payment->setOrder($order);
-            $payment->setUser($user);
-            $payment->setType(1);
-            $payment->setName($user->getName());
-            $payment->setContent(json_encode($param));
-            $payment->setValue($order->getTotalPrice());
-            
-            $this->appService->persistEntity($payment);
-            $this->appService->flushEntityManager();
-            $this->appService->transactionCommit();
-
-            return $payment;
-        } catch (\Exception $ex) {
-            $this->appService->transactionRollback();
-            
-            throw $ex;
-        }
+        return $this->getPaymentApi()->create($param);
     }
     
     /**
-     * Get a user payment
-     * @scope user
      * 
-     * @param type $paymentId
-     * @return OrderPayment
-     * @throws \Exception
+     * @param type $param
+     * @return type
      */
-    public function getUserPayment(User $user, $paymentId = null)
+    public function executePaymentRequest($param = array())
     {
-        return $this->getPayment($paymentId, $user);
-    }
-    
-    /**
-     * Get a payment
-     * @scope admin
-     * 
-     * @param type $paymentId
-     * @return OrderPayment
-     * @throws \Exception
-     */
-    public function getPayment($paymentId = null, User $user = null)
-    {
-        if (null === $paymentId) {
-            $payment = new OrderPayment();
-            $payment->setStatus(OrderPayment::STATUS_CREATED);
-        } else {
-            $payment = OrderPayment::getRepository($this->appService->getEntityManager())
-                ->getPayment($paymentId, $user);
-            if (!$payment instanceof OrderPayment) {
-                throw $this->appService->createVisibleHttpException('No payment has been found');
-            }
-        }
-        
-        return $payment;
+        return $this->getPaymentApi()->execute($param);
     }
 }

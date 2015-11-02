@@ -41,7 +41,7 @@ saman_shopping_order_payment:
     defaults: { _controller: ShoppingBundle:Payment:createPayment }
 
 saman_shopping_order_payment_finalization:
-    path:     /shopping/order/payment/finalization/{orderId}
+    path:     /shopping/order/payment/finalization/{paymentId}
     defaults: { _controller: ShoppingBundle:Payment:executePayment }
 
 saman_shopping_order_payment_confirmation:

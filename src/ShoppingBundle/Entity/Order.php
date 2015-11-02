@@ -6,7 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Library\Base\BaseEntity;
 use ShoppingBundle\Entity\OrderPayment;
-use ShoppingBundle\Library\Serializer\PayPalOrderSerializer;
+use ShoppingBundle\Library\Serializer\AbstractOrderSerializer;
 
 /**
  * Order
@@ -142,17 +142,12 @@ class Order extends BaseEntity
     
     /**
      * 
-     * @param type $paymentType
-     * @return \ShoppingBundle\Library\Serializer\AbstractOrderSerializer
+     * @param AbstractOrderSerializer $orderSerializer
+     * @return type
      */
-    public function getPaymentSerializer($paymentType)
+    public function serialize(AbstractOrderSerializer $orderSerializer)
     {
-        switch ($paymentType) {
-            case OrderPayment::TYPE_PAY_PAL:
-                return new PayPalOrderSerializer();
-        }
-        
-        throw new \Exception('No payment serializer is defined for this payment type');
+        return $orderSerializer->serialize($this);
     }
 
     /**

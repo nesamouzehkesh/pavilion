@@ -4,6 +4,9 @@ namespace ShoppingBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Library\Base\BaseEntity;
+use Library\Api\Payment\PaymentEntityInterface;
+use ShoppingBundle\Library\Serializer\AbstractOrderSerializer;
+use ShoppingBundle\Library\Serializer\PayPalOrderSerializer;
 
 /**
  * Order
@@ -11,18 +14,9 @@ use Library\Base\BaseEntity;
  * @ORM\Table(name="saman_order_payment")
  * @ORM\Entity(repositoryClass="\ShoppingBundle\Entity\Repository\PaymentRepository")
  */
-class OrderPayment extends BaseEntity
+class OrderPayment extends BaseEntity implements PaymentEntityInterface
 {
     const ITEM_LOGO = 'icon.orderPayment';
-    
-    // Payment status
-    const STATUS_CREATED = 1;
-    const STATUS_REJECT = 2;
-    const STATUS_FINALIZED = 3;
-    
-    // Payment types
-    const TYPE_PAY_PAL = 1;
-    const TYPE_CREDIT_CARD = 2;
     
     /**
      * @var integer
@@ -95,6 +89,13 @@ class OrderPayment extends BaseEntity
     private $order;
     
     /**
+     * @var string
+     *
+     * @ORM\Column(name="description", type="text", nullable=true)
+     */
+    private $description;    
+    
+    /**
      * 
      */
     public function __construct()
@@ -113,6 +114,25 @@ class OrderPayment extends BaseEntity
     public static function getRepository(\Doctrine\ORM\EntityManagerInterface $em)
     {
         return $em->getRepository(__CLASS__);
+    }
+    
+    /**
+     * 
+     * @return AbstractOrderSerializer
+     * @throws \Exception
+     */
+    public function getPaymentSerializer()
+    {
+        if (null === $this->getType()) {
+            throw new \Exception('No payment type is defined');
+        }
+        
+        switch ($this->getType()) {
+            case OrderPayment::TYPE_PAY_PAL:
+                return new PayPalOrderSerializer();
+        }
+        
+        throw new \Exception('No payment serializer is defined for this payment type');
     }
 
     /**
@@ -331,4 +351,27 @@ class OrderPayment extends BaseEntity
     {
         return $this->itemList;
     }
+
+    /**
+     * Set description
+     *
+     * @param string $description
+     * @return Product
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    /**
+     * Get description
+     *
+     * @return string 
+     */
+    public function getDescription($truncateLength = null)
+    {
+        return $this->truncate($this->description, $truncateLength);
+    }    
 }

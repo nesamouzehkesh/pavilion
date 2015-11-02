@@ -15,7 +15,6 @@ use ShoppingBundle\Entity\OrderPayment;
 use ShoppingBundle\Service\OrderProgressHandler;
 use ShoppingBundle\Library\Component\ShoppingCart;
 use ShoppingBundle\Library\Component\ShoppingSessionCartModifier;
-use ShoppingBundle\Library\Serializer\PayPalOrderSerializer;
 
 class ShoppingService
 {
@@ -71,39 +70,50 @@ class ShoppingService
     }
     
     /**
-     * Finalize shopping cart
+     * Create order payment entity with status of STATUS_CREATED. It returns a 
+     * persisted payment entity. Then we use this payment entity in payment service
+     * to create and send a payment request.
      * 
      * @param Order $order
      * @return type
      */
     public function createOrderPayment(Order $order, $paymentType = OrderPayment::TYPE_PAY_PAL)
     {
-        $payment = $this->paymentService->getPayment();
+        $payment = $this->getOrderPayment();
+        $payment->setStatus(OrderPayment::STATUS_CREATED);
         $payment->setOrder($order);
         $payment->setCurrency($order->getCurrency());
         $payment->setUser($order->getUser());
         $payment->setType($paymentType);
         $payment->setContent(array());
         $payment->setValue($order->callTotalPrice());
-        $payment->setItemList($order->getPaymentSerializer($paymentType)->serialize($order));
+        
+        $paymentSerializer = $payment->getPaymentSerializer();
+        $payment->setItemList($paymentSerializer->serialize($order));
 
+        $order->addPayment($payment);
         $this->appService->persistEntity($payment);
-            
+        $this->appService->persistEntity($order);
+        $this->appService->flushEntityManager();
+
         return $payment;
     }
     
     /**
-     * Finalize shopping cart
-     * 
-     * @param Order $order
-     * @return type
+     * After payment request successfully is snet we finalize user order and its 
+     * payment
+     *
+     * @param OrderPayment $payment
+     * @param type $param
+     * @return boolean
      */
-    public function finalizeOrderPayment(Order $order, OrderPayment $payment)
+    public function finalizeOrderPayment(OrderPayment $payment, $param = array())
     {
-        $payment = $this->paymentService->getPayment();
-        
-        $order->addPayment($payment);
+        $payment->setContent($param);
+        $order = $payment->getOrder();
         $order->setIsPaid(true);
+        $this->loadOrder($order);
+        
         if ($order->isProductOrder()) {
             $shoppingCartList = $this->getShoppingCartList($order, true);
             $shoppingCart = new ShoppingCart(
@@ -121,6 +131,7 @@ class ShoppingService
         $this->progressHandler->handleProgress($order, Progress::PROGRESS_PAID);
         // Handle the event related to this action
         $this->eventHandler->handleEvent($order, Event::TR_PAYMENT_ORDER);     
+        $this->appService->flushEntityManager();
             
         return true;
     }
@@ -312,4 +323,40 @@ class ShoppingService
         
         return $validShoppingList;
     }
+    
+    /**
+     * Get a user payment
+     * @scope user
+     * 
+     * @param type $paymentId
+     * @return OrderPayment
+     * @throws \Exception
+     */
+    public function getUserOrderPayment(User $user, $paymentId = null)
+    {
+        return $this->getOrderPayment($paymentId, $user);
+    }
+    
+    /**
+     * Get a payment
+     * @scope admin
+     * 
+     * @param type $paymentId
+     * @return OrderPayment
+     * @throws \Exception
+     */
+    public function getOrderPayment($paymentId = null, User $user = null)
+    {
+        if (null === $paymentId) {
+            $payment = new OrderPayment();
+        } else {
+            $payment = OrderPayment::getRepository($this->appService->getEntityManager())
+                ->getPayment($paymentId, $user);
+            if (!$payment instanceof OrderPayment) {
+                throw $this->appService->createVisibleHttpException('No payment has been found');
+            }
+        }
+        
+        return $payment;
+    }    
 }

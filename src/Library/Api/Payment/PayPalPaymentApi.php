@@ -57,19 +57,19 @@ class PayPalPaymentApi extends AbstractPaymentApi
         $client = new Client();
         $accessToken = $this->getAccessToken($client);
         $paymentService = $this->getPayPalPaymentService($client);
-            
-        $orderSerializer = new PayPalOrderSerializer();
         
         $amount = new Amount(
-            $this->getOrder()->getCurrency(), 
-            (string) $this->getOrder()->callTotalPrice()
+            $this->getPayment()->getCurrency(), 
+            (string) $this->getPayment()->getValue()
             );
         
         $payer = new Payer('paypal');
+        $description = $this->getPayment()->getDescription();
+        
         $transaction = new Transaction(
             $amount, 
-            'my transaction', 
-            $orderSerializer->serialize($this->getOrder())
+            (null === $description or '' === $description)? 'my transaction' : $description, 
+            $this->getPayment()->getItemList()
             );
         
         return $paymentService->create(

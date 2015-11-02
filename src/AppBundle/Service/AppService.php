@@ -355,7 +355,7 @@ class AppService
         if (null !== $parameters && is_array($parameters)) {
             $this->parameters = array_merge($this->parameters, $parameters);
         }
-        
+
         return $this;
     }
 
@@ -370,12 +370,12 @@ class AppService
     public function getParameter($key, $defaultValue = null, $externalParam = null)
     {
         $parameters = (null === $externalParam)? $this->parameters : $externalParam;
-        if (!array_key_exists($key, $parameters)) {
-            return $defaultValue;
+        if (array_key_exists($key, $parameters)) {
+            return $parameters[$key];
         }
         
-        return $parameters[$key];
-    }    
+        return $defaultValue;
+    }
     
     /**
      * Get all parameters
