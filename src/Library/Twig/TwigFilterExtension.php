@@ -39,6 +39,10 @@ class TwigFilterExtension extends Twig_Extension
     {
         return array(
             new \Twig_SimpleFilter(
+                'mapTo', 
+                array($this, 'mapTo')
+                ),
+            new \Twig_SimpleFilter(
                 'getBaseUri', 
                 array($this, 'getBaseUri')
                 ),
@@ -83,6 +87,24 @@ class TwigFilterExtension extends Twig_Extension
                 array('is_safe' => array('html'))
                 ),
             );
+    }
+    
+    /**
+     * 
+     * @param type $uri
+     * @return type
+     */
+    public function mapTo($index, array $from)
+    {
+        $total = count($from);
+        if ($total > 0) {
+            $key = ($index % $total) - 1;
+            if (array_key_exists($key, $from)) {
+                return $from[$key];
+            }
+        }
+        
+        return null;
     }
     
     /**

@@ -2,4 +2,95 @@ body {
     font-family: "LatoWeb" !important;
     font-size: 11pt !important;
     font-style: normal;    
+    height:100%;
+    background-color: #e5e5e5;
 }
+
+.main-sidebar {
+    background-color: #3c4b5b;
+    position: fixed;
+    height: 100%;
+    color: #fff;
+}
+
+.main-sidebar .header {
+    padding-top: 10px;
+    background-color: #435466;
+    height: 70px;
+    color: #fff;
+}
+
+.main-sidebar .header .ghost {
+    color: #67727e;
+    text-transform: uppercase;
+}
+.main-sidebar .header .userName {
+    padding-top: 2px;
+    display: block;
+    font-size: 18px;
+}
+
+.main-sidebar a {
+    display: block;
+    padding-top: 15px;
+    color: #fff;
+    font-weight: bold;
+}
+
+.main-sidebar a:hover {
+    color: #fff;
+}
+
+@media only screen and (min-device-width: 720px), only screen and (min-width: 720px) {
+    .main-sidebar .body {
+        padding-left: 28px;
+    }
+    .main-body {
+        margin-left: 280px;
+    }     
+    .small-block {
+        display: none;
+    }
+    .full-block {
+        display: block;
+    }
+    .main-sidebar {
+        width: 280px !important;
+    }     
+}
+@media only screen and (max-device-width: 720px), only screen and (max-width: 720px) {
+    .main-sidebar .body {
+        padding-left: 24px;
+    }
+    .main-body {
+        margin-left: 70px;
+    }     
+    .small-block {
+        display: block;
+    }
+    .full-block {
+        display: none;
+    }
+    .main-sidebar {
+        width: 70px !important;
+    }     
+}
+
+.color-red {
+    color: #eb4d5c;
+}
+.color-blue {
+    color: #3aa3e3;
+}
+.color-green {
+    color: #2ab27b;
+}
+.color-yellow {
+    color: #edb431;
+}
+.color-violet {
+    color: #9e7da6;
+}
+.color-white {
+    color: #fff;
+}  

@@ -14,7 +14,7 @@ word:
     uploadFileByDropping: "Drop files here or click to upload"
     selectAnItem: Select an item
     warning: Warning
-    
+    signedInAs: Signed in as
     logIn: Sign In
     logOut: Sign Out
     createAccount: Create Account

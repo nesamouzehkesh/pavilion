@@ -1,16 +1,39 @@
 {% import _self as self %}
 
-{% if noLayout is not defined or noLayout == false %}
+{% spaceless %}
     {% if saman_displayFullView %}
-    {% spaceless %}
-        <ul id="sidebar" class="nav nav-pills nav-stacked">
-            {% for module, url in saman_app_modules %}
-                <li class="{{ self.isActive(url) }}"><a href="{{ path(url) }}">{{ ('module.' ~ module ~ '.icon')|icon }} {{ ('module.' ~ module ~ '.title')|trans }}</a></li>
-            {% endfor %}
-        </ul>
-    {% endspaceless %}
+        <div class="full-block">
+            <div class="header">
+                <span class="ghost">{{ 'word.signedInAs'|trans }}</span>
+                <span class="userName">{{ app.user.userName }}</span>
+            </div>
+            <div class="body">
+                {% for module, url in saman_app_modules %}
+                    <a href="{{ path(url) }}" class="sidebar-links" title="{{ ('module.' ~ module ~ '.title')|trans }}">
+                        <span class="{{ loop.index|mapTo(['color-red', 'color-blue', 'color-green', 'color-yellow', 'color-violet', 'color-white']) }}">
+                            {{ ('module.' ~ module ~ '.icon')|icon }}
+                        </span> 
+                        {{ ('module.' ~ module ~ '.title')|trans }}
+                    </a>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="small-block">
+            <div class="header">
+                
+            </div>
+            <div class="body">
+                {% for module, url in saman_app_modules %}
+                    <a href="{{ path(url) }}" class="sidebar-links" title="{{ ('module.' ~ module ~ '.title')|trans }}">
+                        <span class="{{ loop.index|mapTo(['color-red', 'color-blue', 'color-green', 'color-yellow', 'color-violet', 'color-white']) }}">
+                            {{ ('module.' ~ module ~ '.icon')|icon }}
+                        </span> 
+                    </a>
+                {% endfor %}
+            </div>
+        </div>
     {% endif %}
-{% endif %}
+{% endspaceless %}
         
 {% macro isActive(rout) %}
     {% set currentRout = app.request.attributes.get('_route') %}
