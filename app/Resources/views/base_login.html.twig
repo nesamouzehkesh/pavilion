@@ -4,30 +4,14 @@
         <meta http-equiv="Content-Type" content="text/html; charset={{ _charset }}"/>
         <meta name="robots" content="noindex,nofollow" />
         <title>{% block title %}{% endblock %}</title>
-        
-        <link href="{{ asset('bundles/framework/css/structure.css', absolute=true) }}" rel="stylesheet" type="text/css" media="all" />
-        <link href="{{ asset('bundles/framework/css/body.css', absolute=true) }}" rel="stylesheet" type="text/css" media="all" />
-        <link href="{{ asset('css/glyphicons.css', absolute=true) }}" rel="stylesheet" type="text/css" media="all" />
-        <link href="{{ asset('css/jquery-ui.css', absolute=true) }}" rel="stylesheet" type="text/css" media="all" />
-        <link href="{{ asset('css/bootstrap.min.css', absolute=true) }}" rel="stylesheet" type="text/css" media="all" />
-        <link href="{{ asset('css/latofonts.css', absolute=true) }}" rel="stylesheet" type="text/css" media="all" />
-        <link href="{{ asset('css/saman.css', absolute=true) }}" rel="stylesheet" type="text/css" media="all" />
-        
-        <script src="{{ asset('js/jquery-1.11.0.min.js', absolute=true) }}" type="text/javascript"></script>
-        <script src="{{ asset('js/jquery-ui.js', absolute=true) }}" type="text/javascript"></script>
-        <script src="{{ asset('js/jquery.numeric.js', absolute=true) }}" type="text/javascript"></script>
-        <script src="{{ asset('js/jquery.form.js', absolute=true) }}" type="text/javascript"></script>
+        {% include "::_asset.html.twig" %}
     </head>
     <body>
-        <div id="d-login-container">
-            <div id="d-login-content">
-                <div class="alert alert-success" role="alert">
-                    <p>Email address: admin@admin.com</p>
-                    <p>Password: admin</p>
-                </div>
+        <div id="sa-login-container" class="container-fluid">
+            <div id="sa-login-form">
                 {% block body %}{% endblock %}
                 <a href="{{ path('saman_cms_page_index') }}">Back to site Home Page</a>
-            </div>    
+            </div>
         </div>
     </body>
 </html>

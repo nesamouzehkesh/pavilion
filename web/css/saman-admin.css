@@ -1,9 +1,9 @@
 body {
     font-family: "LatoWeb" !important;
     font-size: 11pt !important;
-    font-style: normal;    
+    font-style: normal;
     height:100%;
-    background-color: #e5e5e5;
+    background-color: #f9f9f9; //#e5e5e5;
 }
 
 .main-sidebar {
@@ -14,6 +14,7 @@ body {
 }
 
 .main-sidebar .header {
+    padding-left: 25px;
     padding-top: 10px;
     background-color: #435466;
     height: 70px;
@@ -42,8 +43,23 @@ body {
 }
 
 @media only screen and (min-device-width: 720px), only screen and (min-width: 720px) {
+    #sa-login-container {
+        position: absolute;
+        top: 50%;
+        margin-top: -300px; /* half of #content height*/
+        left: 0;
+        width: 100%;
+    }    
+    #sa-login-form {
+        margin-left: auto;
+        margin-right: auto;
+        width: 500px;
+    }
+    #sa-login-form .panel-body {
+        padding: 30px 60px 30px 60px;
+    }    
     .main-sidebar .body {
-        padding-left: 28px;
+        padding-left: 25px;
     }
     .main-body {
         margin-left: 280px;
@@ -59,8 +75,21 @@ body {
     }     
 }
 @media only screen and (max-device-width: 720px), only screen and (max-width: 720px) {
+    #sa-login-container {
+        position: absolute;
+        left: 0;
+        width: 100%;
+    }    
+    #sa-login-form {
+        margin-left: auto;
+        margin-right: auto;
+        width: 100%;
+    }
+    #sa-login-form .panel-body {
+        padding: 20px;
+    }    
     .main-sidebar .body {
-        padding-left: 24px;
+        padding-left: 20px;
     }
     .main-body {
         margin-left: 70px;
@@ -72,7 +101,7 @@ body {
         display: none;
     }
     .main-sidebar {
-        width: 70px !important;
+        width: 60px !important;
     }     
 }
 
@@ -94,3 +123,81 @@ body {
 .color-white {
     color: #fff;
 }  
+
+textarea, input, .uneditable-input:focus {
+    -webkit-box-shadow: none !important;
+    -moz-box-shadow: none !important;
+    box-shadow: none !important;
+}
+
+.btn-primary {
+    background-color: #3aa3e3 !important;
+    border: none !important;
+}
+.btn-primary:hover, .btn-primary:focus, .btn-primary:active, 
+.btn-primary.active, .open > .dropdown-toggle.btn-primary {
+    background-color: #258ccd !important;
+}
+.btn-primary:active, .btn-primary.active {
+}
+
+.btn-success {
+    background-color: #2ab27b !important;
+    border: none !important;
+}
+.btn-success:hover, .btn-success:focus, .btn-success:active, 
+.btn-success.active, .open > .dropdown-toggle.btn-success {
+    background-color: #169360 !important;
+}
+.btn-success:active, .btn-success.active {
+}
+
+.btn-info {
+    background-color: #9e7da6 !important;
+    border: none !important;
+}
+.btn-info:hover, .btn-info:focus, .btn-info:active, 
+.btn-info.active, .open > .dropdown-toggle.btn-info {
+    background-color: #825c8c !important;
+}
+.btn-info:active, .btn-info.active {
+}
+
+.btn-warning {
+    background-color: #edb431 !important;
+    border: none !important;
+}
+.btn-warning:hover, .btn-warning:focus, .btn-warning:active, 
+.btn-warning.active, .open > .dropdown-toggle.btn-warning {
+    background-color: #d79b0c !important;
+}
+.btn-warning:active, .btn-warning.active {
+}
+
+.btn-danger {
+    background-color: #eb4d5c !important;
+    border: none !important;
+}
+.btn-danger:hover, .btn-danger:focus, .btn-danger:active, 
+.btn-danger.active, .open > .dropdown-toggle.btn-danger {
+    background-color: #d23b49 !important;
+}
+.btn-danger:active, .btn-danger.active {
+}
+
+.alert {
+    color: #494949;
+    background-color: #fff;
+    border: 1px solid #dddddd;
+}
+.alert-warning {border-left: 5px solid #edb431;}
+.alert-warning .glyphicon:before{content:"\e101 ";color:#edb431;margin-right: 5px;}
+
+.alert-info {border-left: 5px solid #3aa3e3;}
+.alert-info .glyphicon:before{content:"\e086 ";color:#3aa3e3;margin-right: 5px;}
+
+.alert-success {border-left: 5px solid #2ab27b;}
+.alert-success .glyphicon:before{content:"\e084 ";color:#2ab27b;margin-right: 5px;}
+
+.alert-danger {border-left: 5px solid #eb4d5c;}
+.alert-danger .glyphicon:before{content:"\e083 ";color:#eb4d5c;margin-right: 5px;}
