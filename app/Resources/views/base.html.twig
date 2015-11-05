@@ -17,6 +17,11 @@
         <div class="main-body container-fluid">
             <div class="row">
                 <div class="col-md-11 col-s-11 col-xs-12 margin-top-40">
+                    
+                    {% include '::_ui.html.twig'%}
+
+                    
+                    {#
                     <div id="flashBag-container" data-url="{{ path('saman_app_display_flash_bag') }}"></div>
 
                     {% block pageOpenContainer %}{{ parent() }}{% endblock %}
@@ -30,10 +35,12 @@
                     {% block footerContainer %}{{ parent() }}{% endblock %}
 
                     {% block pageCloseContainer %}{{ parent() }}{% endblock %}          
+                    #}
                 </div>
                 <div class="col-md-1"></div>
             </div>            
         </div>
         {% block script %}{% endblock %}    
+        #}
     </body>
 </html>

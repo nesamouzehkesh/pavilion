@@ -1,38 +1,44 @@
 {% import _self as self %}
 
 {% spaceless %}
-    {% if saman_displayFullView %}
-        <div class="full-block">
-            <div class="header">
-                <span class="ghost">{{ 'word.signedInAs'|trans }}</span>
-                <span class="userName">{{ app.user.userName }}</span>
-            </div>
-            <div class="body">
-                {% for module, url in saman_app_modules %}
-                    <a href="{{ path(url) }}" class="sidebar-links" title="{{ ('module.' ~ module ~ '.title')|trans }}">
-                        <span class="{{ loop.index|mapTo(['color-red', 'color-blue', 'color-green', 'color-yellow', 'color-violet', 'color-white']) }}">
-                            {{ ('module.' ~ module ~ '.icon')|icon }}
-                        </span> 
-                        {{ ('module.' ~ module ~ '.title')|trans }}
-                    </a>
-                {% endfor %}
-            </div>
+    <div class="full-block">
+        <div class="header">
+            <span class="ghost">{{ 'word.signedInAs'|trans }}</span>
+            <span class="userName">{{ app.user.userName }}</span>
+            
+            
+            <a class="btnr btnr-default-inv">{{ 'icon.add'|icon }}</a>
+            
         </div>
-        <div class="small-block">
-            <div class="header">
-                
-            </div>
-            <div class="body">
-                {% for module, url in saman_app_modules %}
-                    <a href="{{ path(url) }}" class="sidebar-links" title="{{ ('module.' ~ module ~ '.title')|trans }}">
-                        <span class="{{ loop.index|mapTo(['color-red', 'color-blue', 'color-green', 'color-yellow', 'color-violet', 'color-white']) }}">
-                            {{ ('module.' ~ module ~ '.icon')|icon }}
-                        </span> 
-                    </a>
-                {% endfor %}
-            </div>
+        <div class="body">
+            {#
+            {% for module, url in saman_app_modules %}
+                <a href="{{ path(url) }}" class="sidebar-links" title="{{ ('module.' ~ module ~ '.title')|trans }}">
+                    <span class="{{ loop.index|mapTo(['color-red', 'color-blue', 'color-green', 'color-yellow', 'color-violet', 'color-white']) }}">
+                        {{ ('module.' ~ module ~ '.icon')|icon }}
+                    </span> 
+                    {{ ('module.' ~ module ~ '.title')|trans }}
+                </a>
+            {% endfor %}
+            #}
         </div>
-    {% endif %}
+    </div>
+    <div class="small-block">
+        <div class="header">
+
+        </div>
+        <div class="body">
+            {#
+            {% for module, url in saman_app_modules %}
+                <a href="{{ path(url) }}" class="sidebar-links" title="{{ ('module.' ~ module ~ '.title')|trans }}">
+                    <span class="{{ loop.index|mapTo(['color-red', 'color-blue', 'color-green', 'color-yellow', 'color-violet', 'color-white']) }}">
+                        {{ ('module.' ~ module ~ '.icon')|icon }}
+                    </span> 
+                </a>
+            {% endfor %}
+            #}
+        </div>
+    </div>
 {% endspaceless %}
         
 {% macro isActive(rout) %}

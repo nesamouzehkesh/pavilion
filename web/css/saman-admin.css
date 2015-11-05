@@ -124,10 +124,52 @@ body {
     color: #fff;
 }  
 
+.bg-red {
+    background-color: #eb4d5c;
+}
+.bg-blue {
+    background-color: #3aa3e3;
+}
+.bg-green {
+    background-color: #2ab27b;
+}
+.bg-yellow {
+    background-color: #edb431;
+}
+.bg-violet {
+    background-color: #9e7da6;
+}
+.bg-white {
+    background-color: #fff;
+}
+
+.br-red {
+    border-color: #eb4d5c !important;
+}
+.br-blue {
+    border-color: #3aa3e3 !important;
+}
+.br-green {
+    border-color: #2ab27b !important;
+}
+.br-yellow {
+    border-color: #edb431 !important;
+}
+.br-violet {
+    border-color: #9e7da6 !important;
+}
+.br-white {
+    border-color: #fff !important;
+}  
+
 textarea, input, .uneditable-input:focus {
     -webkit-box-shadow: none !important;
     -moz-box-shadow: none !important;
     box-shadow: none !important;
+}
+
+input:focus {
+    border-color: #a0a0a0 !important;
 }
 
 .btn-primary {
@@ -201,3 +243,121 @@ textarea, input, .uneditable-input:focus {
 
 .alert-danger {border-left: 5px solid #eb4d5c;}
 .alert-danger .glyphicon:before{content:"\e083 ";color:#eb4d5c;margin-right: 5px;}
+
+
+.btnr {
+    float: left;
+    display: block;
+    font-size: 12px;
+    cursor: pointer;
+    width: 30px;
+    height: 30px;
+    border-radius: 20px;
+}
+.btnr .glyphicon {
+    position: absolute;
+    top: 7px;
+    left: 8px
+}
+.btnr-default {
+    opacity: .8;
+    background-color: rgba(255,255,255,.2);
+    border: 1px solid rgba(0,0,0,.3);
+    box-shadow: 0 1px 2px 0 rgba(0,0,0,.05);
+    position: relative;
+    color: #67686e
+}
+.btnr-default:hover {
+    opacity: .8;
+    background-color: rgba(100,100,100,.1);
+    color: #67686e
+}
+.btnr-default:active {
+    opacity: .8;
+    color:#67686e;
+    background-color:#f7f7f7;
+    border-color:rgba(0,0,0,.12);
+    box-shadow:inset 0 1px 2px 0 rgba(0,0,0,.075)
+}
+.btnr-default-inv {
+    opacity: .8;
+    background-color: rgba(255,255,255,.1);
+    border: 1px solid rgba(255,255,255,.2);
+    box-shadow: 0 1px 2px 0 rgba(0,0,0,.05);
+    position: relative;
+    color: #67686e
+}
+.btnr-default-inv:hover {
+    opacity: .8;
+    background-color: rgba(255,255,255,.2);
+    color: #67686e
+}
+.btnr-default-inv:active {
+    opacity: .8;
+    color:#67686e;
+    background-color: transparent;
+    border-color:rgba(0,0,0,.4);
+    box-shadow:inset 0 1px 2px 0 rgba(0,0,0,.075)
+}
+.btnr-primary {
+    background-color: #3aa3e3;
+    border: 1px solid #3aa3e3;
+    box-shadow: 0 1px 2px 0 rgba(0,0,0,.05);
+    position: relative;
+    color: #f9f9f9
+}
+.btnr-primary:hover, .btnr-primary:focus, .btnr-primary:active, .btnr-primary.active {
+    background-color: #258ccd;
+    color: #f9f9f9
+}
+.btnr-success {
+    background-color: #2ab27b;
+    border: 1px solid #2ab27b;
+    box-shadow: 0 1px 2px 0 rgba(0,0,0,.05);
+    position: relative;
+    color: #f9f9f9
+}
+.btnr-success:hover, .btnr-success:focus, .btnr-success:active, .btnr-success.active {
+    background-color: #169360;
+    color: #f9f9f9
+}
+.btnr-info {
+    background-color: #9e7da6;
+    border: 1px solid #9e7da6;
+    box-shadow: 0 1px 2px 0 rgba(0,0,0,.05);
+    position: relative;
+    color: #f9f9f9
+}
+.btnr-info:hover, .btnr-info:focus, .btnr-info:active, .btnr-info.active {
+    background-color: #825c8c;
+    color: #f9f9f9
+}
+.btnr-warning {
+    background-color: #edb431;
+    border: 1px solid #edb431;
+    box-shadow: 0 1px 2px 0 rgba(0,0,0,.05);
+    position: relative;
+    color: #f9f9f9
+}
+.btnr-warning:hover, .btnr-warning:focus, .btnr-warning:active, .btnr-warning.active {
+    background-color: #d79b0c;
+    color: #f9f9f9
+}
+.btnr-danger {
+    background-color: #eb4d5c;
+    border: 1px solid #eb4d5c;
+    box-shadow: 0 1px 2px 0 rgba(0,0,0,.05);
+    position: relative;
+    color: #f9f9f9
+}
+.btnr-danger:hover, .btnr-danger:focus, .btnr-danger:active, .btnr-danger.active {
+    background-color: #d23b49;
+    color: #f9f9f9
+}
+
+.mini_quote {
+  padding: 5px 10px !important;
+  margin: 0 0 10px !important;
+  font-size: 14px !important;
+}
+
