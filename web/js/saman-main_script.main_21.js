@@ -18,6 +18,16 @@ $(document).ready(function(){
           }
     });
     
+    $("#main-sidebar-toggle").click(function(){
+        if ($('#main-sidebar .full-block').hasClass('sm')) {
+            $('#main-sidebar .full-block').removeClass('sm default').addClass('lg', {duration: 100});
+            $('#main-sidebar-toggle').removeClass('sidebar-toggle-open').addClass('sidebar-toggle-close');
+        } else {
+            $('#main-sidebar .full-block').removeClass('lg default').addClass('sm', {duration: 50});
+            $('#main-sidebar-toggle').removeClass('sidebar-toggle-close').addClass('sidebar-toggle-open');
+        }
+    });
+    
     /* Display Selected Item in Bootstrap Button Dropdown Title */
     $(".action-delete").click(function(e){
         e.preventDefault();

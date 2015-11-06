@@ -11,16 +11,13 @@
     <body>
         
     <body>
-        <div class="main-sidebar" data-spy="affix" data-offset-top="0" data-offset-bottom="0">
+        <div id="main-sidebar" data-spy="affix" data-offset-top="0" data-offset-bottom="0">
             {% include '::_sidebar.html.twig'%}
         </div>
-        <div class="main-body container-fluid">
+        <div id="main-body" class="container-fluid">
             <div class="row">
                 <div class="col-md-11 col-s-11 col-xs-12 margin-top-40">
-                    
                     {% include '::_ui.html.twig'%}
-
-                    
                     {#
                     <div id="flashBag-container" data-url="{{ path('saman_app_display_flash_bag') }}"></div>
 
@@ -41,6 +38,5 @@
             </div>            
         </div>
         {% block script %}{% endblock %}    
-        #}
     </body>
 </html>

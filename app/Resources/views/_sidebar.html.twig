@@ -1,34 +1,33 @@
 {% import _self as self %}
 
 {% spaceless %}
-    <div class="full-block">
+    <div class="default full-block">
         <div class="header">
-            <span class="ghost">{{ 'word.signedInAs'|trans }}</span>
-            <span class="userName">{{ app.user.userName }}</span>
-            
-            
-            <a class="btnr btnr-default-inv">{{ 'icon.add'|icon }}</a>
-            
+            <div class="user-info">
+                <span class="ghost">{{ 'word.signedInAs'|trans }}</span>
+                <span class="userName">{{ app.user.userName }}</span>
+            </div>
+            <a class="btnr btnr-default-inv sidebar-toggle-close" id="main-sidebar-toggle">
+                <span class="glyphicon"></span>
+            </a>
         </div>
-        <div class="body">
-            {#
+        <div class="body margin-top-20">
             {% for module, url in saman_app_modules %}
                 <a href="{{ path(url) }}" class="sidebar-links" title="{{ ('module.' ~ module ~ '.title')|trans }}">
                     <span class="{{ loop.index|mapTo(['color-red', 'color-blue', 'color-green', 'color-yellow', 'color-violet', 'color-white']) }}">
                         {{ ('module.' ~ module ~ '.icon')|icon }}
                     </span> 
-                    {{ ('module.' ~ module ~ '.title')|trans }}
+                    <span class="module-title">
+                        {{ ('module.' ~ module ~ '.title')|trans }}
+                    </span>
                 </a>
             {% endfor %}
-            #}
         </div>
     </div>
-    <div class="small-block">
+    <div class="default small-block">
         <div class="header">
-
         </div>
         <div class="body">
-            {#
             {% for module, url in saman_app_modules %}
                 <a href="{{ path(url) }}" class="sidebar-links" title="{{ ('module.' ~ module ~ '.title')|trans }}">
                     <span class="{{ loop.index|mapTo(['color-red', 'color-blue', 'color-green', 'color-yellow', 'color-violet', 'color-white']) }}">
@@ -36,7 +35,6 @@
                     </span> 
                 </a>
             {% endfor %}
-            #}
         </div>
     </div>
 {% endspaceless %}

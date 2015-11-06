@@ -60,6 +60,10 @@ action:
 
 
 icon:
+    arrowLeft: glyphicon glyphicon-chevron-left
+    arrowRight: glyphicon glyphicon-chevron-right
+    arrowUp: glyphicon glyphicon-chevron-up
+    arrowDown: glyphicon glyphicon-chevron-down
     admin: glyphicon glyphicon-cog
     user: glyphicon glyphicon-user
     page: glyphicon glyphicon-list
