@@ -144,27 +144,27 @@ form:
 module: 
     label:
         title: Label
-        description: ""
+        description: "Edit your profile, update your username and password, and manage other account settings."
         icon: glyphicon glyphicon-tags
     cms:
         title: CMS
-        description: ""
+        description: "Edit your profile, update your username and password, and manage other account settings."
         icon: glyphicon glyphicon-file
     user:
         title: Users
-        description: ""
+        description: "Edit your profile, update your username and password, and manage other account settings."
         icon: glyphicon glyphicon-user
     product:
         title: Product
-        description: ""
+        description: "Edit your profile, update your username and password, and manage other account settings."
         icon: glyphicon glyphicon-shopping_bag
     playground:
         title: Playground
-        description: ""
+        description: "Edit your profile, update your username and password, and manage other account settings."
         icon: glyphicon glyphicon-star
     order:
         title: Orders
-        description: ""
+        description: "Edit your profile, update your username and password, and manage other account settings."
         icon: glyphicon glyphicon-shopping-cart
         
 

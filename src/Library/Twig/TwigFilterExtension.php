@@ -12,7 +12,7 @@ use Library\Service\StaticHelper;
  */
 class TwigFilterExtension extends Twig_Extension
 {
-    const ICON_TEMPLATE = '<span class="%s"></span>';
+    const ICON_TEMPLATE = '<span class="%s %s"></span>';
     const ALERT_TEMPLATE = '<div class="alert alert-%s alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>%s</div>';
     
     /** 
@@ -157,11 +157,13 @@ class TwigFilterExtension extends Twig_Extension
      * @param type $icon
      * @return type
      */
-    public function icon($icon)
+    public function icon($icon, $extraClass = '')
     {
-        $icon = $this->translator->trans($icon);
-        
-        return sprintf(self::ICON_TEMPLATE, $icon);
+        return sprintf(
+            self::ICON_TEMPLATE, 
+            $this->translator->trans($icon), 
+            $extraClass
+            );
     }
     
     /**
