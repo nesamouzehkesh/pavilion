@@ -69,14 +69,6 @@ body .ace_scrollbar-v {
     text-align: center !important;
 }
 
-.d-float-left {
-    float: left;  
-}
-
-.d-float-right {
-    float: right;
-}
-
 .d-disable {
     opacity: 0.5;
 }

@@ -10,6 +10,18 @@ body {
     color: #999;
 }
 
+.float-left {
+    float: left;  
+    margin-right: 5px;
+    margin-bottom: 5px;
+}
+
+.float-right {
+    float: right;
+    margin-left: 5px;
+    margin-bottom: 5px;
+}
+
 #main-sidebar {
     background-color: #3c4b5b;
     position: fixed;
@@ -366,6 +378,9 @@ input:focus {
 }
 
 @media only screen and (min-device-width: 720px), only screen and (min-width: 720px) {
+    #input-search {
+        width: 120px !important;
+    }
     .module-logo .glyphicon{
         padding: 13px 14px 13px 14px;
         font-size: 16px;
@@ -438,6 +453,9 @@ input:focus {
     }     
 }
 @media only screen and (max-device-width: 720px), only screen and (max-width: 720px) {
+    #input-search {
+        width: 120px !important;
+    }
     .panel-body {
         padding: 0px 5px 10px 5px !important;
     }

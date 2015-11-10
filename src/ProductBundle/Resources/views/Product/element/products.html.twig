@@ -11,9 +11,11 @@
         <tr class="{{ product.available? '' : 'active' }}">
             <td class="{{ product.available? '' : 'd-text-muted' }}">
                 {{ product.title }}
+                {#
                 {% for category in product.categories %}
                     <div class="margin-top-2"><span class="label label-success">{{ category.title }}</span></div>
                 {% endfor %}
+                #}
             </td>
             <td class="{{ product.available? '' : 'd-text-muted' }}">{{ product.price }}</td>
             <td>

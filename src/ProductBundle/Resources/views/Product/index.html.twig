@@ -3,13 +3,26 @@
 {% block headerContainer %}
     <div class="block" id="headerContainer">
         <div class="row">
-            <div class="col-md-6 col-xs-12 col-sm-12">
-                <form class="form-inline">
-                    <div class="form-group">
-                        <button data-url="{{ path('saman_admin_product_add') }}" id="action-add-product" type="button" class="btn btn-primary btn-sm" data-target="#product-form-container">{{ 'icon.add'|icon }} {{ 'action.addNewItem'|trans }}</button>
+            <div class="col-md-6 col-xs-12 col-sm-6">
+                <form>
+                    <div class="float-left">
+                    {{ button(
+                          'action.display', 
+                          {
+                              url: path('saman_admin_product_add'),
+                              icon: 'icon.display', 
+                              toggleModal: 'product-view-container', 
+                              action: 'action-display-product'
+                          }) }}  
+                          
+                          
+                        <button data-url="{{  }}" id="action-add-product" type="button" class="btn btn-primary" data-target="#product-form-container">
+                            {{ 'icon.add'|icon }} 
+                            <span class="hidden-sm">{{ 'action.addNewItem'|trans }}</span>
+                        </button>
                     </div>
                     {% if categories|length > 0 %}
-                        <div class="form-group">
+                        <div class="float-left">
                             <div class="dropdown">
                                 <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                                     Show All
@@ -27,29 +40,27 @@
                     {% endif %}
                 </form>
             </div>
-            <div class="col-md-6 col-xs-12 col-sm-12">
-                <div class="pull-right">
-                    <form class="form-inline">
-                        <div class="form-group">
-                            <label class="sr-only" for="input-search">Amount (in dollars)</label>
-                            <div class="input-group">
-                                <div class="input-group-addon">{{ 'icon.search'|icon }}</div>
-                                <input type="text" class="form-control" id="input-search" placeholder="Search">
-                            </div>
+            <div class="col-md-6 col-xs-12 col-sm-6">
+                <form>
+                    <div class="float-right">
+                        <label class="sr-only" for="input-search">Amount (in dollars)</label>
+                        <div class="input-group">
+                            <div class="input-group-addon">{{ 'icon.search'|icon }}</div>
+                            <input type="text" class="form-control" id="input-search" placeholder="Search">
                         </div>
-                                
-                        <div class="form-group">
-                            <div class="btn-group">
-                                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    {{ 'icon.setting'|icon }} <span class="caret"></span>
-                                </button>
-                                <ul class="dropdown-menu">
-                                    <li><a href="{{ path('saman_admin_product_configs') }}">{{ 'product.configs'|trans }}</a></li>
-                                </ul>
-                            </div>                                
-                        </div>
-                    </form>
-                </div>
+                    </div>
+
+                    <div class="float-right">
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                {{ 'icon.setting'|icon }} <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li><a href="{{ path('saman_admin_product_configs') }}">{{ 'product.configs'|trans }}</a></li>
+                            </ul>
+                        </div>                                
+                    </div>
+                </form>
             </div>
         </div>            
     </div>
