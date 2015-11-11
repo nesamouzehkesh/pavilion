@@ -6,20 +6,15 @@
             <div class="col-md-6 col-xs-12 col-sm-6">
                 <form>
                     <div class="float-left">
-                    {{ button(
-                          'action.display', 
-                          {
-                              url: path('saman_admin_product_add'),
-                              icon: 'icon.display', 
-                              toggleModal: 'product-view-container', 
-                              action: 'action-display-product'
-                          }) }}  
-                          
-                          
-                        <button data-url="{{  }}" id="action-add-product" type="button" class="btn btn-primary" data-target="#product-form-container">
-                            {{ 'icon.add'|icon }} 
-                            <span class="hidden-sm">{{ 'action.addNewItem'|trans }}</span>
-                        </button>
+                        {{ button(
+                              'action.addNewItem', 
+                              {
+                                  id: 'action-add-product',  
+                                  type: 'primary',
+                                  url: path('saman_admin_product_add'),
+                                  icon: 'icon.add', 
+                                  toggleModal: 'product-form-container', 
+                              }) }}  
                     </div>
                     {% if categories|length > 0 %}
                         <div class="float-left">

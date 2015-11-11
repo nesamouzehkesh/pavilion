@@ -13,7 +13,7 @@ class TwigFunctionExtension extends Twig_Extension
 {
     const ICON_TEMPLATE = '<span class="%s"></span>';
     const LINK_TEMPLATE = '<a href="%s" class="%s %s" %s>%s%s</a>';
-    const BUTTON_TEMPLATE = '<button %s type="button" class="btn btn-%s %s %s %s" %s %s>%s%s</button>';
+    const BUTTON_TEMPLATE = '<button %s %s type="button" class="btn btn-%s %s %s %s" %s %s>%s<span class="hidden-sm hidden-xs">%s</span></button>';
     const BREADCRUMB_TEMPLATE = '<ol class="breadcrumb">%s</ol>';
     const BREADCRUMB_TEXT_ITEM_TEMPLATE = '<li class="active">%s%s</li>';
     const BREADCRUMB_LINK_ITEM_TEMPLATE = '<li><a href="%s" class="%s" %s>%s%s</a></li>';
@@ -265,22 +265,23 @@ class TwigFunctionExtension extends Twig_Extension
      * 
      * @param type $url
      * @param type $text
-     * @param type $parameters
+     * @param type $clientParameters
      * @return type
      */
-    public function button($text, $parameters = array())
+    public function button($text, $clientParameters = array())
     {
         $defaultParameters = array(
             'url' => null,
             'icon' => null,
-            'size' => '1', //('1' => 'xs', '2' => 'sm', '3' => 'no', '4' => 'lg')
+            'size' => null, //('xs', 'sm', 'lg')
             'toggleModal' => null,
             'action' => '',
             'class' => '',
             'type' => 'link',
+            'id' => null,
             'attr' => null
         );
-        $parameters = array_merge($defaultParameters, $parameters);
+        $parameters = array_merge($defaultParameters, $clientParameters);
         
         $urlContent = '';
         if (null !== $parameters['url']) {
@@ -290,17 +291,14 @@ class TwigFunctionExtension extends Twig_Extension
                 );
         }
         
-        $sizes = array('1' => 'xs', '2' => 'sm', '3' => 'no', '4' => 'lg');
-        $size = (array_key_exists($parameters['size'], $sizes))? $sizes[$parameters['size']] : '1';
-        
-        $sizeContent = 'btn-' . $size;
-        if ('no' === $size) {
-            $sizeContent = '';
+        $size = '';
+        if (null !== $parameters['size']) {
+            $size = sprintf('btn-%s', $parameters['size']);
         }
         
-        $toggleModalContent = '';
+        $toggleModal = '';
         if (null !== $parameters['toggleModal']) {
-            $toggleModalContent = sprintf(
+            $toggleModal = sprintf(
                 'data-target="#%s"', 
                 // We dont use this any more. We toggle modal in js manually
                 //'data-toggle="modal" data-target="#%s"', 
@@ -308,31 +306,37 @@ class TwigFunctionExtension extends Twig_Extension
                 );
         }
         
-        $iconContent = '';
+        $icon = '';
         if (null !== $parameters['icon']) {
-            $iconContent = sprintf(
+            $icon = sprintf(
                 self::ICON_TEMPLATE . ' ', 
                 $this->translator->trans($parameters['icon'])
                 );
         }
         
-        $attrContent = '';
+        $attr = '';
         if (null !== $parameters['attr']) {
             foreach ($parameters['attr'] as $key => $value) {
-                $attrContent = $attrContent . ' ' . $key . '="' . $value . '"';
+                $attr = $attr . ' ' . $key . '="' . $value . '"';
             }
+        }
+        
+        $id = '';
+        if (null !== $parameters['id']) {
+            $id = sprintf('id="%s"', $parameters['id']);
         }
         
         return sprintf(
             self::BUTTON_TEMPLATE, 
             $urlContent,
+            $id,
             $parameters['type'],
-            $sizeContent,
+            $size,
             $parameters['class'],
             $parameters['action'],
-            $toggleModalContent,
-            $attrContent,
-            $iconContent,
+            $toggleModal,
+            $attr,
+            $icon,
             $this->translator->trans($text)
             );
     }

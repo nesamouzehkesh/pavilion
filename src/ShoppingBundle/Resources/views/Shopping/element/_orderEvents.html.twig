@@ -5,27 +5,10 @@ Order User:<br>
   <a href="mailto:#">{{ order.user.email }}</a>
 </address>
 
-<div class="row margin-top-10">
-    <div class="col-md-12">
-        <table class="table table-hover">
-            <thead>
-                <tr>
-                    <th>#</th>
-                    <th>Event</th>
-                    <th>Date</th>
-                    <th>User</th>
-                </tr>
-            </thead>
-            <tbody>
-            {% for key, event in orderEvents %}
-                <tr>
-                    <th>{{ key+1 }}</th>
-                    <td>{{ event.getTriggerLabel }}</td>
-                    <td>{{ event.date|date(date_format) }}</td> 
-                    <td>{{ event.user.email }}</td>
-                </tr>
-            {% endfor %}
-            </tbody>
-        </table>         
-    </div>
-</div>
+{% for key, event in orderEvents %}
+    <blockquote class="mini_quote br-blue">
+        {{ event.getTriggerLabel }}<br/>
+        Date: {{ event.date|date(date_format) }}<br/>
+        User: {{ event.user.email }}<br/>
+    </blockquote>
+{% endfor %}

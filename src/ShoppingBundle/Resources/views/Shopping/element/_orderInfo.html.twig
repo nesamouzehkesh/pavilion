@@ -29,52 +29,46 @@
 
    
 <strong>Order Progresses</strong><br>
-<div class="row">
-    <div class="col-md-12 margin-left-20">
-        {% for orderProgress in order.progresses %}
-            <div class="row">
-                <div class="col-md-9">
-                    {% set statusLabel = orderProgress.getStatusLabel %}
-                    Progress: {{ orderProgress.progress.title }} <span class="{{ statusLabel.class }}">[{{ statusLabel.title }}]</span>
-                    
-                    {{ button(
-                        'action.edit', 
-                        {
-                            url: path('saman_admin_shopping_order_progress_edit', {'orderId': order.id, 'progressId': orderProgress.id}),
-                            icon: 'icon.edit', 
-                            toggleModal: 'order-progress-form-container', 
-                            action: 'action-edit-order-progress',
-                        }) }}
+{% for orderProgress in order.progresses %}
+    <blockquote class="mini_quote br-red">
+        {% set statusLabel = orderProgress.getStatusLabel %}
+        Progress: {{ orderProgress.progress.title }} <span class="{{ statusLabel.class }}">[{{ statusLabel.title }}]</span>
 
-                    {% if orderProgress.isManual %}
-                        {{ button(
-                            'action.delete', 
-                            {
-                                url: path('saman_admin_shopping_order_progress_delete', {'progressId': orderProgress.id}),
-                                icon: 'icon.delete', 
-                                action: 'action-delete-order-progress',
-                            }) }}
-                    {% endif %}                    
-                    <br>
-                    Start Date: {{ orderProgress.startDate|date(date_format) }}<br>
-                    Estimated EndDate: {{ orderProgress.estimatedEndDate|date(date_format) }}<br>
-                    Actual EndDate: {{ orderProgress.actualEndDate|date(date_format) }}<br>
-                </div>
-            </div>
-            
-            {% if orderProgress.description is not null and orderProgress.description != '' %}
-                <blockquote>
-                  {{ orderProgress.description }}
-                </blockquote>                    
-            {% endif %}
-                
-            {% if loop.last == false %}
-                <div class="margin-top-10"></div>
-            {% endif %}
-        {% endfor %}
-    </div>
-</div>    
-    
+        {{ button(
+            'action.edit', 
+            {
+                url: path('saman_admin_shopping_order_progress_edit', {'orderId': order.id, 'progressId': orderProgress.id}),
+                icon: 'icon.edit', 
+                toggleModal: 'order-progress-form-container', 
+                action: 'action-edit-order-progress',
+            }) }}
+
+        {% if orderProgress.isManual %}
+            {{ button(
+                'action.delete', 
+                {
+                    url: path('saman_admin_shopping_order_progress_delete', {'progressId': orderProgress.id}),
+                    icon: 'icon.delete', 
+                    action: 'action-delete-order-progress',
+                }) }}
+        {% endif %}                    
+        <br>
+        Start Date: {{ orderProgress.startDate|date(date_format) }}<br>
+        Estimated EndDate: {{ orderProgress.estimatedEndDate|date(date_format) }}<br>
+        Actual EndDate: {{ orderProgress.actualEndDate|date(date_format) }}<br>
+    </blockquote>
+
+    {% if orderProgress.description is not null and orderProgress.description != '' %}
+        <blockquote>
+          {{ orderProgress.description }}
+        </blockquote>                    
+    {% endif %}
+
+    {% if loop.last == false %}
+        <div class="margin-top-10"></div>
+    {% endif %}
+{% endfor %}
+
 <div class="row margin-top-10">
     <div class="col-md-12">
         <button data-url="{{ path('saman_admin_shopping_order_progress_add', {'orderId': order.id}) }}" id="action-add-order-progress" type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#order-progress-form-container">{{ 'icon.add'|icon }} {{ 'Add Progress'|trans }}</button>    

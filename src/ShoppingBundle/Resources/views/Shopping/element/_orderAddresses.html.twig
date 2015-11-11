@@ -4,6 +4,6 @@ Order User:<br>
   <strong>{{ order.user.firstName }} {{ order.user.lastName }}</strong><br>
   <a href="mailto:#">{{ order.user.email }}</a>
 </address>
-  
-{% include '::web/customer/_address.html.twig' with {'address': order.billingAddress, 'billingTitle': 'Order billing address'} only %}
-{% include '::web/customer/_address.html.twig' with {'address': order.shippingAddress, 'shippingTitle': 'Order shipping address'} only %}
+
+{% include 'ShoppingBundle:Customer:element/_address.html.twig' with {'address': order.billingAddress, 'billingTitle': 'Order billing address'} only %}
+{% include 'ShoppingBundle:Customer:element/_address.html.twig' with {'address': order.shippingAddress, 'shippingTitle': 'Order shipping address'} only %}

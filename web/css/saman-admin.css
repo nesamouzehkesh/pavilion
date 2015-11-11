@@ -372,12 +372,13 @@ input:focus {
 }
 
 .mini_quote {
+  border-left-width: 4px !important;
   padding: 5px 10px !important;
   margin: 0 0 10px !important;
   font-size: 14px !important;
 }
 
-@media only screen and (min-device-width: 720px), only screen and (min-width: 720px) {
+@media only screen and (min-device-width: 820px), only screen and (min-width: 820px) {
     #input-search {
         width: 120px !important;
     }
@@ -452,7 +453,7 @@ input:focus {
         margin-left: 280px;
     }     
 }
-@media only screen and (max-device-width: 720px), only screen and (max-width: 720px) {
+@media only screen and (max-device-width: 820px), only screen and (max-width: 820px) {
     #input-search {
         width: 120px !important;
     }
