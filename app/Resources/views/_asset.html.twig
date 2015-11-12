@@ -1,61 +1,77 @@
-<script type="text/javascript">
-var CKEDITOR_BASEPATH = '/js/ckeditor/';
-</script>
+{% if absolute_urls is defined and absolute_urls == true %}
+    {% set root_url = 'http://' ~ app.request.host %}
+{% else %}
+    {% set root_url = '' %}
+{% endif %}
 
-<link href="{{ asset('css/glyphicons.css', absolute=true) }}" rel="stylesheet" type="text/css" media="all" />
-<link href="{{ asset('css/jquery-ui.css', absolute=true) }}" rel="stylesheet" type="text/css" media="all" />
-<link href="{{ asset('css/bootstrap.min.css', absolute=true) }}" rel="stylesheet" type="text/css" media="all" />
-<link href="{{ asset('css/bootstrap-toggle/bootstrap-toggle.min.css', absolute=true) }}" rel="stylesheet" type="text/css" media="all" />
-<link href="{{ asset('css/saman-admin.css', absolute=true) }}" rel="stylesheet" type="text/css" media="all" />
-<link href="{{ asset('css/saman.css', absolute=true) }}" rel="stylesheet" type="text/css" media="all" />
-<link href="{{ asset('css/extra-glyphicons.css', absolute=true) }}" rel="stylesheet" type="text/css" media="all" />
-<link href="{{ asset('js/select2/select2.css', absolute=true) }}" rel="stylesheet" type="text/css" media="all" />
-<link href="{{ asset('js/select2/select2-bootstrap.css', absolute=true) }}" rel="stylesheet" type="text/css" media="all" />
-<link href="{{ asset('css/bootstrap-colorpicker.min.css', absolute=true) }}" rel="stylesheet" type="text/css" media="all" />
-<link href="{{ asset('css/font-awesome.min.css', absolute=true) }}" rel="stylesheet" type="text/css" media="all" />
-<link href="{{ asset('css/latofonts.css', absolute=true) }}" rel="stylesheet" type="text/css" media="all" />
-<link href="{{ asset('js/ladda/ladda-themeless.min.css', absolute=true) }}" rel="stylesheet" type="text/css" media="all" />
+{# Note: CSS files are split due to IE max limit of 4095 selectors PER FILE #}
+{% stylesheets
+    '@AppBundle/Resources/public/css/glyphicons.css'
+    '@AppBundle/Resources/public/css/jquery-ui.css'
+    '@AppBundle/Resources/public/css/bootstrap.min.css'
+    '@AppBundle/Resources/public/css/bootstrap-toggle.min.css'
+    '@AppBundle/Resources/public/js/vendor/select2/select2.css'
+    '@AppBundle/Resources/public/js/vendor/select2/select2-bootstrap.css'
+    '@AppBundle/Resources/public/css/bootstrap-colorpicker.min.css'
+    '@AppBundle/Resources/public/css/font-awesome.min.css'
+    '@AppBundle/Resources/public/css/latofonts.css'
+    '@AppBundle/Resources/public/js/vendor/ladda/ladda-themeless.min.css'
+    output = 'css/saman-thirdparty.css' %}
+    <link rel="stylesheet" href="{{ root_url ~ asset_url }}" />
+{% endstylesheets %}
+
+{% stylesheets
+    '@AppBundle/Resources/public/css/saman-admin.css'
+    '@AppBundle/Resources/public/css/saman.css'
+    '@AppBundle/Resources/public/css/extra-glyphicons.css'
+    filter = 'cssrewrite' 
+    output = 'css/saman-main.css' %}
+    <link rel="stylesheet" href="{{ root_url ~ asset_url }}" />
+{% endstylesheets %}
+{#
+{% stylesheets
+    'css/latofonts.less'
+    filter = 'less'
+    output = 'css/saman-main.css' %}
+    <link rel="stylesheet" href="{{ root_url ~ asset_url }}" />
+{% endstylesheets %}
+#}
 
 {#
-'js/jquery-sortable.js'
+'@AppBundle/Resources/public/js/jquery-sortable.js'
 #}
 {% javascripts
-'js/jquery-1.11.0.min.js'
-'js/jquery-ui.js'
-'js/jquery.numeric.js'
-'js/jquery.form.js'
-'js/bootstrap-toggle/bootstrap-toggle.min.js'
-'js/bootstrap-js/transition.js'
-'js/bootstrap-js/collapse.js'
-'js/bootstrap.min.js'
-'js/bootbox.min.js'
-'js/select2/select2.js'
-'js/jquery.liveFilter.js'
-'js/bootstrap-editable.min.js'
-'js/bootstrap-datetimepicker.js'
-'js/jquery.vegas/jquery.vegas.js'
-'js/ladda-bootstrap/spin.min.js'
-'js/ladda-bootstrap/ladda.min.js'
-'js/bootstrap-colorpicker.min.js'
-'js/ckeditor/ckeditor.js'
-'js/ladda/spin.min.js'
-'js/ladda/ladda.min.js'
-'js/app/script.main.js'
- output='js/saman-main.js' %}
-   <script type="text/javascript" src="{{ asset_url }}"></script>
+    '@AppBundle/Resources/public/js/vendor/jquery-1.11.0.min.js'
+    '@AppBundle/Resources/public/js/vendor/jquery-ui.js'
+    '@AppBundle/Resources/public/js/vendor/jquery.numeric.js'
+    '@AppBundle/Resources/public/js/vendor/jquery.form.js'
+    '@AppBundle/Resources/public/js/vendor/bootstrap-toggle/bootstrap-toggle.min.js'
+    '@AppBundle/Resources/public/js/vendor/bootstrap-js/transition.js'
+    '@AppBundle/Resources/public/js/vendor/bootstrap-js/collapse.js'
+    '@AppBundle/Resources/public/js/vendor/bootstrap.min.js'
+    '@AppBundle/Resources/public/js/vendor/bootbox.min.js'
+    '@AppBundle/Resources/public/js/vendor/select2/select2.js'
+    '@AppBundle/Resources/public/js/vendor/jquery.liveFilter.js'
+    '@AppBundle/Resources/public/js/vendor/bootstrap-editable.min.js'
+    '@AppBundle/Resources/public/js/vendor/bootstrap-datetimepicker.js'
+    '@AppBundle/Resources/public/js/vendor/jquery.vegas/jquery.vegas.js'
+    '@AppBundle/Resources/public/js/vendor/ladda-bootstrap/spin.min.js'
+    '@AppBundle/Resources/public/js/vendor/ladda-bootstrap/ladda.min.js'
+    '@AppBundle/Resources/public/js/vendor/bootstrap-colorpicker.min.js'
+    '@AppBundle/Resources/public/js/vendor/ladda/spin.min.js'
+    '@AppBundle/Resources/public/js/vendor/ladda/ladda.min.js'
+    '@AppBundle/Resources/public/js/script.main.js'
+    '@AppBundle/Resources/public/js/vendor/ckeditor/ckeditor.js'
+    output = 'js/saman-admin-main.js' %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
 {% endjavascripts %}
+{#filter = 'uglifyjs2'#}
 
 {% javascripts 
-    'js/blueimp/jquery.iframe-transport.js'
-    'js/blueimp/jquery.fileupload.js'
-    'js/blueimp/jquery.fileupload-process.js'
-    'js/blueimp/jquery.fileupload-ui.js'
- output='js/saman-blueimp-main.js' %}
-   <script type="text/javascript" src="{{ asset_url }}"></script>
+    '@AppBundle/Resources/public/js/vendor/blueimp/jquery.iframe-transport.js'
+    '@AppBundle/Resources/public/js/vendor/blueimp/jquery.fileupload.js'
+    '@AppBundle/Resources/public/js/vendor/blueimp/jquery.fileupload-process.js'
+    '@AppBundle/Resources/public/js/vendor/blueimp/jquery.fileupload-ui.js'
+    output = 'js/saman-blueimp-main.js' %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
 {% endjavascripts %}
-
-{#
-{{ jslater('web/scripts/datepicker1.js') }}
-{{ jslater('web/scripts/datepicker2.js') }}
-{{ jsnow() }}
-#}

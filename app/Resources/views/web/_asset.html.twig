@@ -60,11 +60,12 @@
 'theme/js/jquery.js'
 #}
 {% javascripts
-'js/jquery-1.11.0.min.js'
-'js/jquery-ui.js'
-'js/jquery.numeric.js'
-'js/jquery.form.js'
-'js/app/script.main.js'
- output='js/saman-main.js' %}
-   <script type="text/javascript" src="{{ asset_url }}"></script>
+    '@AppBundle/Resources/public/js/jquery-1.11.0.min.js'
+    '@AppBundle/Resources/public/js/jquery-ui.js'
+    '@AppBundle/Resources/public/js/jquery.numeric.js'
+    '@AppBundle/Resources/public/js/jquery.form.js'
+    '@AppBundle/Resources/public/js/app.script.main.js'
+    filter = 'uglifyjs2'
+    output='js/saman-main.js' %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
 {% endjavascripts %}
