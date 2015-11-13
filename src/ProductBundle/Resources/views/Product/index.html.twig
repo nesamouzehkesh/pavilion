@@ -7,14 +7,14 @@
                 <form>
                     <div class="float-left">
                         {{ button(
-                              'action.addNewItem', 
-                              {
-                                  id: 'action-add-product',  
-                                  type: 'primary',
-                                  url: path('saman_admin_product_add'),
-                                  icon: 'icon.add', 
-                                  toggleModal: 'product-form-container', 
-                              }) }}  
+                          'action.addNewItem', 
+                          {
+                              id: 'action-add-product',  
+                              type: 'primary',
+                              url: path('saman_admin_product_add'),
+                              icon: 'icon.add', 
+                              toggleModal: 'product-form-container', 
+                        }) }}  
                     </div>
                     {% if categories|length > 0 %}
                         <div class="float-left">

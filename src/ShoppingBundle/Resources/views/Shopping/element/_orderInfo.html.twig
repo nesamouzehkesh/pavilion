@@ -71,6 +71,14 @@
 
 <div class="row margin-top-10">
     <div class="col-md-12">
-        <button data-url="{{ path('saman_admin_shopping_order_progress_add', {'orderId': order.id}) }}" id="action-add-order-progress" type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#order-progress-form-container">{{ 'icon.add'|icon }} {{ 'Add Progress'|trans }}</button>    
+            {{ button(
+              'Add Progress', 
+              {
+                  id: 'action-add-order-progress',  
+                  type: 'primary',
+                  url: path('saman_admin_shopping_order_progress_add', {'orderId': order.id}),
+                  icon: 'icon.add', 
+                  toggleModal: 'product-form-container', 
+                }) }}          
     </div>
 </div>    
