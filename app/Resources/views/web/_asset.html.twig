@@ -1,3 +1,9 @@
+{% if absolute_urls is defined and absolute_urls == true %}
+    {% set root_url = 'http://' ~ app.request.host %}
+{% else %}
+    {% set root_url = '' %}
+{% endif %}
+
 <style type="text/css">
     @font-face {
         font-family: 'sofiaProLight';
@@ -28,18 +34,30 @@
 <link href="{{ asset('bundles/framework/css/body.css', absolute=true) }}" rel="stylesheet" type="text/css" media="all" />
 <link href="{{ asset('css/bootstrap.min.css', absolute=true) }}" rel="stylesheet" type="text/css" media="all" />
 <link href="{{ asset('css/bootstrap-toggle/bootstrap-toggle.min.css', absolute=true) }}" rel="stylesheet" type="text/css" media="all" />
-#}
-<link href="{{ asset('css/saman.css', absolute=true) }}" rel="stylesheet" type="text/css" media="all" />
-<link href="{{ asset('css/glyphicons.css', absolute=true) }}" rel="stylesheet" type="text/css" media="all" />
-<link href="{{ asset('css/jquery-ui.css', absolute=true) }}" rel="stylesheet" type="text/css" media="all" />
-<link href="{{ asset('css/extra-glyphicons.css', absolute=true) }}" rel="stylesheet" type="text/css" media="all" />
-<link href="{{ asset('js/select2/select2.css', absolute=true) }}" rel="stylesheet" type="text/css" media="all" />
-<link href="{{ asset('js/select2/select2-bootstrap.css', absolute=true) }}" rel="stylesheet" type="text/css" media="all" />
-<link href="{{ asset('css/bootstrap-colorpicker.min.css', absolute=true) }}" rel="stylesheet" type="text/css" media="all" />
-<link href="{{ asset('css/font-awesome.min.css', absolute=true) }}" rel="stylesheet" type="text/css" media="all" />
-{#
 <link href="{{ asset('js/ladda/ladda-themeless.min.css', absolute=true) }}" rel="stylesheet" type="text/css" media="all" />
 #}
+{% stylesheets
+    '@AppBundle/Resources/public/css/vendor/glyphicons.css'
+    '@AppBundle/Resources/public/css/vendor/jquery-ui.css'
+    '@AppBundle/Resources/public/css/vendor/bootstrap/bootstrap.min.css'
+    '@AppBundle/Resources/public/css/vendor/bootstrap-toggle/bootstrap-toggle.min.css'
+    '@AppBundle/Resources/public/css/vendor/bootstrap/bootstrap-colorpicker.min.css'
+    '@AppBundle/Resources/public/css/vendor/font-awesome.min.css'
+    '@AppBundle/Resources/public/css/vendor/latofonts.css'
+    '@AppBundle/Resources/public/js/vendor/select2/select2.css'
+    '@AppBundle/Resources/public/js/vendor/select2/select2-bootstrap.css'
+    '@AppBundle/Resources/public/js/vendor/ladda-bootstrap/ladda-themeless.min.css'
+    output = 'css/saman-thirdparty.css' %}
+    <link rel="stylesheet" href="{{ root_url ~ asset_url }}" />
+{% endstylesheets %}
+
+{% stylesheets
+    '@AppBundle/Resources/public/css/saman.css'
+    '@AppBundle/Resources/public/css/extra-glyphicons.css'
+    filter = 'cssrewrite' 
+    output = 'css/saman-main.css' %}
+    <link rel="stylesheet" href="{{ root_url ~ asset_url }}" />
+{% endstylesheets %}
 
 <!-- Gamma Gallery -->
 {#
@@ -64,8 +82,31 @@
     '@AppBundle/Resources/public/js/vendor/jquery/jquery-ui.js'
     '@AppBundle/Resources/public/js/vendor/jquery/jquery.numeric.js'
     '@AppBundle/Resources/public/js/vendor/jquery/jquery.form.js'
+    '@AppBundle/Resources/public/js/vendor/bootstrap-toggle/bootstrap-toggle.min.js'
+    '@AppBundle/Resources/public/js/vendor/bootstrap-js/transition.js'
+    '@AppBundle/Resources/public/js/vendor/bootstrap-js/collapse.js'
+    '@AppBundle/Resources/public/js/vendor/bootstrap/bootstrap.min.js'
+    '@AppBundle/Resources/public/js/vendor/bootbox/bootbox.min.js'
+    '@AppBundle/Resources/public/js/vendor/select2/select2.js'
+    '@AppBundle/Resources/public/js/vendor/jquery/jquery.liveFilter.js'
+    '@AppBundle/Resources/public/js/vendor/bootstrap/bootstrap-editable.min.js'
+    '@AppBundle/Resources/public/js/vendor/bootstrap/bootstrap-datetimepicker.js'
+    '@AppBundle/Resources/public/js/vendor/jquery-vegas/jquery.vegas.min.js'
+    '@AppBundle/Resources/public/js/vendor/ladda-bootstrap/spin.min.js'
+    '@AppBundle/Resources/public/js/vendor/ladda-bootstrap/ladda.min.js'
+    '@AppBundle/Resources/public/js/vendor/bootstrap/bootstrap-colorpicker.min.js'
     '@AppBundle/Resources/public/js/script.main.js'
-    filter = 'uglifyjs2'
-    output='js/saman-main.js' %}
+    '@AppBundle/Resources/public/js/vendor/ckeditor/ckeditor.js'
+    output = 'js/saman-admin-main.js' %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+{% endjavascripts %}
+{#filter = 'uglifyjs2'#}
+
+{% javascripts 
+    '@AppBundle/Resources/public/js/vendor/blueimp/jquery.iframe-transport.js'
+    '@AppBundle/Resources/public/js/vendor/blueimp/jquery.fileupload.js'
+    '@AppBundle/Resources/public/js/vendor/blueimp/jquery.fileupload-process.js'
+    '@AppBundle/Resources/public/js/vendor/blueimp/jquery.fileupload-ui.js'
+    output = 'js/saman-blueimp-main.js' %}
     <script type="text/javascript" src="{{ asset_url }}"></script>
 {% endjavascripts %}
