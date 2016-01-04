@@ -293,7 +293,3 @@ button:active,
 .form-qty-small {
     width: 65px !important;
 }
-.glyphicon.glyphicon-shopping_bag:before{font-family: 'Glyphicons Regular';content:"\E351"}
-.glyphicon.glyphicon-unlock:before{font-family: 'Glyphicons Regular';content:"\E205"}
-.glyphicon.glyphicons-brush:before{font-family: 'Glyphicons Regular';content:"\E235"}
-.glyphicon.glyphicons-eyedropper:before{font-family: 'Glyphicons Regular';content:"\E091"}
