@@ -16,10 +16,6 @@
         <div id="main-body" class="main-body-default container-fluid">
             <div class="row">
                 <div class="col-xs-12 col-s-11 col-md-10 col-lg-10 margin-top-40">
-                    {#
-                    {% include '::_ui.html.twig'%}
-                    #}
-                        
                     <div id="flashBag-container" data-url="{{ path('saman_app_display_flash_bag') }}"></div>
 
                     {% block pageOpenContainer %}{{ parent() }}{% endblock %}

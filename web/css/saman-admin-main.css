@@ -23,16 +23,24 @@ body {
 }
 
 #main-sidebar {
-    background-color: #3c4b5b;
+    background-color: #303e4d;
     position: fixed;
     height: 100%;
-    color: #fff;
+    color: #efefef;
+}
+#main-sidebar .footer {
+    padding-top: 10px;
+    padding-left: 25px;
+    background-color: #2c3849;
+    height: 70px;
+    position: fixed;
+    bottom: 0;
+    width: 100%;    
 }
 #main-sidebar .header {
     padding-top: 10px;
-    background-color: #435466;
+    background-color: #2c3849;
     height: 70px;
-    color: #fff;
 }
 #main-sidebar .header .user-info {
     padding-left: 25px;    
@@ -81,7 +89,7 @@ body {
     padding-left: 25px;
 }
 #main-sidebar .sidebar-links:hover {
-    background-color: #435466 !important;
+    background-color: #3f4d5b !important;
 }
 
 .color-red {
