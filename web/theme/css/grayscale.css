@@ -348,15 +348,6 @@ a:focus {
     transition: all .3s ease-in-out;
 }
 
-/*
-.btn-default {
-    border: 1px solid #b2c437;//#42dca3;
-    color: #b2c437;
-    background-color: transparent;
-}
-*/
-
-
 .btn-xxlg {
     padding: 20px !important;
     font-size: 20px;
@@ -422,10 +413,20 @@ a:focus {
 }
 
 .btn-default {
-    border: 2px solid #dbe2ae;//#42dca3;
-    outline: 0;
-    color: #fff;
-    background-color: #b2c437;
+    border: 2px solid #dbe2ae !important;
+    outline: 0 !important;
+    color: #fff !important;
+    background-color: #b2c437 !important;
+}
+
+.btn-default:hover,
+.btn-default:focus,
+.btn-primary:hover, 
+.btn-primary:focus {
+    border: 2px solid #fff !important;
+    outline: 0 !important;
+    color: #fff !important;
+    background-color: #91a222 !important;
 }
 
 .btn-fade {
@@ -461,16 +462,6 @@ a:focus {
 
 .modal-content .btn-primary, .modal-content .btn-default {
     padding: 8px 10px 8px 10px !important;
-}
-
-.btn-default:hover,
-.btn-default:focus,
-.btn-primary:hover, 
-.btn-primary:focus {
-    border: 2px solid #fff !important;
-    outline: 0 !important;
-    color: #fff !important;
-    background-color: #9cad29 !important;
 }
 
 button[disabled] {
