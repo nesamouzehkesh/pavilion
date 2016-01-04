@@ -437,12 +437,12 @@ a:focus {
 }
 
 .btn-primary {
-    border: 2px solid #dbe2ae;
-    padding-top: 15px;
-    padding-bottom: 15px;
-    outline: 0;
-    color: #fff;
-    background-color: #b2c437;
+    border: 2px solid #dbe2ae !important;
+    padding-top: 15px !important;
+    padding-bottom: 15px !important;
+    outline: 0 !important;
+    color: #fff !important;
+    background-color: #b2c437 !important;
 }
 
 .btn.disabled,
