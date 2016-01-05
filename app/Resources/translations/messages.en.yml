@@ -45,6 +45,7 @@ action:
     logout: Sign out
     addFiles: Add files...
     addNewItem: Add New Item
+    backToPreviousPage: Back
     send: Send
     save: Save
     copy: Copy

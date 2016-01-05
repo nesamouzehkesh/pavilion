@@ -3,15 +3,7 @@
 <script type="text/javascript">
 $(function(){
     var currentPage = '1';
-    var cont_products = $('#products-list-container');
-    
-    {# If we want to have ajax for loading pages
-    cont_products.on('click', '.action-pagination', function(e){      
-        e.preventDefault();
-        currentPage = $(this).attr('data-page');
-        displayItems('{{ twig_url_items }}', cont_products, currentPage);
-    });
-    #}
+    var cont_products = $('#products-container');
 
     $('.action-filter-progress-order').click(function(e){
         e.preventDefault();
@@ -19,20 +11,6 @@ $(function(){
         displayItems(url, cont_products, '1');
     });
     
-    cont_products.on('click', '.action-product-add-to-cart, .action-product-remove-from-cart', function(e){       
-        var thisContainer = $(this).closest("span");
-        var url = $(this).attr('data-url');
-        var activateTarget = $($(this).attr('data-activate-target'));
-        $.get(url, function(response) {
-            if (response.success === true) {
-                thisContainer.hide();
-                activateTarget.show();
-            } else{
-                bootbox.alert(response.message);
-            }
-        }, 'json');
-    });
-       
     $("#input-search").keyup(function(e) {
         searchItems($(this), '{{ twig_url_items }}', cont_products, currentPage);
     });    

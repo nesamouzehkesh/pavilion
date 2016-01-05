@@ -39,6 +39,10 @@ class TwigFilterExtension extends Twig_Extension
     {
         return array(
             new \Twig_SimpleFilter(
+                'getParam', 
+                array($this, 'getParam')
+                ),
+            new \Twig_SimpleFilter(
                 'mapTo', 
                 array($this, 'mapTo')
                 ),
@@ -87,6 +91,22 @@ class TwigFilterExtension extends Twig_Extension
                 array('is_safe' => array('html'))
                 ),
             );
+    }
+    
+    /**
+     * 
+     * @param type $params
+     * @param type $key
+     * @param type $default
+     * @return type
+     */
+    public function getParam($params, $key, $default = null)
+    {
+        if (array_key_exists($key, $params)) {
+            return $params[$key];
+        }
+        
+        return $default;
     }
     
     /**

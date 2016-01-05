@@ -30,30 +30,19 @@ class ProductController extends BaseController
             // Get pagination
             $productsPagination = $this->getAppService()
                 ->paginate($request, $products);
-
-            // Render and return the view
-            $productsView = $this->renderView(
-                '::web/product/element/products.html.twig',
-                array(
-                    'shoppingCartProductIds' => $this->getShoppingService()->getShoppingCartListIds(),
-                    'productsPagination' => $productsPagination
-                    )
-                );
-            
-            // If user use the pagination to view other pages then we just return the 
-            // $pagesView as a jason response array
-            if ($request->get('headless')) {
-                return $this->getAppService()
-                    ->getJsonResponse(true, null, $productsView);
-            } 
-            
             // Get all Categories
             $categories = Category::getRepository($em)->getCategories();
             
+            $this->getSession()->set(
+                'pageParams', 
+                array('page' => $productsPagination->getCurrentPageNumber())
+                );
+            
             return $this->render(
-                '::web/product/index.html.twig',
+                '::web/product/products.html.twig',
                 array(
-                    'productsView' => $productsView,
+                    'shoppingCartProductIds' => $this->getShoppingService()->getShoppingCartListIds(),
+                    'productsPagination' => $productsPagination,
                     'categories' => $categories,
                     )
                 );
@@ -73,23 +62,18 @@ class ProductController extends BaseController
         try {
             // Get ObjectManager
             $em = $this->getDoctrine()->getManager();
-        
             // Get all Products
             $product = Product::getRepository($em)->getProduct($productId);
             
-            // Generate the view for this page
-            $pageView = $this->renderView(
-                'ProductBundle:Product:product.html.twig',
-                array('product' => $product)
-                );
-            
-            // Generate final jason responce
-            return $this->getJsonResponse(true, null, $pageView);
+            return $this->render(
+                '::web/product/product.html.twig',
+                array(
+                    'shoppingCartProductIds' => $this->getShoppingService()->getShoppingCartListIds(),
+                    'pageParams' => $this->getSession()->get('pageParams'),
+                    'product' => $product
+                ));
         } catch (\Exception $ex) {
-            return $this->getExceptionResponse(
-                'alert.error.canNotDisplayItem', 
-                $ex
-                );
+            return $this->getExceptionResponse('alert.error.canNotDisplayItem', $ex);
         }
     }       
     

@@ -1,0 +1,19 @@
+{% set twig_url_items = path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')|merge({'headless': true})) %}
+
+<script type="text/javascript">
+$(function(){
+    $('#products-container, #product-container').on('click', '.action-product-add-to-cart, .action-product-remove-from-cart', function(e){       
+        var thisContainer = $(this).closest("span");
+        var url = $(this).attr('data-url');
+        var activateTarget = $($(this).attr('data-activate-target'));
+        $.get(url, function(response) {
+            if (response.success === true) {
+                thisContainer.hide();
+                activateTarget.show();
+            } else{
+                bootbox.alert(response.message);
+            }
+        }, 'json');
+    });
+});
+</script>

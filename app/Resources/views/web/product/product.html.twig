@@ -1,44 +1,63 @@
 {% extends "::web/content.html.twig" %}
 
-{% set title = product.title %}
+{% set title = '' %}
 {% set pageIcon = '' %}
 
 {% block pageBody %}
-    <div class="row">
-        <div class="col-md-12"><strong>Price:</strong> {{ product.price }}</div>
-    </div>    
-    <div class="row">
-        <div class="col-md-12">{{ product.description|raw }}</div>
-    </div>
-
-    <div class="view-product-price">
-        <span class="originalPrice">${{ product.originalPrice|number_format(2, '.', ',') }}</span>
-        <span class="price">${{ product.price|number_format(2, '.', ',') }}</span>
-    </div>      
+    <a href="{{ path('saman_shopping_product_home', {'page': pageParams|getParam('page', 1)}) }}">
+        {{ 'action.backToPreviousPage'|trans }}
+    </a>
     
-    {% set image = product.image|getMedia %}
-    {% if image is not null %}
+    <div id="product-container">
+        <div class="view-product-title">
+            <h3>{{ product.title }}</h3><br>
+        </div>
+
+        <div class="view-product-price">
+            <span class="originalPrice">${{ product.originalPrice|number_format(2, '.', ',') }}</span>
+            <span class="price">${{ product.price|number_format(2, '.', ',') }}</span>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">{{ product.description|raw }}</div>
+        </div>
+
+        {% set image = product.image|getMedia %}
+        {% if image is not null %}
+            <div class="row margin-top-10">
+                <div class="col-md-12">
+                    <a href="{{ asset(image.path|imagine_filter('o')) }}" target="_blank">
+                        <img src="{{ asset(image.path|imagine_filter('s')) }}" class="img-thumbnail" />
+                    </a>
+                </div>
+            </div>
+        {% endif %}
+
         <div class="row margin-top-10">
             <div class="col-md-12">
-                <a href="{{ asset(image.path|imagine_filter('o')) }}" target="_blank">
-                    <img src="{{ asset(image.path|imagine_filter('s')) }}" class="img-thumbnail" />
-                </a>
+                {% for image in product.images|getMedias %}
+                    <a href="{{ asset(image.path|imagine_filter('o')) }}" target="_blank">
+                        <img src="{{ asset(image.path|imagine_filter('t')) }}" class="img-thumbnail" />
+                    </a>
+                {% endfor %}
             </div>
         </div>
-    {% endif %}
-    
-    <div class="row margin-top-10">
-        <div class="col-md-12">
-            {% for image in product.images|getMedias %}
-                <a href="{{ asset(image.path|imagine_filter('o')) }}" target="_blank">
-                    <img src="{{ asset(image.path|imagine_filter('t')) }}" class="img-thumbnail" />
-                </a>
-            {% endfor %}
-        </div>
-    </div>
-        
+            
+        {% set isOrdered = (product.id in shoppingCartProductIds) %}    
+        <span id="button-add-cart-{{ product.id }}" {{ isOrdered? 'style="display: none;"' : '' }}>
+            <button type="button" data-activate-target="#button-remove-cart-{{ product.id }}" class="btn btn-default action-product-add-to-cart" data-url="{{ path('saman_shopping_modify_shopping_cart', {'action': 'add', 'productId': product.id}) }}">
+                {{ 'shopping.action.addToCart'|trans }}
+            </button>
+        </span>
+        <span id="button-remove-cart-{{ product.id }}" {{ isOrdered? '' : 'style="display: none;"' }}>
+            <button type="button" data-activate-target="#button-add-cart-{{ product.id }}" class="btn btn-default action-product-remove-from-cart" data-url="{{ path('saman_shopping_modify_shopping_cart', {'action': 'remove', 'productId': product.id}) }}">
+                {{ 'shopping.action.removeFromCart'|trans }}
+            </button>
+        </span>
+    </div>                
 {% endblock %}
 
 {% block script %}
     {% include '::web/product/js/product.js.twig' %}
+    {% include '::web/product/js/shoppingCart.js.twig' %}
 {% endblock %}
