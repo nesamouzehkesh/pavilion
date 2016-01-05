@@ -704,7 +704,7 @@ class AppService
         $itemsPagination = $this->getPaginator()->paginate(
             $itemsQuery,
             $request->get(self::PARAM_PAGE, 1),
-            2//$this->getParameter('numberOfItemsPerPage', 10)
+            $this->getParameter('numberOfItemsPerPage', 10)
         );
 
         $currentPageNumber = $itemsPagination->getCurrentPageNumber();
