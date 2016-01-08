@@ -37,6 +37,7 @@ framework:
 parameters:
     # General parameters
     saman.payment:
+        activeMode: production
         sandbox:
             paypal:
                 baseUrl: "https://api.sandbox.paypal.com"

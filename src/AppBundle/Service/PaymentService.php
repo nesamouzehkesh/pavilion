@@ -79,9 +79,10 @@ class PaymentService
     public function getPaymentApi()
     {
         if (!$this->paymentApi instanceof AbstractPaymentApi) {
+            $activeMode = $this->appService->getParameter('activeMode');
             // Initializing default PayPalPaymentApi
             $this->paymentApi = new PayPalPaymentApi(
-                $this->appService->getParameter('sandbox')['paypal']
+                $this->appService->getParameter($activeMode)['paypal']
                 );            
         }
         
