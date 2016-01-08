@@ -137,9 +137,13 @@ class FormField
         if ($convert) {
             $choices = array();
             $themps = explode(',', $this->choices);
-            foreach ($themps as $themp) {
-                $data = explode(':', $themp);
-                $choices[$data[0]] = $data[1];
+            if (is_array($themps)) {
+                foreach ($themps as $themp) {
+                    $data = explode(':', $themp);
+                    if (is_array($data) and isset($data[1])) {
+                        $choices[$data[0]] = $data[1];
+                    }
+                }
             }
             
             return $choices;

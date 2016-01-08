@@ -2,16 +2,16 @@
 
 {% block body %}
     <h3></h3>
-    {% for module, url in saman_app_modules %}
-
-        <a href="{{ path(url) }}" class="module-logo" title="{{ ('module.' ~ module ~ '.description')|trans }}">
-            {% set logoClass = loop.index|mapTo(['bg-red', 'bg-blue', 'bg-green', 'bg-yellow', 'bg-violet', 'bg-white']) %}
-            {{ ('module.' ~ module ~ '.icon')|icon(logoClass) }}
-            <h3>{{ ('module.' ~ module ~ '.title')|trans }}</h3>
-            <span class="description">
-                {{ ('module.' ~ module ~ '.description')|trans }}
-            </span>    
-        </a>
-        
-    {% endfor %}
+    {% if saman_displayFullView %}
+        {% for module, url in saman_app_modules %}
+            <a href="{{ path(url) }}" class="module-logo" title="{{ ('module.' ~ module ~ '.description')|trans }}">
+                {% set logoClass = loop.index|mapTo(['bg-red', 'bg-blue', 'bg-green', 'bg-yellow', 'bg-violet', 'bg-white']) %}
+                {{ ('module.' ~ module ~ '.icon')|icon(logoClass) }}
+                <h3>{{ ('module.' ~ module ~ '.title')|trans }}</h3>
+                <span class="description">
+                    {{ ('module.' ~ module ~ '.description')|trans }}
+                </span>    
+            </a>
+        {% endfor %}
+    {% endif %}
 {% endblock %}

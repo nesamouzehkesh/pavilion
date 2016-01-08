@@ -28,18 +28,7 @@
     output = 'css/saman-admin-main.css' %}
     <link rel="stylesheet" href="{{ root_url ~ asset_url }}" />
 {% endstylesheets %}
-{#
-{% stylesheets
-    'css/latofonts.less'
-    filter = 'less'
-    output = 'css/saman-main.css' %}
-    <link rel="stylesheet" href="{{ root_url ~ asset_url }}" />
-{% endstylesheets %}
-#}
 
-{#
-'@AppBundle/Resources/public/js/jquery-sortable.js'
-#}
 {% javascripts
     '@AppBundle/Resources/public/js/vendor/jquery/jquery-1.11.0.min.js'
     '@AppBundle/Resources/public/js/vendor/jquery/jquery-ui.js'
@@ -63,7 +52,10 @@
     output = 'js/saman-admin-main.js' %}
     <script type="text/javascript" src="{{ asset_url }}"></script>
 {% endjavascripts %}
-{#filter = 'uglifyjs2'#}
+{#
+'@AppBundle/Resources/public/js/jquery-sortable.js'
+filter = 'uglifyjs2'
+#}
 
 {% javascripts 
     '@AppBundle/Resources/public/js/vendor/blueimp/jquery.iframe-transport.js'

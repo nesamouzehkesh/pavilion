@@ -1,4 +1,16 @@
 services:
+    saman_product.product:
+        class: ProductBundle\Service\ProductService
+        arguments: 
+            - @saman.appService
+            - %saman_product%
+
+    saman_product.twig.filter.extension:
+        class: ProductBundle\Twig\ProductTwigFilterExtension
+        arguments: [@translator.default]
+        tags:
+             - { name: twig.extension }
+             
     saman_product.validator.product.category.for.delete:
         class: ProductBundle\Validator\Constraints\ValidCategoryForDeleteValidator
         arguments: ["@doctrine.orm.entity_manager"]

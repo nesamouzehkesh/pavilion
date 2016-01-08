@@ -32,11 +32,13 @@ class Product extends BaseEntity implements ShoppingItemInterface
     private $title;
     
     /**
-     * @var string
+     * Product specifications
+     * 
+     * @var array
      *
-     * @ORM\Column(name="content", type="array", nullable=true)
+     * @ORM\Column(name="specifications", type="array", nullable=true)
      */
-    private $content;
+    private $specifications;
 
     /**
      * @var string
@@ -159,26 +161,26 @@ class Product extends BaseEntity implements ShoppingItemInterface
     }
     
     /**
-     * Set content
+     * Set specifications
      *
-     * @param string $content
+     * @param string $specifications
      * @return Order
      */
-    public function setContent($content)
+    public function setSpecifications($specifications)
     {
-        $this->content = $content;
+        $this->specifications = $specifications;
 
         return $this;
     }
 
     /**
-     * Get content
+     * Get specifications
      *
      * @return string 
      */
-    public function getContent()
+    public function getSpecifications()
     {
-        return $this->content;
+        return $this->specifications;
     }
 
     /**

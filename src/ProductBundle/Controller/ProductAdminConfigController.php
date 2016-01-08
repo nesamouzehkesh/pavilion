@@ -20,14 +20,14 @@ class ProductAdminConfigController extends BaseController
         
         // Get all Products
         $categories = Category::getRepository($em)->getCategories();
-        $customFormConfig = $this->getAppService()
-            ->getSystemConfig(SystemConfig::KEY_PRODUCT_CUSTOM_FORM);
+        $specifications = $this->getAppService()
+            ->getSystemConfig(SystemConfig::PRODUCT_SPECIFICATION_FIELD);
         
         // Render and return the view
         return $this->render(
             'ProductBundle:Product:configs.html.twig',
             array(
-                'customFormConfig' => $customFormConfig,
+                'specifications' => $specifications,
                 'categories' => $categories
                 )
             );
@@ -106,19 +106,19 @@ class ProductAdminConfigController extends BaseController
     }
     
     /**
-     * Unset custom form field
+     * Unset specification form field
      * 
      * @param int $fieldKey
      * @return type
      */
-    public function deleteCustomFieldAction($fieldKey)
+    public function deleteSpecificationFieldAction($fieldKey)
     {
         try {
-            $customFormConfig = $this->getAppService()
-                ->getSystemConfig(SystemConfig::KEY_PRODUCT_CUSTOM_FORM);
+            $specificationFormConfig = $this->getAppService()
+                ->getSystemConfig(SystemConfig::PRODUCT_SPECIFICATION_FIELD);
 
-            $customFormConfig->unSetOptions($fieldKey);
-            $this->getAppService()->saveEntity($customFormConfig);
+            $specificationFormConfig->unSetOptions($fieldKey);
+            $this->getAppService()->saveEntity($specificationFormConfig);
             
             return $this->getJsonResponse(true);
         } catch (\Exception $ex) {
@@ -136,16 +136,16 @@ class ProductAdminConfigController extends BaseController
      * @param type $fieldKey
      * @return type
      */
-    public function addEditCustomFieldAction(Request $request, $fieldKey = null)
+    public function addEditSpecificationFieldAction(Request $request, $fieldKey = null)
     {
         try {
-            $customFormConfig = $this->getAppService()
-                ->getSystemConfig(SystemConfig::KEY_PRODUCT_CUSTOM_FORM);
+            $specificationFormConfig = $this->getAppService()
+                ->getSystemConfig(SystemConfig::PRODUCT_SPECIFICATION_FIELD);
             
             // Create form field object 
             $formField = new FormField(
                 $fieldKey, 
-                $customFormConfig->getOption($fieldKey)
+                $specificationFormConfig->getOption($fieldKey)
                 );
             
             // Generate Product Form
@@ -162,13 +162,13 @@ class ProductAdminConfigController extends BaseController
             // If form is submited and it is valid then add or update this $product
             if ($formFieldForm->isValid()) {
                 
-                $customFormConfig->unSetOptions($fieldKey);
-                $customFormConfig->setOption(
+                $specificationFormConfig->unSetOptions($fieldKey);
+                $specificationFormConfig->setOption(
                     $formField->getKey(), 
                     $formField->getData()
                     );
                 
-                $this->getAppService()->saveEntity($customFormConfig);
+                $this->getAppService()->saveEntity($specificationFormConfig);
                 
                 return $this->getJsonResponse(true);
             }
@@ -180,7 +180,7 @@ class ProductAdminConfigController extends BaseController
             
             return $this->getJsonResponse(true, null, $view);
         } catch (\Exception $ex) {
-            return $this->getExceptionResponse('Can not add or edit category', $ex);
+            return $this->getExceptionResponse('Can not add or edit specification field', $ex);
         }         
     }    
     

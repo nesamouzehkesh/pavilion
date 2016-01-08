@@ -50,14 +50,14 @@
     </div>
 
             
-    <h4>{{ 'product.customFields'|trans }}</h4>
-    <button data-url="{{ path('saman_admin_product_custom_field_addedit') }}" id="action-add-form-filed" type="button" class="btn btn-primary btn-sm" data-target="#config-form-container">
-        {{ 'icon.add'|icon }} {{ 'product.action.addNewCustomField'|trans }}
+    <h4>{{ 'product.specificationFields'|trans }}</h4>
+    <button data-url="{{ path('saman_admin_product_specification_field_addedit') }}" id="action-add-form-filed" type="button" class="btn btn-primary btn-sm" data-target="#config-form-container">
+        {{ 'icon.add'|icon }} {{ 'product.action.addNewSpecificationField'|trans }}
     </button>
     
     <div class="row margin-top-10 margin-bottom-30">
         <div class="col-md-12">
-            {% for key, option in customFormConfig.options %}
+            {% for key, option in specifications.options %}
                 {% set id = 'form-option-' ~ key %}
                 <span class="btn btn-default margin-top-2" id="{{ id }}" name="{{ id }}">
                     {{ option.label }}
@@ -65,7 +65,7 @@
                     {{ button(
                         null, 
                         {
-                            url: path('saman_admin_product_custom_field_addedit', {'fieldKey': key}),
+                            url: path('saman_admin_product_specification_field_addedit', {'fieldKey': key}),
                             icon: 'icon.edit', 
                             toggleModal: 'config-form-container', 
                             action: 'action-edit-form-filed'
@@ -73,7 +73,7 @@
                     {{ button(
                         null, 
                         {
-                            url: path('saman_admin_product_custom_field_delete', {'fieldKey': key }),
+                            url: path('saman_admin_product_specification_field_delete', {'fieldKey': key }),
                             icon: 'icon.delete', 
                             action: 'action-delete-form-filed',
                         }) }}            

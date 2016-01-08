@@ -785,28 +785,34 @@ class AppService
     
     /**
      * 
-     * @param \Symfony\Component\HttpFoundation\Request $request
-     * @param type $param
+     * @param Request $request
+     * @param type $params
+     * @param type $result
+     * @return type
      */
-    public function getSearchParam(Request $request, $param = null)
+    public function getSearchParam(Request $request, $params = array(), $result = array())
     {
-        if (null === $param) {
-            $param = array();
-        }
-        
         if (null !== ($searchText = $request->get(self::PARAM_SEARCH_TEXT, null))) {
-            $param[self::PARAM_SEARCH_TEXT] = $searchText;
+            $result[self::PARAM_SEARCH_TEXT] = $searchText;
         }
         
         if (null !== ($searchTarget = $request->get(self::PARAM_SEARCH_TARGET, null))) {
-            $param[self::PARAM_SEARCH_TARGET] = $searchTarget;
+            $result[self::PARAM_SEARCH_TARGET] = $searchTarget;
         }
         
         if (null !== ($searchType = $request->get(self::PARAM_SEARCH_TYPE, null))) {
-            $param[self::PARAM_SEARCH_TYPE] = $searchType;
+            $result[self::PARAM_SEARCH_TYPE] = $searchType;
         }
         
-        return $param;
+        foreach ($params as $key => $value) {
+            if (is_int($key)) {
+                $result[$value] = $request->get($value, null);
+            } else {
+                $result[$key] = $request->get($key, $value);
+            }
+        }
+        
+        return $result;
     }
     
     /**

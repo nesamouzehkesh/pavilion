@@ -32,13 +32,13 @@ saman_admin_product_category_addedit:
     path:     /admin/product/configs/category/update/{categoryId}
     defaults: { _controller: ProductBundle:ProductAdminConfig:addEditCategory, categoryId: null }
 
-saman_admin_product_custom_field_delete:
-    path:     /admin/product/configs/customfield/delete/{fieldKey}
-    defaults: { _controller: ProductBundle:ProductAdminConfig:deleteCustomField }
+saman_admin_product_specification_field_delete:
+    path:     /admin/product/configs/specificationfield/delete/{fieldKey}
+    defaults: { _controller: ProductBundle:ProductAdminConfig:deleteSpecificationField }
     
-saman_admin_product_custom_field_addedit:
-    path:     /admin/product/configs/customfield/update/{fieldKey}
-    defaults: { _controller: ProductBundle:ProductAdminConfig:addEditCustomField, fieldKey: null }
+saman_admin_product_specification_field_addedit:
+    path:     /admin/product/configs/specificationfield/update/{fieldKey}
+    defaults: { _controller: ProductBundle:ProductAdminConfig:addEditSpecificationField, fieldKey: null }
     
     
 saman_shopping_product_home:

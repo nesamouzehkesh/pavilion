@@ -5,8 +5,30 @@
     {{ form_row(form.key) }}
     {{ form_row(form.label) }}
     {{ form_row(form.type) }}
-    {{ form_row(form.choices) }}
+    <div id="form-choices-container" style="display: none;">
+        {{ form_row(form.choices) }}
+        <span class="d-text-muted">e.g. id1:value1,id2:value2,id3:value3</span>
+    </div>
     {{ form_row(form.visible) }}
     {{ form_row(form.required) }}
     {{ form_row(form.default) }}
+
+    <script type="text/javascript">
+    $(function() {
+        var fieldType = $('#saman_form_field_form_type');
+        changeFieldType(fieldType.val());
+        fieldType.change(function() {
+            changeFieldType($(this).val());
+        });
+
+        function changeFieldType(fieldType)
+        {
+            if (fieldType === 'choice') {
+                $("#form-choices-container").fadeIn();
+            } else {
+                $("#form-choices-container").fadeOut();
+            }
+        }
+    });
+    </script>    
 {% endblock %}

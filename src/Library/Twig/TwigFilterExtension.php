@@ -102,7 +102,7 @@ class TwigFilterExtension extends Twig_Extension
      */
     public function getParam($params, $key, $default = null)
     {
-        if (array_key_exists($key, $params)) {
+        if (is_array($params) AND array_key_exists($key, $params)) {
             return $params[$key];
         }
         

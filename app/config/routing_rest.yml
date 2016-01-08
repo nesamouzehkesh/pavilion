@@ -4,36 +4,36 @@
 
 api_product_show_products:
     path:     /products/{page}/{_format}
-    defaults: { _controller: ProductBundle:ProductApi:getProducts, page: 0, _format: json }
+    defaults: { _controller: ProductBundle:Api\ProductApi:getProducts, page: 0, _format: json }
     requirements:
         _method: GET
     
 api_product_show_product:
     path:     /product/get/{productId}
-    defaults: { _controller: ProductBundle:ProductApi:getProduct }
+    defaults: { _controller: ProductBundle:Api\ProductApi:getProduct }
     requirements:
         _method: GET
         
 api_product_show_test_product:
     path:     /product/test/{productId}
-    defaults: { _controller: ProductBundle:ProductAdminApi:getProduct }
+    defaults: { _controller: ProductBundle:Api\ProductAdminApi:getProduct }
     requirements:
         _method: GET
 
 api_product_get_product_form:
     path:     /product/form/{productId}
-    defaults: { _controller: ProductBundle:ProductAdminApi:getProductForm, productId: null }
+    defaults: { _controller: ProductBundle:Api\ProductAdminApi:getProductForm, productId: null }
     requirements:
         _method: GET
 
 api_product_add_product:
     path:     /product/post
-    defaults: { _controller: ProductBundle:ProductAdminApi:addProduct }
+    defaults: { _controller: ProductBundle:Api\ProductAdminApi:addProduct }
     requirements:
         _method: POST
         
 api_product_edit_product:
     path:     /product/post/{productId}
-    defaults: { _controller: ProductBundle:ProductAdminApi:editProduct }    
+    defaults: { _controller: ProductBundle:Api\ProductAdminApi:editProduct }    
     requirements:
         _method: POST

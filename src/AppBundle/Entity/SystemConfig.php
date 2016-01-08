@@ -12,13 +12,13 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class SystemConfig
 {
-    const KEY_PRODUCT_CUSTOM_FORM = 1;
+    const PRODUCT_SPECIFICATION_FIELD = 1;
     
     /**
      * @var type 
      */
     public static $configKeys = array(
-        self::KEY_PRODUCT_CUSTOM_FORM => ''
+        self::PRODUCT_SPECIFICATION_FIELD => ''
     );
     
     /**
@@ -126,7 +126,7 @@ class SystemConfig
     public function setOption($key, $data)
     {
         $this->options[$key] = $data;
-
+        
         return $this;
     }
 

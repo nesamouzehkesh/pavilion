@@ -183,15 +183,17 @@ shopping:
 
 product:
     products: Products
+    description: Product description
+    specifications: Product specifications
     configs: Configs
-    categories: Product Categories
-    customFields: Custom Fields
+    categories: Categories
+    specificationFields: Specification Fields
     addProduct:
         productGeneralInfoTab: General Info
-        productCustomInfoTab: Custom Info
+        productSpecificationsTab: Specifications
     action:
         addNewCategory: Add Category
-        addNewCustomField: Add Custom Field
+        addNewSpecificationField: Add Specification Field
 
 order:
     myOrders: My Orders

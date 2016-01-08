@@ -30,7 +30,7 @@ class ProductType extends AbstractType
     public function __construct(array $param = null)
     {
         if (null !== $param) {
-            $this->param['contentStructure'] = $param;
+            $this->param['specificationFields'] = $param;
         }
     }
     
@@ -43,8 +43,8 @@ class ProductType extends AbstractType
     {
         $builder
             ->add('title', 'text')
-            ->add('content', 'saman_collection', array(
-                'fields' => $this->param['contentStructure'],
+            ->add('specifications', 'saman_collection', array(
+                'fields' => $this->param['specificationFields'],
                 ))
             ->add('image', 'saman_media', array(
                 'attr'  => array('isMultiple' => false, 'dragover' => false)

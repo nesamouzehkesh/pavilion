@@ -15,16 +15,13 @@ class CmsAdminController extends BaseController
     public function displayPagesAction(Request $request)
     {
         // Get search parameters from HTTP request
-        $searchParam = $this->getAppService()
-            ->getSearchParam($request);
+        $searchParam = $this->getAppService()->getSearchParam($request);
 
         // Get pages based on $searchParam
-        $pagesQuery = $this->getCmsAdminService()
-            ->getPages($searchParam);
+        $pagesQuery = $this->getCmsAdminService()->getPages($searchParam);
 
         // Get pagination
-        $pagesPagination = $this->getAppService()
-            ->paginate($request, $pagesQuery);
+        $pagesPagination = $this->getAppService()->paginate($request, $pagesQuery);
 
         // Get the view of pages list
         $pagesView = $this->renderView(

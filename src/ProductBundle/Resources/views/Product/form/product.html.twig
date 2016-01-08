@@ -3,7 +3,7 @@
 {% block body %}
     <ul class="nav nav-tabs margin-bottom-20" role="tablist">
         <li role="presentation" class="active"><a href="#productGeneralInfoTab" aria-controls="productGeneralInfoTab" role="tab" data-toggle="tab">{{ 'product.addProduct.productGeneralInfoTab'|trans }}</a></li>
-       <li role="presentation"><a href="#productCustomInfoTab" aria-controls="productCustomInfoTab" role="tab" data-toggle="tab">{{ 'product.addProduct.productCustomInfoTab'|trans }}</a></li>
+       <li role="presentation"><a href="#productSpecificationsTab" aria-controls="productSpecificationsTab" role="tab" data-toggle="tab">{{ 'product.addProduct.productSpecificationsTab'|trans }}</a></li>
     </ul>
 
     {{ form_errors(form) }}
@@ -19,8 +19,8 @@
             {{ form_row(form.description) }}
             {{ form_row(form.images) }}
         </div>
-        <div role="tabpanel" class="tab-pane" id="productCustomInfoTab">
-            {{ form_row(form.content) }}
+        <div role="tabpanel" class="tab-pane" id="productSpecificationsTab">
+            {{ form_row(form.specifications) }}
         </div>
     </div>    
 {% endblock %}

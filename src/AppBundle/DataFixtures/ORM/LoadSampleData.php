@@ -223,7 +223,7 @@ class LoadSampleData implements FixtureInterface
             ),
         ),
         'systemConfigs' => array(
-            SystemConfig::KEY_PRODUCT_CUSTOM_FORM => array(
+            SystemConfig::PRODUCT_SPECIFICATION_FIELD => array(
                 'origin' => array(
                     'type' => 'choice',
                     'choices' => array(
