@@ -1,0 +1,6 @@
+{% for activity in userActivities %}
+    <blockquote class="mini_quote br-red">
+        {{ activity.title|trans }} <span class="badge"> {{ activity.count }}</span><br>
+        <span class="d-text-muted">Last {{ activity.title|trans|lower }} on: {{ activity.time|date('d/m/Y') }}</span>
+    </blockquote>
+{% endfor %}    

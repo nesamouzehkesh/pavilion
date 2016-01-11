@@ -1,0 +1,15 @@
+{% extends "::twig/modal.html.twig" %}
+
+{% set modalTitle = user.firstName ~ ' ' ~ user.lastName %}
+{% set modalLogo = user.logo %}
+
+{% block body %}
+    <address>
+        <strong>{{ user.firstName }} {{ user.lastName }}</strong><br>
+        <a href="mailto:#">{{ user.email }}</a>
+    </address>
+        
+    User Activities:
+    {% include 'UserBundle:User:_userActivity.html.twig' %}
+
+{% endblock %}

@@ -39,6 +39,5 @@ class RoleRepository extends BaseEntityRepository
             ->setParameter('role', $role);
             
         return $qb->getQuery()->getOneOrNullResult();
-    }    
-    
+    }   
 }

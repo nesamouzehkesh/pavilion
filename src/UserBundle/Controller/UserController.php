@@ -47,6 +47,29 @@ class UserController extends BaseController
     }
     
     /**
+     * Display a user
+     * 
+     * @param type $userId
+     * @return type
+     */
+    public function displayUserAction($userId)
+    {
+        // Get ObjectManager
+        $user = $this->getUserService()->getUser($userId);
+        $userActivities = $this->getUserService()->getUserActivities($user);
+        
+        $view = $this->renderView(
+            'UserBundle:User:user.html.twig',
+            array(
+                'user' => $user,
+                'userActivities' => $userActivities
+                )
+            );
+
+        return $this->getAppService()->getJsonResponse(true, null, $view);        
+    }
+    
+    /**
      * Display and handel add edit user action
      * 
      * @param \Symfony\Component\HttpFoundation\Request $request
@@ -56,7 +79,7 @@ class UserController extends BaseController
     {
         try {
             // Get user object
-            $user = $this->getUserEntity($userId);
+            $user = $this->getUserService()->getUser($userId);
 
             // Generate User Form
             $userForm = $this->createForm(
@@ -116,7 +139,7 @@ class UserController extends BaseController
     {
         try {
             // Get user
-            $user = $this->getUserEntity($userId);
+            $user = $this->getUserService()->getUser($userId);
 
             // Get ObjectManager
             $em = $this->getDoctrine()->getManager();
@@ -136,36 +159,11 @@ class UserController extends BaseController
     }
     
     /**
-     * Get a user based on $userId or create a new one if $userId is null
      * 
-     * In a good practice development we should not put these kind of functions 
-     * in controller, we can create a user service to performance these kind of 
-     * actions
-     * 
-     * @param type $userId
-     * @return User
-     * @throws NotFoundHttpException
+     * @return \UserBundle\Service\UserService
      */
-    private function getUserEntity($userId = null)
+    private function getUserService()
     {
-        // If $userId is null it means that we want to create a new user object.
-        // otherwise we find a user in DB based on this $userId
-        if (null === $userId) {
-            $user = new User();
-        } else {
-            // Get ObjectManager
-            $em = $this->getDoctrine()->getManager();
-            
-            // Get User repository
-            $user = User::getRepository($em)->find($userId);
-            
-            // Check if $user is found
-            if (!$user) {
-                throw $this->createNotFoundException('No user found for id ' . $userId);
-            }
-        }
-        
-        // Return user object
-        return $user;
+        return $this->get('saman.user_user');
     }
 }

@@ -168,8 +168,11 @@ module:
         description: "Edit your profile, update your username and password, and manage other account settings."
         icon: glyphicon glyphicon-shopping-cart
         
+user:
+    log:
+        activity:
+            login: Login
 
-                
 shopping:
     shoppingCartIsEmpty: Your shopping cart is empty.
     webTitle: shopping

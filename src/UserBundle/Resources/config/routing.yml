@@ -10,6 +10,10 @@ saman_admin_user_add:
     path:     /admin/user/add
     defaults: { _controller: UserBundle:User:addEditUser, userId: null }
 
+saman_admin_user_display:
+    path:     /admin/user/display/{userId}
+    defaults: { _controller: UserBundle:User:displayUser }
+
 saman_admin_user_edit:
     path:     /admin/user/edit/{userId}
     defaults: { _controller: UserBundle:User:addEditUser }

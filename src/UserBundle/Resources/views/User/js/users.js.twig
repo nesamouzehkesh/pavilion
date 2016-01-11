@@ -14,7 +14,11 @@ $(function(){
             }
         }, 'json');        
     });
-
+    
+    $('.action-display-user').click(function(e){
+        displayItem($(this));        
+    });
+    
     $('.action-delete-user').click(function(e){
         var url = $(this).attr('data-url');
         bootbox.confirm('Are you sure to delete this item', function(result) {
