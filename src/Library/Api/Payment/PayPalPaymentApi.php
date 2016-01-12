@@ -102,7 +102,7 @@ class PayPalPaymentApi extends AbstractPaymentApi
         $paymentResponse = $paymentService->execute(
             $accessToken, 
             $originalPayment, 
-            $this->getParam('payerId')
+            $this->getParam('payerId', $param)
             );
         
         if ('approved' !== $paymentResponse->getState()) {

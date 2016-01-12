@@ -34,7 +34,7 @@ class BaseApi
     {
         $param = (null === $externalParam)? $this->param : $externalParam;
         if (!array_key_exists($key, $param)) {
-            throw new \Exception(sprintf('Payment API handler needs [%s] parameter', $key));
+            throw new \Exception(sprintf('Parameter [%s] is not set', $key));
         }
         
         return $param[$key];

@@ -54,6 +54,8 @@ class PaymentController extends BaseController
         $payerId = $this->getGET('PayerID');
         $param = array('paymentData' => $paymentData, 'payerId' => $payerId);
         
+        var_dump($param);
+        
         // Get user payment
         $payment = $this->getShoppingService()
             ->getUserOrderPayment($user, $paymentId);
