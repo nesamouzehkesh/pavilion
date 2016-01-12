@@ -29,9 +29,9 @@ class PayPalOrderSerializer extends AbstractOrderSerializer
         if ($order->isCustomOrder()) {
             $orderItems = array(
                 array(
-                    'quantity' => $order->getQuantity(),
+                    'quantity' => (string) $order->getQuantity(),
                     'name' => $order->getTitle(),
-                    'price' => $order->getTotalPrice(),
+                    'price' => (string) $order->getTotalPrice(),
                     'currency' => $order->getCurrency(),
                     'sku' => $order->getSKU(),
                     'description' => $order->getDescription(127),
@@ -48,7 +48,7 @@ class PayPalOrderSerializer extends AbstractOrderSerializer
                 $orderItems[] = array(
                     'quantity' => (string) $item['qty'],
                     'name' => $product->getTitle(),
-                    'price' => $product->getPrice(),
+                    'price' => (string) $product->getPrice(),
                     'currency' => $order->getCurrency(),
                     'sku' => $product->getSKU(),
                     'description' => $product->getDescription(127),
