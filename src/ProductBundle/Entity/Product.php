@@ -50,14 +50,14 @@ class Product extends BaseEntity implements ShoppingItemInterface
     /**
      * @var integer
      *
-     * @ORM\Column(name="price", type="decimal", nullable=true)
+     * @ORM\Column(name="price", type="float", nullable=true)
      */
     private $price;
     
     /**
      * @var integer
      *
-     * @ORM\Column(name="original_price", type="decimal", nullable=true)
+     * @ORM\Column(name="original_price", type="float", nullable=true)
      */
     private $originalPrice;
     
