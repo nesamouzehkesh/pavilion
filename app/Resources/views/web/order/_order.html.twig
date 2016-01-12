@@ -1,7 +1,6 @@
 {% if order.isProductOrder %}
-    <h5>Order ID: #{{ order.id }}</h5>
-    <h5>Order Content:</h5>
-    
+    <h5><strong>Order ID:</strong> #{{ order.id }}</h5>
+    <h5><strong>Order Content:</strong></h5>
     {% set orderItems = order.isPaid? order.content : order.loadedContent %}
     {% for orderItemId, orderItem in orderItems %}
         {% if order.isPaid %}
@@ -22,9 +21,9 @@
         ..................................................<br>
     {% endfor %}
 {% elseif order.isCustomOrder %}
-    <h5>Order ID: #{{ order.id }}</h5>
+    <h5><strong>Order ID:</strong> #{{ order.id }}</h5>
     {% set content = order.content %}
-    <h5>Order Content:</h5>
+    <h5><strong>Order Content:</strong></h5>
     <ul>
     {% for key, structure in orderConfig.orderStructure %}
         {% if content[key] is defined %}
@@ -33,7 +32,7 @@
     {% endfor %}
     </ul>
 
-    {% if noImage is not defined or noImage == false %}
+    {% if showImage is not defined or showImage == true %}
         <div class="row margin-top-10">
             <div class="col-md-12">
                 {% for image in order.attachments|getMedias %}
@@ -46,11 +45,17 @@
     {% endif %}
 {% endif %}
 
-<div class="row margin-top-10">
-    <div class="col-md-6">
-        {% include '::web/customer/_address.html.twig' with {'address': order.shippingAddress, addressTitle: 'Order shipping address'} only %}
+{% if showTotalPrice is not defined or showTotalPrice == true %}
+    <h5><strong>Total Price:</strong> {{ order.totalPrice|localizedcurrency(order.currency) }}</h5>
+{% endif %}
+
+{% if showAddress is not defined or showAddress == true %}
+    <div class="row margin-top-10">
+        <div class="col-md-6">
+            {% include '::web/customer/_address.html.twig' with {'address': order.shippingAddress, addressTitle: 'Order shipping address'} only %}
+        </div>
+        <div class="col-md-6">
+            {% include '::web/customer/_address.html.twig' with {'address': order.billingAddress, addressTitle: 'Order billing address'} only %}
+        </div>
     </div>
-    <div class="col-md-6">
-        {% include '::web/customer/_address.html.twig' with {'address': order.billingAddress, addressTitle: 'Order billing address'} only %}
-    </div>
-</div>
+{% endif %}

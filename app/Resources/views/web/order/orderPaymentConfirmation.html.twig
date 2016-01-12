@@ -5,7 +5,7 @@
 
 {% block pageBody %}
     <p>
-        Your order and your payment is finalized and we will start it as soon as possible. 
+        Your order is finalized and we will start to work on it as soon as possible. 
         Hear is the summary of your order, your shipping and billing addresses. If there 
         is any change in your billing or shipping addresses please contact us as soon as possible. 
         You can always track your orders in your <a href="{{ path('saman_shopping_orders') }}">orders list page</a>.
@@ -14,7 +14,7 @@
     <div class="panel panel-default">
         <div class="panel-body">
             {{ payment.date|date(date_format) }}<br>
-            {{ payment.value|number_format(2, '.', ',') }}
+            {{ payment.value|localizedcurrency(order.currency)  }}
         </div>
     </div>
     

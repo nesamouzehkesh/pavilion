@@ -79,6 +79,13 @@ class ShoppingService
      */
     public function createOrderPayment(Order $order, $paymentType = OrderPayment::TYPE_PAY_PAL)
     {
+        // Call total price
+        $totalPrice = $toBePay = $order->callTotalPrice();
+        if (null !== $order->getDeposit() && $order->isCustomOrder()) {
+            $toBePay = $order->getDeposit();
+        }
+        
+        // Make a payment object
         $payment = $this->getOrderPayment();
         $payment->setStatus(OrderPayment::STATUS_CREATED);
         $payment->setOrder($order);
@@ -86,12 +93,14 @@ class ShoppingService
         $payment->setUser($order->getUser());
         $payment->setType($paymentType);
         $payment->setContent(array());
-        $payment->setValue($order->callTotalPrice());
+        $payment->setValue($toBePay);
+        $itemList = $payment->getPaymentSerializer()->serialize($order);
+        $payment->setItemList($itemList);
         
-        $paymentSerializer = $payment->getPaymentSerializer();
-        $payment->setItemList($paymentSerializer->serialize($order));
-
+        // Update order total price
+        $order->setTotalPrice($totalPrice);
         $order->addPayment($payment);
+        
         $this->appService->persistEntity($payment);
         $this->appService->persistEntity($order);
         $this->appService->flushEntityManager();
@@ -100,7 +109,7 @@ class ShoppingService
     }
     
     /**
-     * After payment request successfully is snet we finalize user order and its 
+     * After payment request successfully is sent we finalize user order and its 
      * payment
      *
      * @param OrderPayment $payment
@@ -112,23 +121,14 @@ class ShoppingService
         $payment->setContent($param);
         $order = $payment->getOrder();
         $order->setIsPaid(true);
-        $this->loadOrder($order);
         
-        if ($order->isProductOrder()) {
-            $shoppingCartList = $this->getShoppingCartList($order, true);
-            $shoppingCart = new ShoppingCart(
-                new ShoppingSessionCartModifier(),
-                $this->appService->getSession()
-                );
-            
-            $finalizedOrderItems = $shoppingCart->finalize($shoppingCartList);
-            $order->setContent($finalizedOrderItems);               
-            $order->setTotalPrice($order->callTotalPrice());
-        }
-        
+        // Finalize order content
+        $this->finalizeOrderContent($order);
         $this->appService->persistEntity($order);
+        
         // Handle the order progress
         $this->progressHandler->handleProgress($order, Progress::PROGRESS_PAID);
+        
         // Handle the event related to this action
         $this->eventHandler->handleEvent($order, Event::TR_PAYMENT_ORDER);     
         $this->appService->flushEntityManager();
@@ -348,15 +348,40 @@ class ShoppingService
     public function getOrderPayment($paymentId = null, User $user = null)
     {
         if (null === $paymentId) {
-            $payment = new OrderPayment();
-        } else {
-            $payment = OrderPayment::getRepository($this->appService->getEntityManager())
-                ->getPayment($paymentId, $user);
-            if (!$payment instanceof OrderPayment) {
-                throw $this->appService->createVisibleHttpException('No payment has been found');
-            }
+            return new OrderPayment;
+        }
+        
+        $em = $this->appService->getEntityManager();
+        $payment = OrderPayment::getRepository($em)->getPayment($paymentId, $user);
+        if (!$payment instanceof OrderPayment) {
+            throw $this->appService->createVisibleHttpException('No payment has been found');
         }
         
         return $payment;
+    }
+    
+    /**
+     * Finalize order content
+     * 
+     * @param Order $order
+     */
+    private function finalizeOrderContent(Order $order)
+    {
+        $this->loadOrder($order);
+        
+        if ($order->isProductOrder()) {
+            $shoppingCart = new ShoppingCart(
+                new ShoppingSessionCartModifier(),
+                $this->appService->getSession()
+                );
+            $orderItems = $order->getLoadedContent();
+            $finalizedOrderItems = $shoppingCart->finalize($orderItems);
+            $order->setContent($finalizedOrderItems);
+            foreach ($orderItems as $orderItem) {
+                $product = $orderItem['product'];
+                $product->addOrder($order);
+                $order->addProduct($product);
+            }
+        }        
     }    
 }

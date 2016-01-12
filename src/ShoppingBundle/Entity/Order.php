@@ -5,6 +5,7 @@ namespace ShoppingBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Library\Base\BaseEntity;
+use Library\Interfaces\ShoppingItemInterface;
 use ShoppingBundle\Entity\OrderPayment;
 use ShoppingBundle\Library\Serializer\AbstractOrderSerializer;
 
@@ -14,7 +15,7 @@ use ShoppingBundle\Library\Serializer\AbstractOrderSerializer;
  * @ORM\Table(name="saman_order")
  * @ORM\Entity(repositoryClass="\ShoppingBundle\Entity\Repository\OrderRepository")
  */
-class Order extends BaseEntity
+class Order extends BaseEntity implements ShoppingItemInterface
 {
     const ITEM_LOGO = 'icon.order';
     const DEFAULT_CURRENCY = 'USD';
@@ -35,7 +36,14 @@ class Order extends BaseEntity
      *
      * @ORM\Column(name="totalPrice", type="decimal", nullable=true)
      */
-    private $totalPrice;    
+    private $totalPrice;
+    
+    /**
+     * @var decimal
+     *
+     * @ORM\Column(name="deposit", type="decimal", nullable=true)
+     */
+    private $deposit;
     
     /**
      * @var string
@@ -50,6 +58,13 @@ class Order extends BaseEntity
      * @ORM\Column(name="type", type="integer", nullable=true)
      */
     private $type;
+    
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="quantity", type="integer", nullable=true)
+     */
+    private $quantity;
     
     /**
      * @var string
@@ -123,6 +138,7 @@ class Order extends BaseEntity
     public function __construct()
     {
         parent::__construct();
+        $this->quantity = 1;
         $this->currency = self::DEFAULT_CURRENCY;
         $this->products = new ArrayCollection();
         $this->progresses = new ArrayCollection();
@@ -138,6 +154,49 @@ class Order extends BaseEntity
     public static function getRepository(\Doctrine\ORM\EntityManagerInterface $em)
     {
         return $em->getRepository(__CLASS__);
+    }
+    
+    /**
+     * Get order title
+     * 
+     * @return string
+     */
+    public function getTitle()
+    {
+        return 'Order';
+    }
+    
+    /**
+     * Get order price
+     * 
+     * @return type
+     */
+    public function getPrice()
+    {
+        return $this->getTotalPrice();
+    }
+    
+    /**
+     * Get order SKU
+     * 
+     * @return type
+     */
+    public function getSKU()
+    {
+        return sprintf(
+            '%d',
+            $this->getId()
+            );        
+    }
+    
+    /**
+     * Get order description
+     * 
+     * @param type $truncateLength
+     */
+    public function getDescription($truncateLength = null)
+    {
+        return 'description';
     }
     
     /**
@@ -181,6 +240,33 @@ class Order extends BaseEntity
     public function getType()
     {
         return $this->type;
+    }
+
+    /**
+     * Set quantity
+     *
+     * @param integer $quantity
+     * @return Order
+     */
+    public function setQuantity($quantity)
+    {
+        $this->quantity = $quantity;
+
+        return $this;
+    }
+
+    /**
+     * Get quantity
+     *
+     * @return integer 
+     */
+    public function getQuantity()
+    {
+        if (null === $this->quantity) {
+            $this->quantity = 1;
+        }
+        
+        return $this->quantity;
     }
     
     /**
@@ -573,7 +659,34 @@ class Order extends BaseEntity
      */
     public function getTotalPrice()
     {
+        if (!$this->isPaid()) {
+            return $this->callTotalPrice();
+        }
+        
         return $this->totalPrice;
+    }
+
+    /**
+     * Set deposit
+     *
+     * @param string $deposit
+     * @return Order
+     */
+    public function setDeposit($deposit)
+    {
+        $this->deposit = $deposit;
+
+        return $this;
+    }
+
+    /**
+     * Get deposit
+     *
+     * @return string 
+     */
+    public function getDeposit()
+    {
+        return $this->deposit;
     }
 
     /**
@@ -601,22 +714,15 @@ class Order extends BaseEntity
     
     /**
      * Calculate totalPrice
-     *
-     * @return string 
+     * 
+     * @param array $param
+     * @return type
      */
     public function callTotalPrice()
     {
-        if ($this->isCustomOrder()) {
-            return $this->totalPrice;
-        }
-        
         $totalPrice = 0;
-        // If the order is paid use order content to get total price
-        if ($this->isPaid()) {
-            foreach ($this->getContent() as $item) {
-                $totalPrice = $totalPrice + intval($item['qty']) * $item['price'];
-            }
-        // Else use the current price of product to get total price    
+        if ($this->isCustomOrder()) {
+            $totalPrice = 1;
         } else {
             foreach ($this->getLoadedContent() as $item) {
                 $totalPrice = $totalPrice + intval($item['qty']) * $item['product']->getPrice();

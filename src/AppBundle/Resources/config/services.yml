@@ -1,4 +1,28 @@
 services:
+    saman.twig.function.extension:
+        class: Library\Twig\TwigFunctionExtension
+        arguments: [@translator.default]
+        tags:
+             - { name: twig.extension }    
+             
+    saman.twig.filter.extension:
+        class: Library\Twig\TwigFilterExtension
+        arguments: [@translator.default]
+        tags:
+             - { name: twig.extension }
+             
+    twig.extension.intl:
+        class: Twig_Extensions_Extension_Intl
+        tags:
+            - { name: twig.extension }
+            
+    saman.session:
+        class: Library\Service\Session
+             
+    saman.md5encoder:
+        class: %saman.md5encoder.class%
+        arguments: ["%saman.saltmain%"]
+        
     saman.appService:
         class: AppBundle\Service\AppService
         public: false

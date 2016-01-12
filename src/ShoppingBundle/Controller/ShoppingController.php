@@ -6,7 +6,7 @@ use Library\Base\BaseController;
 use Symfony\Component\HttpFoundation\Request;
 use UserBundle\Entity\Address;
 use ShoppingBundle\Form\OrderType;
-use ShoppingBundle\Form\ShippingAddressType;
+use ShoppingBundle\Form\OrderShippingType;
 use ShoppingBundle\Entity\Order;
 
 class ShoppingController extends BaseController
@@ -103,7 +103,7 @@ class ShoppingController extends BaseController
             $this->getShoppingService()->modifyShoppingCart('remove-all');
             
             return $this->redirectToRoute(
-                'saman_shopping_order_set_shipping_address', 
+                'saman_shopping_order_set_shipping', 
                 array('orderId' => $order->getId())
                 );
         } catch (\Exception $ex) {
@@ -225,7 +225,7 @@ class ShoppingController extends BaseController
      * @param Request $request
      * @return type
      */
-    public function setShippingAddressAction(Request $request, $orderId)
+    public function setOrderShippingAction(Request $request, $orderId)
     {
         $em = $this->getDoctrine()->getManager();
         $user = $this->getUser();
@@ -237,7 +237,7 @@ class ShoppingController extends BaseController
         $primaryBillingAddress = $user->getPrimaryBillingAddress();
         
         // Generate Product Form
-        $form = $this->createForm(new ShippingAddressType($user));
+        $form = $this->createForm(new OrderShippingType($user, $order));
         $form->handleRequest($request);
         // If form is submited and it is valid then add or update this $label
         if ($form->isValid()) {
@@ -249,7 +249,6 @@ class ShoppingController extends BaseController
                 $shippingAddress->setAddressType(Address::ADDRESS_TYPE_SHIPPING);
                 $shippingAddress->setType(Address::TYPE_SECONDARY);
                 $shippingAddress->setUser($user);
-                //TODO: validate $shippingAddress
                 if (null === $primaryShippingAddress) {
                     $shippingAddress->setType(Address::TYPE_PRIMARY);
                 } else {
@@ -279,7 +278,6 @@ class ShoppingController extends BaseController
                     $billingAddress->setAddressType(Address::ADDRESS_TYPE_BILLING);
                     $billingAddress->setType(Address::TYPE_SECONDARY);
                     $billingAddress->setUser($user);
-                    //TODO: validate $billingAddress
                     if (null === $primaryBillingAddress) {
                         $billingAddress->setType(Address::TYPE_PRIMARY);
                     } else {                    
@@ -299,8 +297,15 @@ class ShoppingController extends BaseController
             }
             
             if ($orderShippingAddress instanceof Address and $orderBillingAddress instanceof Address) {
+                if ($order->isCustomOrder() && $form->has('payDeposit')) {
+                    if ($form->get('payDeposit')->getData()) {
+                        $order->setDeposit(intval($form->get('deposit')->getData()));
+                    }
+                }
+                
                 $order->setShippingAddress($orderShippingAddress);
                 $order->setBillingAddress($orderBillingAddress);
+                //TODO: validate deposit, $orderBillingAddress, $orderShippingAddress
                 $em->flush();
                 
                 return $this->redirectToRoute(
@@ -313,7 +318,7 @@ class ShoppingController extends BaseController
         }
 
         return $this->render(
-            '::web/order/setShippingAddress.html.twig',
+            '::web/order/setOrderShipping.html.twig',
             array(
                 'primaryShippingAddress' => $primaryShippingAddress,
                 'primaryBillingAddress' => $primaryBillingAddress,

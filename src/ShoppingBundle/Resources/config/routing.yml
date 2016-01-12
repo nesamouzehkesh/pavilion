@@ -40,7 +40,7 @@ saman_shopping_order_payment:
     path:     /shopping/order/payment/{orderId}
     defaults: { _controller: ShoppingBundle:Payment:createPayment }
 
-saman_shopping_order_payment_finalization:
+saman_shopping_order_payment_execute:
     path:     /shopping/order/payment/finalization/{paymentId}
     defaults: { _controller: ShoppingBundle:Payment:executePayment }
 
@@ -66,9 +66,9 @@ saman_shopping_order_add_confirmation:
     path:     /shopping/order/confirm/{orderId}
     defaults: { _controller: ShoppingBundle:Shopping:orderConfirmation }
     
-saman_shopping_order_set_shipping_address:
+saman_shopping_order_set_shipping:
     path:     /shopping/order/shipping/{orderId}
-    defaults: { _controller: ShoppingBundle:Shopping:setShippingAddress, orderId: null }
+    defaults: { _controller: ShoppingBundle:Shopping:setOrderShipping, orderId: null }
 
 saman_shopping_order_edit:
     path:     /shopping/order/update/{orderId}

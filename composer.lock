@@ -4,7 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "d436d499c4eba0a196677d68c4d3fd37",
+    "hash": "09f253eda3b25bfc75a20fadf4f798e9",
+    "content-hash": "e6bd4a57337b6a8f0be16f51498dd403",
     "packages": [
         {
             "name": "doctrine/annotations",
@@ -2038,7 +2039,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/KnpLabs/KnpGaufretteBundle/zipball/7edea6cfcc4718573f9cbd7bd1adcaf3c2319e8b",
+                "url": "https://api.github.com/repos/KnpLabs/KnpGaufretteBundle/zipball/45dc19248b1c919a44082aab161b36e9f4f6715d",
                 "reference": "7edea6cfcc4718573f9cbd7bd1adcaf3c2319e8b",
                 "shasum": ""
             },
@@ -2096,7 +2097,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/KnpLabs/KnpPaginatorBundle/zipball/4a1daf55560ca7cf9c13b357135d72f4dc13375f",
+                "url": "https://api.github.com/repos/KnpLabs/KnpPaginatorBundle/zipball/5147740faff4d32e6f42acf64475314c35320fa4",
                 "reference": "4a1daf55560ca7cf9c13b357135d72f4dc13375f",
                 "shasum": ""
             },
@@ -2515,7 +2516,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/p16/paypal-rest-api-client/zipball/e183da4eab1806ea1e4a6de5b98add0a9c0aac7d",
+                "url": "https://api.github.com/repos/p16/paypal-rest-api-client/zipball/e679d8be6fb672c5158bf60c6ee4a8286ab926b1",
                 "reference": "e183da4eab1806ea1e4a6de5b98add0a9c0aac7d",
                 "shasum": ""
             },

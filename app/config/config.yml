@@ -67,25 +67,7 @@ parameters:
                 
         
 # Services Configuration        
-services:
-    saman.twig.function.extension:
-        class: Library\Twig\TwigFunctionExtension
-        arguments: [@translator.default]
-        tags:
-             - { name: twig.extension }    
-             
-    saman.twig.filter.extension:
-        class: Library\Twig\TwigFilterExtension
-        arguments: [@translator.default]
-        tags:
-             - { name: twig.extension }
-             
-    saman.session:
-        class: Library\Service\Session
-             
-    saman.md5encoder:
-        class: %saman.md5encoder.class%
-        arguments: ["%saman.saltmain%"]
+services: ~
     
 # Twig Configuration
 twig:

@@ -11,6 +11,21 @@ $(function(){
     var billingContainer = $("#billing-container");
     var billingFormContainer = $("#billing-form-container");
     
+    var payDeposit = $("#saman_shipping_form_payDeposit");
+    toggleDepositContainer(payDeposit);
+    payDeposit.change(function() {
+        toggleDepositContainer(this);
+    });
+    function toggleDepositContainer(payDeposit)
+    {
+        var depositContainer = $("#deposit-container");
+        if (payDeposit.checked) {
+            depositContainer.show();
+        } else {
+            depositContainer.hide();
+        }        
+    }
+    
     var shippingSetNewCheck = $("#saman_shipping_form_setNewShipping");
     shippingSetNewCheck.attr('checked', false);
     shippingSetNewCheck.change(function() {

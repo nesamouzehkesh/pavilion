@@ -26,22 +26,34 @@ class PayPalOrderSerializer extends AbstractOrderSerializer
      */
     private function getOrderItems(Order $order)
     {
-        $orderItems = array();
-        foreach ($order->getLoadedContent() as $item) {
-            $product = $item['product'];
-            if (!$product instanceof ShoppingItemInterface) {
-                throw new \Exception('Shopping cart is not loaded properly with products');
-            }            
-            
-            $orderItems[] = array(
-                'quantity' => (string) $item['qty'],
-                'name' => $product->getTitle(),
-                'price' => $product->getPrice(),
-                'currency' => $order->getCurrency(),
-                'sku' => $product->getSKU(),
-                'description' => $product->getDescription(127),
-                //'tax' => ,
+        if ($order->isCustomOrder()) {
+            $orderItems = array(
+                array(
+                    'quantity' => $order->getQuantity(),
+                    'name' => $order->getTitle(),
+                    'price' => $order->getTotalPrice(),
+                    'currency' => $order->getCurrency(),
+                    'sku' => $order->getSKU(),
+                    'description' => $order->getDescription(127),
+                )
             );
+        } else {
+            $orderItems = array();
+            foreach ($order->getLoadedContent() as $item) {
+                $product = $item['product'];
+                if (!$product instanceof ShoppingItemInterface) {
+                    continue;
+                }            
+
+                $orderItems[] = array(
+                    'quantity' => (string) $item['qty'],
+                    'name' => $product->getTitle(),
+                    'price' => $product->getPrice(),
+                    'currency' => $order->getCurrency(),
+                    'sku' => $product->getSKU(),
+                    'description' => $product->getDescription(127),
+                );
+            }
         }
         
         return $orderItems;

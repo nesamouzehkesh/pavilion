@@ -18,22 +18,15 @@ class PaymentController extends BaseController
         $order = $this->getShoppingService()->getUserOrder($user, $orderId, true);
         $payment = $this->getShoppingService()->createOrderPayment($order);
         
-        
-        return $this->redirectToRoute(
-            'saman_shopping_order_payment_finalization', 
-            array('paymentId' => $payment->getId())
-            );
-        
-        
         // Initializing Action parametrs related to PayPalPaymentApi
         $param = array(
             'returnUrl' => $this->generateUrl(
-                'saman_shopping_order_payment_finalization', 
+                'saman_shopping_order_payment_execute', 
                 array('paymentId' => $payment->getId()),
                 UrlGeneratorInterface::ABSOLUTE_URL
                 ), 
             'cancelUrl' => $this->generateUrl(
-                'saman_shopping_order_set_shipping_address',
+                'saman_shopping_order_set_shipping',
                 array('paymentId' => $payment->getId()),
                 UrlGeneratorInterface::ABSOLUTE_URL
                 )
@@ -60,15 +53,17 @@ class PaymentController extends BaseController
         $paymentData = $this->getSession()->get('paymentData');
         $payerId = $this->getGET('PayerID');
         $param = array('paymentData' => $paymentData, 'payerId' => $payerId);
-            
+        
+        // Get user payment
         $payment = $this->getShoppingService()
             ->getUserOrderPayment($user, $paymentId);
-        /*
+        
+        // Execute user payment
         $this->getPaymentService()
             ->setPayment($payment)
             ->executePaymentRequest($param);
-        */
         
+        // Finalizing user payment
         $this->getShoppingService()->finalizeOrderPayment($payment, $param);
             
         return $this->redirectToRoute(

@@ -5,8 +5,15 @@
 {% set pageIcon = 'order.icon.confirmOrderAddresses' %}
 
 {% block pageBody %}
-    {% include '::web/order/_order.html.twig' with {'order': order, 'orderConfig': orderConfig, 'noImage': true} only %}
-    {% include '::web/order/js/setShippingAddress.js.twig' %}
+    {% include '::web/order/_order.html.twig' with {
+        'order': order, 
+        'orderConfig': orderConfig, 
+        'showImage': false, 
+        'showAddress': false,
+        'showTotalPrice': false
+        } only 
+    %}
+    {% include '::web/order/js/setOrderShipping.js.twig' %}
     
     {{ form_start(form) }}
     {{ form_errors(form) }}
@@ -55,15 +62,16 @@
             </div>            
         </div>
     </div>
-                    
-    <p>By click on the Payment button you confirm your product's Shipping and Billing addresses</p>
-    {#
-    <div class="row margin-top-10">
-        <div class="col-md-12">
-            <a class="btn btn-primary" href="{{ path('saman_shopping_order_payment', {'orderId': order.id}) }}">Payment</a>     
-        </div>
-    </div>
-    #}
+
+    <h5><strong>Total Price:</strong> {{ order.callTotalPrice|localizedcurrency(order.currency) }}</h5>
+    {% if order.isCustomOrder %}
+        {{ form_widget(form.payDeposit) }}
+        <span id="deposit-container" style="display: none;">
+            {{ form_widget(form.deposit) }}
+        </span>
+    {% endif %}    
+        
+    <p>Click on the Payment button to confirm your product's Shipping and Billing addresses and pursuing your purchase</p>
     <button class="form-submit-{{ form.vars.name }} btn btn-primary hidden-xs" type="submit" style="padding-left: 20px; padding-right: 20px;">
         <span class="ladda-label">{{ 'order.icon.payment'|icon }} {{ 'order.action.goToPayment'|trans }}</span>
     </button>            

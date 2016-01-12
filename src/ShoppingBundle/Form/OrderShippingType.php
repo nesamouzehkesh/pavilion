@@ -6,20 +6,30 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use UserBundle\Form\AddressType;
 use UserBundle\Entity\User;
+use ShoppingBundle\Entity\Order;
 
 /**
  * 
  */
-class ShippingAddressType extends AbstractType
+class OrderShippingType extends AbstractType
 {
+    /**
+     * @var User $user
+     */
     private $user;
+    
+    /**
+     * @var Order $order
+     */
+    private $order;
         
     /**
      * @param User $user
      */
-    public function __construct(User $user = null)
+    public function __construct(User $user, Order $order)
     {
         $this->user = $user;
+        $this->order = $order;
     }
     
     /**
@@ -37,6 +47,16 @@ class ShippingAddressType extends AbstractType
                 'label'    => 'Billing address same as shipping address?',
                 'required' => false,
             ));
+        
+        if ($this->order->isCustomOrder()) {
+            $builder
+                ->add('deposit', 'text', array('required' => false))
+                ->add('payDeposit', 'checkbox', array(
+                    'data' => false,
+                    'label'    => 'I want to pay a deposit',
+                    'required' => false,
+                ));
+        }
         
         if ($this->user->getPrimaryShippingAddress() !== NULL) {
             $builder
