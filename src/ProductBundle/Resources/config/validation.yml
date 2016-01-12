@@ -10,7 +10,7 @@ ProductBundle\Entity\Product:
         price:
             - NotBlank: ~
             - Range:
-                min: 0.99
+                min: 0.01
                 max: 100000.99
                 minMessage: "Price must be at least {{ limit }}"
                 maxMessage: "Price cannot be longer than {{ limit }}"
