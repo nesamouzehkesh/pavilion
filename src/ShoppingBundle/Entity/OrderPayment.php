@@ -18,6 +18,11 @@ class OrderPayment extends BaseEntity implements PaymentEntityInterface
 {
     const ITEM_LOGO = 'icon.orderPayment';
     
+    public static $types = array(
+        self::TYPE_PAY_PAL => 'shopping.payment.metod.payPal',
+        self::TYPE_CREDIT_CARD => 'shopping.payment.metod.creditCard'
+    );
+    
     /**
      * @var integer
      *
@@ -190,6 +195,19 @@ class OrderPayment extends BaseEntity implements PaymentEntityInterface
     {
         return $this->type;
     }
+    
+    /**
+     * 
+     * @return type
+     */
+    public function transType()
+    {
+        if (!isset(self::$types[$this->getType()])) {
+            return null;
+        }
+        
+        return self::$types[$this->getType()];
+    }    
 
     /**
      * Set content

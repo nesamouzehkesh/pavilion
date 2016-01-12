@@ -6,10 +6,13 @@
 {% block body %}
     <ul role="tablist" class="nav nav-tabs" id="myTabs">
         <li class="active" role="presentation">
-            <a aria-expanded="true" aria-controls="order-home" data-toggle="tab" role="tab" id="order-home-tab" href="#order-home">Order Info</a>
+            <a aria-expanded="true" aria-controls="order-home" data-toggle="tab" role="tab" id="order-home-tab" href="#order-home">General Info</a>
         </li>
         <li role="presentation" class="">
-            <a aria-controls="order-addresses" data-toggle="tab" id="order-addresses-tab" role="tab" href="#order-addresses" aria-expanded="false">Order Addresses</a>
+            <a aria-controls="order-payment" data-toggle="tab" id="order-payment-tab" role="tab" href="#order-payment" aria-expanded="false">Payment</a>
+        </li>
+        <li role="presentation" class="">
+            <a aria-controls="order-addresses" data-toggle="tab" id="order-addresses-tab" role="tab" href="#order-addresses" aria-expanded="false">Shipping/Billing Addresses</a>
         </li>
         <li role="presentation" class="">
             <a aria-controls="order-events" data-toggle="tab" id="order-events-tab" role="tab" href="#order-events" aria-expanded="false">Events</a>
@@ -19,6 +22,11 @@
         <div aria-labelledby="order-home-tab" id="order-home" class="tab-pane fade active in" role="tabpanel">
             <div class="margin-left-10 margin-right-10 margin-top-20">
                 {% include 'ShoppingBundle:Shopping:element/_orderInfo.html.twig' %}
+            </div>
+        </div>
+        <div aria-labelledby="order-payment-tab" id="order-payment" class="tab-pane fade" role="tabpanel">
+            <div class="margin-left-10 margin-right-10 margin-top-20">
+                {% include 'ShoppingBundle:Shopping:element/_orderPayment.html.twig' %}
             </div>
         </div>
         <div aria-labelledby="order-addresses-tab" id="order-addresses" class="tab-pane fade" role="tabpanel">

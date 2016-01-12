@@ -177,6 +177,10 @@ shopping:
     shoppingCartIsEmpty: Your shopping cart is empty.
     webTitle: shopping
     shoppingCart: Shopping Cart
+    payment:
+        metod:
+            payPal: Pay Pal
+            creditCard: Credit Card
     action:
         submitCart: Submit Cart
         removeAllCart: Remove All Items
@@ -243,8 +247,9 @@ customer:
     register: 
     registerConfirmation: Confirmation
     profile: My Profile
-    mainBillingAddress: Your main billing address
-    mainShippingAddress: Your main shipping address
+    mainBillingAddress: Billing address
+    mainShippingAddress: Shipping address
+    mainShippingBillingAddress: Shipping/Billing address
     action:
         submitRegisteration: Submit Your Info 
     icon:

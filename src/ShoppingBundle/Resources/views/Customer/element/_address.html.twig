@@ -1,11 +1,13 @@
 {% if address is defined and address is not null %}
     {% if address.isBillingAddress %}
         {% set addressDefultTitle = 'customer.mainBillingAddress' %}
-    {% else %}
+    {% elseif address.isBillingAddress %}
         {% set addressDefultTitle = 'customer.mainShippingAddress' %}
+    {% else %}
+        {% set addressDefultTitle = 'customer.mainShippingBillingAddress' %}
     {% endif %}
 
-    <strong>{{ (addressTitle|default(addressDefultTitle))|trans }}</strong> 
+    <strong>{{ addressDefultTitle|trans }}</strong> 
     {% if editAble is defined and editAble == true %}
         <button class="btn btn-primary btn-xs btn-fade action-edit-profile-item" data-target="{{ editContainer }}" data-url="{{ path('saman_shopping_customer_edit_address', {'addressId': address.id }) }}">{{ 'icon.edit'|icon }}</button> 
     {% endif %}

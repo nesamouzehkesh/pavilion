@@ -1,0 +1,20 @@
+{% set totalPrice = order.totalPrice %}
+{% set deposit = order.deposit %}
+{% set remained = totalPrice - deposit %}
+<strong>Total Price:</strong> {{ totalPrice|localizedcurrency(order.currency) }}<br>
+<strong>Deposit:</strong> {{ deposit|localizedcurrency(order.currency) }}<br>
+<strong>Remained:</strong> {{ remained|localizedcurrency(order.currency) }}<br>
+<br>
+<strong>Order Payment</strong><br>
+{% for payment in order.payments %}
+    <blockquote class="mini_quote br-red">
+        ID: #{{ payment.id }}<br>
+        Type: {{ payment.transType|trans }}<br>
+        Date: {{ payment.date|date(date_format) }}<br>
+        Value: {{ payment.value|localizedcurrency(payment.currency)  }}<br>
+        Currency: {{ payment.currency }}<br>
+        {% if payment.description != '' and payment.description is not null %}
+            Description: {{ payment.description }}<br>        
+        {% endif %}    
+    </blockquote>
+{% endfor %}

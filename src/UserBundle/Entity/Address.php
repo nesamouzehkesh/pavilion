@@ -412,6 +412,15 @@ class Address extends BaseEntity
     }
     
     /**
+     * 
+     * @return type
+     */
+    public function isBillingAndShippingAddress()
+    {
+        return $this->addressType === self::ADDRESS_TYPE_BILLING_SHIPPING;
+    }
+    
+    /**
      * Set user
      *
      * @param \UserBundle\Entity\User $user
