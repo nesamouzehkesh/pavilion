@@ -377,7 +377,12 @@ class ShoppingService
         }
         if (0 === intval($content['width']) || 0 === intval($content['height'])) {
             return null;
-        }        
+        }
+        
+        $attachments = null;
+        if (isset($param['attachments'])) {
+            $attachments = $param['attachments'];
+        }
         
         $orderStructure = $this->appService->getParameter('orderStructure');
         $height = intval($content['height']);
@@ -408,6 +413,7 @@ class ShoppingService
             'duration' => $duration,
             'knots' => $knots,
             'numberOfColors' => $numberOfColors,
+            'attachments' => $attachments
         );
     }
     

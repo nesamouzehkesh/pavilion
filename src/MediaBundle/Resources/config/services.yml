@@ -52,6 +52,6 @@ services:
             
     saman_media.twig.filter.extension:
         class: MediaBundle\Twig\MediaTwigFilterExtension
-        arguments: [@router, @liip_imagine.cache.manager, %saman_media.media%]
+        arguments: [@router, @liip_imagine.cache.manager, @doctrine.orm.default_entity_manager, %saman_media.media%]
         tags:
              - { name: twig.extension }

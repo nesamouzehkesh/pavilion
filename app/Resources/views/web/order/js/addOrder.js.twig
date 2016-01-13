@@ -1,8 +1,8 @@
 <script type="text/javascript">
 $(function(){
-    
     calculateOrderPrice();
-    $('input[name^=saman_order_form], select[name^=saman_order_form]').change(function() {
+    
+    $('input[name^=saman_order_form], select[name^=saman_order_form], saman_order_form_attachments').change(function() {
         calculateOrderPrice();
     });
     
@@ -27,6 +27,8 @@ $(function(){
                 values[fieldName] = field.value;
             }
         });
+        
+        values['saman_order_form[attachments]'] = $('#saman_order_form_attachments').val();
 
         $('#order-info-container').html('{% include '::web/_loading.html.twig' %}');
         $.ajax({

@@ -5,6 +5,7 @@ namespace MediaBundle\Twig;
 use \Twig_Extension;
 use Liip\ImagineBundle\Imagine\Cache\CacheManager;
 use Symfony\Bundle\FrameworkBundle\Routing\Router;
+use Doctrine\ORM\EntityManager;
 use MediaBundle\Form\Type\MultipleType;
 use Library\Components\MediaHandler;
 
@@ -29,6 +30,12 @@ class MediaTwigFilterExtension extends Twig_Extension
     protected $cacheManager;
 
     /**
+     *
+     * @var EntityManager $em
+     */
+    protected $em;
+    
+    /**
      *  
      * @var array $parameters
      */
@@ -36,16 +43,21 @@ class MediaTwigFilterExtension extends Twig_Extension
     
     /**
      * 
+     * @param Router $router
+     * @param CacheManager $cacheManager
+     * @param EntityManager $em
      * @param type $parameters
      */
     public function __construct(
         Router $router,
         CacheManager $cacheManager,
+        EntityManager $em,
         $parameters
         ) 
     {
         $this->router = $router;
         $this->cacheManager = $cacheManager;
+        $this->em = $em;
         $this->parameters = $parameters;
     }
     
@@ -110,7 +122,7 @@ class MediaTwigFilterExtension extends Twig_Extension
      */
     public function getMedia($jsonMedia)
     {
-        return MediaHandler::getMedia($jsonMedia, true);
+        return MediaHandler::getMedia($jsonMedia, $this->em, true);
     }
     
     /**
@@ -121,7 +133,7 @@ class MediaTwigFilterExtension extends Twig_Extension
      */
     public function getMedias($jsonMedias)
     {
-        return MediaHandler::getMedias($jsonMedias, true);
+        return MediaHandler::getMedias($jsonMedias, $this->em, true);
     }
     
     /**

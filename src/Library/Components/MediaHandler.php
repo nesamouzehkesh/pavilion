@@ -3,6 +3,8 @@
 namespace Library\Components;
 
 use Library\Components\Media;
+use Doctrine\ORM\EntityManager;
+use MediaBundle\Entity\Media as MediaEntity;
 
 class MediaHandler
 {
@@ -152,10 +154,10 @@ class MediaHandler
      * @param type $convert
      * @return type
      */
-    public static function getMedia($jsonMedia, $convert = false)
+    public static function getMedia($jsonMedia, EntityManager $em, $convert = false)
     {
         if ($convert) {
-            return self::makeMedia(json_decode($jsonMedia, true));
+            return self::makeMedia(json_decode($jsonMedia, true), $em);
         }
         
         return $jsonMedia;
@@ -167,7 +169,7 @@ class MediaHandler
      * @param type $convert
      * @return type
      */
-    public static function getMedias($jsonMedias, $convert = false)
+    public static function getMedias($jsonMedias, EntityManager $em, $convert = false)
     {
         if ($convert) {
             $medias = array();
@@ -177,7 +179,7 @@ class MediaHandler
             }
             
             foreach ($mediasArray as $data) {
-                $media = self::makeMedia($data);
+                $media = self::makeMedia($data, $em);
                 if (null !== $media) {
                     $medias[] = $media;
                 }
@@ -222,13 +224,24 @@ class MediaHandler
      * @param type $mediaArray
      * @throws \Exception
      */
-    private static function makeMedia($mediaArray)
+    private static function makeMedia($mediaArray, EntityManager $em = null)
     {
         $mediaData = null;
         if (isset($mediaArray['path'])) {
             $mediaData = $mediaArray;
         } else if (isset($mediaArray[0]['path'])) {
             $mediaData = $mediaArray[0];
+        } else if (isset($mediaArray['id']) and null !== $em) {
+            $media = $em->getRepository('MediaBundle:Media')->find($mediaArray['id']);
+            if ($media instanceof MediaEntity) {
+                $mediaData = array(
+                    'path' => $media->getPath(),
+                    'name' => $media->getTitle(),
+                    'size' => $media->getSize(),
+                );
+            }
+        } else {
+            return null;
         }
 
         $media = null;
