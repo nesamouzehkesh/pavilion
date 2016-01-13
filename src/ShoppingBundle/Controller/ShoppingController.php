@@ -180,15 +180,22 @@ class ShoppingController extends BaseController
      */
     public function calCustomOrderPriceAction(Request $request)
     {
-        $param = $request->request->get('saman_order_form');
-        $data = $this->getShoppingService()->calCustomOrderPrice($param);
-        
-        $view = $this->renderView(
-            '::web/order/_orderPriceInfo.html.twig', 
-            array('data' => $data)
-            );
+        try {
+            $param = $request->request->get('saman_order_form');
+            $data = $this->getShoppingService()->calCustomOrderPrice($param);
 
-        return $this->getJsonResponse(true, null, $view);
+            $view = $this->renderView(
+                '::web/order/_orderPriceInfo.html.twig', 
+                array('data' => $data)
+                );
+
+            return $this->getJsonResponse(true, null, $view);
+        } catch (\Exception $ex) {
+            return $this->getExceptionResponse(
+                'alert.error.canNotPerformRequest', 
+                $ex
+                );
+        }        
     }
     
     /**

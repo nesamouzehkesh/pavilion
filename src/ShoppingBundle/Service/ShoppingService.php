@@ -368,49 +368,47 @@ class ShoppingService
      */
     public function calCustomOrderPrice($param)
     {
-        $data = null;
-        if (isset($param['content']['height']) && isset($param['content']['width'])) {
-            $orderStructure = $this->appService->getParameter('orderStructure');
-            
-            if (0 < intval($param['content']['height'])) {
-                $height = intval($param['content']['height']);
-            } else {
-                throw new \Exception('Wrong width');
-            }
-            if (0 < intval($param['content']['width'])) {
-                $width = intval($param['content']['width']);
-            } else {
-                throw new \Exception('Wrong width');
-            }
-            if (isset($orderStructure['dpi']['choices'][$param['content']['dpi']])) {
-                $dpi = $orderStructure['dpi']['choices'][$param['content']['dpi']];
-            } else {
-                throw new \Exception('Wrong DPI');
-            }
-            if (isset($orderStructure['colors']['choices'][$param['content']['colors']])) {
-                $colors = $orderStructure['colors']['choices'][$param['content']['colors']];
-            } else {
-                throw new \Exception('Wrong color');
-            }
-            if (isset($orderStructure['numberOfColors']['choices'][$param['content']['numberOfColors']])) {
-                $numberOfColors = $orderStructure['numberOfColors']['choices'][$param['content']['numberOfColors']];
-            } else {
-                throw new \Exception('Wrong numberOfColors');
-            }
-            
-            $knots =  $height *  $width * $dpi;
-            $price = $knots * 0.014;
-            $duration = 12;
-
-            $data = array(
-                'price' => $price,
-                'duration' => $duration,
-                'knots' => $knots,
-                'numberOfColors' => $numberOfColors,
-            );
+        if (!isset($param['content'])) {
+            return null;
         }
+        $content = $param['content'];
+        if (!isset($content['width']) || !isset($content['height'])) {
+            return null;
+        }
+        if (0 === intval($content['width']) || 0 === intval($content['height'])) {
+            return null;
+        }        
         
-        return $data;
+        $orderStructure = $this->appService->getParameter('orderStructure');
+        $height = intval($content['height']);
+        $width = intval($content['width']);
+        
+        if (isset($orderStructure['dpi']['choices'][$content['dpi']])) {
+            $dpi = $orderStructure['dpi']['choices'][$content['dpi']];
+        } else {
+            throw $this->appService->createVisibleHttpException('Wrong Dpi');
+        }
+        if (isset($orderStructure['colors']['choices'][$content['colors']])) {
+            $colors = $orderStructure['colors']['choices'][$content['colors']];
+        } else {
+            throw $this->appService->createVisibleHttpException('Wrong color');
+        }
+        if (isset($orderStructure['numberOfColors']['choices'][$content['numberOfColors']])) {
+            $numberOfColors = $orderStructure['numberOfColors']['choices'][$content['numberOfColors']];
+        } else {
+            throw $this->appService->createVisibleHttpException('Wrong number of colors');
+        }
+
+        $knots =  $height *  $width * $dpi;
+        $price = $knots * 0.014;
+        $duration = 12;
+
+        return array(
+            'price' => $price,
+            'duration' => $duration,
+            'knots' => $knots,
+            'numberOfColors' => $numberOfColors,
+        );
     }
     
     /**

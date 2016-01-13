@@ -1,7 +1,7 @@
-<div class="well">
-    <p>
-        <center>
-            {% if data is not null %}
+{% if data is not null %}
+    <div class="well">
+        <p>
+            <center>
                 <h4>
                 It will take our skilled carpet-makers {{ data.duration }} weeks to handmade<br>
                 <h2>{{ data.knots }}</h2>
@@ -10,9 +10,8 @@
                 Price:
                 <h2>{{ data.price|localizedcurrency('USD') }}</h2>
                 </h4>
-            {% else %}
-                
-            {% endif %}    
-        </center>
-    </p>
-</div>
+            </center>
+        </p>
+    </div>
+{% else %}
+{% endif %}                

@@ -30,6 +30,7 @@ alert:
         canNotDisplayItems: "Can not display items"
         canNotDeleteItem: "Can not delete this item"
         canNotDownloadItem: "Can not download this item"
+        canNotPerformRequest: "Can not perform the request"
         canNotUploadItem: "Can not upload this item"
         canNotAddItem: "Can not add this item"
         canEditAddItem: "Can not edit this item"
