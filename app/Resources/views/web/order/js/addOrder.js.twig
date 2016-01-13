@@ -1,0 +1,42 @@
+<script type="text/javascript">
+$(function(){
+    
+    calculateOrderPrice();
+    $('input[name^=saman_order_form], select[name^=saman_order_form]').change(function() {
+        calculateOrderPrice();
+    });
+    
+    function calculateOrderPrice()
+    {
+        var values = {};
+        var fields = {};
+        var form = $('form[name=saman_order_form]');
+
+        $.each(form.serializeArray(), function(i, field) {
+            var fieldName = field.name;
+            var fieldLength = fieldName.length;
+            if ('[]' === fieldName.substr(fieldLength - 2, fieldLength)) {
+                var fieldNewName = fieldName.substr(0, fieldLength - 2);
+                if (fields[fieldNewName] === undefined) {
+                    fields[fieldNewName] = 0;
+                } else {
+                    fields[fieldNewName] = fields[fieldNewName] + 1;
+                }
+                values[fieldNewName + '[' + fields[fieldNewName] + ']'] = field.value;  
+            } else {
+                values[fieldName] = field.value;
+            }
+        });
+
+        $('#order-info-container').html('{% include '::web/_loading.html.twig' %}');
+        $.ajax({
+            type        : 'post',
+            url         : '{{ path('saman_shopping_order_calculate_price') }}',
+            data        : values,
+            success     : function(response) {
+                $('#order-info-container').html(response.content);
+            }
+        });    
+    }    
+});
+</script>

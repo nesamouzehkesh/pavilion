@@ -17,6 +17,7 @@ word:
     signedInAs: Signed in as
     logIn: Sign In
     logOut: Sign Out
+    loading: Loading
     createAccount: Create Account
     forgotPassword: "Forgot your password?"
     keepMeLoggedIn: Keep me logged in
@@ -39,8 +40,10 @@ alert:
     info:
     warning:
         doYouWantToDeleteItem: "Do your really want to delete this item?"
-   
-    
+        
+message:
+    signUpMessage: "The customised nature and individuality of our carpets means that we need to know more about every customer. Please sign in or create an account before making an order so you can specify your carpet as you personally desire and track its progress while it’s being made for you. Thanks!"
+
 action:
     logout: Sign out
     addFiles: Add files...
@@ -209,11 +212,17 @@ order:
     orderConfirmation: Order Confirmation
     confirmOrderAddresses: Confirm Shipping/Billing Addresses
     contentItems:
-        dpi: DPI
+        dpi: DPI (Raj)
         colors: Colors
         numberOfColors: Number Of Colors
-        width: Width
-        height: Height
+        width: Width (cm)
+        height: Height (cm)
+    contentItemsDescription:
+        dpi: "Raj: The dpi of your carpet is defined by raj."
+        colors: ""
+        numberOfColors: ""
+        width: ""
+        height: ""
     action:
         payment: Payment
         goToPayment: Go to Payment
@@ -255,4 +264,3 @@ customer:
     icon:
         myProfile: glyphicon glyphicon-user    
         submitRegisteration: glyphicon glyphicon-send
-        

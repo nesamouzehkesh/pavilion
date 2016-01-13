@@ -361,6 +361,59 @@ class ShoppingService
     }
     
     /**
+     * Calculate the custom order price based on user form parameters
+     * 
+     * @param type $param
+     * @return type
+     */
+    public function calCustomOrderPrice($param)
+    {
+        $data = null;
+        if (isset($param['content']['height']) && isset($param['content']['width'])) {
+            $orderStructure = $this->appService->getParameter('orderStructure');
+            
+            if (0 < intval($param['content']['height'])) {
+                $height = intval($param['content']['height']);
+            } else {
+                throw new \Exception('Wrong width');
+            }
+            if (0 < intval($param['content']['width'])) {
+                $width = intval($param['content']['width']);
+            } else {
+                throw new \Exception('Wrong width');
+            }
+            if (isset($orderStructure['dpi']['choices'][$param['content']['dpi']])) {
+                $dpi = $orderStructure['dpi']['choices'][$param['content']['dpi']];
+            } else {
+                throw new \Exception('Wrong DPI');
+            }
+            if (isset($orderStructure['colors']['choices'][$param['content']['colors']])) {
+                $colors = $orderStructure['colors']['choices'][$param['content']['colors']];
+            } else {
+                throw new \Exception('Wrong color');
+            }
+            if (isset($orderStructure['numberOfColors']['choices'][$param['content']['numberOfColors']])) {
+                $numberOfColors = $orderStructure['numberOfColors']['choices'][$param['content']['numberOfColors']];
+            } else {
+                throw new \Exception('Wrong numberOfColors');
+            }
+            
+            $knots =  $height *  $width * $dpi;
+            $price = $knots * 0.014;
+            $duration = 12;
+
+            $data = array(
+                'price' => $price,
+                'duration' => $duration,
+                'knots' => $knots,
+                'numberOfColors' => $numberOfColors,
+            );
+        }
+        
+        return $data;
+    }
+    
+    /**
      * Finalize order content
      * 
      * @param Order $order

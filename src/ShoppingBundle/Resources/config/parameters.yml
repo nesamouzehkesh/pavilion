@@ -13,34 +13,40 @@ parameters:
                     2: 200
                     3: 300
                     4: 400
-                label: DPI (Raj)
+                label: order.contentItems.dpi
                 default: 1
                 required: true
+                description: order.contentItemsDescription.dpi
+                url: ~    
             colors:
                 type: choice
                 choices:
                     1: Black & With
                     2: Rust
                     3: Colorful
-                label: Color
+                label: order.contentItems.colors
                 default: 1
                 required: true
+                description: order.contentItemsDescription.colors
             numberOfColors:
                 type: choice
                 choices:
                     1: 10
                     2: 20
                     3: 30
-                label: Number Of Colors
+                label: order.contentItems.numberOfColors
                 default: 1
                 required: true
+                description: order.contentItemsDescription.numberOfColors
             width:
                 type: text
-                label: Width (cm)
+                label: order.contentItems.width
                 default: ""
                 required: true
+                description: order.contentItemsDescription.width
             height:
                 type: text
-                label: Height (cm)
+                label: order.contentItems.height
                 default: ""
                 required: true
+                description: order.contentItemsDescription.height

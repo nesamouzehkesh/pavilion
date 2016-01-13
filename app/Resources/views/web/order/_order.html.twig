@@ -16,8 +16,8 @@
         {#Item added on: {{ orderItem.date|date(date_format) }}<br>#}
         Qty: {{ orderItem.qty }}<br>
         Price: <br>
-        <span class="originalPrice">${{ productOriginalPrice|number_format(2, '.', ',') }}</span><br>
-        <span class="price">${{ productPrice|number_format(2, '.', ',') }}</span><br>
+        <span class="originalPrice">${{ productOriginalPrice|localizedcurrency('USD')  }}</span><br>
+        <span class="price">${{ productPrice|localizedcurrency('USD') }}</span><br>
         ..................................................<br>
     {% endfor %}
 {% elseif order.isCustomOrder %}

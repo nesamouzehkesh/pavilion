@@ -175,6 +175,24 @@ class ShoppingController extends BaseController
     
     /**
      * 
+     * @param Request $request
+     * @return type
+     */
+    public function calCustomOrderPriceAction(Request $request)
+    {
+        $param = $request->request->get('saman_order_form');
+        $data = $this->getShoppingService()->calCustomOrderPrice($param);
+        
+        $view = $this->renderView(
+            '::web/order/_orderPriceInfo.html.twig', 
+            array('data' => $data)
+            );
+
+        return $this->getJsonResponse(true, null, $view);
+    }
+    
+    /**
+     * 
      * @param type $orderId
      * @return type
      */

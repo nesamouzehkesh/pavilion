@@ -62,6 +62,10 @@ saman_shopping_order_add:
     path:     /shopping/order/create
     defaults: { _controller: ShoppingBundle:Shopping:addEditCustomOrder, orderId: null }
 
+saman_shopping_order_calculate_price:
+    path:     /shopping/order/calculate/price
+    defaults: { _controller: ShoppingBundle:Shopping:calCustomOrderPrice }
+
 saman_shopping_order_add_confirmation:
     path:     /shopping/order/confirm/{orderId}
     defaults: { _controller: ShoppingBundle:Shopping:orderConfirmation }

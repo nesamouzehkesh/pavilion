@@ -50,25 +50,25 @@
                             {{ form_label(form) }}
                         </span>
                     {% endif %}    
-                    {% if attr.description is defined and attr.description is not null %}
-                        <div class="d-margin-bottom-5">
-                            {{ attr.description|trans }}
-                        </div>
-                    {% endif %}
                     
                     {% if isInline == true %}
                         {{ form_label(form) }}
                     {% endif %}    
                     {{ form_widget(form, {'attr':{'class':class, 'placeholder':placeholder}}) }}
+                    {% if attr.description is defined and attr.description is not null %}
+                        <div class="margin-bottom-5">
+                            {{ attr.description|trans|raw }}
+                        </div>
+                    {% endif %}
                     
                     {% if attr.possibleValues is defined and attr.possibleValues is not null %}
-                        <div class="d-margin-bottom-5 d-text-muted">
+                        <div class="margin-bottom-5 text-muted">
                             {{ attr.possibleValues|raw }}
                         </div>
                     {% endif %}
                     
                     {% if hasError %}
-                        <div class="d-margin-top-5">
+                        <div class="margin-top-5">
                             {{ form_errors(form) }}
                         </div>	
                     {% endif %}    

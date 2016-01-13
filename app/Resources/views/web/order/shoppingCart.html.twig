@@ -42,8 +42,8 @@
                                     <div class="visible-xs">
                                         <a href="{{ viewProductUrl }}">{{ product.title }}</a><br>
                                         Item added on: {{ shoppingCartOrder.date|date(date_format) }}<br>
-                                        <span class="originalPrice">${{ product.originalPrice|number_format(2, '.', ',') }}</span><br>
-                                        <span class="price">${{ product.price|number_format(2, '.', ',') }}</span>
+                                        <span class="originalPrice">${{ product.originalPrice|localizedcurrency('USD') }}</span><br>
+                                        <span class="price">${{ product.price|localizedcurrency('USD') }}</span>
                                     </div>
                                 </td>
                                 <td class="hidden-xs">
@@ -51,8 +51,8 @@
                                     Item added on: {{ shoppingCartOrder.date|date(date_format) }}<br>
                                 </td>
                                 <td class="hidden-xs">
-                                    <span class="originalPrice">${{ product.originalPrice|number_format(2, '.', ',') }}</span>
-                                    <span class="price">${{ product.price|number_format(2, '.', ',') }}</span>
+                                    <span class="originalPrice">${{ product.originalPrice|localizedcurrency('USD') }}</span>
+                                    <span class="price">${{ product.price|localizedcurrency('USD') }}</span>
                                 </td>
                                 <td>
                                     <select class="form-control form-qty-small action-update-from-cart" data-url="{{ path('saman_shopping_modify_shopping_cart', {'action': 'update', 'productId': product.id}) }}">
@@ -75,8 +75,8 @@
                             <td class="hidden-xs"></td>
                             <td class="hidden-xs"></td>
                             <td>Total Price: <br>
-                                <span class="originalPrice">${{ totalOriginalPrice|number_format(2, '.', ',') }}</span>
-                                <span class="price">${{ totalPrice|number_format(2, '.', ',') }}</span>
+                                <span class="originalPrice">${{ totalOriginalPrice|localizedcurrency('USD') }}</span>
+                                <span class="price">${{ totalPrice|localizedcurrency('USD') }}</span>
                             </td>
                             <td>Qty: {{ totalQty }}</td>
                             <td></td>

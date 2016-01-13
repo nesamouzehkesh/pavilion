@@ -20,8 +20,8 @@
                     </div>
 
                     <div class="view-product-price">
-                        <span class="originalPrice">${{ product.originalPrice|number_format(2, '.', ',') }}</span>
-                        <span class="price">${{ product.price|number_format(2, '.', ',') }}</span>
+                        <span class="originalPrice">${{ product.originalPrice|localizedcurrency('USD') }}</span>
+                        <span class="price">${{ product.price|localizedcurrency('USD') }}</span>
                     </div>        
 
                     <div class="view-product-title">

@@ -17,8 +17,8 @@
             Description: {{ payment.description }}<br>        
         {% endif %}
         
-        <a role="button" data-toggle="collapse" href="#collapseExample" aria-expanded="false" aria-controls="collapseExample">Technical info</a>
-        <div class="collapse" id="collapseExample">
+        <a role="button" data-toggle="collapse" href="#" aria-expanded="false" aria-controls="paymentTechnicalInfo-{{ payment.id }}">Technical info</a>
+        <div class="collapse" id="paymentTechnicalInfo-{{ payment.id }}">
             {{ dump(payment.content) }}
         </div>        
     </blockquote>

@@ -1,0 +1,18 @@
+<div class="well">
+    <p>
+        <center>
+            {% if data is not null %}
+                <h4>
+                It will take our skilled carpet-makers {{ data.duration }} weeks to handmade<br>
+                <h2>{{ data.knots }}</h2>
+                silk knots in {{ data.numberOfColors }} bright colours!<br><br>
+
+                Price:
+                <h2>{{ data.price|localizedcurrency('USD') }}</h2>
+                </h4>
+            {% else %}
+                
+            {% endif %}    
+        </center>
+    </p>
+</div>

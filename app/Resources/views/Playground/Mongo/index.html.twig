@@ -19,7 +19,7 @@
             <tr>
                 <th scope="row">{{ product.id }}</th>
                 <td>{{ product.name }}</td>
-                <td>{{ product.price|number_format(2, '.', ',') }} $</td>
+                <td>{{ product.price|localizedcurrency('USD') }}</td>
                 <td><a class="btn btn-danger btn-sm" href="{{ path('saman_pg_mongo_delete_product', {'id': product.id}) }}">{{ 'icon.delete'|icon }} Delete</a></td>
             </tr>
         {% endfor %}
