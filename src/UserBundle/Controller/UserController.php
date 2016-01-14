@@ -6,6 +6,7 @@ use Library\Base\BaseController;
 use Symfony\Component\HttpFoundation\Request;
 use UserBundle\Entity\User;
 use UserBundle\Form\UserType;
+use UserBundle\Form\MyProfileType;
 
 class UserController extends BaseController
 {
@@ -80,10 +81,11 @@ class UserController extends BaseController
         try {
             // Get user object
             $user = $this->getUserService()->getUser($userId);
-
+            $isMyProfile = ($userId == $this->getUser()->getId());
+            
             // Generate User Form
             $userForm = $this->createForm(
-                new UserType(), 
+                $isMyProfile? new MyProfileType : new UserType, 
                 $user,
                 array(
                     'action' => $request->getUri(),
@@ -95,7 +97,7 @@ class UserController extends BaseController
             // If form is submited and it is valid then add or update this $user
             if ($userForm->isValid()) {
 
-                // Get some extra form field that are not mapped to user object. 
+                // Check password and rePassword
                 $password = $userForm->get('password')->getData();
                 $rePassword = $userForm->get('rePassword')->getData();
                 if ($password !== $rePassword) {
@@ -104,11 +106,20 @@ class UserController extends BaseController
                         'Passwords are no matched'
                         );
                 }
+                
+                // Check user current password
+                if ($isMyProfile) {
+                    $currentPassword = $userForm->get('currentPassword')->getData();
+                    if ($user->getPassword() !== md5($currentPassword)) {
+                        return $this->getAppService()->getJsonResponse(
+                            false, 
+                            'Current passwords is not valid'
+                            );
+                    }
+                }
 
                 // Set this $password for user password
                 $user->setPassword($password);
-
-                // Get ObjectManager
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($user);
                 $em->flush();

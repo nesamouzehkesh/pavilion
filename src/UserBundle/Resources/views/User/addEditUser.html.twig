@@ -6,7 +6,17 @@
     {{ form_row(form.firstName) }}
     {{ form_row(form.lastName) }}
     {{ form_row(form.username) }}
+    
     <br><br>
+    {% if form.currentPassword is defined %}
+        {{ form_row(form.currentPassword) }}
+    {% endif %}
     {{ form_row(form.password) }}
     {{ form_row(form.rePassword) }}
+
+    <script type="text/javascript">
+        $(function(){
+            $('#saman_user_form_currentPassword').val('');
+        });
+    </script>    
 {% endblock %}

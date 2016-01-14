@@ -5,20 +5,23 @@
 {% endblock %}
 
 {% block body %}
-    <ul role="tablist" class="nav nav-tabs" id="myTabs">
-        <li role="presentation"><a href="{{ path('saman_admin_user_home') }}">Users</a></li>
-        <li class="active" role="presentation"><a href="#">My Profile</a></li>
-    </ul>
-    
     <div class="modal fade" id="user-form-container" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"></div>
-    
 
     <div class="tab-content margin-top-20" id="myTabContent">
         <div class="tab-pane fade in active" role="tabpanel">
-            <h3>{{ 'icon.user'|icon }} {{ user.firstName }} {{ user.lastName }}</h3>
+            <h3>
+                {{ user.firstName }} {{ user.lastName }}
+                {{ button(
+                    'action.edit', 
+                    {
+                        url: path('saman_admin_user_edit', {'userId': user.id}),
+                        icon: 'icon.edit', 
+                        toggleModal: 'user-form-container', 
+                        action: 'action-edit-user'
+                    }) }}   
+            </h3>           
             <address>
               <strong>{{ user.username }}</strong><br>
-              <a href="mailto:#">{{ user.email }}</a>
             </address>            
         </div>
     </div>

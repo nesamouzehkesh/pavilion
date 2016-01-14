@@ -1,7 +1,18 @@
 {% extends "UserBundle::layout.html.twig" %}
 
-{% block header %}
-    <button data-url="{{ path('saman_admin_user_add') }}" type="button" class="btn btn-primary btn-sm action-add-user" data-target="#user-form-container">{{ 'icon.add'|icon }} {{ 'action.addNewItem'|trans }}</button>
+{% block headerContainer %}
+    <div class="block" id="headerContainer">
+        <div class="row">
+            <div class="col-md-5">
+                <button data-url="{{ path('saman_admin_user_add') }}" type="button" class="btn btn-primary btn-sm action-add-user" data-target="#user-form-container">{{ 'icon.add'|icon }} {{ 'action.addNewItem'|trans }}</button>
+            </div>
+            <div class="col-md-7">
+                <div class="pull-right">
+                    <a href="{{ path('saman_admin_myprofile') }}">{{ 'icon.user'|icon }} My Profile</a>
+                </div>
+            </div>
+        </div>            
+    </div>
 {% endblock %}
 
 {% block body %}
