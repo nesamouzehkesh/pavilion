@@ -745,3 +745,11 @@ section:nth-of-type(1):after,section:nth-of-type(3):after,section:nth-of-type(5)
     text-decoration: line-through;
     color: #8e8e8e;
 }
+
+.well {
+    background-color: rgba(255, 255, 255, 0.3) !important; 
+    -webkit-box-shadow: none !important; 
+    -moz-box-shadow: none !important; 
+    box-shadow: none !important; 
+    border: 2px dashed #92a5a9 !important;
+}

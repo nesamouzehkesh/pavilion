@@ -32,7 +32,7 @@ class LoadSampleData implements FixtureInterface
                 'url'     => '/order',
                 'content' => 'We handmade your carpet based on your design, whether its an abstract painting, 
                         a family picture a company logo or a pattern of your choice from our gallery.<br><br>
-                            <center><a href="http://54.153.192.23/shopping/order/create" class="btn btn-default btn-xxlg">Make your Order</a></center>
+                            <center><a href="http://zibaf.com/shopping/order/create" class="btn btn-default btn-xxlg">Make your Order</a></center>
                             <p class="margin-top-20">
                                 First you select your design, the size, colour and specific manner in which 
                                 your unique, high quality Persian carpet will be made. Our intelligent 
