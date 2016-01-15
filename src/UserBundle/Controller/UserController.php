@@ -6,7 +6,6 @@ use Library\Base\BaseController;
 use Symfony\Component\HttpFoundation\Request;
 use UserBundle\Entity\User;
 use UserBundle\Form\UserType;
-use UserBundle\Form\MyProfileType;
 
 class UserController extends BaseController
 {
@@ -55,19 +54,23 @@ class UserController extends BaseController
      */
     public function displayUserAction($userId)
     {
-        // Get ObjectManager
-        $user = $this->getUserService()->getUser($userId);
-        $userActivities = $this->getUserService()->getUserActivities($user);
-        
-        $view = $this->renderView(
-            'UserBundle:User:user.html.twig',
-            array(
-                'user' => $user,
-                'userActivities' => $userActivities
-                )
-            );
+        try {
+            // Get ObjectManager
+            $user = $this->getUserService()->getUser($userId);
+            $userActivities = $this->getUserService()->getUserActivities($user);
 
-        return $this->getAppService()->getJsonResponse(true, null, $view);        
+            $view = $this->renderView(
+                'UserBundle:User:user.html.twig',
+                array(
+                    'user' => $user,
+                    'userActivities' => $userActivities
+                    )
+                );
+
+            return $this->getAppService()->getJsonResponse(true, null, $view);        
+        } catch (\Exception $ex) {
+            return $this->getExceptionResponse('Can not display this user', $ex);
+        }  
     }
     
     /**
@@ -81,11 +84,11 @@ class UserController extends BaseController
         try {
             // Get user object
             $user = $this->getUserService()->getUser($userId);
-            $isMyProfile = ($userId == $this->getUser()->getId());
+            $em = $this->getDoctrine()->getManager();
             
             // Generate User Form
             $userForm = $this->createForm(
-                $isMyProfile? new MyProfileType : new UserType, 
+                new UserType, 
                 $user,
                 array(
                     'action' => $request->getUri(),
@@ -96,30 +99,11 @@ class UserController extends BaseController
             $userForm->handleRequest($request);
             // If form is submited and it is valid then add or update this $user
             if ($userForm->isValid()) {
-
-                // Check password and rePassword
-                $password = $userForm->get('password')->getData();
-                $rePassword = $userForm->get('rePassword')->getData();
-                if ($password !== $rePassword) {
-                    return $this->getAppService()->getJsonResponse(
-                        false, 
-                        'Passwords are no matched'
-                        );
+                $result = $this->getUserService()->userFormIsValid($userForm);
+                if (true !== $result) {
+                    return $this->getAppService()->getJsonResponse(false, $result);
                 }
                 
-                // Check user current password
-                if ($isMyProfile) {
-                    $currentPassword = $userForm->get('currentPassword')->getData();
-                    if ($user->getPassword() !== md5($currentPassword)) {
-                        return $this->getAppService()->getJsonResponse(
-                            false, 
-                            'Current passwords is not valid'
-                            );
-                    }
-                }
-
-                // Set this $password for user password
-                $user->setPassword($password);
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($user);
                 $em->flush();

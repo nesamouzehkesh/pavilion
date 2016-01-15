@@ -11,6 +11,13 @@ use Symfony\Component\Form\FormBuilderInterface;
  */
 class MyProfileType extends AbstractType
 {
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    {
+        $resolver->setDefaults(array(
+            'data_class' => 'UserBundle\Entity\User',
+        ));
+    }
+    
     /**
      * 
      * @param \Symfony\Component\Form\FormBuilderInterface $builder
@@ -19,20 +26,27 @@ class MyProfileType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('email', 'text')
+            ->add('username', 'text')
             ->add('firstName', 'text')
             ->add('lastName', 'text')
-            ->add('username', 'text')
-            ->add('currentPassword', 'password', array('mapped' => false, 'data' => ''))
-            ->add('password', 'password', array('mapped' => false))
-            ->add('rePassword', 'password', array('mapped' => false));
-    }
-    
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
-    {
-        $resolver->setDefaults(array(
-            'data_class' => 'UserBundle\Entity\User',
-        ));
+            ->add('currentPassword', 'password', array(
+                'mapped' => false, 
+                'required' => false
+                ))
+            ->add('password', 'password', array(
+                'mapped' => false, 
+                'required' => false
+                ))
+            ->add('rePassword', 'password', array(
+                'mapped' => false, 
+                'required' => false
+                ))
+            ->add('changePassword', 'checkbox', array(
+                'mapped' => false,
+                'data' => false,
+                'label'    => 'I want to change the password',
+                'required' => false,
+            ));            
     }
     
     /**

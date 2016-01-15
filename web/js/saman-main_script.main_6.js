@@ -1,6 +1,10 @@
 var searchText = '';
 var CKEDITOR_BASEPATH = '/js/ckeditor/';
-          
+
+jQuery(function($) {
+    $('.slider').sss();
+});
+                    
 $(document).ready(function(){
     // Text box clear button and action
     function tog(v) {return v? 'addClass' : 'removeClass';} 

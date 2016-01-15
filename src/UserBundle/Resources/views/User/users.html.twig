@@ -22,7 +22,7 @@
     <table class="table table-hover">
         <thead>
             <tr>
-                <th>Email (username)</th>
+                <th>Username</th>
                 <th>Name</th>
                 <th class="col-md-4"></th>
             </tr>
@@ -31,7 +31,7 @@
 
         {% for user in usersPagination %}
             <tr>
-                <td>{{ user.email }}</td>
+                <td>{{ user.username }}</td>
                 <td>{{ user.firstName }} {{ user.lastName }}</td>
                 <td>
                     <div class="pull-right">

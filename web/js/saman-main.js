@@ -16565,7 +16565,7 @@ $.fn.setSelection = function(o, p)
 
 var searchText = '';
 var CKEDITOR_BASEPATH = '/js/ckeditor/';
-
+          
 $(document).ready(function(){
     // Text box clear button and action
     function tog(v) {return v? 'addClass' : 'removeClass';} 

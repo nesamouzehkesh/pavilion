@@ -38,14 +38,9 @@ class User extends BaseEntity implements AdvancedUserInterface, \Serializable
     private $lastName;
     
     /**
-     * @ORM\Column(type="string", length=64)
+     * @ORM\Column(type="string", length=64, nullable=true)
      */
     private $password;
-
-    /**
-     * @ORM\Column(type="string", length=60, unique=true)
-     */
-    private $email;
 
     /**
      * @ORM\Column(name="is_active", type="boolean")
@@ -69,6 +64,10 @@ class User extends BaseEntity implements AdvancedUserInterface, \Serializable
      **/
     private $addresses;
     
+    /**
+     *
+     * @var type 
+     */
     private $primaryAddresses = null;
     
     /**
@@ -135,6 +134,14 @@ class User extends BaseEntity implements AdvancedUserInterface, \Serializable
     /**
      * @inheritDoc
      */
+    public function getEmail()
+    {
+        return $this->getUsername();
+    }
+    
+    /**
+     * @inheritDoc
+     */
     public function getSalt()
     {
         return $this->salt;
@@ -169,26 +176,6 @@ class User extends BaseEntity implements AdvancedUserInterface, \Serializable
     {
         return $this->password === md5($password);
     }
-
-    /**
-     * @inheritDoc
-     */
-    public function getEmail()
-    {
-        return $this->email;
-    }
-    
-    /**
-     * 
-     * @param type $email
-     * @return \UserBundle\Entity\User
-     */
-    public function setEmail($email)
-    {
-        $this->email = $email;
-        
-        return $this;
-    }     
 
     /**
      * @inheritDoc

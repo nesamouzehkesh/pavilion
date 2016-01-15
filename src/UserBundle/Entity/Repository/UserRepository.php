@@ -8,6 +8,7 @@ use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Doctrine\ORM\NoResultException;
 use Library\Doctrine\BaseEntityRepository;
+use UserBundle\Entity\User;
 use UserBundle\Entity\Role;
 
 /**
@@ -66,14 +67,33 @@ class UserRepository extends BaseEntityRepository implements UserProviderInterfa
         $qb = $this->getQueryBuilder()
             ->select('u.id')
             ->from('UserBundle:User', 'u')
-            ->where('(u.username = :username OR u.email = :email) AND u.deleted = 0')
-            ->setParameter('username', $username)
-            ->setParameter('email', $username);
+            ->where('u.username = :username AND u.deleted = 0')
+            ->setParameter('username', $username);
                 
         $result = $qb->getQuery()->getScalarResult();
         
         return reset($result)? true : false;
     }
+    
+    /**
+     * 
+     * @param \UserBundle\Entity\Repository\User $user
+     * @param type $username
+     * @return type
+     */
+    public function canUserUseUsername(User $user, $username)
+    {
+        $qb = $this->getQueryBuilder()
+            ->select('u.id')
+            ->from('UserBundle:User', 'u')
+            ->where('u.username = :username AND u.id != :userId ')
+            ->setParameter('username', $username)
+            ->setParameter('userId', $user->getId());
+                
+        $result = $qb->getQuery()->getScalarResult();
+        
+        return reset($result)? false : true;
+    }    
     
     /**
      * 
@@ -87,9 +107,8 @@ class UserRepository extends BaseEntityRepository implements UserProviderInterfa
             ->createQueryBuilder('u')
             ->select('u, r')
             ->leftJoin('u.roles', 'r')
-            ->where('u.username = :username OR u.email = :email')
+            ->where('u.username = :username')
             ->setParameter('username', $username)
-            ->setParameter('email', $username)
             ->getQuery();
 
         try {

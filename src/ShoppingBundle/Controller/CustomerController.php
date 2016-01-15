@@ -69,7 +69,6 @@ class CustomerController extends BaseController
             
             // Set this email for user email and username
             $email = $customerForm->get('email')->getData();
-            $customer->setEmail($email);
             $customer->setUsername($email);
             $em->persist($customer);
             $em->flush();

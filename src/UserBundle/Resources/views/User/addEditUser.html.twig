@@ -2,21 +2,36 @@
 
 {% block body %}
     {{ form_errors(form) }}
-    {{ form_row(form.email) }}
+    {{ form_row(form.username) }}
     {{ form_row(form.firstName) }}
     {{ form_row(form.lastName) }}
-    {{ form_row(form.username) }}
     
-    <br><br>
-    {% if form.currentPassword is defined %}
-        {{ form_row(form.currentPassword) }}
+    {% if form.changePassword is defined %}
+        {{ form_row(form.changePassword) }}
+        <div id="change-password-container" style="display: none">
+            {% if form.currentPassword is defined %}
+                {{ form_row(form.currentPassword) }}
+            {% endif %}
+            {{ form_row(form.password) }}
+            {{ form_row(form.rePassword) }}
+        </div>
+    {% else %}
+        {{ form_row(form.password) }}
+        {{ form_row(form.rePassword) }}
     {% endif %}
-    {{ form_row(form.password) }}
-    {{ form_row(form.rePassword) }}
 
     <script type="text/javascript">
         $(function(){
-            $('#saman_user_form_currentPassword').val('');
+            $('input[type="password"]').val('');
+            $('#saman_user_form_changePassword').change(function() {
+                $('input[type="password"]').val('');
+                var container = $("#change-password-container");
+                if (this.checked) {
+                    container.show();
+                } else {
+                    container.hide();
+                }        
+            });
         });
     </script>    
 {% endblock %}

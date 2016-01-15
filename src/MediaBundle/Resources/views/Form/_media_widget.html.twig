@@ -20,10 +20,12 @@ https://github.com/blueimp/jQuery-File-Upload/wiki/Options
 {% set isMultiple = attr['isMultiple'] is defined? attr['isMultiple'] : true %}
 {% set isDragover = attr['dragover'] is defined? attr['dragover'] : true %}
 {% set filesContainer = '<table role="presentation" style="width: 100%"><tbody id="files-container-' ~ mediaId ~ '" class="files">' ~ value|toMediaList ~ '</tbody></table>' %}    
+
 <div id="fileupload-{{ mediaId }}">    
     {% if isMultiple %}
         {% set uploadButton = '<span class="btn btn-default btn-file">' ~ ('icon.plus'|icon) ~ '<span class="margin-left-5">' ~ ('action.addFiles'|trans) ~ '</span><input name="files[]" type="file" multiple /></span>' %}
-        <input {{ block('widget_attributes') }} type="hidden" value="{{ value|toMediaData }}" />
+        {# if we have {{ value|toMediaData }} hear then we can use the browser cache to load curent media file in the browser cache. Then even if user refresh the page he/she can see the list of uploaded files#}
+        <input {{ block('widget_attributes') }} type="hidden" value="{# {{ value|toMediaData }} #}" />
         {% if isDragover %}
             <div class="row fileupload-buttonbar">
                 <div class="col-md-12">
@@ -88,6 +90,8 @@ https://github.com/blueimp/jQuery-File-Upload/wiki/Options
 <script type="text/javascript">
     $(function () {
         var fileInput = $('#{{ mediaId }}');
+        
+        $('#{{ mediaId }}').val('{{ value|toMediaData }}');
 
         $(document).bind('drop dragover', function (e) {
             e.preventDefault();

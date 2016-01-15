@@ -171,7 +171,6 @@ class LoadSampleData implements FixtureInterface
             array(
                 'username' => 'admin@admin.com',
                 'password' => 'admin',
-                'email' => 'admin@admin.com',
                 'role' => Role::ROLE_ADMIN,
                 'firstName' => 'firstName',
                 'lastName' => 'lastName',
@@ -203,7 +202,6 @@ class LoadSampleData implements FixtureInterface
             array(
                 'username' => 'user@user.com',
                 'password' => 'user',
-                'email' => 'user@user.com',
                 'role' => Role::ROLE_USER,
                 'firstName' => 'firstName',
                 'lastName' => 'lastName',
@@ -338,7 +336,6 @@ class LoadSampleData implements FixtureInterface
             $usersData[] = array(
                 'username' => $email,
                 'password' => 'abcd',
-                'email' => $email,
                 'role' => Role::ROLE_USER,
                 'firstName' => $loremIpsum->getName(),
                 'lastName' => $loremIpsum->getName(),
@@ -349,7 +346,6 @@ class LoadSampleData implements FixtureInterface
             $user = new User();
             $user->setUsername($userData['username']);
             $user->setPassword($userData['password']);
-            $user->setEmail($userData['email']);
             $user->addRole($this->roles[$userData['role']]);
             
             if (isset($userData['firstName'])) {
