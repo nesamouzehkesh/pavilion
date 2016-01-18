@@ -6,7 +6,7 @@ $(function(){
         var url = $(this).attr('data-url');
         $.get(url, {quntity: quntity}, function(response) {
             if (response.success === true) {
-                //location.reload();
+                location.reload();
             } else{
                 bootbox.alert(response.message);
             }
