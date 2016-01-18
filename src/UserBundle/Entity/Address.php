@@ -486,6 +486,10 @@ class Address extends BaseEntity
 
             return $labelArray[$this->locationType];
         } else {
+            if (!isset(self::$locationTypes[$this->locationType])) {
+                return '';
+            }
+            
             return self::$locationTypes[$this->locationType];
         }
     }    

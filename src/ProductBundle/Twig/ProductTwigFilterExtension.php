@@ -51,6 +51,10 @@ class ProductTwigFilterExtension extends Twig_Extension
     public function transSpecifications($specifications, $specificationFields)
     {
         $params = array();
+        if (!is_array($specifications)) {
+            return $params;
+        }
+        
         foreach ($specificationFields as $key => $field) {
             $value = null;
             if (array_key_exists($key, $specifications)) {

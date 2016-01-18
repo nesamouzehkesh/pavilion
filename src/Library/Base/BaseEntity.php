@@ -266,29 +266,7 @@ class BaseEntity
     {
         return self::ITEM_LOGO;
     }
-    
-    /**
-     * 
-     * @param type $jsonMedia
-     * @param type $convert
-     * @return type
-     */
-    public static function getMedia($jsonMedia, $convert)
-    {
-        return MediaHandler::getMedia($jsonMedia, $convert);
-    }
-    
-    /**
-     * 
-     * @param type $jsonMedias
-     * @param type $convert
-     * @return type
-     */
-    public static function getMedias($jsonMedias, $convert)
-    {
-        return MediaHandler::getMedias($jsonMedias, $convert);
-    }
-    
+
     /**
      * 
      * @param type $string

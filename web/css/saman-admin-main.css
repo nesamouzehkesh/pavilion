@@ -815,6 +815,13 @@ button:active,
 .form-qty-small {
     width: 65px !important;
 }
+
+#owl-order-images .item img{
+    display: block;
+    //width: 100%;
+    height: auto;
+}
+
 .glyphicon.glyphicon-shopping_bag:before{font-family: 'Glyphicons Regular';content:"\E351"}
 .glyphicon.glyphicon-unlock:before{font-family: 'Glyphicons Regular';content:"\E205"}
 .glyphicon.glyphicons-brush:before{font-family: 'Glyphicons Regular';content:"\E235"}

@@ -60,15 +60,18 @@
                 <h4>{{ 'product.description'|trans }}</h4> {{ product.description|raw }}
             </div>
         </div>
-            
-        <div class="row">
-            <div class="col-md-12 margin-top-20">
-                <h4>{{ 'product.specifications'|trans }}</h4> 
-                {% for key, specification in product.specifications|transSpecifications(specificationFields) %}
-                    <strong>{{ key }}:</strong> {{ specification }}<br>
-                {% endfor %}    
+        
+        {% set specifications = product.specifications|transSpecifications(specificationFields) %}    
+        {% if specifications|length > 0 %}
+            <div class="row">
+                <div class="col-md-12 margin-top-20">
+                    <h4>{{ 'product.specifications'|trans }}</h4> 
+                    {% for key, specification in specifications %}
+                        <strong>{{ key }}:</strong> {{ specification }}<br>
+                    {% endfor %}    
+                </div>
             </div>
-        </div>            
+        {% endif %}
     </div>                
 {% endblock %}
 

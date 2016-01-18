@@ -293,3 +293,9 @@ button:active,
 .form-qty-small {
     width: 65px !important;
 }
+
+#owl-order-images .item img{
+    display: block;
+    //width: 100%;
+    height: auto;
+}

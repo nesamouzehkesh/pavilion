@@ -1,8 +1,7 @@
 <script type="text/javascript">
 $(function(){
     calculateOrderPrice();
-    
-    $('input[name^=saman_order_form], select[name^=saman_order_form], saman_order_form_attachments').change(function() {
+    $('input[name^=saman_order_form], select[name^=saman_order_form], #saman_order_form_attachments').change(function() {
         calculateOrderPrice();
     });
     

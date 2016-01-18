@@ -293,9 +293,9 @@ class Product extends BaseEntity implements ShoppingItemInterface
      *
      * @return string 
      */
-    public function getImage($convert = false)
+    public function getImage()
     {
-        return parent::getMedia($this->image, $convert);
+        return $this->image;
     }
 
     /**
@@ -316,9 +316,9 @@ class Product extends BaseEntity implements ShoppingItemInterface
      *
      * @return string 
      */
-    public function getImages($convert = false)
+    public function getImages()
     {
-        return parent::getMedias($this->images, $convert);
+        return $this->images;
     }
 
     /**
