@@ -7,7 +7,7 @@
         
     </head>
     
-    <body ng-controller="AppCtrl" ng-cloak="">
+    <body ng-cloak="">
         <div class="container">
             <div class="row margin-top-40">
                 <div class="col-sm-3">
@@ -23,13 +23,12 @@
                 </div>
                 <div class="col-sm-9">
                     <div class="panel panel-default">
-                        <div class="panel-body">
-                        <!--**********************************************************************-->
-
-                        <div id="my-form"></div>
                         
-                        <!--**********************************************************************-->
+                        <div ng-controller="AppCtrl" class="panel-body">
+                            <div id="my-form"></div>
+                            ddd {{ formData['title'] }} sss
                         </div>
+                        
                     </div>
                 </div> 
             </div>

@@ -79,11 +79,18 @@ class ProductAdminApiController extends BaseController
      * 
      * @return type
      * @\FOS\RestBundle\Controller\Annotations\View()
-     */    
-    public function addProductAction(Request $request)
+     */     
+    public function getProductFormAction($productId)
     {
-        return $this->processForm($this->getProduct());
-    }
+        $product = $this->getProduct($productId);
+        $productForm = $this->createForm(new ProductApiType(), $product);
+        $productForm->handleRequest($this->getRequest());
+        
+        $formSerializer = new FormSerializer();
+        $serializedForm = $formSerializer->serialize($productForm);
+        
+        return array('form' => $serializedForm->getContent());
+    }    
     
     /**
      * @\Nelmio\ApiDocBundle\Annotation\ApiDoc(
@@ -109,18 +116,11 @@ class ProductAdminApiController extends BaseController
      * 
      * @return type
      * @\FOS\RestBundle\Controller\Annotations\View()
-     */     
-    public function getProductFormAction($productId)
+     */    
+    public function addProductAction()
     {
-        $product = $this->getProduct($productId);
-        $productForm = $this->createForm(new ProductApiType(), $product);
-        $productForm->handleRequest($this->getRequest());
-        
-        $formSerializer = new FormSerializer();
-        $serializedForm = $formSerializer->serialize($productForm);
-        
-        return array('form' => $serializedForm->getContent());
-    }    
+        return $this->processForm($this->getProduct());
+    }
     
     /**
      * @\Nelmio\ApiDocBundle\Annotation\ApiDoc(
@@ -166,15 +166,14 @@ class ProductAdminApiController extends BaseController
             $productForm = $this->createForm(new ProductApiType(), $product);
             $productForm->handleRequest($this->getRequest());
             if ($productForm->isValid()) {
-                // Get ObjectManager
                 $em = $this->getDoctrine()->getManager();
-
                 $em->persist($product);
                 $em->flush();
 
                 $response = new Response();
                 $response->setStatusCode($statusCode);
-
+                
+                /*
                 // set the `Location` header only when creating new resources
                 if (201 === $statusCode) {
                     $response->headers->set('Location',
@@ -184,6 +183,7 @@ class ProductAdminApiController extends BaseController
                         )
                     );
                 }
+                */
 
                 return $response;
             }
@@ -192,6 +192,7 @@ class ProductAdminApiController extends BaseController
             $serializedForm = $formSerializer->serialize($productForm);
 
             return View::create(array('form' => $serializedForm->getContent()), 400);
+            //this is not working
             //return array('form' => $serializedForm->getContent());
         } catch (Exception $ex) {
 
@@ -208,14 +209,16 @@ class ProductAdminApiController extends BaseController
         if (null === $productId) {
             return new Product();
         }
-        
         // Get ObjectManager
         $em = $this->getDoctrine()->getManager();
         
         // Get all Products
         $product = Product::getRepository($em)->getProduct($productId);
         if (!$product instanceof Product) {
-            throw new NotFoundHttpException('User not found');
+            throw new NotFoundHttpException(sprintf(
+                'Product not found for ID %s', 
+                $productId
+                ));
         }
         
         return $product;

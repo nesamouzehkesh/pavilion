@@ -14,28 +14,25 @@ api_product_show_product:
     requirements:
         _method: GET
         
-        
-        
-        
-api_product_show_test_product:
+api_admin_product_show_product:
     path:     /admin/product/{productId}
     defaults: { _controller: ProductBundle:Api\ProductAdminApi:getProduct }
     requirements:
         _method: GET
 
-api_product_get_product_form:
-    path:     /admin/product/form/{productId}
+api_admin_product_get_product_form:
+    path:     /form/admin/product/{productId}
     defaults: { _controller: ProductBundle:Api\ProductAdminApi:getProductForm, productId: null }
     requirements:
         _method: GET
 
-api_product_add_product:
+api_admin_product_add_product:
     path:     /admin/product
     defaults: { _controller: ProductBundle:Api\ProductAdminApi:addProduct }
     requirements:
         _method: POST
         
-api_product_edit_product:
+api_admin_product_edit_product:
     path:     /admin/product/{productId}
     defaults: { _controller: ProductBundle:Api\ProductAdminApi:editProduct }    
     requirements:

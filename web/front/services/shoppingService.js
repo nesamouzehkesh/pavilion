@@ -4,12 +4,12 @@
     ShoppingService.service('ProductService', ['$http', function ($http) {
         //simply returns the contacts list
         this.getForm = function () {
-            return $http.get('../api/product/form/76');
+            return $http.get('../api/form/admin/product/83');
         };
         
         this.postForm = function (formData, formName) {
             return $http({
-                url: "../api/product/post",
+                url: "../api/admin/product/83",
                 data: serializeData(formData, formName),
                 method: 'POST',
                 headers : {'Content-Type':'application/x-www-form-urlencoded; charset=UTF-8'}
