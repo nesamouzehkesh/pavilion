@@ -72,19 +72,23 @@ class ProductApiController extends BaseController
      *   }
      * )
      * 
-     * @param int $productId
+     * @param int $id
      * @return type
      */
-    public function getProductAction($productId)
+    public function getProductAction($id)
     {
         try {
             $cacheManager = $this->get('liip_imagine.cache.manager');
             $mediaHandler = new MediaHandler($cacheManager);
             
             $product = Product::getRepository($this->getDoctrine()->getEntityManager())
-                ->getProductForView($productId, $mediaHandler);
+                ->getProductForView($id, $mediaHandler);
             
-            return $this->getApiResponse(true, array('product' => $product));
+            if ($product) {
+                return $this->getApiResponse(true, array('product' => $product));
+            } else {
+                return $this->getApiResponse(true, array(), 'No product has been found');
+            }
         } catch (\Exception $ex) {
             return $this->getApiExceptionResponse('alert.error.canNotDisplayItem', $ex);
         }            

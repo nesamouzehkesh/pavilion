@@ -36,8 +36,8 @@ class ProductRepository extends BaseEntityRepository
 
         $result = $qb->getQuery()->getScalarResult();
         $product = reset($result);
-
-        if ($mediaHandler instanceof MediaHandler) {
+        
+        if ($product && $mediaHandler instanceof MediaHandler) {
             $product['image'] = $mediaHandler->getBrowserMediaArray($product['image']);
             $product['images'] = $mediaHandler->getBrowserMediaArray($product['images']);
         }

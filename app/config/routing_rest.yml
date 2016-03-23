@@ -9,31 +9,34 @@ api_product_show_products:
         _method: GET
     
 api_product_show_product:
-    path:     /product/get/{productId}
+    path:     /product/{id}
     defaults: { _controller: ProductBundle:Api\ProductApi:getProduct }
     requirements:
         _method: GET
         
+        
+        
+        
 api_product_show_test_product:
-    path:     /product/test/{productId}
+    path:     /admin/product/{productId}
     defaults: { _controller: ProductBundle:Api\ProductAdminApi:getProduct }
     requirements:
         _method: GET
 
 api_product_get_product_form:
-    path:     /product/form/{productId}
+    path:     /admin/product/form/{productId}
     defaults: { _controller: ProductBundle:Api\ProductAdminApi:getProductForm, productId: null }
     requirements:
         _method: GET
 
 api_product_add_product:
-    path:     /product/post
+    path:     /admin/product
     defaults: { _controller: ProductBundle:Api\ProductAdminApi:addProduct }
     requirements:
         _method: POST
         
 api_product_edit_product:
-    path:     /product/post/{productId}
+    path:     /admin/product/{productId}
     defaults: { _controller: ProductBundle:Api\ProductAdminApi:editProduct }    
     requirements:
         _method: POST
